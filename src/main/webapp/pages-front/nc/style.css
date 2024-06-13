@@ -1,0 +1,136 @@
+  html,
+  body{
+    background-color: black;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .card {
+    background-color: white;
+    min-width: 300px;
+    max-width: 400px;
+    margin: 20px auto;
+    align-items: center;
+    text-align: center;
+    font-family: 'Kanit';
+    border-radius: 8px;
+
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeInAnimation {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+  }
+
+  @media only screen and (max-width: 500px) {
+    .card {
+      background-color: white;
+      min-width: 300px;
+      max-width: 400px;
+      align-items: center;
+      text-align: center;
+      font-family: 'Kanit';
+      border-radius: 8px;
+    }
+  }
+
+  .banner {
+    background-image: url(Source/Banner1.jpg);
+    border-radius: 5px;
+    max-height: 500px;
+  }
+
+  .logo-image {
+    margin-top: 30px;
+  }
+
+  .slogan-image {
+    margin-top: 16px;
+  }
+
+  .info {
+    margin-top: 20px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    align-items: top;
+  }
+
+  .grid-container-3column {
+    display: grid;
+    grid-template-columns: 25% 15% 60%;
+    align-items: top;
+    margin: 10px 0 0 0;
+  }
+  
+  .grid-item {
+    text-align: left;
+    margin: 10px 0 0 10px;
+  }
+
+  .grid-item-groupName {
+    text-align: left;
+    margin: 5px 0 0 10px;
+  }
+
+  .grid-item-groupTel {
+    text-align: left;
+    margin: 5px 0 0 0;
+  }
+
+  .grid-image {
+    text-align: right;
+    margin: 10px 16px 0 0;
+  }
+
+  .grid-image-groupTel {
+    text-align: right;
+    margin: 5px 16px 0 0;
+  }
+
+  .link {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    align-self: stretch;
+  }
+
+  .link-btn {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 7px;
+    background: #BD2125;
+    cursor:pointer;
+  }
+	
+  .footer {
+    margin-top: 30px;
+  }
+
+  .form-contact {
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 0px 0px 8px 8px;
+    background: #BD2125;
+    cursor:pointer;
+  }

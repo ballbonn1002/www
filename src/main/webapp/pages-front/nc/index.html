@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>e-Namecard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Kanit' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    a {
+	    color: #000;
+	    text-decoration: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="card">
+      <img src="Source/Banner1.jpg" style="width:100%;border-radius: 5px 5px 0px 0px;">
+      <div class="logo-image">
+        <img src="Source/Logo.png" style="width:40%;">
+      </div>
+      <div class="slogan-image">
+        <img src="Source/Slogan.png" style="width:70%;">
+      </div>
+      <div class="info">
+        <div class="grid-container">
+          <div class="grid-image" style="margin-right:14px;"><img src="Source/email.png" style="width:20%;"></div>
+          <div class="grid-item"><a href="mailto:sales@cubesofttech.com">sales@cubesofttech.com</a></div>
+        </div>
+        <div class="grid-container" style="margin-top: 10px;">
+          <div class="grid-image"><img src="Source/Tel.png" style="width:15%;"></div>
+          <div class="grid-item"><a href="tel:02-679-8855">02-679-8855</a></div>
+        </div>
+        <div class="grid-container" style="margin-top: 10px;">
+          <div class="grid-image" style="margin-right: 14px;"><img src="Source/web.png" style="width:20%;"></div>
+          <div class="grid-item"><a href="http://www.cubesofttech.com/" target="_blank">www.cubesofttech.com</a></div>
+        </div>
+        <div class="grid-container" style="margin-top: 10px;">
+          <div class="grid-image" style="margin-right:14px;"><img src="Source/pin.png" style="width:20%;"></div>
+          <div class="grid-item">Cube SoftTech Co., Ltd.<br>
+            160/170-2, 12AFl.,<br>
+            ITF Silom Palace Bld.<br>
+            Silom Rd., Suriyawong, Bangrak <br>
+            Bangkok 10500, Thailand
+            </div>
+        </div>
+      </div>
+      <div class="link">
+        <div class="link-btn web-cube"><img src="Source/web2.png" style="width: 65%;"></div>
+        <div class="link-btn fb-cube"><img src="Source/FB.png" style="width: 35%;"></div>
+        <div class="link-btn port-cube"><img src="Source/Portfolio.png" style="width: 65%;"></div>
+      </div>
+      <div class="footer">
+        <div class="form-contact"><img src="Source/Form_icon.png" style="width: 5%;"><font style="color: white;">Inquiry Form</font></div>
+      </div>
+
+    </div>
+
+</body>
+</html>
+<script>
+  $( document ).ready(function() {
+    $('body').fadeIn(function(){});
+  });
+  $(function(){
+    $('body').fadeIn();
+    $('.web-cube').click(function(){
+        url = 'http://www.cubesofttech.com/';
+        $('body').fadeOut(function(){
+            window.location = url;
+        });     
+    });
+    $('.fb-cube').click(function(){
+        url = 'https://www.facebook.com/CubeSoftTech';
+        $('body').fadeOut(function(){
+            window.location = url;
+        });     
+    });
+    $('.port-cube').click(function(){
+        url = 'https://drive.google.com/file/d/16Mh_U0Ck03aCTEIqnbFzrc2quBPdgNmj/view?usp=sharing';
+        $('body').fadeOut(function(){
+            window.location = url;
+        });     
+    });
+    $('.form-contact').click(function(){
+        url = 'https://docs.google.com/forms/d/e/1FAIpQLSesAAP2KQWwQs_0iL7-3t5nDou4_ShLKWqWbNxHmVclUjMgCQ/viewform?usp=sf_link';
+        $('body').fadeOut(function(){
+            window.location = url;
+        });     
+    });
+  });
+</script>
