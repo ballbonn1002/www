@@ -48,18 +48,238 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 <!-- END Global site tag (gtag.js) - Google Analytics -->
 
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-	integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-	crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css?family=Amiko"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Mali&amp;display=swap"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap"
-	rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+		integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+		<style>
+		body,
+		html {
+			font-family: 'Open Sans', sans-serif;
+			font-size: 15px;
+			scroll-behavior: smooth;
+		}
+
+		#navbar-hover:hover {
+			color: #BD2125 !important;
+			text-decoration: none;
+			border-color: white white #BD2125 !important;
+			border-bottom: 4px solid;
+		}
+
+		.parallax {
+			/* The image used */
+			background-image: url("img/services/bg2.jpg");
+
+			/* Set a specific height */
+			min-height: 500px;
+
+			/* Create the parallax scrolling effect */
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.parallax2 {
+			/* The image used */
+			background-image: url("img/services/bgsmall.jpg"); 
+			background-color: rgb(240, 240, 240);
+			/* Set a specific height */
+			min-height: 500px;
+		
+			/* Create the parallax scrolling effect */
+			background-attachment: fixed;
+			background-position: top right;
+			background-repeat: no-repeat;
+			background-size: 900px;
+			
+		}
+
+		.active {
+			border-color: white white #BD2125 !important;
+			border-bottom: 4px solid;
+			color: #BD2125 !important;
+		}
+
+		.setpo {
+			margin-right: -20px;
+		}
+
+		.container {
+			z-index: 0;
+			width: 100%;
+		}
+
+		.header {
+			position: fixed;
+			top: 0;
+			z-index: 1;
+			width: 100%;
+			background-color: #f1f1f1;
+		}
+
+		/* The progress container (grey background) */
+
+
+		/* The progress bar (scroll indicator) */
+		.progress-bar {
+			height: 0px;
+			background: #BD2125;
+			width: 0%;
+			margin: 0 0 0;
+		}
+
+		.navbar-light .navbar-toggler-icon {
+			background-image: url(https://cdn.dribbble.com/users/976841/screenshots/3452262/dribbble-upload.gif) !important;
+		}
+
+
+		.welcomebg {
+			background-color: white;
+			box-shadow: 0px 11px 18px -16px rgba(0, 0, 0, 0.75);
+		}
+
+		.welcomecon {
+			margin-left: 15%;
+			margin-right: 15%;
+			padding-top: 5%;
+			padding-bottom: 15px;
+		}
+		.logo {
+
+			padding-bottom: 100px;
+			padding-top: 150px;
+			padding-left: 15%;
+			padding-right: 10px;
+		}
+
+		p {
+			margin: 0 0 0;
+		}
+
+		#myBtn {
+			display: none;
+			position: fixed;
+			bottom: 20px;
+			right: 30px;
+			z-index: 99;
+			font-size: 18px;
+			border: none;
+			outline: none;
+			background-color: #BD2125;
+			color: white;
+			cursor: pointer;
+			padding: 15px;
+			border-radius: 4px;
+		}
+
+		#myBtn:hover {
+			background-color: #555;
+		}
+
+
+		.nava {
+			padding-left: 10%;
+		}
+
+		.serviceimg {
+			position: absolute;
+		}
+
+		.icon {
+			width: 100px;
+			height: 85px;
+		}
+
+		.bar {
+			width: 30px;
+			height: 3px;
+			background-color: #333;
+			margin: 6px 0;
+			transition: 0.4s;
+		}
+
+		.logoservices {
+			padding-bottom: 010px;
+			padding-top: 100px;
+
+		}
+
+		.services-block {
+			background-color: #BD2125;
+			width: 200px;
+			color: white;
+			font-size: 32px;
+		}
+
+		.footerbg {
+			background-color: white;
+			text-align: center;
+			padding-left: 10%;
+			padding-right: 10%;
+
+		}
+
+		.vl {
+			border-left: 2px solid rgb(233, 233, 233);
+			height: 140px;
+		}
+        @media screen and (max-width: 870px) {
+        .vl {
+            display:none;
+             }
+			 .imgservices{
+			display:none;
+			}
+			.welcomecon {
+			margin-left: 5%;
+			margin-right: 5%;
+			padding-top: 5%;
+			padding-bottom: 15px;
+		}
+		.parallax{
+				display:none;
+			}
+        }
+
+		@media screen and (min-width: 870px) {
+			.imgservices2{
+			display:none;
+			}
+			.parallax2{
+				display:none;
+			}
+		}
+		.hl {
+			border-left: 2px solid rgb(233, 233, 233);
+			height: 1px;
+			text-align: center;
+
+		}
+
+		.ft {
+			border-bottom: 2px solid rgb(233, 233, 233);
+		}
+
+		a {
+			color: #000;
+		}
+	</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
