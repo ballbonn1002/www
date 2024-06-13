@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
 
-</head>
-<body>
-	<%-- <jsp:include page="/pages-front/_layout/header.jsp"></jsp:include> --%>
 	<div class="parallax show-on-scroll">
 		<div align="center" class="logoservices" data-aos="fade-up"
 			data-aos-duration="800">
@@ -36,7 +29,7 @@
 				<div class="row">
 					<div class="col-lg-6 col-sm-12 imgservices2" data-aos="fade-up"
 						data-aos-duration="800">
-						<img src="img/services/cubesoftimg01.jpg" alt="Responsive image"
+						<img src="pages-front/img/services/cubesoftimg01.jpg" alt="Responsive image"
 							style="width: 100%; height: 100%; object-fit: cover;">
 					</div>
 					<div class="col-lg-6 col-sm-12" data-aos="fade-up"
@@ -44,7 +37,7 @@
 						<br> <br>
 						<p align="center">
 							<img height=105px width=125px href="#service"
-								src="img/services/icon1.png" alt="Responsive image"><br>
+								src="pages-front/img/services/icon1.png" alt="Responsive image"><br>
 
 							<b> <font color="#BD2125"><br>Outsource IT Staff
 									Service</font>
@@ -59,7 +52,7 @@
 					</div>
 					<div class="col-lg-6 col-sm-12 imgservices" data-aos="fade-up"
 						data-aos-duration="800">
-						<img src="img/services/cubesoftimg01.jpg" alt="Responsive image"
+						<img src="pages-front/img/services/cubesoftimg01.jpg" alt="Responsive image"
 							style="width: 100%; height: 100%; object-fit: cover;">
 					</div>
 				</div>
@@ -68,7 +61,7 @@
 				<div class="row">
 					<div class="col-lg-6 col-sm-12" data-aos="fade-up"
 						data-aos-duration="800">
-						<img src="img/services/cubesoftimg04.jpg" alt="Responsive image"
+						<img src="pages-front/img/services/cubesoftimg04.jpg" alt="Responsive image"
 							style="width: 100%; height: 100%; object-fit: cover;">
 					</div>
 					<div class="col-lg-6 col-sm-12" data-aos="fade-up"
@@ -76,7 +69,7 @@
 						<br>
 						<p align="center">
 							<img height=105px width=105px href="#service"
-								src="img/services/icon2.png" alt="Responsive image"><br>
+								src="pages-front/img/services/icon2.png" alt="Responsive image"><br>
 							<b> <font color="#BD2125"><br>Software
 									Development</font>
 							</b>
@@ -93,7 +86,7 @@
 				<div class="row">
 					<div class="col-lg-6 col-sm-12 imgservices2" data-aos="fade-up"
 						data-aos-duration="800">
-						<img src="img/services/cubesoftimg03.jpg" alt="Responsive image"
+						<img src="pages-front/img/services/cubesoftimg03.jpg" alt="Responsive image"
 							style="width: 100%; height: 100%; object-fit: cover;">
 					</div>
 					<div class="col-lg-6 col-sm-12" data-aos="fade-up"
@@ -101,7 +94,7 @@
 						<br>
 						<p align="center">
 							<img height=95px width=115px href="#service"
-								src="img/services/icon3.png" alt="Responsive image"><br>
+								src="pages-front/img/services/icon3.png" alt="Responsive image"><br>
 							<b> <font color="#BD2125"><br>Website Development</font>
 							</b>
 						</p>
@@ -113,7 +106,7 @@
 					</div>
 					<div class="col-lg-6 col-sm-12 imgservices" data-aos="fade-up"
 						data-aos-duration="800">
-						<img src="img/services/cubesoftimg03.jpg" alt="Responsive image"
+						<img src="pages-front/img/services/cubesoftimg03.jpg" alt="Responsive image"
 							style="width: 100%; height: 100%; object-fit: cover;">
 					</div>
 				</div>
@@ -121,7 +114,7 @@
 				<div class="row">
 					<div class="col-lg-6 col-sm-12" data-aos="fade-up"
 						data-aos-duration="800">
-						<img src="img/services/cubesoftimg02.jpg" alt="Responsive image"
+						<img src="pages-front/img/services/cubesoftimg02.jpg" alt="Responsive image"
 							style="width: 100%; height: 100%; object-fit: cover;">
 					</div>
 					<div class="col-lg-6 col-sm-12" data-aos="fade-up"
@@ -129,7 +122,7 @@
 						<br>
 						<p align="center">
 							<img height=105px width=95px href="#service"
-								src="img/services/icon4.png" alt="Responsive image"><br>
+								src="pages-front/img/services/icon4.png" alt="Responsive image"><br>
 							<b> <font color="#BD2125"><br>Graphic Design</font>
 							</b>
 						</p>
@@ -145,6 +138,3 @@
 		</div>
 		<br><br><br>
 	</div>
-	<%-- <jsp:include page="/pages-front/_layout/footer.jsp"></jsp:include> --%>
-</body>
-</html>
