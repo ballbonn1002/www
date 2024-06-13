@@ -9,6 +9,13 @@
 			<result-type name="tiles"
 				class="org.apache.struts2.views.tiles.TilesResult" />
 		</result-types>
+		
+		<action name="services"
+			class="com.cubesofttech.action.ServicesAction" method="init">
+			<result name="success" type="tiles">services</result>
+			<result name="error">/pages-front/index.jsp</result>
+		</action>
+		
 		<action name="blog"
 			class="com.cubesofttech.action.BlogAction" method="init">
 			<result name="success">/pages-front/index.jsp</result>

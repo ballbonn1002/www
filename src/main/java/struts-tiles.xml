@@ -20,6 +20,11 @@
 			value="/pages-front/_layout/footer.jsp" />
 	</definition>
 	
+	<definition name="services" extends="frontBaseLayout">
+		<put-attribute name="title" value="Services" />
+		<put-attribute name="body"
+			value="/pages-front/services/services.jsp" />
+	</definition>
 		<!-- ARTICLE -->
 
 	<definition name="blog" extends="frontBaseLayout">
