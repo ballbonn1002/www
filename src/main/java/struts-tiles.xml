@@ -20,11 +20,29 @@
 			value="/pages-front/_layout/footer.jsp" />
 	</definition>
 	
+	<definition name="home" extends="frontBaseLayout">
+		<put-attribute name="title" value="Home" />
+		<put-attribute name="body"
+			value="/pages-front/home/home.jsp" />
+	</definition>
+	
 	<definition name="services" extends="frontBaseLayout">
 		<put-attribute name="title" value="Services" />
 		<put-attribute name="body"
 			value="/pages-front/services/services.jsp" />
 	</definition>
+	
+	<definition name="careers" extends="frontBaseLayout">
+		<put-attribute name="title" value="Careers" />
+		<put-attribute name="body"
+			value="/pages-front/careers/careers.jsp" />
+	</definition>
+	<definition name="jobDetail" extends="frontBaseLayout">
+		<put-attribute name="title" value="Careers"/>
+		<put-attribute name="body"
+			value="/pages-front/careers/detail.jsp" />
+	</definition>
+	
 		<!-- ARTICLE -->
 
 	<definition name="blog" extends="frontBaseLayout">
@@ -36,6 +54,12 @@
 		<put-attribute name="title" value="Blog Detail" />
 		<put-attribute name="body"
 			value="/pages-front/blog/blog_detail.jsp" />
+	</definition>
+	
+	<definition name="contacts" extends="frontBaseLayout">
+		<put-attribute name="title" value="Contacts" />
+		<put-attribute name="body"
+			value="/pages-front/contacts/contacts.jsp" />
 	</definition>
 
 </tiles-definitions>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+
 <!-- Main Header -->
 <div class="header" style="padding-bottom: 0px !important">
 	<div class="progress-container"></div>
@@ -9,7 +9,7 @@
 		<nav class="navbar  navbar-expand-lg navbar-light bg-light fixed-top"
 			style="padding-bottom: 0px !important; margin-bottom: 0px !important">
 			<!-- Navbar brand -->
-			<a href="index.jsp"> <img width=175px
+			<a href="home"> <img width=175px
 				src="pages-front/img/logo/cubesofttech.png" alt="Responsive image">
 			</a>
 			<!-- Collapse button -->
@@ -38,7 +38,7 @@
 
 				<ul class="navbar-nav mr-auto ">
 					<li class=""><b><a class="nav-link " id="navbar-hover"
-							href="index.jsp"
+							href="home"
 							style="padding-left: 30px; padding-right: 30px; color: black">Home</a></b>
 					</li>
 					<!---เมนู out team กับ intership
@@ -81,17 +81,17 @@
 							style="padding-left: 30px; padding-right: 30px; color: black">Services</a></b>
 					</li>
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="#"
+							href="careers"
 							style="padding-left: 30px; padding-right: 30px; color: black">Careers</a></b>
 					</li>
 
 					<!---เมนู article   -->
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="#"
+							href="blog"
 							style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b>
 					</li>
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="#"
+							href="contacts"
 							style="padding-left: 30px; padding-right: 30px; color: black">Contacts</a></b>
 					</li>
 
@@ -103,6 +103,11 @@
 	</div>
 </div>
 <!--/.Navbar-->
+<button class="btn btn-sm" onclick="topFunction()" id="myBtn"
+	title="Go to top">
+	<i class="fa fa-arrow-up" style="font-size: 26px;"></i>
+</button>
+<!-- endmenu -->
 
 <script type="text/javascript">
 	// Used to toggle the menu on small screens when clicking on the menu button
