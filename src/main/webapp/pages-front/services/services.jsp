@@ -111,11 +111,13 @@
 						<b> <font color="#BD2125"><br>Software Development</font>
 						</b>
 					</p>
-					<p align="center">Web / Mobile Application</p>
-					<p align="center">Client/Server Application</p>
-					<p align="center">System Integration Service</p>
-					<p align="center">Middle Tier Development</p>
-					<p align="center">Project Management Service</p>
+					<p align="center">Customer-Focused Software Development Services</p>
+					<p align="center">Custom Web and Mobile Applications</p>
+					<p align="center">Cloud-Based Solutions</p>
+					<p align="center">Data Analytics and Business Intelligence</p>
+					<p align="center">Artificial Intelligence (AI) and Machine Learning (ML) Applications</p>
+					<p align="center">API Development and Integration</p>
+					<p align="center">Agile Project Management</p>
 					<br> <br>
 				</div>
 			</div>
