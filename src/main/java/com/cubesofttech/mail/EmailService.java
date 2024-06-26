@@ -1,6 +1,7 @@
 package com.cubesofttech.mail;
 
 import java.math.BigDecimal;
+
 import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
- 
+
+@Service("emailService")
 public class EmailService {
     
 	@Autowired
     private JavaMailSender mailSender;
     
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
 	Logger log = Logger.getLogger(getClass());
 	
     /**
@@ -30,7 +30,7 @@ public class EmailService {
     {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("test@cubesofttech.com");
-        message.setTo("ohoh2555@gmail.com");
+        message.setTo("contact@gmail.com");
         message.setSubject("test1111test");
         message.setText("user = "+user+" leaveType = "+leaveType+" description = "+description+" halfDay = "+ halfDay+" from = "+from+" to ="+ endDate+" noDay = "+noDay);
         mailSender.send(message);
@@ -40,16 +40,14 @@ public class EmailService {
     
     public void sendEmailJob(String name, String email, String tel, String position) {
     	try {
-	    /*	String name = request.getParameter("contactName");
-	    	String email = request.getParameter("contactEmail");
-	    	String tel = request.getParameter("contactTel");
-	    	String position = request.getParameter("contactPosition");*/
 	    	
 			SimpleMailMessage message = new SimpleMailMessage();
-	    	message.setFrom(email);
-			message.setTo("siroratchanchom@gmail.com");
+	    	message.setFrom("contact@cubesofttech.com");
+			message.setTo("contact@cubesofttech.com");
 			message.setSubject("Apply : " + position);
 			message.setText("Cube SoftTech \n Position : "+position+ "\n Name : "+name);
+			
+			log.debug("message" + message);
 			mailSender.send(message);
 			log.debug("success");
     	} catch (Exception e) {

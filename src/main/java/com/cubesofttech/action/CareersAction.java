@@ -22,9 +22,10 @@ public class CareersAction extends ActionSupport {
 	
 	@Autowired
 	private JobDAO jobDAO;
-	/*
+	
+	
 	@Autowired
-	private EmailService emailService;*/
+	private EmailService emailService;
 	
 	public String init() {
 		try {			
@@ -59,7 +60,15 @@ public class CareersAction extends ActionSupport {
 	    	String email = request.getParameter("contactEmail");
 	    	String tel = request.getParameter("contactTel");
 	    	String position = request.getParameter("contactPosition");
-			//emailService.sendEmailJob(name, email,tel, position);
+	    	
+	    	log.debug("email service is initiated : " +  emailService);	
+	    	log.debug("name : " + name);
+	    	log.debug("email : " + email);
+	    	log.debug("tel : " + tel);
+	    	log.debug("position : " + position);
+	    	
+	    	
+	    	emailService.sendEmailJob(name, email,tel, position);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
