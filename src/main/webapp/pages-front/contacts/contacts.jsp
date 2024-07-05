@@ -25,7 +25,7 @@
 			consultants | Custom Software Solutions</font> <br> <br>
 	</div>
 
-	<form action="sendEmailContact" method="post">
+	<form action="#" method="post">
 		<div class="contactbg">
 			<div class="row">
 				<div class="col-lg-6 col-xs-12" data-aos="zoom-in"
@@ -84,7 +84,7 @@
 					</div>
 					<div class="form-group">
 						<textarea type="comment" class="form-control" rows="3"
-							placeholder="Message" name="contactMessage"></textarea>
+							placeholder="Message" name="contactMent"></textarea>
 					</div>
 					<div class="form-group text-right">
 						<button type="submit" class="btn btn-danger" value="submit">Send</button>
