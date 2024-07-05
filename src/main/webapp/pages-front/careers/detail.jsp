@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <style>
 .parallax {
 	background-image: url("pages-front/img/job/bg.jpg");
@@ -9,13 +10,14 @@
 	<div class="detail" data-aos="zoom-in" data-aos-duration="800">
 		<c:forEach var="job" items="${job}">
 			<h4>
-				<font color="#BD2125">Job Ref : ${job.name}</font>
-				<h4>
-					<br>
-					<h2>
-						<font color="#BD2125"><b>${job.position}</b></font>
-					</h2>
-					${job.description}
+				<c:if test="${job.name != null}"><font color="#BD2125">Job Ref : ${job.name}</font></c:if>
+			</h4>
+			
+				<br>
+				<h2>
+					<font color="#BD2125"><b>${job.position}</b></font>
+				</h2>
+				${job.description}				
 		</c:forEach>
 		<div align="right">
 			<br> <br>
@@ -45,19 +47,19 @@
 		            <span aria-hidden="true">&times;</span>
 		        </button>
 			</div>
-			<form action="sendEmailJob" enctype="multipart/form-data" name="frmAdd" method="post">
+			<form action="sendEmailJob" enctype="multipart/form-data" name="frmAdd" id="frmAdd" autocomplete="off" method="POST">
 				<div class="modal-body">
 					<div class="form-group">
-						Name:<input type="text" class="form-control" placeholder="Enter Name" name ="contactName"><br>
-						E-mail:<input type="email" class="form-control" placeholder="Enter E-mail" name = "contactEmail"><br>
-						Telephone:<input type="text" class="form-control" placeholder="Enter Telephone" name = "contactTel"><br>
-						Position:<input type="text" class="form-control" placeholder="Enter Position" value="Java Programmer" name="contactPosition" disable><br>
+						Name:<input type="text" class="form-control" placeholder="Enter Name" name="contactName"><br>
+						E-mail:<input type="email" class="form-control" placeholder="Enter E-mail" name="contactEmail"><br>
+						Telephone:<input type="text" class="form-control" placeholder="Enter Telephone" name="contactTel"><br>
+						Position:<input type="text" class="form-control" placeholder="Enter Position" value="${job.position}" name="contactPosition" readonly><br>
 						Attach Resume: <div class="custom-file">
-							<input type="file" class="custom-file-input" name="file" id="file" value="Select" size="37" onchange="dotfile.value=this.value; return true;">
+							<input type="file" class="custom-file-input" name="contactFile" id="file" value="Select" size="37">
 							<label class="custom-file-label" for="customFile">Choose file</label>
 						</div><br>			
 						Message:<textarea rows="4" cols="50" class="form-control" name = "contactMessage">
-							</textarea>						
+							</textarea>	
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -76,4 +78,11 @@
 		var fileName = $(this).val().split("\\").pop();
 		$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 	});
+	var response = '${response}';
+	console.log(response);
+	if(response == 1){
+		$(".detail").empty();
+		$(".detail").html(" <center><p>Sending email ...</p><br><br>");
+	}
+	
 </script>

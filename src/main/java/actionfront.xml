@@ -56,6 +56,11 @@
 			<result name="success" type="tiles">contacts</result>
 			<result name="error">/page-front/index.jsp</result>
 		</action>
+		<action name="sendEmailContact"
+			class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
+			<result name="success" type="tiles">contacts</result>
+			<result name="error">/pages-front/index.jsp</result>
+		</action>
 		</package>
 
 </struts>
