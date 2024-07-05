@@ -23,16 +23,69 @@ public class CareersAction extends ActionSupport {
 	@Autowired
 	private JobDAO jobDAO;
 	
-	
 	@Autowired
 	private EmailService emailService;
 	
+	private String contactName;
+	private String contactEmail;
+	private String contactTel;
+	private String contactPosition;
+	private String contactMessage;
+	private String contactFile;
+		
+	public String getContactName() {
+		return contactName;
+	}
+
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
+	}
+
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
+	}
+
+	public String getContactTel() {
+		return contactTel;
+	}
+
+	public void setContactTel(String contactTel) {
+		this.contactTel = contactTel;
+	}
+
+	public String getContactPosition() {
+		return contactPosition;
+	}
+
+	public void setContactPosition(String contactPosition) {
+		this.contactPosition = contactPosition;
+	}
+
+	public String getContactMessage() {
+		return contactMessage;
+	}
+
+	public void setContactMessage(String contactMessage) {
+		this.contactMessage = contactMessage;
+	}
+
+	public String getContactFile() {
+		return contactFile;
+	}
+
+	public void setContactFile(String contactFile) {
+		this.contactFile = contactFile;
+	}
+
 	public String init() {
 		try {			
 			List<Job> jobList = jobDAO.findAll();
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
-			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,6 +100,7 @@ public class CareersAction extends ActionSupport {
 			Job job = jobDAO.findById(Integer.parseInt(job_id));
 			log.debug(job.getPosition());
 			request.setAttribute("job", job);
+			request.setAttribute("jobId", job_id);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,22 +110,20 @@ public class CareersAction extends ActionSupport {
 	
 	public String sendEmailJob() {
 		try {
-			String name = request.getParameter("contactName");
-	    	String email = request.getParameter("contactEmail");
-	    	String tel = request.getParameter("contactTel");
-	    	String position = request.getParameter("contactPosition");
-	    	
 	    	log.debug("email service is initiated : " +  emailService);	
-	    	log.debug("name : " + name);
-	    	log.debug("email : " + email);
-	    	log.debug("tel : " + tel);
-	    	log.debug("position : " + position);
+	    	log.debug("name : " + contactName);
+	    	log.debug("email : " + contactEmail);
+	    	log.debug("tel : " + contactTel);
+	    	log.debug("position : " + contactPosition);
+	    	log.debug("message : " + contactMessage);
+	    	log.debug("file : " + contactFile);
 	    	
-	    	
-	    	emailService.sendEmailJob(name, email,tel, position);
-			return SUCCESS;
+	    	emailService.sendEmailJob(contactName, contactEmail, contactTel, contactPosition, contactMessage, contactFile);
+	    	request.setAttribute("response", "1");
+	    	return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("response", "0");
 			return ERROR;
 		}
 	}
