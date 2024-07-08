@@ -55,6 +55,7 @@
 						Attach Resume: <div class="custom-file">
 							<input type="file" class="custom-file-input" name="contactFile" id="file" value="Select" size="37">
 							<label class="custom-file-label" for="customFile">Choose file</label>
+							<input type="text" class="custom-file-label" id="contactFileName" name="contactFileName" hidden>
 						</div><br>			
 						Message:<textarea rows="4" cols="50" class="form-control" name = "contactMessage">
 							</textarea>						
@@ -75,6 +76,7 @@
 	$(".custom-file-input").on("change", function() {
 		var fileName = $(this).val().split("\\").pop();
 		$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+		$("#contactFileName").val(fileName);
 	});
 	
 	var response = '${response}';

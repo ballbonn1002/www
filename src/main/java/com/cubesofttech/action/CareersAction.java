@@ -1,7 +1,9 @@
 package com.cubesofttech.action;
 
+import java.io.File;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,8 +12,8 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.JobDAO;
-import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.Job;
+import com.cubesofttech.util.FileUtil;
 import com.cubesofttech.mail.EmailService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -31,7 +33,8 @@ public class CareersAction extends ActionSupport {
 	private String contactTel;
 	private String contactPosition;
 	private String contactMessage;
-	private String contactFile;
+	private File contactFile; 
+	private String contactFileName; 
 		
 	public String getContactName() {
 		return contactName;
@@ -72,13 +75,21 @@ public class CareersAction extends ActionSupport {
 	public void setContactMessage(String contactMessage) {
 		this.contactMessage = contactMessage;
 	}
-
-	public String getContactFile() {
+	
+	public File getContactFile() {
 		return contactFile;
 	}
 
-	public void setContactFile(String contactFile) {
+	public void setContactFile(File contactFile) {
 		this.contactFile = contactFile;
+	}
+	
+	public String getContactFileName() {
+		return contactFileName;
+	}
+
+	public void setContactFileName(String contactFileName) {
+		this.contactFileName = contactFileName;
 	}
 
 	public String init() {
@@ -110,7 +121,15 @@ public class CareersAction extends ActionSupport {
 	
 	public String sendEmailJob() {
 		try {
-	    	log.debug("email service is initiated : " +  emailService);	
+			int maxId = fileuploadDAO.getMaxId() + 1;
+			log.debug(maxId);
+			ServletContext context = request.getServletContext();
+			String fileServerPath = context.getRealPath("/");
+			log.debug(fileServerPath);
+			if (contactFile != null) {
+				FileUtil.upload(contactFile, fileServerPath, "upload/email/" + contactFileName);
+			}
+			log.debug("email service is initiated : " +  emailService);	
 	    	log.debug("name : " + contactName);
 	    	log.debug("email : " + contactEmail);
 	    	log.debug("tel : " + contactTel);
@@ -118,7 +137,7 @@ public class CareersAction extends ActionSupport {
 	    	log.debug("message : " + contactMessage);
 	    	log.debug("file : " + contactFile);
 	    	
-	    	emailService.sendEmailJob(contactName, contactEmail, contactTel, contactPosition, contactMessage, contactFile);
+	    	emailService.sendEmailJob(contactName, contactEmail, contactTel, contactPosition, contactMessage, contactFile, contactFileName);
 	    	request.setAttribute("response", "1");
 	    	return SUCCESS;
 		} catch (Exception e) {

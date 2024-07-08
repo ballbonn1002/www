@@ -1,5 +1,6 @@
 package com.cubesofttech.mail;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,12 +45,13 @@ public class EmailService {
         Log.debug(message);
     }
     
-    public void sendEmailJob(String name, String email, String tel, String position, String msg, String file) {
+    public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) {
     	try {
-    		Path path = Paths.get("C:/Users/Siro/Downloads/img_test.jpg");
+    		HttpServletRequest request = ServletActionContext.getRequest();
+    		ServletContext context = request.getServletContext();
+    		String fileServerPath = context.getRealPath("/");
+    		Path path = Paths.get(fileServerPath+"/upload/email/"+fileName);
     		log.debug(path);
-    		String fileName = (path.getFileName()).toString();
-    		log.debug(fileName);
     		byte[] content = Files.readAllBytes(path);
     		log.debug(content);
     		MimeMessage message = mailSender.createMimeMessage();
