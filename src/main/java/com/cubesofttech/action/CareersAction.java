@@ -121,8 +121,6 @@ public class CareersAction extends ActionSupport {
 	
 	public String sendEmailJob() {
 		try {
-			int maxId = fileuploadDAO.getMaxId() + 1;
-			log.debug(maxId);
 			ServletContext context = request.getServletContext();
 			String fileServerPath = context.getRealPath("/");
 			log.debug(fileServerPath);
