@@ -664,8 +664,7 @@
 	
 	function jobDetail(id){
 		console.log(id);
-		window.location.href = "jobDetail.action?id="+id;
-
+		window.location.href = "jobDetail?id="+id;
 	}
 </script>
 <script>
