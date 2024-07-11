@@ -15,9 +15,9 @@
       /WEB-INF/classes/struts-tiles.xml
    </param-value>
 	</context-param>
-	<listener>
-		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
-	</listener>
+	
+
+		  
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
 		<filter-class>com.cubesofttech.util.EncodingFilter</filter-class>
@@ -42,6 +42,9 @@
 		<filter-name>CORSFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	
+	
 	<filter>
 		<filter-name>hibernateFilter</filter-name>
 		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
@@ -54,44 +57,21 @@
 		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
 	<filter>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-		<init-param>
-			<param-name>confReloadCheckInterval</param-name>
-			<param-value>0</param-value>
-		</init-param>
-		<init-param>
-			<param-name>confPath</param-name>
-			<param-value>/WEB-INF/urlrewrite.xml</param-value>
-		</init-param>
-		<init-param>
-			<param-name>statusPath</param-name>
-			<param-value>/status</param-value>
-		</init-param>
-		<init-param>
-			<param-name>statusEnabled</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>logLevel</param-name>
-			<param-value>DEBUG</param-value>
-		</init-param>
-		<init-param>
-			<param-name>statusEnabled</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>statusEnabledOnHosts</param-name>
-			<param-value>localhost</param-value>
-		</init-param>
+    <filter-name>UrlRewriteFilter</filter-name>
+    <init-param>
+            <param-name>confReloadCheckInterval</param-name>
+            <param-value>0</param-value>
+        </init-param>
+    	<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
+	    <filter-name>UrlRewriteFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	   
 	</filter-mapping>
+
 	<filter>
 		<filter-name>struts2</filter-name>
 		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
@@ -99,7 +79,10 @@
 	<filter-mapping>
 		<filter-name>struts2</filter-name>
 		<url-pattern>/*</url-pattern>
+		 <dispatcher>REQUEST</dispatcher>
+	    <dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
+	
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -116,6 +99,10 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<listener>
+		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+	</listener>
+	
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -131,6 +118,10 @@
 		<servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+
+	
+	
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
@@ -141,6 +132,6 @@
 		</jsp-property-group>
 	</jsp-config>
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

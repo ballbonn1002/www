@@ -10,7 +10,7 @@
 -->
 <urlrewrite>
 
-    <rule>
+   <rule>
         <note>
             The rule means that requests to /test/status/ will be redirected to /rewrite-status
             the url will be rewritten.
@@ -18,43 +18,82 @@
         <from>/test/status/</from>
         <to type="redirect">%{context-path}/rewrite-status</to>
     </rule>
-	
-	<rule match-type="regex">
-		<from>^/careers/test$</from>
-		<to>/careers</to>
+
+
+<!--
+
+    Forward old PHP to New www page
+
+-->
+
+	<rule>
+		<from>^/index.php</from>
+		<to type="redirect">/</to>
 	</rule>
-	<rule match-type="regex">
-		<from>^/careers/java-programmer</from>
+		
+	<rule>
+		<from>^/job.php</from>
+		<to type="redirect">/careers</to>
+	</rule>
+	
+	<rule>
+		<from>^/articleAll.php</from>
+		<to type="redirect">/blog</to>
+	</rule>
+	
+	
+	<rule>
+		<from>^/(.*).php</from>
+		<to type="redirect">/$1</to>
+	</rule>
+
+	
+	<rule>
+		<from>^/detail.php(.*)</from>
+		<to type="redirect">/careers</to>
+	</rule>
+	
+	<rule>
+		<from>^/job/(.*)$</from>
+		<to>/jobDetail?id=$1</to>
+	</rule>
+
+<!--
+
+    END PHP RULE
+
+-->
+	
+	<rule>
+		<from>^/careers-java-programmer$</from>
 		<to>/jobDetail?id=109</to>
 	</rule>
-	<rule match-type="regex">
-		<from>^/careers/software-tester</from>
+	
+	<rule>
+		<from>^/careers/software-tester$</from>
 		<to>/jobDetail?id=115</to>
 	</rule>
-	<rule match-type="regex">
-		<from>^/careers/front-end-developer</from>
+	<rule>
+		<from>^/careers/front-end-developer$</from>
 		<to>/jobDetail?id=122</to>
 	</rule>
-	<rule match-type="regex">
-		<from>^/careers/business-analyst</from>
+	<rule>
+		<from>^/careers/business-analyst$</from>
 		<to>/jobDetail?id=107</to>
 	</rule>
-	<rule match-type="regex">
-		<from>^/careers/system-analyst</from>
+	<rule>
+		<from>^/careers/system-analyst$</from>
 		<to>/jobDetail?id=112</to>
 	</rule>
-	<rule match-type="regex">
+	<rule>
 		<from>^/careers/mobile-developer</from>
 		<to>/jobDetail?id=124</to>
 	</rule>
-	<rule match-type="regex">
+	<rule>
 		<from>^/careers/.net-programmer</from>
 		<to>/jobDetail?id=110</to>
 	</rule>
-	<rule match-type="regex">
-		<from>contacts</from>
-		<to>jobDetail?id=123</to>
-	</rule>
+
 
     <outbound-rule>
         <note>
