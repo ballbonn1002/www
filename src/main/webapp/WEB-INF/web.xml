@@ -17,6 +17,9 @@
 	</context-param>
 	
 
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 		  
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
@@ -57,6 +60,21 @@
 		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	
+	<filter>
+		<filter-name>RewriteFilter</filter-name>
+		<filter-class>com.cubesofttech.util.RewriteFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>RewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 
 	<filter>
     <filter-name>UrlRewriteFilter</filter-name>
@@ -104,9 +122,6 @@
 	</listener>
 	
 
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
 	<listener>
 		<listener-class>org.apache.struts2.dispatcher.ng.listener.StrutsListener</listener-class>
 	</listener>

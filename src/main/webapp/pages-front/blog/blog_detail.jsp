@@ -335,7 +335,7 @@ hr.detailnew {
 						<br>
 						<center>
 							<c:if test="${!empty path}">
-								<img src='${path}' width='70%' height='70%'
+								<img src='${constant.imgContext}${path}' width='70%' height='70%'
 									style='object-fit: cover;'>
 							</c:if>
 						</center>

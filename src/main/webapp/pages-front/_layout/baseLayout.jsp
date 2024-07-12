@@ -11,9 +11,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title><tiles:insertAttribute name="title" ignore="true" /></title>
+<title><tiles:insertAttribute name="title" ignore="true" /> ${title}</title>
 <meta name="description"
-	content="Cube SoftTech is an innovative, high-quality software development company. We are a professional company, focused on IT consulting, web application development &amp; integration. Our services cover every aspect of web / mobile development, from start to finish. From one off projects to a fully outsourced development team., Java Outsourcing, IT Staff Outsourcing, IT Outsource, Staff Outsourcing, IT Staffing solutions, Outsource IT Staff, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง">
+	content="${meta}">
 <meta name="keywords"
 	content="Java Outsourcing, IT Staff Outsourcing, Outsource IT Staff, IT Outsource, Staff Outsourcing, IT Staffing solutions, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง, IT Solution, IT Consulting, Software Development, Software Solutions, Mobile Software, Mobile Software Development Company, พัฒนาโปรแกรม, พัฒนาซอฟต์แวร์, พัฒนาโมบายล์แอพพลิเคชั่น, โมบายด์แอพพลิเคชั่น, ออกแบบและวิเคราะห์ระบบ, Custom Software solutions, IT Staff Outsourcing services, IT Services, Web Development, JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
 <meta name="classification" content="Computers and Internet">
