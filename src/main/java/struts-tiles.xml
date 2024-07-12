@@ -21,7 +21,7 @@
 	</definition>
 	
 	<definition name="home" extends="frontBaseLayout">
-		<put-attribute name="title" value="Home" />
+		<put-attribute name="title" value="CubeSoftTech : Professional IT People, Innovative IT Solutions, Custom Software Solutions, Mobile Software Development" />
 		<put-attribute name="body"
 			value="/pages-front/home/home.jsp" />
 	</definition>

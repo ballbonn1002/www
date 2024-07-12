@@ -352,7 +352,7 @@ hr.detailnew {
 								<left>
 								<div class="articleblockbg3">
 									<a class="" href="blog_detail?articleId=${relatedBlog.related_article_id}"
-										role="button"> <img src="${relatedBlog.path}" width="100%"
+										role="button"> <img src="${constant.imgContext}${relatedBlog.path}" width="100%"
 										height="180px" style="object-fit: cover;"></a>
 								</div>
 								<div class="ardetail">

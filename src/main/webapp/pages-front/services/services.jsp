@@ -21,18 +21,14 @@
 		padding-top: 5%;
 		padding-bottom: 15px;
 	}
-	.parallax {
-		display: none;
-	}
+
 }
 
 @media screen and (min-width: 870px) {
 	.imgservices2 {
 		display: none;
 	}
-	.parallax2 {
-		display: none;
-	}
+
 }
 </style>
 

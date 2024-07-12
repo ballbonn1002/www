@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title><tiles:insertAttribute name="title" ignore="true" /> ${title}</title>
+<title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
 <meta name="description"
 	content="${meta}">
 <meta name="keywords"
@@ -104,6 +104,8 @@ body, html {
 	border-color: white white #BD2125 !important;
 	border-bottom: 4px solid;
 }
+
+
 
 .parallax {
 	/* Set a specific height */
@@ -305,18 +307,14 @@ p {
 		padding-top: 5%;
 		padding-bottom: 15px;
 	}
-	.parallax {
-		display: none;
-	}
+
 }
 
 @media screen and (min-width: 870px) {
 	.imgservices2 {
-		display: none;
+		
 	}
-	.parallax2 {
-		display: none;
-	}
+
 }
 
 .hl {
@@ -563,6 +561,8 @@ a {
 	position: absolute;
 	left: 0;
 }
+
+
 </style>
 </head>
 <body>

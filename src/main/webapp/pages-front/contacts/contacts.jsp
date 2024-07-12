@@ -7,9 +7,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en-th">
 <style type="text/css">
+
 .parallax {
 	/* The image used */
 	background-image: url("pages-front/img/contact/bg2.jpg");
+	            /* Set a specific height */
+            min-height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
 }
 
 </style>

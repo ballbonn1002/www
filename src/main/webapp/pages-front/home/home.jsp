@@ -29,18 +29,14 @@
 	.customeron {
 		display: none;
 	}
-	.parallax {
-		display: none;
-	}
+
 }
 
 @media screen and (min-width: 870px) {
 	.customeron2 {
 		display: none;
 	}
-	.parallax2 {
-		display: none;
-	}
+
 }
 </style>
 </head>
