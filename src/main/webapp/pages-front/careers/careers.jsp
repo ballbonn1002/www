@@ -665,6 +665,12 @@
 	function jobDetail(id){
 		console.log(id);
 		window.location.href = "jobDetail?id="+id;
+		
+		// <c:url value="jobDetail?id=109" />
+		// <c:url value="job" />
+		//
+		
+		
 	}
 </script>
 <script>

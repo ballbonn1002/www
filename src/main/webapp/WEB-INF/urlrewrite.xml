@@ -57,6 +57,11 @@
 		<from>^/job/(.*)$</from>
 		<to>/jobDetail?id=$1</to>
 	</rule>
+	
+	<rule>
+		<from>^/roundcube$</from>
+		<to>/ex_link/roundcube.jsp</to>
+	</rule>
 
 <!--
 
@@ -107,7 +112,15 @@
         <from>/rewrite-status</from>
         <to>/test/status/</to>
     </outbound-rule>
-
+	<outbound-rule>
+        <from>^/jobDetail?id=109$</from>
+        <to>/careers-java-programmer</to>
+    </outbound-rule>
+    
+    <outbound-rule>
+        <from>^/job$</from>
+        <to>/careers</to>
+    </outbound-rule>
 
     <!--
 

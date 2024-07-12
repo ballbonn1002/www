@@ -17,6 +17,7 @@ import com.cubesofttech.dao.TagArDAO;
 import com.cubesofttech.model.ArticleRelated;
 import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.FileUpload;
+import com.cubesofttech.system.Constant;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BlogAction extends ActionSupport {
@@ -29,6 +30,9 @@ public class BlogAction extends ActionSupport {
 	public static final String USERID = "userId";
 	public static final String ARTICLEID = "articleId";
 	public static final Integer MAXLATESTBLOG = 10;
+	
+	@Autowired
+	private Constant constant;
 	
 	@Autowired
 	private BlogDAO blogDAO;
@@ -191,6 +195,8 @@ public class BlogAction extends ActionSupport {
 				request.setAttribute("newBlog", blogList.get(0));
 			}
 			
+			request.setAttribute("constant", constant);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -222,6 +228,7 @@ public class BlogAction extends ActionSupport {
 			log.debug(blogList);
 //			request.setAttribute("relatedBlogs", blogList);
 			request.setAttribute("latestBlogs", blogList);
+			request.setAttribute("constant", constant);
 			
 			return SUCCESS;
 		} catch (Exception e) {

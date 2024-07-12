@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.JobDAO;
 import com.cubesofttech.model.Job;
+import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.FileUtil;
 import com.cubesofttech.mail.EmailService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,6 +28,10 @@ public class CareersAction extends ActionSupport {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private Constant constant;
+	
 	
 	private String contactName;
 	private String contactEmail;
@@ -97,6 +102,7 @@ public class CareersAction extends ActionSupport {
 			List<Job> jobList = jobDAO.findAll();
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
+			request.setAttribute("constant", constant);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

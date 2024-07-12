@@ -325,7 +325,7 @@ a {
 				<div class="col-lg-6">
 					<div class="articleblockbg3">
 						<a class="" href="blog_detail?articleId=${newBlog.article_id}"
-							role="button"> <img src="${newBlog.path}" width="100%"
+							role="button"> <img src="${constant.imgContext}/${newBlog.path}" width="100%"
 							height="500px"
 							style="object-fit: cover; border-radius: 20px 20px 20px 20px">
 						</a>
@@ -352,7 +352,7 @@ a {
 					<left>
 					<div class='articleblockbg3'>
 						<a href='blog_detail?articleId=${blog.article_id}' role='button'>
-							<img src='${blog.path}' width='100%' height='250px'
+							<img src='${constant.imgContext}${blog.path}' width='100%' height='250px'
 							style='object-fit: cover;'>
 						</a>
 					</div>

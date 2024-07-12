@@ -19,6 +19,7 @@ public class Constant {
     private String googleApiKey;
     private String webPath;
     private static String webContext;
+    private String imgContext;
 
 	public String getGoogleApiKey() {
 		return googleApiKey;
@@ -50,6 +51,14 @@ public class Constant {
 
 	public void setWebContext(String webContext) {
 		Constant.webContext = webContext;
+	}
+
+	public String getImgContext() {
+		return imgContext;
+	}
+
+	public void setImgContext(String imgContext) {
+		this.imgContext = imgContext;
 	}
 
 }
