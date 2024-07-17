@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cubesofttech.dao.ArticleRelatedDAO;
 import com.cubesofttech.dao.BlogDAO;
 import com.cubesofttech.dao.FileUploadDAO;
+import com.cubesofttech.dao.PageUriDAO;
 import com.cubesofttech.dao.TagArDAO;
 import com.cubesofttech.model.ArticleRelated;
 import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.FileUpload;
+import com.cubesofttech.model.PageUri;
 import com.cubesofttech.system.Constant;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -45,6 +47,9 @@ public class BlogAction extends ActionSupport {
 	
 	@Autowired
 	private ArticleRelatedDAO articleRelatedDAO;
+	
+	@Autowired
+	private PageUriDAO pageUriDAO;
 	
 	private Blog blog;
 	private int articleId;
@@ -188,7 +193,7 @@ public class BlogAction extends ActionSupport {
 		List<Blog> blogList = null;
 		try {			
 			blogList = blogDAO.findAll1();
-			log.debug(blogList);
+			//log.debug(blogList);
 			request.setAttribute("blogList", blogList);
 			
 			if(blogList != null && !blogList.isEmpty()) {
@@ -217,22 +222,29 @@ public class BlogAction extends ActionSupport {
 			
 			if(blog != null && !"".equals(blog.getFileId())) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
+				log.debug(blog.getFileId());
 				request.setAttribute("path", file.getPath());
 			}
 			
 			List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
-			log.debug(relatedBlogs);
+			//log.debug(relatedBlogs);
 			request.setAttribute("relatedBlogs", relatedBlogs);
 			
 			List<Blog> blogList = blogDAO.findAll1();
-			log.debug(blogList);
 //			request.setAttribute("relatedBlogs", blogList);
 			request.setAttribute("latestBlogs", blogList);
 			request.setAttribute("constant", constant);
 			
+			String model = "article";
+			PageUri pageUri = pageUriDAO.findByModel(model,String.valueOf(getArticleId()));
+			String title = pageUri.getTitle();
+			request.setAttribute("title", title);
+			String meta = pageUri.getMeta();
+			request.setAttribute("meta", meta);
+			
 			return SUCCESS;
 		} catch (Exception e) {
-			log.error(e);
+			e.printStackTrace();
 			return ERROR;
 		}
 	}

@@ -12,7 +12,9 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.JobDAO;
+import com.cubesofttech.dao.PageUriDAO;
 import com.cubesofttech.model.Job;
+import com.cubesofttech.model.PageUri;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.FileUtil;
 import com.cubesofttech.mail.EmailService;
@@ -32,6 +34,8 @@ public class CareersAction extends ActionSupport {
 	@Autowired
 	private Constant constant;
 	
+	@Autowired
+	private PageUriDAO pageUriDAO;
 	
 	private String contactName;
 	private String contactEmail;
@@ -118,6 +122,13 @@ public class CareersAction extends ActionSupport {
 			log.debug(job.getPosition());
 			request.setAttribute("job", job);
 			request.setAttribute("jobId", job_id);
+			String model = "job";
+			PageUri pageUri = pageUriDAO.findByModel(model, job_id);
+			String title = pageUri.getTitle();
+			request.setAttribute("title", title);
+			String meta = pageUri.getMeta();
+			request.setAttribute("meta", meta);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
