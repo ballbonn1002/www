@@ -40,8 +40,8 @@
 				<br> <br>
 			</div>
 			<!-- Slideshow container (youtube)-->
-			<div class="slideshow-container1">
-				<!-- Full-width slides/quotes -->
+<!-- 			<div class="slideshow-container1">
+				Full-width slides/quotes
 				<div class="mySlides1 videocon">
 					<iframe id="videoId1" class="responsive-iframe" width="1280"
 						height="720"
@@ -71,12 +71,12 @@
 						allowfullscreen></iframe>
 				</div>
 
-				<!-- Next/prev buttons -->
+				Next/prev buttons
 				<font color="#FFFFFF" align="center"> <a class="prev"
 					onclick="pause();plusSlides1(-1);">&#10094;</a> <a class="next"
 					onclick="pause();plusSlides1(1);">&#10095;</a>
 				</font>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
