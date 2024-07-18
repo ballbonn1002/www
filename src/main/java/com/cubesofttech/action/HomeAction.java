@@ -28,13 +28,13 @@ public class HomeAction extends ActionSupport {
 	public String init() {
 		List<Blog> blogList = null;
 		try {			
-			blogList = blogDAO.findAll1();
+			blogList = blogDAO.findAllWithPageUri();
 			request.setAttribute("blogList", blogList);
 			if(blogList != null && !blogList.isEmpty()) {
 				request.setAttribute("newBlog", blogList.get(0));
 			}
 			
-			List<Job> jobList = jobDAO.findAll();
+			List<Job> jobList = jobDAO.findAllWithPageUri();
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			

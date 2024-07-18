@@ -70,36 +70,36 @@
 -->
 	<!-- CAREERS -->
 	<rule>
-		<from>^/careers-java-programmer$</from>
+		<from>^careers/java-programmer$</from>
 		<to>/jobDetail?id=109</to>
 	</rule>
 	
 	<rule>
-		<from>^/careers-software-tester$</from>
+		<from>^careers/software-tester$</from>
 		<to>/jobDetail?id=115</to>
 	</rule>
 	<rule>
-		<from>^/careers-front-end-developer$</from>
+		<from>^careers/front-end-developer$</from>
 		<to>/jobDetail?id=122</to>
 	</rule>
 	<rule>
-		<from>^/careers-business-analyst$</from>
+		<from>^careers/business-analyst$</from>
 		<to>/jobDetail?id=107</to>
 	</rule>
 	<rule>
-		<from>^/careers-system-analyst$</from>
+		<from>^careers/system-analyst$</from>
 		<to>/jobDetail?id=112</to>
 	</rule>
 	<rule>
-		<from>^/careers-mobile-developer$</from>
+		<from>^careers/mobile-developer$</from>
 		<to>/jobDetail?id=124</to>
 	</rule>
 	<rule>
-		<from>^/careers-.net-programmer</from>
+		<from>^careers/.net-programmer</from>
 		<to>/jobDetail?id=110</to>
 	</rule>
 	<rule>
-		<from>^/careers-elt-developer</from>
+		<from>^careers/elt-developer</from>
 		<to>/jobDetail?id=123</to>
 	</rule>
 	
@@ -109,59 +109,59 @@
 		<to>/blog_detail?articleId=94</to>
 	</rule>
 	<rule>
-		<from>^/cube-softtech-annual-health-benefits-of-2000-baht$</from>
+		<from>^blog/cube-softtech-annual-health-benefits-of-2000-baht$</from>
 		<to>/blog_detail?articleId=9</to>
 	</rule>
 	<rule>
-		<from>^/cube-open-position-for-hr-admin-and-it-recruiter$</from>
+		<from>^blog/cube-open-position-for-hr-admin-and-it-recruiter$</from>
 		<to>/blog_detail?articleId=10</to>
 	</rule>
 	<rule>
-		<from>^/what-do-you-get-as-it-outsource-employee-with-cube-softtech$</from>
+		<from>^blog/what-do-you-get-as-it-outsource-employee-with-cube-softtech$</from>
 		<to>/blog_detail?articleId=11</to>
 	</rule>
 	<rule>
-		<from>^/cube-softtech-perk-and-benefits$</from>
+		<from>^blog/cube-softtech-perk-and-benefits$</from>
 		<to>/blog_detail?articleId=12</to>
 	</rule>
 	<rule>
-		<from>^/congratulations-to-5-years-employees$</from>
+		<from>^blog/congratulations-to-5-years-employees$</from>
 		<to>/blog_detail?articleId=13</to>
 	</rule>
 	<rule>
-		<from>^/cube-softtech-back-office-team-at-mo-mo-paradise$</from>
+		<from>^blog/cube-softtech-back-office-team-at-mo-mo-paradise$</from>
 		<to>/blog_detail?articleId=15</to>
 	</rule>
 	<rule>
-		<from>^/back-office-team-christmas-party-2023$</from>
+		<from>^blog/back-office-team-christmas-party-2023$</from>
 		<to>/blog_detail?articleId=16</to>
 	</rule>
 	<rule>
-		<from>^/cube-softtech-volunteer-activities-2023$</from>
+		<from>^blog/cube-softtech-volunteer-activities-2023$</from>
 		<to>/blog_detail?articleId=17</to>
 	</rule>
 	<rule>
-		<from>^/halloween-party-2023$</from>
+		<from>^blog/halloween-party-2023$</from>
 		<to>/blog_detail?articleId=19</to>
 	</rule>
 	<rule>
-		<from>^/cube-softtech-open-for-internships-and-co-op-positions$</from>
+		<from>^blog/cube-softtech-open-for-internships-and-co-op-positions$</from>
 		<to>/blog_detail?articleId=20</to>
 	</rule>
 	<rule>
-		<from>^/what-is-outsource$</from>
+		<from>^blog/what-is-outsource$</from>
 		<to>/blog_detail?articleId=22</to>
 	</rule>
 	<rule>
-		<from>^/what-is-sdlc$</from>
+		<from>^blog/what-is-sdlc$</from>
 		<to>/blog_detail?articleId=23</to>
 	</rule>
 	<rule>
-		<from>^/what-is-web-developer$</from>
+		<from>^blog/what-is-web-developer$</from>
 		<to>/blog_detail?articleId=24</to>
 	</rule>
 	<rule>
-		<from>^/what-is-it-outsourcing$</from>
+		<from>^blog/what-is-it-outsourcing$</from>
 		<to>/blog_detail?articleId=25</to>
 	</rule>
 

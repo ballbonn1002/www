@@ -17,6 +17,7 @@ import com.cubesofttech.model.Job;
 import com.cubesofttech.model.PageUri;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.FileUtil;
+import com.cubesofttech.util.RewriteFilter;
 import com.cubesofttech.mail.EmailService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -103,7 +104,7 @@ public class CareersAction extends ActionSupport {
 
 	public String init() {
 		try {			
-			List<Job> jobList = jobDAO.findAll();
+			List<Job> jobList = jobDAO.findAllWithPageUri();
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("constant", constant);
@@ -122,13 +123,6 @@ public class CareersAction extends ActionSupport {
 			log.debug(job.getPosition());
 			request.setAttribute("job", job);
 			request.setAttribute("jobId", job_id);
-			String model = "job";
-			PageUri pageUri = pageUriDAO.findByModel(model, job_id);
-			String title = pageUri.getTitle();
-			request.setAttribute("title", title);
-			String meta = pageUri.getMeta();
-			request.setAttribute("meta", meta);
-			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

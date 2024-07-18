@@ -68,4 +68,19 @@ public class JobDAOImpl implements JobDAO{
 		return jobList;
 	}
 
+	@Override
+	public List<Job> findAllWithPageUri() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Job> jobList = null;
+		try {
+			String sql = "SELECT job.*, page_uri.page_uri_id FROM job LEFT JOIN page_uri ON job.job_id = page_uri.model_id ORDER BY job.name ASC ";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			jobList = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jobList;
+	}
+
 }

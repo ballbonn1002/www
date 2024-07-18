@@ -74,7 +74,6 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
 			pageUri = pageUriDAO.findById(requestURI);
 			log.debug("pageURI found");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -92,8 +91,8 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
         
     }
     
-    
-    /**
+
+	/**
      * Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
@@ -243,6 +242,5 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
         	return requestURI.toString() + (queryString).toString();
         }
     }
-    
     
 }

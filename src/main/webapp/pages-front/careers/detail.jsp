@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <style>
 .parallax {
-	background-image: url("pages-front/img/job/bg.jpg");
+	background-image: url("../pages-front/img/job/bg.jpg");
 }
 </style>
 <div class="parallax show-on-scroll">
@@ -30,7 +31,7 @@
 		<div align="center">
 			<button type="button" class="btn btn-danger" data-toggle="modal"
 				data-target="#exampleModal">
-				Apply &nbsp <img src="pages-front/img/job/icon2.png" height="30px">
+				Apply &nbsp <img src="../pages-front/img/job/icon2.png" height="30px">
 			</button>
 		</div><br>
 	</div>

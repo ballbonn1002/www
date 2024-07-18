@@ -2,11 +2,11 @@
 
 <style>
 .parallax {
-	background-image: url("pages-front/img/job/bg2.jpg");
+	background-image: url("../pages-front/img/job/bg2.jpg");
 }
 
 .parallax2 {
-	background-image: url("pages-front/img/job/bgsmall.jpg");
+	background-image: url("../pages-front/img/job/bgsmall.jpg");
 }
 </style>
 
@@ -327,7 +327,7 @@
 				</div>
 				<div class="col-md-6">
 					<p align="left">
-						<img width=100% src="pages-front/img/intership/p.png"
+						<img width=100% src="../pages-front/img/intership/p.png"
 							class="imgIntern">
 					</p>
 				</div>
@@ -358,7 +358,7 @@
 				</div>
 				<div class="col-md-6">
 					<p align="left">
-						<img width=100% src="pages-front/img/intership/mint.png"
+						<img width=100% src="../pages-front/img/intership/mint.png"
 							class="imgIntern">
 					</p>
 				</div>
@@ -389,7 +389,7 @@
 				</div>
 				<div class="col-md-6">
 					<p align="left">
-						<img width=100% src="pages-front/img/intership/not.png"
+						<img width=100% src="../pages-front/img/intership/not.png"
 							class="imgIntern">
 					</p>
 				</div>
@@ -455,11 +455,10 @@
 							<tbody>
 							<c:forEach var="job" items="${jobList}">
 								<tr data-aos="fade-up" data-aos-duration="800">
-									<th><font size="4px">${job.position}</font><h6>BTS</h6></th>
+									<th><a href="${job.page_uri_id}"><font size="4px">${job.position}</font></a><h6>BTS</h6></th>
 									<th>
 										<div class="d-none d-lg-block">
-										<a><p align="right"><button type="button" class="btn" onclick="jobDetail(${job.job_id})">
-										<font color="#A9A9A9" size="5px">&#10095 </font></button></p></a></div>
+										<a href="${job.page_uri_id}"><p align="right"><font color="#A9A9A9" size="5px">&#10095 </font></p></a></div>
 									</th>
 								</tr>
 							</c:forEach>

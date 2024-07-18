@@ -4,43 +4,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<link rel="stylesheet" href="../pages-front/articleAll_files/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-<script type="text/javascript" async=""
-	src="../pages-front/articleAll_files/analytics.js.download"></script>
-<script type="text/javascript" async="" src="../pages-front/articleAll_files/js"></script>
-<script type="text/javascript" async="" src="../pages-front/articleAll_files/js(1)"></script>
-<script async="" src="../pages-front/articleAll_files/gtm.js.download"></script>
-<script src="../pages-front/articleAll_files/jquery-3.3.1.slim.min.js.download"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
-<script src="../pages-front/articleAll_files/popper.min.js.download"
-	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-	crossorigin="anonymous"></script>
-<script src="../pages-front/articleAll_files/bootstrap.min.js.download"
-	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../pages-front/articleAll_files/bootstrap.min.css">
+<script type="text/javascript" src="../pages-front/articleAll_files/analytics.js.download"></script>
+<script type="text/javascript" src="../pages-front/articleAll_files/js"></script>
+<script type="text/javascript" src="../pages-front/articleAll_files/js(1)"></script>
+<script src="../pages-front/articleAll_files/gtm.js.download"></script>
+<script src="../pages-front/articleAll_files/jquery-3.3.1.slim.min.js.download"></script>
+<script src="../pages-front/articleAll_files/popper.min.js.download"></script>
+<script src="../pages-front/articleAll_files/bootstrap.min.js.download"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../pages-front/articleAll_files/all.css"
-	integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-	crossorigin="anonymous">
-<link href="../pages-front/articleAll_files/css" rel="stylesheet">
-<link href="../pages-front/articleAll_files/css(1)" rel="stylesheet">
-<link href="../pages-front/articleAll_files/css(2)" rel="stylesheet">
+<link rel="stylesheet" href="../pages-front/articleAll_files/all.css">
+<link href="pages-front/articleAll_files/css" rel="stylesheet">
+<link href="pages-front/articleAll_files/css(1)" rel="stylesheet">
+<link href="pages-front/articleAll_files/css(2)" rel="stylesheet">
 <link rel="stylesheet" href="../pages-front/articleAll_files/w3.css">
-<link rel="stylesheet" type="text/css"
-	href="../pages-front/articleAll_files/style.css">
+<link rel="stylesheet" type="text/css" href="../pages-front/articleAll_files/style.css">
 
-<script async="" src="../pages-front/articleAll_files/js(2)"></script>
+<script src="../pages-front/articleAll_files/js(2)"></script>
 
 <style>
-body, html {
-	font-family: 'Open Sans', sans-serif;
-	font-size: 15px;
-	scroll-behavior: smooth;
-}
 
 #navbar-hover:hover {
 	color: #BD2125 !important;
@@ -259,12 +242,12 @@ a {
 	padding-top: 100px;
 }
 
-.job-block {
+/* .job-block {
 	background-color: #BD2125;
 	width: 200px;
 	color: white;
 	font-size: 32px;
-}
+} */
 
 .btn-right {
 	position: absolute;
@@ -324,7 +307,7 @@ a {
 			<div class="row articleblockbg2">
 				<div class="col-lg-6">
 					<div class="articleblockbg3">
-						<a class="" href="blog_detail?articleId=${newBlog.article_id}"
+						<a class="" href="${newBlog.page_uri_id}"
 							role="button"> <img src="${constant.imgContext}/${newBlog.path}" width="100%"
 							height="500px"
 							style="object-fit: cover; border-radius: 20px 20px 20px 20px">
@@ -335,7 +318,7 @@ a {
 					<left>
 					<div class="ardetail1">
 						<div class="aum1">${newBlog.topic}</div>
-						<a href="blog_detail?articleId=${newBlog.article_id}"
+						<a href="${newBlog.page_uri_id}"
 							class="btn btn-danger btn-lg btn-right" role="button">Read
 							More</a> <br>
 						<div class="xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a"
@@ -351,7 +334,7 @@ a {
 				<div class='col-lg-4 articleblockbg2'>
 					<left>
 					<div class='articleblockbg3'>
-						<a href='blog_detail?articleId=${blog.article_id}' role='button'>
+						<a href='${blog.page_uri_id}' role='button'>
 							<img src='${constant.imgContext}${blog.path}' width='100%' height='250px'
 							style='object-fit: cover;'>
 						</a>

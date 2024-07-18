@@ -14,6 +14,4 @@ public interface PageUriDAO {
 	public PageUri findById(String pageUriId) throws Exception; 
 	
 	public List<PageUri> findAll() throws Exception;
-	
-	public PageUri findByModel(String model, String modelId) throws Exception; 
 }

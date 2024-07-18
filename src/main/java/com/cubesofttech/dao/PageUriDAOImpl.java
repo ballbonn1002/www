@@ -2,11 +2,9 @@ package com.cubesofttech.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -68,23 +66,6 @@ public class PageUriDAOImpl implements PageUriDAO{
 			e.printStackTrace();
 		}
 		return pageUriList;
-	}
-
-	@Override
-	public PageUri findByModel(String model, String modelId) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		PageUri pageUri = null;
-		try {
-			Criteria criteria = session.createCriteria(PageUri.class);
-			criteria.add(Restrictions.eq("model", model));
-			criteria.add(Restrictions.eq("modelId", modelId));
-			pageUri = (PageUri) criteria.uniqueResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			
-		}
-		return pageUri;
 	}
 
 }

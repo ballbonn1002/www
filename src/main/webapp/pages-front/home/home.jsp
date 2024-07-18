@@ -315,81 +315,13 @@
 			</div>
 			<table class="table">
 				<tbody>
-				<!-- 	<tr data-aos="fade-up" data-aos-duration="800">
-						<th><font size="4px">Java Programmer
-								<h6>BTS</h6></th>
-						<th>
-							<div class="d-none d-lg-block">
-								<a href="jobDetail?id=109"><p align="right">
-									<a><p align="right">
-										<button type="button" class="btn" onclick="jobDetail(109)">
-										<button type="button" class="btn">
-											<font color="#A9A9A9" size="5px">&#10095 
-									</p>
-									</button></a>
-							</div>
-						</th>
-					</tr>
-					<tr data-aos="fade-up" data-aos-duration="800">
-						<th><font size="4px">Software Tester
-								<h6>BTS</h6></th>
-						<th>
-							<div class="d-none d-lg-block">
-								<a><p align="right">
-										<button type="button" class="btn" onclick="jobDetail(115)">
-											<font color="#A9A9A9" size="5px">&#10095 
-									</p>
-									</button></a>
-							</div>
-						</th>
-					</tr>
-					<tr data-aos="fade-up" data-aos-duration="800">
-						<th><font size="4px">Front-End Developer
-								<h6>BTS</h6></th>
-						<th>
-							<div class="d-none d-lg-block">
-								<a><p align="right">
-										<button type="button" class="btn" onclick="jobDetail(122)">
-											<font color="#A9A9A9" size="5px">&#10095 
-									</p>
-									</button></a>
-							</div>
-						</th>
-					</tr>
-					<tr data-aos="fade-up" data-aos-duration="800">
-						<th><font size="4px">Business Analyst
-								<h6>BTS</h6></th>
-
-						<th>
-							<div class="d-none d-lg-block">
-								<a href="detail.php?job_id=107"><p align="right">
-										<button type="button" class="btn">
-											<font color="#A9A9A9" size="5px">&#10095 
-									</p>
-									</button></a>
-							</div>
-						</th>
-					</tr>
-					<tr data-aos="fade-up" data-aos-duration="800">
-						<th><font size="4px">System Analyst
-								<h6>BTS</h6></th>
-						<th>
-							<div class="d-none d-lg-block">
-								<a href="detail.php?job_id=112"><p align="right">
-										<button type="button" class="btn">
-											<font color="#A9A9A9" size="5px">&#10095 
-									</p>
-									</button></a>
-							</div>
-						</th>
-					</tr> -->
 					<c:forEach var="job" items="${jobList}">
 						<tr data-aos="fade-up" data-aos-duration="800">
-							<th><font size="4px">${job.position}</font><h6>BTS</h6></th>
+							<th><a href="${job.page_uri_id}"><font size="4px">${job.position}</font></a><h6>BTS</h6></th>
 							<th>
 								<div class="d-none d-lg-block">
-								<a><p align="right"><button type="button" class="btn" onclick="jobDetail(${job.job_id})">
-								<font color="#A9A9A9" size="5px">&#10095 </font></button></p></a></div>
+								<a href="${job.page_uri_id}"><p align="right">
+								<font color="#A9A9A9" size="5px">&#10095 </font></p></a></div>
 							</th>
 						</tr>
 					</c:forEach>
@@ -403,16 +335,16 @@
 	</div>
 	<br> <br> <br>
 </div>
-<div class="parallax show-on-scroll">
+<!-- <div class="parallax show-on-scroll">
 	<div class="blogbg">
 		<div class="txtblog" data-aos="fade-down" data-aos-duration="800">
 			<font color="#BD2125"><h1>
 					<b>Blog</b>
 				</h1></font><br>
 		</div>
-		<!-- Slideshow container -->
+		Slideshow container
 		<div class="slideshow-container">
-			<!-- Full-width slides/quotes -->
+			Full-width slides/quotes
 			<div class="mySlides">
 				<div id="articledetail1"></div>
 			</div>
@@ -422,7 +354,7 @@
 			<div class="mySlides">
 				<div id="articledetail3"></div>
 			</div>
-			<!-- Next/prev buttons -->
+			Next/prev buttons
 			<font color="#FFFFFF" align="center"> <a class="prev"
 				onclick="plusSlides(-1)">&#10094;</a> <a class="next"
 				onclick="plusSlides(1)">&#10095;</a>
@@ -430,7 +362,7 @@
 		</div>
 	</div>
 	<br>
-</div>
+</div> -->
 
 <script>
 	AOS.init();

@@ -14,4 +14,7 @@ public interface JobDAO {
 	public Job findById(int jobId) throws Exception; 
 	
 	public List<Job> findAll() throws Exception;
+	
+	public List<Job> findAllWithPageUri() throws Exception;
+
 }

@@ -192,7 +192,7 @@ public class BlogAction extends ActionSupport {
 	public String init() {
 		List<Blog> blogList = null;
 		try {			
-			blogList = blogDAO.findAll1();
+			blogList = blogDAO.findAllWithPageUri();
 			//log.debug(blogList);
 			request.setAttribute("blogList", blogList);
 			
@@ -234,13 +234,6 @@ public class BlogAction extends ActionSupport {
 //			request.setAttribute("relatedBlogs", blogList);
 			request.setAttribute("latestBlogs", blogList);
 			request.setAttribute("constant", constant);
-			
-			String model = "article";
-			PageUri pageUri = pageUriDAO.findByModel(model,String.valueOf(getArticleId()));
-			String title = pageUri.getTitle();
-			request.setAttribute("title", title);
-			String meta = pageUri.getMeta();
-			request.setAttribute("meta", meta);
 			
 			return SUCCESS;
 		} catch (Exception e) {
