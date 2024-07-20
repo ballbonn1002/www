@@ -4,29 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<link rel="stylesheet" href="../pages-front/articledetail_files/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-<script src="../pages-front/articledetail_files/jquery-3.3.1.slim.min.js.download"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
-<script src="../pages-front/articledetail_files/popper.min.js.download"
-	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-	crossorigin="anonymous"></script>
-<script src="../pages-front/articledetail_files/bootstrap.min.js.download"
-	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-	crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../pages-front/articledetail_files/all.css"
-	integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-	crossorigin="anonymous">
-<link href="../pages-front/articledetail_files/css" rel="stylesheet">
-<link rel="stylesheet" href="../pages-front/articledetail_files/w3.css">
-<link rel="stylesheet" type="text/css"
-	href="../pages-front/articledetail_files/style.css">
-<script src="../pages-front/articledetail_files/jquery-2.1.4.min.js.download"></script>
-<script src="../pages-front/articledetail_files/date.format.js.download"></script>
 
 <style>
 body, html {
@@ -44,7 +23,7 @@ body, html {
 
 .parallax {
 	/* The image used */
-	background-image: url("pages-front/img/article/bgarticle.jpg");
+	background-image: url("/pages-front/img/article/bgarticle.jpg");
 	/* Set a specific height */
 	min-height: 500px;
 	/* Create the parallax scrolling effect */
@@ -288,9 +267,9 @@ hr.detailnew {
 <!--------------------------home------------------------------------>
 
 <div class="parallax show-on-scroll">
-	<div align="center" class="logojob aos-init aos-animate"
+	<div align="center" class="logojob"
 		data-aos="fade-down" data-aos-duration="800">
-		<div class="job-block font-weight-bolder">ARTICLE</div>
+		<div class="job-block font-weight-bolder">BLOG</div>
 		<br> <font size="5px">Professional IT People ~ Innovative
 			IT Solutions<br>
 		</font> <font size="3px">IT Staff Outsourcing Services | IT
@@ -317,19 +296,19 @@ hr.detailnew {
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
 								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com/articledetail.php?article_id=19"
 								target="_blank"><img
-								src="pages-front/img/articleshares/facebook.png" width="25px"
+								src="/pages-front/img/articleshares/facebook.png" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
 								href="https://twitter.com/share?url=http://www.cubesofttech.com/articledetail.php?article_id=19"
 								target="_blank"><img
-								src="pages-front/img/articleshares/twitter.png" width="25px"
+								src="/pages-front/img/articleshares/twitter.png" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
 								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com/articledetail.php?article_id=19"
 								target="_blank"><img
-								src="pages-front/img/articleshares/gmail.png" width="25px"
+								src="/pages-front/img/articleshares/gmail.png" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
 								href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com/articledetail.php?article_id=19"
 								target="_blank"><img
-								src="pages-front/img/articleshares/linkedin.png" width="25px"
+								src="/pages-front/img/articleshares/linkedin.png" width="25px"
 								height="25px"></a>
 						</h6>
 						<br>
@@ -351,7 +330,7 @@ hr.detailnew {
 							<div class="articleblockbg2">
 								<left>
 								<div class="articleblockbg3">
-									<a class="" href="blog_detail?articleId=${relatedBlog.related_article_id}"
+									<a class="" href="/blog_detail?articleId=${relatedBlog.related_article_id}"
 										role="button"> <img src="${constant.imgContext}${relatedBlog.path}" width="100%"
 										height="180px" style="object-fit: cover;"></a>
 								</div>
@@ -372,9 +351,9 @@ hr.detailnew {
 							<c:if test="${Count.count <= maxLatestBlog}">
 								<div class="articleblockbg2">
 									<left> <a class=""
-										href="blog_detail?articleId=${latestBlog.article_id}" role="button"></a>
+										href="/blog_detail?articleId=${latestBlog.article_id}" role="button"></a>
 									<div class="aum1">
-										<a class="" href="blog_detail?articleId=${latestBlog.article_id}"
+										<a class="" href="/blog_detail?articleId=${latestBlog.article_id}"
 											role="button">${latestBlog.topic}</a>
 									</div>
 									</left>
@@ -389,3 +368,39 @@ hr.detailnew {
 
 	</div>
 </div>
+
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+<script type="text/javascript">
+	AOS.init();
+	$(document).ready(function() {
+		$('a[href^="contact.php"]').addClass('active');
+	});
+	
+	function showNav() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+	
+	window.onscroll = function () { scrollFunction() };
+	function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn").style.display = "block";
+        } else {
+            document.getElementById("myBtn").style.display = "none";
+        }
+    }
+	function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+	
+</script>

@@ -3,7 +3,7 @@
 	
 <style>
 .parallax {
-	background-image: url("../pages-front/img/job/bg.jpg");
+	background-image: url("/pages-front/img/job/bg.jpg");
 }
 </style>
 <div class="parallax show-on-scroll">
@@ -84,6 +84,8 @@
 	console.log(response);
 	if(response == 1){
 		$(".detail").empty();
-		$(".detail").html(" <center><p>Sending email ...</p><br><br>");
+		$(".detail").html(" <center><p> Sending email complete.</p><br><br>");
+	} else {
+
 	}
 </script>

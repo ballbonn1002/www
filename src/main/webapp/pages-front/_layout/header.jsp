@@ -9,8 +9,8 @@
 		<nav class="navbar  navbar-expand-lg navbar-light bg-light fixed-top"
 			style="padding-bottom: 0px !important; margin-bottom: 0px !important">
 			<!-- Navbar brand -->
-			<a href="../home"> <img width=175px
-				src="../pages-front/img/logo/cubesofttech.png" alt="Responsive image">
+			<a href="/home"> <img width=175px
+				src="/pages-front/img/logo/cubesofttech.png" alt="Responsive image">
 			</a>
 			<!-- Collapse button -->
 			<button class="navbar-toggler second-button" type="button"
@@ -77,21 +77,21 @@
 					</li>
 -->
 					<li class=""><b> <a class="nav-link " id="navbar-hover"
-							href="../services"
+							href="/services"
 							style="padding-left: 30px; padding-right: 30px; color: black">Services</a></b>
 					</li>
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="../careers"
+							href="/careers"
 							style="padding-left: 30px; padding-right: 30px; color: black">Careers</a></b>
 					</li>
 
 					<!---เมนู article   -->
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="../blog"
+							href="/blog"
 							style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b>
 					</li>
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="../contacts"
+							href="/contacts"
 							style="padding-left: 30px; padding-right: 30px; color: black">Contacts</a></b>
 					</li>
 

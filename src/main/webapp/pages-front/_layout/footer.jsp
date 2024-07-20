@@ -14,7 +14,7 @@
 						<p></p>
 						<p>
 							<a href="https://goo.gl/maps/hgLVeH7j488pvzjJ9" target="_blank"><img
-								width=45px href="#home" src="pages-front/img/services/icon06.png"
+								width=45px href="#home" src="/pages-front/img/services/icon06.png"
 								alt="Responsive image">
 						</p>
 						</a>
@@ -40,7 +40,7 @@
 						<p></p>
 						<p>
 							<a href="tel:026344449"><img width=65px class=""
-								src="pages-front/img/services/icon09.png" alt="Responsive image"> </a>
+								src="/pages-front/img/services/icon09.png" alt="Responsive image"> </a>
 						</p>
 
 
@@ -67,9 +67,9 @@
 						<p></p>
 						<p>
 							<a href="mailto:info@cubesofttech.com"><img width="45px"
-								src="pages-front/img/services/icon07.png" alt="Responsive image"> </a> <a
+								src="/pages-front/img/services/icon07.png" alt="Responsive image"> </a> <a
 								href="https://www.facebook.com/CubeSoftTech/" target="_blank"><img
-								width=60px src="pages-front/img/services/icon08.png" alt="Responsive image"></a>
+								width=60px src="/pages-front/img/services/icon08.png" alt="Responsive image"></a>
 						</p>
 
 						<!-- text -->

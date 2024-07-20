@@ -47,13 +47,7 @@ public class EmailService {
     
     public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) {
     	try {
-    		HttpServletRequest request = ServletActionContext.getRequest();
-    		ServletContext context = request.getServletContext();
-    		String fileServerPath = context.getRealPath("/");
-    		Path path = Paths.get(fileServerPath+"/upload/email/"+fileName);
-    		log.debug(path);
-    		byte[] content = Files.readAllBytes(path);
-    		log.debug(content);
+   
     		MimeMessage message = mailSender.createMimeMessage();
     		MimeMessageHelper helper = new MimeMessageHelper(message, true);
     		helper.setFrom("contact@cubesofttech.com");
@@ -61,7 +55,17 @@ public class EmailService {
     		helper.setSubject("Apply : " + position);
     		helper.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel
 							+"\n Position : "+position+"\n Message : \n"+msg);
-    		helper.addAttachment(fileName, new ByteArrayResource(content));
+    		
+    		if (file != null) {
+    	 		HttpServletRequest request = ServletActionContext.getRequest();
+        		ServletContext context = request.getServletContext();
+        		String fileServerPath = context.getRealPath("/");
+        		Path path = Paths.get(fileServerPath+"/upload/email/"+fileName);
+        		log.debug(path);
+        		byte[] content = Files.readAllBytes(path);
+        		log.debug(content);
+    			helper.addAttachment(fileName, new ByteArrayResource(content));
+    		}
     		
 			log.debug("message" + message);
 			mailSender.send(message);
@@ -70,6 +74,7 @@ public class EmailService {
     		e.printStackTrace();
     	}
     }
+    
 
     public void sendEmailContact(String name, String email, String tel, String msg) {
     	try {

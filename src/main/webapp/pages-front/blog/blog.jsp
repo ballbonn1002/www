@@ -4,24 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<link rel="stylesheet" href="../pages-front/articleAll_files/bootstrap.min.css">
-<script type="text/javascript" src="../pages-front/articleAll_files/analytics.js.download"></script>
-<script type="text/javascript" src="../pages-front/articleAll_files/js"></script>
-<script type="text/javascript" src="../pages-front/articleAll_files/js(1)"></script>
-<script src="../pages-front/articleAll_files/gtm.js.download"></script>
-<script src="../pages-front/articleAll_files/jquery-3.3.1.slim.min.js.download"></script>
-<script src="../pages-front/articleAll_files/popper.min.js.download"></script>
-<script src="../pages-front/articleAll_files/bootstrap.min.js.download"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet" href="../pages-front/articleAll_files/all.css">
-<link href="pages-front/articleAll_files/css" rel="stylesheet">
-<link href="pages-front/articleAll_files/css(1)" rel="stylesheet">
-<link href="pages-front/articleAll_files/css(2)" rel="stylesheet">
-<link rel="stylesheet" href="../pages-front/articleAll_files/w3.css">
-<link rel="stylesheet" type="text/css" href="../pages-front/articleAll_files/style.css">
-
-<script src="../pages-front/articleAll_files/js(2)"></script>
 
 <style>
 
@@ -33,18 +17,18 @@
 }
 
 .parallax {
-	/* The image used */
-	background-image:
-		url("https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80");
-	/* Set a specific height */
-	min-height: 500px;
-	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
+    /* The image used */
+    background-image: url("https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80");
 
+    /* Set a specific height */
+    min-height: 500px;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .active {
 	border-color: white white #BD2125 !important;
 	border-bottom: 4px solid;
@@ -282,7 +266,7 @@ a {
 	<i class="fas fa-arrow-up" style="font-size: 26px;"></i>
 </button>
 <!--------------------------home------------------------------------>
-<div class="parallax">
+<div class="parallax show-on-scroll">
 	<br>
 	<div align="center" class="logojob" data-aos="fade-down"
 		data-aos-duration="800">
@@ -350,3 +334,39 @@ a {
 
 	<br>
 </div>
+
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+<script type="text/javascript">
+	AOS.init();
+	$(document).ready(function() {
+		$('a[href^="contact.php"]').addClass('active');
+	});
+	
+	function showNav() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+	
+	window.onscroll = function () { scrollFunction() };
+	function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn").style.display = "block";
+        } else {
+            document.getElementById("myBtn").style.display = "none";
+        }
+    }
+	function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+	
+</script>
