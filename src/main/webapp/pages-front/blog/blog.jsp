@@ -96,9 +96,6 @@ p {
 	padding-left: 10%;
 }
 
-.serviceimg {
-	position: absolute;
-}
 
 .icon {
 	width: 90px;
@@ -226,12 +223,6 @@ a {
 	padding-top: 100px;
 }
 
-/* .job-block {
-	background-color: #BD2125;
-	width: 200px;
-	color: white;
-	font-size: 32px;
-} */
 
 .btn-right {
 	position: absolute;
@@ -306,7 +297,9 @@ a {
 			</div>
 		</div>
 		<div class="row" id="articledetail">
-			<c:forEach var="blog" items="${blogList}" varStatus="Count">
+			<%-- start loop with index 1 becuase index 0 is main blog --%>
+			<c:forEach var="blog" items="${blogList}" varStatus="Count" begin="1">
+				
 				<div class='col-lg-4 articleblockbg2'>
 					<left>
 					<div class='articleblockbg3'>
@@ -320,6 +313,7 @@ a {
 					</div>
 					</left>
 				</div>
+				
 			</c:forEach>
 		</div>
 	</div>
@@ -336,7 +330,7 @@ a {
 <script type="text/javascript">
 	AOS.init();
 	$(document).ready(function() {
-		$('a[href^="contact.php"]').addClass('active');
+		$('a[href="/blog"]').addClass('active');
 	});
 	
 	function showNav() {

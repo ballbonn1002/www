@@ -71,7 +71,9 @@
 							<img src="pages-front/img/contact/icon08.png" width="55" height="55" />
 						</div>
 						<div class="col-sm-9 contact-sm " style="padding-top: 15px">
+						<a href="https://www.facebook.com/CubeSoftTech/">
 							https://www.facebook.com/CubeSoftTech/</div>
+							</a>
 					</div>
 				</div>
 				<div class="col-lg-6 col-xs-12 contact-us-sm" data-aos="zoom-in"
@@ -117,7 +119,7 @@
 <script type="text/javascript">
 	AOS.init();
 	$(document).ready(function() {
-		$('a[href^="contact.php"]').addClass('active');
+		$('a[href^="/contacts"]').addClass('active');
 	});
 	
 	function showNav() {

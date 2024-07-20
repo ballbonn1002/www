@@ -457,9 +457,13 @@
 								<tr data-aos="fade-up" data-aos-duration="800">
 									<th><a href="${job.page_uri_id}"><font size="4px">${job.position}</font></a><h6>BTS</h6></th>
 									<th>
-										<div class="d-none d-lg-block">
-										<a href="${job.page_uri_id}"><p align="right"><font color="#A9A9A9" size="5px">&#10095 </font></p></a></div>
+										<div class="d-lg-block">
+										<a href="${job.page_uri_id}"><p align="right"><button type="button" class="btn btn-danger">Description</button></p>
+										
+										</a></div>
 									</th>
+									
+									
 								</tr>
 							</c:forEach>
 							
@@ -530,6 +534,10 @@
 </div>
 <script>
 	AOS.init();
+	
+	$(document).ready(function() {
+		$('a[href="/careers"]').addClass('active');
+	});
 	
 	window.onscroll = function () { scrollFunction() };
 	function scrollFunction() {

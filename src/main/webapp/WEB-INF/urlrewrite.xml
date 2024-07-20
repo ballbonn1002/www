@@ -42,11 +42,6 @@
 	</rule>
 	
 	
-	<rule>
-		<from>^/(.*).php</from>
-		<to type="redirect">/$1</to>
-	</rule>
-
 	
 	<rule>
 		<from>^/detail.php(.*)</from>
@@ -62,6 +57,14 @@
 		<from>^/roundcube$</from>
 		<to>/ex_link/roundcube.jsp</to>
 	</rule>
+	
+	<rule>
+		<from>^/articledetail.php?article_id=(.*)</from>
+		<to type="redirect">/blog_detail?articleId=$1</to>
+	</rule>
+	
+
+	
 
 <!--
 

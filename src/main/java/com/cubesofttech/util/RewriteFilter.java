@@ -72,12 +72,13 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
     	PageUri pageUri = null;
 		try {
 			pageUri = pageUriDAO.findById(requestURI);
-			log.debug("pageURI found");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
     	if (pageUri != null) {
+			log.debug("page URI found");
     		request.setAttribute("title", pageUri.getTitle());
     		request.setAttribute("meta", pageUri.getMeta());
     		request.getRequestDispatcher(pageUri.getForwardTo()).forward(request, response);

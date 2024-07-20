@@ -378,7 +378,7 @@ hr.detailnew {
 <script type="text/javascript">
 	AOS.init();
 	$(document).ready(function() {
-		$('a[href^="contact.php"]').addClass('active');
+		$('a[href="/blog"]').addClass('active');
 	});
 	
 	function showNav() {

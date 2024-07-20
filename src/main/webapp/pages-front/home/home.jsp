@@ -367,6 +367,11 @@
 <script>
 	AOS.init();
 	// When the user scrolls down 20px from the top of the document, show the button
+	
+	$(document).ready(function() {
+		$('a[href^="/home"]').addClass('active');
+	});
+	
 	window.onscroll = function() {
 		scrollFunction()
 	};
