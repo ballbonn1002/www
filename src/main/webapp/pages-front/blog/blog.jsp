@@ -143,7 +143,7 @@ p {
 
 .articleblockbg {
 	background-color: #F5F5F5;
-	padding-top: 5%;
+	padding-top: 1%;
 	padding-bottom: 5%;
 	padding-left: 10%;
 	padding-right: 10%;
@@ -278,15 +278,7 @@ a {
 
 	</div>
 	<div class="articleblockbg">
-		<div data-aos="fade-down" data-aos-duration="800">
-			<font color="#BD2125">
-				<h3>
-					<b>Blog</b>
-				</h3>
-			</font>
-		</div>
-		<br>
-		<hr class="new">
+		
 		<div id="articledetail1">
 			<div class="row articleblockbg2">
 				<div class="col-lg-6">

@@ -291,7 +291,7 @@ hr.detailnew {
 							</c:forEach>
 					</span></font>
 					<div class="articledetail">
-						<h2>${blog.topic}</h2>
+						<h1>${blog.topic}</h1>
 						<h6>
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
 								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com/articledetail.php?article_id=19"
