@@ -46,7 +46,7 @@
 		            <span aria-hidden="true">&times;</span>
 		        </button>
 			</div>
-			<form action="sendEmailJob" enctype="multipart/form-data" name="frmAdd" autocomplete="off" method="POST">
+			<form action="/sendEmailJob" enctype="multipart/form-data" name="frmAdd" autocomplete="off" method="POST">
 				<div class="modal-body">
 					<div class="form-group">
 						Name:<input type="text" class="form-control" placeholder="Enter Name" name ="contactName"><br>
