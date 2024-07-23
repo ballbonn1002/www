@@ -319,9 +319,9 @@
 						<tr data-aos="fade-up" data-aos-duration="800">
 							<th><a href="${job.page_uri_id}"><font size="4px">${job.position}</font></a><h6>BTS</h6></th>
 							<th>
-								<div class="d-none d-lg-block">
+								<div class="d-lg-block">
 								<a href="${job.page_uri_id}"><p align="right">
-								<font color="#A9A9A9" size="5px">&#10095 </font></p></a></div>
+								<button type="button" class="btn btn-danger">Description</button></p></a></div>
 							</th>
 						</tr>
 					</c:forEach>
@@ -335,7 +335,8 @@
 	</div>
 	<br> <br> <br>
 </div>
-<!-- <div class="parallax show-on-scroll">
+<%--
+<div class="parallax show-on-scroll">
 	<div class="blogbg">
 		<div class="txtblog" data-aos="fade-down" data-aos-duration="800">
 			<font color="#BD2125"><h1>
@@ -362,7 +363,8 @@
 		</div>
 	</div>
 	<br>
-</div> -->
+</div>
+ --%>
 
 <script>
 	AOS.init();
@@ -430,85 +432,5 @@
 		dots[slideIndex - 1].className += " active";
 	}
 	
-	function article1() {
-        $.ajax({
-            type: "POST",
-            url: 'https://ts.cubesofttech.com/article-list',
-            crossorigin: true,
-            dataType: "json",
-            success: function (json) {
-                var max = json.length;
-                var i = max-1;
-                    var y = json[i].time_create;
-                    var month = /[A-Za-za-z]{3}/g;
-                    var day = /\d{2,2}/g;
-                    var year = /\d{4}/g;
-                    var date = (y.match(month) + ' ' + y.match(day)[0]) + ',' + y.match(year);                   
-                        $("#articledetail1").append("<div class='row articleblockbg2'><div class='col-lg-6'><div class='articleblockbg3'><a class='' href='articledetail.php?article_id=" + json[i].article_id + "' class='btn btn-danger btn-lg'role='button'><img src='https://ts.cubesofttech.com/" + json[i].path + "' width='100%' height='500px'style='border-radius: 20px 20px 20px 20px;'></a></div></div><div class='col-lg-6'><left><div class='ardetail1'><div class='aum1'>" + json[i].topic + "</div></left><a href='articledetail.php?article_id=" + json[i].article_id + "' class='btn btn-danger btn-lg btn-right'role='button'>Read More</a> <br>"+ json[i].detail + "</div></div></div>"
-                        );   
-            }            
-        });
-    }
-	
-	function article2() {
-        $.ajax({
-            type: "POST",
-            url: 'https://ts.cubesofttech.com/article-list',
-            crossorigin: true,
-            dataType: "json",
-            success: function (json) {
-                var max = json.length;
-                var i = max-5;
-                    var y = json[i].time_create;
-                    var month = /[A-Za-za-z]{3}/g;
-                    var day = /\d{2,2}/g;
-                    var year = /\d{4}/g;
-                    var date = (y.match(month) + ' ' + y.match(day)[0]) + ',' + y.match(year);                   
-                        $("#articledetail2").append("<div class='row articleblockbg2'><div class='col-lg-6'><div class='articleblockbg3'><a class='' href='articledetail.php?article_id=" + json[i].article_id + "' class='btn btn-danger btn-lg'role='button'><img src='https://ts.cubesofttech.com/" + json[i].path + "' width='100%' height='500px'style='border-radius: 20px 20px 20px 20px;'></a></div></div><div class='col-lg-6'><left><div class='ardetail1'><div class='aum1'>" + json[i].topic + "</div></left><a href='articledetail.php?article_id=" + json[i].article_id + "' class='btn btn-danger btn-lg btn-right'role='button'>Read More</a> <br>"+ json[i].detail + "</div></div></div>"
-                        );   
-            }            
-        });
-    }
-	
-	function article3() {
-        $.ajax({
-            type: "POST",
-            url: 'https://ts.cubesofttech.com/article-list',
-            crossorigin: true,
-            dataType: "json",
-            success: function (json) {
-                var max = json.length;
-                var i = max-9;
-                    var y = json[i].time_create;
-                    var month = /[A-Za-za-z]{3}/g;
-                    var day = /\d{2,2}/g;
-                    var year = /\d{4}/g;
-                    var date = (y.match(month) + ' ' + y.match(day)[0]) + ',' + y.match(year);                   
-                        $("#articledetail3").append("<div class='row articleblockbg2'><div class='col-lg-6'><div class='articleblockbg3'><a class='' href='articledetail.php?article_id=" + json[i].article_id + "' class='btn btn-danger btn-lg'role='button'><img src='https://ts.cubesofttech.com/" + json[i].path + "' width='100%' height='500px'style='border-radius: 20px 20px 20px 20px;'></a></div></div><div class='col-lg-6'><left><div class='ardetail1'><div class='aum1'>" + json[i].topic + "</div></left><a href='articledetail.php?article_id=" + json[i].article_id + "' class='btn btn-danger btn-lg btn-right'role='button'>Read More</a> <br>"+ json[i].detail + "</div></div></div>"
-                        );   
-            }            
-        });
-    }
-	
-	function start(){
-        article1();
-        article2();
-		article3();
-    }
-	
-	function jobDetail(id){
-		console.log(id);
-		window.location.href = "jobDetail.action?id="+id;
-	/*	$.ajax({
-			url : "jobDetail.action",
-			method : "POST",
-			type : "JSON",
-			data : {
-				"id" : id
-			},
-			success : function(data){
-				window.location.href = "jobDetail";
-			}
-		});	*/
-	}
+
 </script>

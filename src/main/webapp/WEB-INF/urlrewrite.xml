@@ -8,7 +8,7 @@
     http://www.tuckey.org/urlrewrite/
 
 -->
-<urlrewrite>
+<urlrewrite decode-using="utf-8">
 
    <rule>
         <note>
@@ -30,6 +30,12 @@
 		<from>^/index.php</from>
 		<to type="redirect">/</to>
 	</rule>
+	
+	<rule>
+		<from>^/services.php</from>
+		<to type="redirect">/services</to>
+	</rule>
+
 		
 	<rule>
 		<from>^/job.php</from>
@@ -41,7 +47,21 @@
 		<to type="redirect">/blog</to>
 	</rule>
 	
+	<rule>
+		<from>^/contacts.php</from>
+		<to type="redirect">/contacts</to>
+	</rule>
 	
+		
+	<rule>
+		<from>^/articledetail.php?article_id=(.*)</from>
+		<to type="redirect">/blog_detail?articleId=$1</to>
+	</rule>
+	
+	<rule>
+		<from>^/articledetail.php(.*)</from>
+		<to type="redirect">/blog</to>
+	</rule>
 	
 	<rule>
 		<from>^/detail.php(.*)</from>
@@ -57,11 +77,7 @@
 		<from>^/roundcube$</from>
 		<to>/ex_link/roundcube.jsp</to>
 	</rule>
-	
-	<rule>
-		<from>^/articledetail.php?article_id=(.*)</from>
-		<to type="redirect">/blog_detail?articleId=$1</to>
-	</rule>
+
 	
 
 	
