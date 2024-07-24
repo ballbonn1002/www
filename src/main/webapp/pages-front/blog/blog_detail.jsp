@@ -330,7 +330,7 @@ hr.detailnew {
 							<div class="articleblockbg2">
 								<left>
 								<div class="articleblockbg3">
-									<a class="" href="/blog_detail?articleId=${relatedBlog.related_article_id}"
+									<a class="" href="${relatedBlog.page_uri_id}"
 										role="button"> <img src="${constant.imgContext}${relatedBlog.path}" width="100%"
 										height="180px" style="object-fit: cover;"></a>
 								</div>
@@ -351,9 +351,9 @@ hr.detailnew {
 							<c:if test="${Count.count <= maxLatestBlog}">
 								<div class="articleblockbg2">
 									<left> <a class=""
-										href="/blog_detail?articleId=${latestBlog.article_id}" role="button"></a>
+										href="${latestBlog.page_uri_id}" role="button"></a>
 									<div class="aum1">
-										<a class="" href="/blog_detail?articleId=${latestBlog.article_id}"
+										<a class="" href="${latestBlog.page_uri_id}"
 											role="button">${latestBlog.topic}</a>
 									</div>
 									</left>

@@ -230,7 +230,7 @@ public class BlogAction extends ActionSupport {
 			//log.debug(relatedBlogs);
 			request.setAttribute("relatedBlogs", relatedBlogs);
 			
-			List<Blog> blogList = blogDAO.findAll1();
+			List<Blog> blogList = blogDAO.findAllWithPageUri();
 //			request.setAttribute("relatedBlogs", blogList);
 			request.setAttribute("latestBlogs", blogList);
 			request.setAttribute("constant", constant);
