@@ -5,6 +5,24 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Cube SoftTech.Co., Ltd.",
+  "url": "${constant.webPath}",
+  "logo": "${constant.webPath}/pages-front/img/logo/cubesofttech.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "026798855",
+    "contactType": "",
+    "availableLanguage": "Thai"
+  },
+  "sameAs": "https://www.facebook.com/CubeSoftTech/"
+
+}
+</script>
+
 <style type="text/css">
 .parallax {
 	/* The image used */

@@ -6,6 +6,32 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en-th">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Cube SoftTech.Co., Ltd.",
+  "image": "",
+  "@id": "${constant.webPath}",
+  "url": "",
+  "telephone": "02-679-8855, 02-634-4449, 088-022-9400",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "160/170-2, 12A Fl., ITF Silom Palace Building Silom Rd., Suriyawong, Bangrak",
+    "addressLocality": "Bangkok",
+    "postalCode": "10500",
+    "addressCountry": "TH"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 13.7276547,
+    "longitude": 100.5281612
+  } ,
+  "sameAs": "www.facebook.com/CubeSoftTech"
+}
+</script>
+
 <style type="text/css">
 
 .parallax {

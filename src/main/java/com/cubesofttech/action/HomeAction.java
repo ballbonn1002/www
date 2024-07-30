@@ -13,6 +13,7 @@ import com.cubesofttech.dao.BlogDAO;
 import com.cubesofttech.dao.JobDAO;
 import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.Job;
+import com.cubesofttech.system.Constant;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HomeAction extends ActionSupport {
@@ -20,6 +21,8 @@ public class HomeAction extends ActionSupport {
 	HttpServletRequest request = ServletActionContext.getRequest();
 	HttpServletResponse response = ServletActionContext.getResponse();
 	
+	@Autowired
+	private Constant constant;
 	@Autowired
 	private BlogDAO blogDAO;
 	@Autowired
@@ -37,6 +40,7 @@ public class HomeAction extends ActionSupport {
 			List<Job> jobList = jobDAO.findAllWithPageUri();
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
+			request.setAttribute("constant", constant);
 			
 			return SUCCESS;
 		} catch (Exception e) {

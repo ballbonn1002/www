@@ -6,7 +6,31 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": ""
+  },
+  "headline": "${blog.topic}",
+  "image": "${constant.imgContext}${path}",  
+  "author": {
+    "@type": "",
+    "name": ""
+  },  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cube SoftTech",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "${constant.webPath}/pages-front/img/logo/cubesofttech.png"
+    }
+  },
+  "datePublished": "${blog.timeCreate}"
+}
+</script>
 <style>
 body, html {
 	font-family: 'Open Sans', sans-serif;
@@ -279,8 +303,6 @@ hr.detailnew {
 	<br>
 
 	<div>
-
-
 		<div class="detail">
 			<div class="row">
 				<div class="col-lg-9" id="articledetail">

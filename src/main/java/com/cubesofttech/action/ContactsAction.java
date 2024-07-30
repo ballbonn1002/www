@@ -10,6 +10,7 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.mail.EmailService;
+import com.cubesofttech.system.Constant;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ContactsAction extends ActionSupport {
@@ -19,6 +20,8 @@ public class ContactsAction extends ActionSupport {
 	
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private Constant constant;
 	
 	private String contactName;
 	private String contactEmail;
@@ -91,7 +94,7 @@ public class ContactsAction extends ActionSupport {
 
 	public String init() {
 		try {			
-			
+			request.setAttribute("constant", constant);
 			
 			return SUCCESS;
 		} catch (Exception e) {
