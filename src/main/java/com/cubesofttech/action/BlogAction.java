@@ -20,6 +20,7 @@ import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.FileUpload;
 import com.cubesofttech.model.PageUri;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BlogAction extends ActionSupport {
@@ -192,8 +193,15 @@ public class BlogAction extends ActionSupport {
 	public String init() {
 		List<Blog> blogList = null;
 		try {			
-			blogList = blogDAO.findAllWithPageUri();
-			//log.debug(blogList);
+			String requestURI = RewriteFilter.getRequestURI(request);
+			log.debug(requestURI);
+			request.setAttribute("requestURI", requestURI);
+			
+			if(requestURI.contains("news")) {
+				blogList = blogDAO.findAllNewsWithPageUri();
+			}else {
+				blogList = blogDAO.findAllBlogsWithPageUri();
+			}
 			request.setAttribute("blogList", blogList);
 			
 			if(blogList != null && !blogList.isEmpty()) {
@@ -226,6 +234,12 @@ public class BlogAction extends ActionSupport {
 				request.setAttribute("path", file.getPath());
 			}
 			
+			if(blog.getArticleTypeId().equals(1)) {
+				request.setAttribute("requestURI", "/news");
+			}else if(blog.getArticleTypeId().equals(2)) {
+				request.setAttribute("requestURI", "/blog");
+			}
+			
 			List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
 			//log.debug(relatedBlogs);
 			request.setAttribute("relatedBlogs", relatedBlogs);
@@ -233,6 +247,7 @@ public class BlogAction extends ActionSupport {
 			List<Blog> blogList = blogDAO.findAllWithPageUri();
 //			request.setAttribute("relatedBlogs", blogList);
 			request.setAttribute("latestBlogs", blogList);
+			log.debug(constant);
 			request.setAttribute("constant", constant);
 			
 			return SUCCESS;

@@ -91,6 +91,10 @@
 							style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b>
 					</li>
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
+							href="/news"
+							style="padding-left: 30px; padding-right: 30px; color: black">News</a></b>
+					</li>
+					<li class=""><b> <a class="nav-link" id="navbar-hover"
 							href="/contacts"
 							style="padding-left: 30px; padding-right: 30px; color: black">Contacts</a></b>
 					</li>

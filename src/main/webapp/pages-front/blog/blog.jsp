@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -260,8 +259,10 @@ a {
 <div class="parallax show-on-scroll">
 	<br>
 	<div align="center" class="logojob" data-aos="fade-down"
-		data-aos-duration="800">
-		<div class="job-block font-weight-bolder">Blog</div>
+		data-aos-duration="800">	
+		<c:if test="${fn:contains(requestURI, 'blog')}"><div class="job-block font-weight-bolder">Blog</div></c:if>
+		<c:if test="${fn:contains(requestURI, 'news')}"><div class="job-block font-weight-bolder">News</div></c:if>
+		
 		<br> <font size="5px">Professional IT People ~ Innovative
 			IT Solutions<br>
 		</font> <font size="3px">IT Staff Outsourcing Services | IT
@@ -330,7 +331,14 @@ a {
 <script type="text/javascript">
 	AOS.init();
 	$(document).ready(function() {
-		$('a[href="/blog"]').addClass('active');
+		var requestURI = '${requestURI}';
+		console.log("requestURI: "+requestURI);
+		if(requestURI.includes("blog")){
+			$('a[href="/blog"]').addClass('active');
+		}else{
+			$('a[href="/news"]').addClass('active');
+		}
+		
 	});
 	
 	function showNav() {

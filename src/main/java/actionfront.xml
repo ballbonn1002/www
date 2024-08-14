@@ -51,6 +51,13 @@
 			<result name="error">/pages-front/index.jsp</result>
 		</action>
 		
+		<action name="news"
+			class="com.cubesofttech.action.BlogAction" method="init">
+			<result name="success">/pages-front/index.jsp</result>
+			<result name="success" type="tiles">news</result>
+			<result name="error">/pages-front/index.jsp</result>
+		</action>
+		
 		<action name="contacts"
 			class="com.cubesofttech.action.ContactsAction" method="init">
 			<result name="success" type="tiles">contacts</result>
