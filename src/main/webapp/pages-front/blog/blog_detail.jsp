@@ -9,7 +9,7 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
+  "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": ""
