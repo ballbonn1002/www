@@ -5,7 +5,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "WebSite",
+  "name": "Cube SoftTech Blog",
+  "url": "${constant.webPath}"
+}
+</script>
 <style>
 
 #navbar-hover:hover {

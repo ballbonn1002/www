@@ -3,7 +3,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": ""
+  },
+  "headline": "${blog.topic}",
+  "image": "${constant.imgContext}${path}",  
+  "author": {
+    "@type": "",
+    "name": ""
+  },  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cube SoftTech",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "${constant.webPath}/pages-front/img/logo/cubesofttech.png"
+    }
+  },
+  "datePublished": "${blog.timeCreate}"
+}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script type="application/ld+json">
@@ -343,6 +367,33 @@ hr.detailnew {
 						</center>
 						<br> ${blog.detail}
 					</div>
+					<secma-element attribute="value">
+						<script type="application/ld+json">
+							{
+ 								"@context": "https://schema.org",
+  								"@type": "",
+  								"mainEntityOfPage": {
+    									"@type": "WebPage",
+    									"@id": ""
+  										},
+  								"headline": "${blog.topic}",
+  								"image": "${constant.imgContext}${path}",  
+  								"author": {
+    									"@type": "",
+    									"name": ""
+  										},  
+  								"publisher": {
+    									"@type": "Organization",
+    									"name": "Cube SoftTech",
+    							"logo": {
+      										"@type": "ImageObject",
+      										"url": "${constant.webPath}/pages-front/img/logo/cubesofttech.png"
+    										}
+  										},
+  								"datePublished": "${blog.timeCreate}"
+								}
+						</script>
+					</secma-element>>
 				</div>
 				<div class="col-lg-3 vtnew">
 					<b><h5 class="arrelate">
