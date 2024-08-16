@@ -9,5 +9,15 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="D:/apache-tomcat-9.0.89/lib/servlet-api.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://docs.oracle.com/javaee/6/api/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/apache-tomcat-9.0.89/lib/javax.servlet.jsp-api_2.3.3.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://tomcat.apache.org/tomcat-9.0-doc/api/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

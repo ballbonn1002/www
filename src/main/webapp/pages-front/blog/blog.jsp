@@ -7,12 +7,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org/",
-  "@type": "WebSite",
-  "name": "Cube SoftTech Blog",
-  "url": "${constant.webPath}"
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Cube SoftTech.Co., Ltd.",
+      "item": "${constant.webPath}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Cube SoftTech Blog",
+      "item": "${constant.webPath}/blog"
+    }
+  ]
 }
 </script>
+
 <style>
 
 #navbar-hover:hover {
