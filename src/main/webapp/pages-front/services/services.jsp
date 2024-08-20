@@ -1,4 +1,23 @@
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Cube SoftTech.Co., Ltd.",
+      "item": "${constant.webPath}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Cube SoftTech Services",
+      "item": "${constant.webPath}/services"
+    }
+  ]
+}
+</script>
 <style>
 .parallax {
 	background-image: url("pages-front/img/services/bg2.jpg");

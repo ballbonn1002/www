@@ -1,5 +1,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Cube SoftTech.Co., Ltd.",
+      "item": "${constant.webPath}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Cube SoftTech Careers",
+      "item": "${constant.webPath}/careers"
+    }
+  ]
+}
+</script>
 <style>
 .parallax {
 	background-image: url("../pages-front/img/job/bg2.jpg");

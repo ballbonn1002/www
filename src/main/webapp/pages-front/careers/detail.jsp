@@ -1,6 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": ""
+  },
+  "headline": "${job.name}",
+  "image": "${constant.imgContext}${path}",  
+  "author": {
+    "@type": "",
+    "name": ""
+  },  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cube SoftTech",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "${constant.webPath}/pages-front/img/logo/cubesofttech.png"
+    }
+  },
+  "datePublished": "${job.timeCreate}"
+}
+</script>
 <style>
 .parallax {
 	background-image: url("/pages-front/img/job/bg.jpg");
