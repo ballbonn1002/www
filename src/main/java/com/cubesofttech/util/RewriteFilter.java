@@ -68,7 +68,7 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
             throws IOException, ServletException {
     	String requestURI = this.getRequestURI(request);
     	log.debug("RewriteFilterget Request URI : " + requestURI);
-    	
+    	request.setAttribute("bloguri", requestURI);
     	PageUri pageUri = null;
 		try {
 			pageUri = pageUriDAO.findById(requestURI);

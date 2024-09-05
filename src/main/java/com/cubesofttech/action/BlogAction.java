@@ -224,8 +224,9 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
 			
 			Blog blog = blogDAO.findByArticleId(getArticleId());
-			request.setAttribute("blog", blog);
 			
+			request.setAttribute("blog", blog);
+			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
 			
 			if(blog != null && !"".equals(blog.getFileId())) {
