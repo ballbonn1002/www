@@ -283,13 +283,10 @@ p {
 }
 
 .footerbg {
-	background-color: #212121;
+	background-color: white;
 	text-align: center;
 	padding-left: 10%;
 	padding-right: 10%;
-	width:100%;
-	height:504px;
-	padding:50px 216px 50px 216px;
 }
 
 .vl {
