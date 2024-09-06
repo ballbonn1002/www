@@ -221,7 +221,15 @@ public class BlogAction extends ActionSupport {
 		try {
 			log.debug(getArticleId());
 			
-			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
+			String requestURI = (String) request.getAttribute("rewrittenRequestURI");
+	        if (requestURI == null) {
+	            requestURI = request.getRequestURI(); // Fallback if not set
+	        }
+	        log.debug("Request URI: " + requestURI);
+	        
+	        // Set attributes for JSP
+	        request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
+	        request.setAttribute("bloguri", requestURI);
 			
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			

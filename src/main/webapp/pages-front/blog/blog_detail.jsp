@@ -5,6 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="${blog.topic}">
+<meta property="og:image" content="${constant.imgContext}${path}">
+<meta property="og:url" content="http://www.cubesofttech.com/${bloguri}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cube SoftTech">
 
 <script type="application/ld+json">
 {
@@ -317,19 +322,19 @@ hr.detailnew {
 						<h1>${blog.topic}</h1>
 						<h6>
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
-								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com/${bloguri}"
+								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/facebook.png" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://twitter.com/share?url=http://www.cubesofttech.com/${bloguri}"
+								href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/twitter.png" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com/${bloguri}"
+								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/gmail.png" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com/${bloguri}"
+								href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/linkedin.png" width="25px"
 								height="25px"></a>

@@ -63,34 +63,39 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
      * @exception IOException if an input/output error occurs*
      * @exception ServletException if a servlet error occurs
      */
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-    	String requestURI = this.getRequestURI(request);
-    	log.debug("RewriteFilterget Request URI : " + requestURI);
-    	request.setAttribute("bloguri", requestURI);
-    	PageUri pageUri = null;
-		try {
-			pageUri = pageUriDAO.findById(requestURI);
+        if (!(request instanceof HttpServletRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-    	if (pageUri != null) {
-			log.debug("page URI found");
-    		request.setAttribute("title", pageUri.getTitle());
-    		request.setAttribute("meta", pageUri.getMeta());
-    		request.getRequestDispatcher(pageUri.getForwardTo()).forward(request, response);
-    		return;
-    	} else {
-    		request.setAttribute("title", "");
-    		request.setAttribute("meta", metaDescription);
-    		log.debug("do filter chain");
-    		chain.doFilter(request, response);
-    	}
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String requestURI = getRequestURI(httpRequest);
+        log.debug("RewriteFilter get Request URI: " + requestURI);
         
+        PageUri pageUri = null;
+        try {
+            pageUri = pageUriDAO.findById(requestURI);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (pageUri != null) {
+            log.debug("Page URI found");
+            request.setAttribute("title", pageUri.getTitle());
+            request.setAttribute("meta", pageUri.getMeta());
+            request.setAttribute("rewrittenRequestURI", requestURI);
+            request.getRequestDispatcher(pageUri.getForwardTo()).forward(request, response);
+        } else {
+            request.setAttribute("title", "");
+            request.setAttribute("meta", metaDescription);
+            request.setAttribute("rewrittenRequestURI", requestURI);
+            log.debug("Do filter chain");
+            chain.doFilter(request, response);
+        }
     }
+
     
 
 	/**
