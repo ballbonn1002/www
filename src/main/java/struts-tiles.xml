@@ -7,64 +7,61 @@
 <!-- Tutorial : https://www.tutorialspoint.com/struts_2/struts_tiles.htm -->
 
 <tiles-definitions>
-	<!-- Front-End BASE LAYOUT -->
-	
-	<definition name="frontBaseLayout"
-		template="/pages-front/_layout/baseLayout.jsp">
-		<put-attribute name="title" value="Base Layout" />
-		<put-attribute name="header"
-			value="/pages-front/_layout/header.jsp" />
-		<put-attribute name="body"
-			value="/pages-front/_layout/body.jsp" />
-		<put-attribute name="footer"
-			value="/pages-front/_layout/footer.jsp" />
-	</definition>
-	
-	<definition name="home" extends="frontBaseLayout">
-		<put-attribute name="title" value="CubeSoftTech : Professional IT People, Innovative IT Solutions, Custom Software Solutions, Mobile Software Development, Software Development, IT Outsource" />
-		<put-attribute name="body"
-			value="/pages-front/home/home.jsp" />
-	</definition>
-	
-	<definition name="services" extends="frontBaseLayout">
-		<put-attribute name="title" value="Services" />
-		<put-attribute name="body"
-			value="/pages-front/services/services.jsp" />
-	</definition>
-	
-	<definition name="careers" extends="frontBaseLayout">
-		<put-attribute name="title" value="Careers" />
-		<put-attribute name="body"
-			value="/pages-front/careers/careers.jsp" />
-	</definition>
-	<definition name="jobDetail" extends="frontBaseLayout">
-		<put-attribute name="title" value=""/>
-		<put-attribute name="body"
-			value="/pages-front/careers/detail.jsp" />
-	</definition>
-	
-		<!-- ARTICLE -->
+    <!-- Front-End BASE LAYOUT -->
+    <definition name="frontBaseLayout" template="/pages-front/_layout/baseLayout.jsp">
+        <put-attribute name="title" value="Base Layout" />
+        <put-attribute name="header" value="/pages-front/_layout/header.jsp" />
+        <put-attribute name="body" value="/pages-front/_layout/body.jsp" />
+        <put-attribute name="footer" value="/pages-front/_layout/footer.jsp" />
+    </definition>
 
-	<definition name="blog" extends="frontBaseLayout">
-		<put-attribute name="title" value="Blog" />
-		<put-attribute name="body"
-			value="/pages-front/blog/blog.jsp" />
-	</definition>
-	<definition name="blog.detail" extends="frontBaseLayout">
-		<put-attribute name="title" value="" />
-		<put-attribute name="body"
-			value="/pages-front/blog/blog_detail.jsp" />
-	</definition>
-	<definition name="news" extends="frontBaseLayout">
-		<put-attribute name="title" value="" />
-		<put-attribute name="body"
-			value="/pages-front/blog/blog.jsp" />
+    <definition name="home" extends="frontBaseLayout">
+        <put-attribute name="title" value="CubeSoftTech - Innovative IT Solutions" />
+        <put-attribute name="body" value="/pages-front/home/home.jsp" />
+    </definition>
+	
+	<definition name="footer" extends="frontBaseLayout">
+    	<put-attribute name="title" value="Footer"/>
+    	<put-attribute name="footer" value="/pages-front/_layout/footer.jsp"/>
 	</definition>
 	
-	<definition name="contacts" extends="frontBaseLayout">
-		<put-attribute name="title" value="Contacts" />
-		<put-attribute name="body"
-			value="/pages-front/contacts/contacts.jsp" />
-	</definition>
+    <definition name="services" extends="frontBaseLayout">
+        <put-attribute name="title" value="Our Services" />
+        <put-attribute name="body" value="/pages-front/services/services.jsp" />
+    </definition>
 
+    <definition name="software_dev" extends="frontBaseLayout">
+        <put-attribute name="title" value="Software Development" />
+        <put-attribute name="body" value="/pages-front/services/software_dev.jsp" />
+    </definition>
+
+    <definition name="careers" extends="frontBaseLayout">
+        <put-attribute name="title" value="Careers at CubeSoftTech" />
+        <put-attribute name="body" value="/pages-front/careers/careers.jsp" />
+    </definition>
+
+    <definition name="jobDetail" extends="frontBaseLayout">
+        <put-attribute name="title" value="Job Details" />
+        <put-attribute name="body" value="/pages-front/careers/detail.jsp" />
+    </definition>
+
+    <definition name="blog" extends="frontBaseLayout">
+        <put-attribute name="title" value="Blog" />
+        <put-attribute name="body" value="/pages-front/blog/blog.jsp" />
+    </definition>
+
+    <definition name="blog.detail" extends="frontBaseLayout">
+        <put-attribute name="title" value="Blog Detail" />
+        <put-attribute name="body" value="/pages-front/blog/blog_detail.jsp" />
+    </definition>
+
+    <definition name="news" extends="frontBaseLayout">
+        <put-attribute name="title" value="News" />
+        <put-attribute name="body" value="/pages-front/blog/blog.jsp" />
+    </definition>
+
+    <definition name="contacts" extends="frontBaseLayout">
+        <put-attribute name="title" value="Contact Us" />
+        <put-attribute name="body" value="/pages-front/contacts/contacts.jsp" />
+    </definition>
 </tiles-definitions>

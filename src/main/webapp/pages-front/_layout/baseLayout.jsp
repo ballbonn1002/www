@@ -12,10 +12,14 @@
 <head>
 <meta charset="utf-8">
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
+<link rel="icon" type="image/x-icon" href="/pages-front/img/logo/favicon.png">
 <meta name="description"
 	content="${meta}">
 <meta name="keywords"
-	content="Java Outsourcing, IT Staff Outsourcing, Outsource IT Staff, IT Outsource, Staff Outsourcing, IT Staffing solutions, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง, IT Solution, IT Consulting, Software Development, Software Solutions, Mobile Software, Mobile Software Development Company, พัฒนาโปรแกรม, พัฒนาซอฟต์แวร์, พัฒนาโมบายล์แอพพลิเคชั่น, โมบายด์แอพพลิเคชั่น, ออกแบบและวิเคราะห์ระบบ, Custom Software solutions, IT Staff Outsourcing services, IT Services, Web Development, JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
+	content="Java Outsourcing, IT Staff Outsourcing, Outsource IT Staff, IT Outsource, 
+	Staff Outsourcing, IT Staffing solutions, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง, IT Solution, IT Consulting, Software Development, 
+	Software Solutions, Mobile Software, Mobile Software Development Company, พัฒนาโปรแกรม, พัฒนาซอฟต์แวร์, พัฒนาโมบายล์แอพพลิเคชั่น, 
+	โมบายด์แอพพลิเคชั่น, ออกแบบและวิเคราะห์ระบบ, Custom Software solutions, IT Staff Outsourcing services, IT Services, Web Development, JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
 <meta name="classification" content="Computers and Internet">
 <meta name="robots" content="all">
 <meta name="googlebot" content="archive">
@@ -93,9 +97,17 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <style>
 body, html {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif;
 	font-size: 15px;
 	scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif;
+}
+
+p	{
+	color:black;
 }
 
 #navbar-hover:hover {
@@ -283,10 +295,13 @@ p {
 }
 
 .footerbg {
-	background-color: white;
+	background-color: #212121;
 	text-align: center;
 	padding-left: 10%;
 	padding-right: 10%;
+	width:100%;
+	height:504px;
+	padding:50px 216px 50px 216px;
 }
 
 .vl {
@@ -309,6 +324,39 @@ p {
 	}
 
 }
+
+
+/* Ensure the dropdown menu doesn't disappear when hovering over it */
+.nav-item .dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%; /* Position below the button */
+    min-width: 160px; /* Adjust width as needed */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* Add a smooth transition for better UX */
+.nav-item.dropdown .dropdown-menu {
+    transition: all 0.3s ease;
+}
+
+.dropdown-item {
+    background-color: transparent!important; /* Removes the default background */
+    color: black!important; /* Sets the text color to black or any other color you prefer */
+}
+
+.dropdown-item:hover {
+    background-color: transparent!important; /* Removes background color on hover */
+    color: black!important; /* Keeps the text color consistent */
+}
+
+.dropdown-item:focus, .dropdown-item.active {
+    background-color: transparent!important; /* Removes background color when item is focused or active */
+    color: black!important; /* Keeps the text color consistent */
+}
+
+
+
 
 @media screen and (min-width: 870px) {
 	.imgservices2 {

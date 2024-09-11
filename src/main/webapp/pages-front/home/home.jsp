@@ -56,6 +56,11 @@
 	}
 
 }
+
+a {
+    color: inherit!important;
+    text-decoration: none!imoportant;
+}
 </style>
 </head>
 <div class="parallax show-on-scroll">

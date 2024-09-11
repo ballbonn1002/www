@@ -129,13 +129,6 @@ p {
 	transition: 0.4s;
 }
 
-.footerbg {
-	background-color: white;
-	text-align: center;
-	padding-left: 10%;
-	padding-right: 10%;
-}
-
 .vl {
 	border-left: 2px solid rgb(233, 233, 233);
 	height: 140px;

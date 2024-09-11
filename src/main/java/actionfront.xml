@@ -2,73 +2,72 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	<constant name="struts.multipart.maxSize" value="30000000" />
-			<!-- Article Front-->
-		<package name="www" namespace="/" extends="default">
-		<result-types>
-			<result-type name="tiles"
-				class="org.apache.struts2.views.tiles.TilesResult" />
-		</result-types>
-		
-		<action name="home"
-			class="com.cubesofttech.action.HomeAction" method="init">
-			<result name="success" type="tiles">home</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		
-		<action name="services"
-			class="com.cubesofttech.action.ServicesAction" method="init">
-			<result name="success" type="tiles">services</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		
-		<action name="careers"
-			class="com.cubesofttech.action.CareersAction" method="init">
-			<result name="success" type="tiles">careers</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		<action name="jobDetail"
-			class="com.cubesofttech.action.CareersAction" method="jobDetail">
-			<result name="success" type="tiles">jobDetail</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		<action name="sendEmailJob"
-			class="com.cubesofttech.action.CareersAction" method="sendEmailJob">
-			<result name="success" type="tiles">jobDetail</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		
-		<action name="blog"
-			class="com.cubesofttech.action.BlogAction" method="init">
-			<result name="success">/pages-front/index.jsp</result>
-			<result name="success" type="tiles">blog</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		<action name="blog_detail"
-			class="com.cubesofttech.action.BlogAction" method="blogDetail">
-			<result name="success">/pages-front/index.jsp</result>
-			<result name="success" type="tiles">blog.detail</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		
-		<action name="news"
-			class="com.cubesofttech.action.BlogAction" method="init">
-			<result name="success">/pages-front/index.jsp</result>
-			<result name="success" type="tiles">news</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		
-		<action name="contacts"
-			class="com.cubesofttech.action.ContactsAction" method="init">
-			<result name="success" type="tiles">contacts</result>
-			<result name="error">/page-front/index.jsp</result>
-		</action>
-		<action name="sendEmailContact"
-			class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
-			<result name="success" type="tiles">contacts</result>
-			<result name="error">/pages-front/index.jsp</result>
-		</action>
-		</package>
+    <constant name="struts.multipart.maxSize" value="30000000" />
+    <!-- Article Front-->
+    <package name="www" namespace="/" extends="default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+        
+        <!-- Actions -->
+        <action name="home" class="com.cubesofttech.action.HomeAction" method="init">
+            <result name="success" type="tiles">home</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+        
+        <action name="footer" class="com.cubesofttech.action.FooterAction" method="list">
+            <result name="success" type="tiles">footer</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
 
+        <action name="services" class="com.cubesofttech.action.ServicesAction" method="init">
+            <result name="success" type="tiles">services</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="software-development" class="com.cubesofttech.action.ServicesAction" method="init">
+            <result name="success" type="tiles">software_dev</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="careers" class="com.cubesofttech.action.CareersAction" method="init">
+            <result name="success" type="tiles">careers</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="jobDetail" class="com.cubesofttech.action.CareersAction" method="jobDetail">
+            <result name="success" type="tiles">jobDetail</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="sendEmailJob" class="com.cubesofttech.action.CareersAction" method="sendEmailJob">
+            <result name="success" type="tiles">jobDetail</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="blog" class="com.cubesofttech.action.BlogAction" method="init">
+            <result name="success" type="tiles">blog</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="blog_detail" class="com.cubesofttech.action.BlogAction" method="blogDetail">
+            <result name="success" type="tiles">blog.detail</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="news" class="com.cubesofttech.action.BlogAction" method="init">
+            <result name="success" type="tiles">news</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="contacts" class="com.cubesofttech.action.ContactsAction" method="init">
+            <result name="success" type="tiles">contacts</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+
+        <action name="sendEmailContact" class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
+            <result name="success" type="tiles">contacts</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+    </package>
 </struts>
-
