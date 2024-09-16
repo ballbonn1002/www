@@ -31,7 +31,7 @@
     </definition>
 
     <definition name="software_dev" extends="frontBaseLayout">
-        <put-attribute name="title" value="Software Development" />
+        <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" />
         <put-attribute name="body" value="/pages-front/services/software_dev.jsp" />
     </definition>
 

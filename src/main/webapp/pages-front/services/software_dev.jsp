@@ -50,7 +50,9 @@
     z-index: -1; /* Ensure the pseudo-element is behind the content */
 }
 
-
+.pad{
+	padding-left:39px;
+}
 
 
 .parallax2 {
@@ -232,67 +234,55 @@
     </div>
     
     <div data-aos="zoom-out-up" data-aos-duration="800">
-        <div class="d-flex">
+        <div>
             <i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
-            <div class="p-2" style="padding-left:20px !important;">
-            <span style="color:#BD2125; font-weight:bold;">Customer-Focused Software Development Services</span>
-            <p>
+            <span style="color:#BD2125; font-weight:bold; word-break: break-all;">Customer-Focused Software Development Services</span>
+            <p class="pad">
             เรามุ่งมั่นในการพัฒนาโซลูชันซอฟต์แวร์ที่ตอบสนองความต้องการเฉพาะของธุรกิจคุณ 
             ด้วยทีมผู้เชี่ยวชาญที่เข้าใจความท้าทายและเป้าหมายของคุณอย่างลึกซึ้ง พร้อมสร้างสรรค์นวัตกรรมเพื่อขับเคลื่อนความสำเร็จของคุณ
         	</p>
-        	</div>
         </div>
         
 
-        <div class="d-flex">
+        <div>
             <i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
-            <div class="p-2" style="padding-left:20px !important;">
-            <span style="color:#BD2125; font-weight:bold;">Custom Web and Mobile Applications</span>
-            <p>
+            <span style="color:#BD2125; font-weight:bold; word-break: break-all;">Custom Web and Mobile Applications</span>      
+            <p class="pad">
             แอปพลิเคชันเว็บและมือถือแบบกำหนดเอง พัฒนาแอปพลิเคชันที่ออกแบบมาเฉพาะสำหรับธุรกิจของคุณ ทั้งบนเว็บและมือถือ 
             ด้วยประสบการณ์ผู้ใช้ที่ยอดเยี่ยมและฟังก์ชันการทำงานที่ตรงตามความต้องการของคุณอย่างแท้จริง
         	</p>
-        	</div>
         </div>
 
-        <div class="d-flex">
+        <div>
             <i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
-            <div class="p-2" style="padding-left:20px !important;">
-            <span style="color:#BD2125; font-weight:bold;">Data Analytics and Business Intelligence</span>
-            <p>
+            <span style="color:#BD2125; font-weight:bold; word-break: break-all;">Data Analytics and Business Intelligence</span>
+            <p class="pad">
             การวิเคราะห์ข้อมูลและธุรกิจอัจฉริยะ แปลงข้อมูลให้เป็นข้อมูลเชิงลึกที่มีคุณค่า เพื่อการตัดสินใจทางธุรกิจที่ชาญฉลาด
         	</p>
-        	</div>
         </div>
 
-        <div class="d-flex">
+        <div>
             <i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
-            <div class="p-2" style="padding-left:20px !important;">
-            <span style="color:#BD2125; font-weight:bold;">Artificial Intelligence (AI) and Machine Learning (ML) Applications</span>
-            <p>
+            <span style="color:#BD2125; font-weight:bold; word-break: break-word;">Artificial Intelligence (AI) and Machine Learning (ML) Applications</span>
+            <p class="pad">
             แอปพลิเคชัน AI และ Machine Learning นำเทคโนโลยี AI และ ML มาใช้เพื่อเพิ่มประสิทธิภาพและสร้างนวัตกรรมให้กับธุรกิจของคุณ
         	</p>
-        	</div>
         </div>
 
-        <div class="d-flex">
+        <div>
             <i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
-            <div class="p-2" style="padding-left:20px !important;">
-            <span style="color:#BD2125; font-weight:bold;">API Development and Integration</span>
-            <p>
+            <span style="color:#BD2125; font-weight:bold; word-break: break-all;">API Development and Integration</span>
+            <p class="pad">
             การพัฒนาและบูรณาการ API เชื่อมต่อระบบและบริการต่างๆ เข้าด้วยกันอย่างราบรื่นด้วย API ที่ออกแบบมาอย่างดี
         	</p>
-        	</div>
         </div>
 
-        <div class="d-flex">
+        <div>
             <i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
-            <div class="p-2" style="padding-left:20px !important;">
-            <span style="color:#BD2125; font-weight:bold;">Agile Project Management</span>
-            <p>
+            <span style="color:#BD2125; font-weight:bold; word-break: break-all;">Agile Project Management</span>
+            <p class="pad">
             การบริหารโครงการแบบ Agile ใช้วิธีการ Agile เพื่อความยืดหยุ่น การส่งมอบที่รวดเร็ว และการปรับปรุงอย่างต่อเนื่อง
         	</p>
-        	</div>
         </div>
     </div>
 </div>

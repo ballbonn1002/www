@@ -19,7 +19,9 @@
 	content="Java Outsourcing, IT Staff Outsourcing, Outsource IT Staff, IT Outsource, 
 	Staff Outsourcing, IT Staffing solutions, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง, IT Solution, IT Consulting, Software Development, 
 	Software Solutions, Mobile Software, Mobile Software Development Company, พัฒนาโปรแกรม, พัฒนาซอฟต์แวร์, พัฒนาโมบายล์แอพพลิเคชั่น, 
-	โมบายด์แอพพลิเคชั่น, ออกแบบและวิเคราะห์ระบบ, Custom Software solutions, IT Staff Outsourcing services, IT Services, Web Development, JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
+	โมบายด์แอพพลิเคชั่น, ออกแบบและวิเคราะห์ระบบ, Custom Software solutions, IT Staff Outsourcing services, IT Services, Web Development, 
+	JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
+	
 <meta name="classification" content="Computers and Internet">
 <meta name="robots" content="all">
 <meta name="googlebot" content="archive">
@@ -346,13 +348,15 @@ p {
 }
 
 .dropdown-item:hover {
-    background-color: transparent!important; /* Removes background color on hover */
-    color: black!important; /* Keeps the text color consistent */
+    background-color: inherit!important;
+    color: #BD2125!important;
+    border-color: white white #BD2125 !important;
+	border-bottom: 4px solid!important;
+    
 }
 
-.dropdown-item:focus, .dropdown-item.active {
-    background-color: transparent!important; /* Removes background color when item is focused or active */
-    color: black!important; /* Keeps the text color consistent */
+.dropdown-item.active {
+    
 }
 
 
