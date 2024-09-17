@@ -27,6 +27,11 @@
 .parallax2 {
 	background-image: url("../pages-front/img/job/bgsmall.jpg");
 }
+
+a {
+    color: inherit!important;
+    text-decoration: none!imoportant;
+}
 </style>
 
 <div class="parallax show-on-scroll">
