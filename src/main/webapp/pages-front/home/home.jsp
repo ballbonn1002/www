@@ -59,7 +59,7 @@
 
 a {
     color: inherit!important;
-    text-decoration: none!imoportant;
+    text-decoration: none!important;
 }
 </style>
 </head>

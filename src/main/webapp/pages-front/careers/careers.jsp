@@ -27,10 +27,9 @@
 .parallax2 {
 	background-image: url("../pages-front/img/job/bgsmall.jpg");
 }
-
 a {
     color: inherit!important;
-    text-decoration: none!imoportant;
+    text-decoration: none!important;
 }
 </style>
 
