@@ -4,19 +4,20 @@
 <!-- Footer -->
 <footer>
     <div class="footerbg">
-        <div class="container">
+        <div class="container" style="padding-top:20px;">
             <div class="row">
                 <div class="col-md-3" align="left">
+                	<img src="/pages-front/img/logo/logo2-w.png" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
                     <div class="footer-section">
-                        <p class="footer-heading">Cube SoftTech Co., Ltd.</p>
+                        <p class="footer-heading">Cube SoftTech Co., Ltd.</p><br>
                         <a href="https://maps.app.goo.gl/a1N8Xi2qvhbVKFsW8" class="footer-link" target="_blank">
                             160/170-2, 12A Fl., ITF Silom Palace Building Silom Rd., Suriyawong, Bangrak, Bangkok 10500 Thailand
                         </a>
                     </div>
                     <div class="footer-section">
                         <p class="footer-heading">Phone</p>
-                        <p><a href="tel:026798855" class="footer-link">02-679-8855</a> <a href="tel:026344449" class="footer-link">  02-634-4449</a></p>
-                        <p><a href="tel:0880229400" class="footer-link">088-022-9400</a></p>
+                        <p><a href="tel:026798855" class="footer-link">02 679 8855,</a> <a href="tel:026344449" class="footer-link">  02 634 4449,</a><br>
+                        <a href="tel:0880229400" class="footer-link"> 088 022 9400</a></p>
                     </div>
                     <div class="footer-section">
                         <p class="footer-heading">E-mail</p>
@@ -28,56 +29,56 @@
     					<div class="d-flex">
         					<div style="margin-right: 10px;">
             					<a href="https://www.facebook.com/CubeSoftTech" class="footer-link" target="_blank" aria-label="Facebook">
-                				<i class="bi bi-facebook" style="width:20px; height:20px; color:#FFFFFF;"></i>
+                				<i class="bi bi-facebook" style="width:32px; height:32px; color:#FFFFFF;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://lin.ee/2zYeCXX" class="footer-link" target="_blank" aria-label="Line">
-                				<i class="bi bi-line" style="width:20px; height:20px; color:#FFFFFF;"></i>
+                				<i class="bi bi-line" style="width:32px; height:32px; color:#FFFFFF;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://www.tiktok.com/@cubesofttech" class="footer-link" target="_blank" aria-label="TikTok">
-                				<i class="bi bi-tiktok" style="width:20px; height:20px; color:#FFFFFF;"></i>
+                				<i class="bi bi-tiktok" style="width:32px; height:32px; color:#FFFFFF;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://www.linkedin.com/company/cubesofttech" class="footer-link" target="_blank" aria-label="LinkedIn">
-                				<i class="bi bi-linkedin" style="width:20px; height:20px; color:#FFFFFF;"></i>
+                				<i class="bi bi-linkedin" style="width:32px; height:32px; color:#FFFFFF;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://www.youtube.com/channel/UCSYGv-HblWhASgyvD6TJthw" class="footer-link" target="_blank" aria-label="YouTube">
-                				<i class="bi bi-youtube" style="width:24px; height:24px; color:#FFFFFF;"></i>
+                				<i class="bi bi-youtube" style="width:32px; height:32px; color:#FFFFFF;"></i>
             					</a>
         					</div>
     					</div>
 					</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="footer-section text-center">
-                        <a href="/services" class="footer-heading">Services</a><br>
+                <div class="col-md-3" align="left">
+                    <div class="footer-section">
+                        <a href="/services" class="footer-heading" >Services</a><br>
                         <a href="/services" class="footer-link">Services</a><br/>
                         <a href="/software-development" class="footer-link2">Software Development</a><br/>
                         
                     </div>
-                    <div class="footer-section text-center">
+                    <div class="footer-section">
                         <a href="/careers" class="footer-heading">Careers</a><br>
                         <c:forEach var="career" items="${Careers}">
                             <a href="${career.footer_url}" class="footer-link2">${career.footer_name}</a><br/>
                         </c:forEach>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="footer-section text-center">
+                <div class="col-md-3" align="left">
+                    <div class="footer-section">
                         <a href="/blog" class="footer-heading">Blog</a><br>
                         <c:forEach var="blog" items="${Blog}">
                             <a href="${blog.footer_url}" class="footer-link2">${blog.footer_name}</a><br/>
                         </c:forEach>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="footer-section text-center">
+                <div class="col-md-3" align="left">
+                    <div class="footer-section">
                         <a href="/news" class="footer-heading">News</a><br>
                         <c:forEach var="news" items="${News}">
                             <a href="${news.footer_url}" class="footer-link2">${news.footer_name}</a><br/>
@@ -87,6 +88,11 @@
             </div>
         </div>
     </div>
+    	<div class="footerbg" align="center">
+    	<div style="border-top: 1px solid #FFFFFF; width: 70%; margin: 0 auto;"></div>
+    	<font size="2px" style="color:#FFFFFF;"> © 2024. Cube SoftTech Co., Ltd. All rights reserved.</font>
+	</div>
+
 </footer>
 <!-- Footer -->
 
@@ -103,7 +109,7 @@
 
 <style>
 .footerbg {
-    color: #6C757D !important;
+    color: #1a1a1a !important;
     padding: 20px 0;
     height:100%;
 }
@@ -115,7 +121,8 @@
 .footer-heading {
     font-weight: bold;
     color: #FFFFFF !important;
-    margin-bottom: 5px;
+    display:inline-block; 
+    margin-bottom:16px;
     text-decoration: none !important;
 }
 
@@ -134,13 +141,11 @@
 }
 
 .footer-link {
-    color: #6C757D !important;
-    text-decoration: none !important;
+    color:  #999 !important;
 }
 
 .footer-link2 {
-    color: #6C757D !important;
-    text-decoration: none !important;
+    color:  #999 !important;
     display: inline-block;
     width: 200px;
     overflow: hidden;
@@ -149,30 +154,34 @@
 }
 
 
-.footer-link:hover {
-    color: #6C757D !important;
+.footer-link2:hover, .footer-link:hover {
+    color: #FFFFFF !important;
+    text-decoration: none !important;
 }
 
 footer .active {
     border: none !important;
-    color: inherit !important;
-}
+    color: none !important;
 
-/* Ensure that there is no red underline */
-footer .active {
-    text-decoration: none !important;
 }
 
 .d-flex {
     display: flex;
 }
 
+.col-md-3 img {
+    display: block;
+    margin-left: 0;
+}
+
 @media (max-width: 767px) {
-    @media (max-width: 767px) {
     .footer-section {
         text-align: center !important;
     }
-
+    .col-md-3 img {
+        display: block;
+        margin: 0 auto 10px;
+    }
     .d-flex {
         justify-content: center;
         flex-wrap: wrap;
@@ -184,7 +193,6 @@ footer .active {
     }
 }
 
-}
 
 
 
