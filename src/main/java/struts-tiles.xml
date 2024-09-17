@@ -9,7 +9,7 @@
 <tiles-definitions>
     <!-- Front-End BASE LAYOUT -->
     <definition name="frontBaseLayout" template="/pages-front/_layout/baseLayout.jsp">
-        <put-attribute name="title" value="Base Layout" />
+<!--         <put-attribute name="title" value="Base Layout" /> -->
         <put-attribute name="header" value="/pages-front/_layout/header.jsp" />
         <put-attribute name="body" value="/pages-front/_layout/body.jsp" />
         <put-attribute name="footer" value="/pages-front/_layout/footer.jsp" />
@@ -51,7 +51,7 @@
     </definition>
 
     <definition name="blog.detail" extends="frontBaseLayout">
-        <put-attribute name="title" value="Blog Detail" />
+<!--         <put-attribute name="title" value="Blog Detail" /> -->
         <put-attribute name="body" value="/pages-front/blog/blog_detail.jsp" />
     </definition>
 

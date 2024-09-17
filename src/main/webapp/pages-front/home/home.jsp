@@ -70,7 +70,7 @@ a {
 			size="5px">Professional IT People ~ Innovative IT Solutions<br></font>
 		<font size="3px">IT Staff Outsourcing Services | IT consultants
 			| Custom Software Solutions</font> <br> <br> <a href="contacts"
-			class="btn btn-danger btn-lg" role="button">Get in touch</a>
+			class="btn btn-danger btn-lg" role="button" style="color:#FFFFFF!important;">Get in touch</a>
 	</div>
 	<div class="welcomebg">
 		<div class="welcomecon">
@@ -351,7 +351,7 @@ a {
 				</tbody>
 			</table>
 			<p align="right">
-				<a href="careers#jobt" class="btn btn-danger btn-lg" role="button">ALL
+				<a href="careers#jobt" class="btn btn-danger btn-lg" role="button" style="color:#FFFFFF!important;">ALL
 					POSITION</a>
 			</p>
 		</div>
