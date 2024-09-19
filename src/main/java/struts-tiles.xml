@@ -16,12 +16,11 @@
     </definition>
 
     <definition name="home" extends="frontBaseLayout">
-        <put-attribute name="title" value="CubeSoftTech - Innovative IT Solutions" />
+<!--         <put-attribute name="title" value="CubeSoftTech - Innovative IT Solutions" /> -->
         <put-attribute name="body" value="/pages-front/home/home.jsp" />
     </definition>
 	
 	<definition name="footer" extends="frontBaseLayout">
-    	<put-attribute name="title" value="Footer"/>
     	<put-attribute name="footer" value="/pages-front/_layout/footer.jsp"/>
 	</definition>
 	
@@ -31,7 +30,7 @@
     </definition>
 
     <definition name="software_dev" extends="frontBaseLayout">
-        <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" />
+<!--         <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" /> -->
         <put-attribute name="body" value="/pages-front/services/software_dev.jsp" />
     </definition>
 
