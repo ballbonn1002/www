@@ -306,40 +306,42 @@ hr.detailnew {
 		<div class="detail">
 			<div class="row">
 				<div class="col-lg-9" id="articledetail">
+							<c:if test="${!empty path}">
+								<div style="text-align: center;">
+    								<img src=${constant.imgContext}${path}
+    								width="70%" height="70%" style="object-fit: cover; 
+    								margin-bottom: 20px;">
+								</div> 
+							</c:if>
 					<!-- <span id="datetag"></span>|  -->
-					Tags : <font color="#BD2125"><span id="articletag"> <c:forEach
-								var="tag" items="${tags}" varStatus="Count">
-								<c:if test="${tag.article_id eq blog.articleId}">${tag.name} </c:if>
-							</c:forEach>
+					Tags : <font color="#BD2125"><span id="articletag"> 
+							<c:forEach
+ 								var="tag" items="${tags}" varStatus="Count">
+ 								<c:if test="${tag.article_id eq blog.articleId}">${tag.name} </c:if>
+ 							</c:forEach>
 					</span></font>
 					<div class="articledetail">
 						<h1>${blog.topic}</h1>
-						<h6>
+						<p>
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
 								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
-								src="/pages-front/img/articleshares/facebook.png" width="25px"
+								src="/pages-front/img/articleshares/svg/facebook_square.svg" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
 								href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
-								src="/pages-front/img/articleshares/twitter.png" width="25px"
+								src="/pages-front/img/articleshares/svg/twitter_x.svg" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
 								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
-								src="/pages-front/img/articleshares/gmail.png" width="25px"
-								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
+								src="/pages-front/img/articleshares/svg/gmail.svg" width="28px"
+								height="28px"></a>&nbsp;&nbsp;&nbsp; <a
 								href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
-								src="/pages-front/img/articleshares/linkedin.png" width="25px"
+								src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 								height="25px"></a>
-						</h6>
+						</p>
 						<br>
-						<center>
-							<c:if test="${!empty path}">
-								<img src='${constant.imgContext}${path}' width='70%' height='70%'
-									style='object-fit: cover;'>
-							</c:if>
-						</center>
 						<!-- HTML Display here -->
 						<br> ${blog.detail}
 						<!-- HTML Display here -->
@@ -388,8 +390,6 @@ hr.detailnew {
 				</div>
 			</div>
 		</div>
-
-
 	</div>
 </div>
 
@@ -397,10 +397,13 @@ hr.detailnew {
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
+
 	AOS.init();
+	
 	$(document).ready(function() {
 		var requestURI = '${requestURI}';
 		console.log("requestURI: "+requestURI);
@@ -428,6 +431,7 @@ hr.detailnew {
             document.getElementById("myBtn").style.display = "none";
         }
     }
+	
 	function topFunction() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
