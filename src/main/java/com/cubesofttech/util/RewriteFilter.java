@@ -72,7 +72,9 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String requestURI = getRequestURI(httpRequest);
+        requestURI = requestURI.replaceAll("([&?])fbclid=[^&]*(&)?", "$1").replaceAll("[&?]$", "");
         log.debug("RewriteFilter get Request URI: " + requestURI);
+        
         
         PageUri pageUri = null;
         try {
@@ -95,21 +97,6 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
             chain.doFilter(request, response);
         }
     }
-    public static String getRequestURI1(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        String queryString = request.getQueryString();
-
-        if (queryString != null) {
-            // Remove the 'fbclid' parameter from the query string
-            queryString = queryString.replaceAll("fbclid=[^&]*&?", "");
-            if (!queryString.isEmpty()) {
-                return requestURI + "?" + queryString;
-            }
-        }
-
-        return requestURI;
-    }
-
     
 
 	/**
