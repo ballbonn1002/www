@@ -29,6 +29,16 @@
             <result name="success" type="tiles">software_dev</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
+        
+        <action name="it-outsource" class="com.cubesofttech.action.ServicesAction" method="init">
+            <result name="success" type="tiles">it_outsource</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
+        
+        <action name="mobile-app-development" class="com.cubesofttech.action.ServicesAction" method="init">
+            <result name="success" type="tiles">app_dev</result>
+            <result name="error">/pages-front/index.jsp</result>
+        </action>
 
         <action name="careers" class="com.cubesofttech.action.CareersAction" method="init">
             <result name="success" type="tiles">careers</result>

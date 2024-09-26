@@ -627,6 +627,7 @@ a {
 
 	<tiles:insertAttribute name="header" ignore="true" />
 	<tiles:insertAttribute name="body" ignore="true" />
+	<tiles:insertAttribute name="partner" ignore="true" />
 	<tiles:insertAttribute name="footer" ignore="true" />
 </body>
 </html>

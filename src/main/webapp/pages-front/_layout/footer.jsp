@@ -6,7 +6,7 @@
     <div class="footerbg">
         <div class="container" style="padding-top:20px;">
             <div class="row">
-                <div class="col-md-3" align="left">
+                <div class="col-md col-sm col-xs " align="left">
                 	<img src="/pages-front/img/logo/logo2-w.png" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
                     <div class="footer-section">
                         <p class="footer-heading">Cube SoftTech Co., Ltd.</p><br>
@@ -29,37 +29,39 @@
     					<div class="d-flex">
         					<div style="margin-right: 10px;">
             					<a href="https://www.facebook.com/CubeSoftTech" class="footer-link" target="_blank" aria-label="Facebook">
-                				<i class="bi bi-facebook" style="width:32px; height:32px; color:#FFFFFF;"></i>
+                				<i class="bi bi-facebook" style="font-size:24px;  color:#FFFFFF; margin-right:10px;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://lin.ee/2zYeCXX" class="footer-link" target="_blank" aria-label="Line">
-                				<i class="bi bi-line" style="width:32px; height:32px; color:#FFFFFF;"></i>
+                				<i class="bi bi-line" style="font-size:24px; color:#FFFFFF; margin-right:10px;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://www.tiktok.com/@cubesofttech" class="footer-link" target="_blank" aria-label="TikTok">
-                				<i class="bi bi-tiktok" style="width:32px; height:32px; color:#FFFFFF;"></i>
+                				<i class="bi bi-tiktok" style="font-size:24px;  color:#FFFFFF; margin-right:10px;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://www.linkedin.com/company/cubesofttech" class="footer-link" target="_blank" aria-label="LinkedIn">
-                				<i class="bi bi-linkedin" style="width:32px; height:32px; color:#FFFFFF;"></i>
+                				<i class="bi bi-linkedin" style="font-size:24px;  color:#FFFFFF; margin-right:10px;"></i>
             					</a>
         					</div>
         					<div style="margin-right: 10px;">
             					<a href="https://www.youtube.com/channel/UCSYGv-HblWhASgyvD6TJthw" class="footer-link" target="_blank" aria-label="YouTube">
-                				<i class="bi bi-youtube" style="width:32px; height:32px; color:#FFFFFF;"></i>
+                				<i class="bi bi-youtube" style="font-size:24px; color:#FFFFFF;"></i>
             					</a>
         					</div>
     					</div>
 					</div>
                 </div>
-                <div class="col-md-3" align="left">
+                <div class="col-md col-sm col-xs " align="left">
                     <div class="footer-section">
-                        <a href="/services" class="footer-heading" >Services</a><br>
-                        <a href="/services" class="footer-link">Services</a><br/>
-                        <a href="/software-development" class="footer-link2">Software Development</a><br/>
+                        <a href="/services" class="footer-heading">Services</a><br>
+                        <a href="/services" class="footer-link1">Services</a><br>
+                        <a href="/software-development" class="footer-link1">Software Development</a><br>
+                        <a href="/it-outsource" class="footer-link1">IT Outsource</a><br>
+                        <a href="/mobile-app-development" class="footer-link1">Mobile App Development</a><br>
                         
                     </div>
                     <div class="footer-section">
@@ -69,7 +71,7 @@
                         </c:forEach>
                     </div>
                 </div>
-                <div class="col-md-3" align="left">
+                <div class="col-md col-sm col-xs " align="left">
                     <div class="footer-section">
                         <a href="/blog" class="footer-heading">Blog</a><br>
                         <c:forEach var="blog" items="${Blog}">
@@ -77,7 +79,7 @@
                         </c:forEach>
                     </div>
                 </div>
-                <div class="col-md-3" align="left">
+                <div class="col-md col-sm col-xs " align="left">
                     <div class="footer-section">
                         <a href="/news" class="footer-heading">News</a><br>
                         <c:forEach var="news" items="${News}">
@@ -144,6 +146,15 @@
     color:  #999 !important;
 }
 
+.footer-link1 {
+    color:  #999 !important;
+    display: inline-block;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .footer-link2 {
     color:  #999 !important;
     display: inline-block;
@@ -154,7 +165,7 @@
 }
 
 
-.footer-link2:hover, .footer-link:hover {
+.footer-link1:hover, .footer-link2:hover, .footer-link:hover {
     color: #FFFFFF !important;
     text-decoration: none !important;
 }
@@ -185,11 +196,14 @@ footer .active {
     .d-flex {
         justify-content: center;
         flex-wrap: wrap;
-        gap: 10px; /* Use gap to control spacing between icons */
+        gap: 10px;
     }
 
     .d-flex > div {
-        margin: 0; /* Remove margins for more precise control */
+        margin: 0;
+    }
+    i{
+    	margin-right:5px;
     }
 }
 

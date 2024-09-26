@@ -27,11 +27,25 @@
     <definition name="services" extends="frontBaseLayout">
         <put-attribute name="title" value="Our Services" />
         <put-attribute name="body" value="/pages-front/services/services.jsp" />
+        <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
     <definition name="software_dev" extends="frontBaseLayout">
 <!--         <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" /> -->
         <put-attribute name="body" value="/pages-front/services/software_dev.jsp" />
+        <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
+    </definition>
+    
+    <definition name="it_outsource" extends="frontBaseLayout">
+<!--         <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" /> -->
+        <put-attribute name="body" value="/pages-front/services/it_outsource.jsp" />
+        <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
+    </definition>
+    
+    <definition name="app_dev" extends="frontBaseLayout">
+<!--         <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" /> -->
+        <put-attribute name="body" value="/pages-front/services/app_dev.jsp" />
+        <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
     <definition name="careers" extends="frontBaseLayout">

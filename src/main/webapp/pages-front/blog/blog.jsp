@@ -264,10 +264,7 @@ a {
 }
 </style>
 
-<button class="btn btn-sm" onclick="topFunction()" id="myBtn"
-	title="Go to top">
-	<i class="fas fa-arrow-up" style="font-size: 26px;"></i>
-</button>
+
 <!--------------------------home------------------------------------>
 <div class="parallax show-on-scroll">
 	<br>

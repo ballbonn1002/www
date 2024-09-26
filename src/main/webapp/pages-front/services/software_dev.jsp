@@ -1,3 +1,7 @@
+<!-- New SoftDev -->
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -26,28 +30,7 @@
 	scroll-behavior: smooth;
 }
 .parallax {
-    position: relative;
-    min-height: 500px; /* Set a specific height */
-    background-attachment: fixed; /* Create the parallax scrolling effect */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    overflow: hidden; /* Optional: hides anything that overflows the container */
-}
-
-.parallax::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("pages-front/img/services/it_developer_bg.jpg");
-    background-size: cover;
-    background-position: center;
-    filter: blur(8px); /* Apply blur effect */
-    opacity: 0.5; /* Adjust transparency */
-    z-index: -1; /* Ensure the pseudo-element is behind the content */
+	background-image: url("pages-front/img/services/bg2.jpg");
 }
 
 .pad{
@@ -89,6 +72,7 @@
 }
 </style>
 
+
 <div class="parallax show-on-scroll">
 	<div align="center" class="logoservices" data-aos="fade-up"
 		data-aos-duration="800">
@@ -107,6 +91,11 @@
 	<div class="welcomebg">
 		<div class="welcomecon">
 		<div style="padding:40px, 0px, 40px, 0px;">
+			<div data-aos="zoom-out-up" data-aos-duration="800">
+				<div style="text-align: center;">
+    				<img src="/pages-front/img/services/it_developer_bg.jpg" width="60%" height="60%" style="object-fit: cover; margin-bottom: 50px;">
+				</div> 
+			</div>
 			<div data-aos="zoom-out-up" data-aos-duration="800">
 				<h2 style="color:#BD2125; font-weight:bold;">Cube SoftTech บริษัทพัฒนาซอฟต์แวร์ครบวงจร</h2>
 			</div>
@@ -286,14 +275,11 @@
         </div>
     </div>
 </div>
-
-			
 			<div data-aos="zoom-out-up" data-aos-duration="800">
 				<p>หากคุณต้องการพัฒนาระบบเพื่อเพิ่มประสิทธิภาพและยกระดับการทำงานให้กับองค์กรของคุณ สามารถติดต่อเราเพื่อรับคำแนะนำจากทีมงานมืออาชีพได้ทันที</p>	
 			</div>		
 	</div>
 </div>
-<br> <br> <br>
 </div>
 
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap&subset=latin,thai" rel="stylesheet">
@@ -345,3 +331,4 @@
 		}
 	}
 </script>
+	

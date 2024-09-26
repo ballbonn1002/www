@@ -33,6 +33,33 @@
 	/* The image used */
 	background-image: url("pages-front/img/home/bgsmall.jpg");
 }
+.row {
+    display: flex;
+    align-items: stretch;
+}
+
+.col-md-4 {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-md-4, .resize {
+    height: 100%;
+}
+
+.text-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.resize {
+    flex: 1;
+}
+
+
 
 @media screen and (max-width: 870px) {
 	.vl {
@@ -59,7 +86,7 @@
 
 a {
     color: inherit!important;
-    text-decoration: none!important;
+    text-decoration: none!imoportant;
 }
 </style>
 </head>
@@ -74,91 +101,68 @@ a {
 	</div>
 	<div class="welcomebg">
 		<div class="welcomecon">
+		
 			<div data-aos="fade-up" data-aos-duration="800">
-				<p align="center">
-					<b> <font color="#BD2125" size="5px">Welcome to
-							CubeSoftTech</font><br>
-					</b>
-				</p>
+				<h1 style="color:#BD2125!important; font-weight:bold;" align="center">
+				Welcome to CubeSoftTech</h1><br>
 				<p align="center">&nbsp;&nbsp;&nbsp;&nbsp;Cube SoftTech is an
 					innovative, high-quality software development company. We are a
 					professional company, focused on IT consulting, web application
 					development & integration. Our services cover every aspect of web /
 					mobile development, from start to finish. From one off projects to
 					a fully outsourced development team.</p>
-				<br> <br>
 			</div>
+			
 			<div class="row">
-				<div class="col-md-4">
-					<div data-aos="fade-down" data-aos-duration="800">
-						<p align="center">
-							<img height=175px width=215px href="#home"
-								src="pages-front/img/home/icon2.png" alt="Responsive image"><br>
-							<b> <font color="#BD2125" size="5px"><br>We
-									specialize in providing</font>
-							</b>
-						</p>
-					</div>
-					<div class="resize" data-aos="fade-up" data-aos-duration="800">
-						<p>
-							<br>- Professional IT Staff Outsourcing Services.
-						</p>
-						<p>- IT consultants for medium small businesses clients.</p>
-						<p>- Custom Software Solutions in design, development &
-							management,e-business consultation & execution, and Internet
-							technology.</p>
-					</div>
-					<br>
-				</div>
-				<div class="col-md-4">
-					<div data-aos="fade-down" data-aos-duration="800">
-						<p align="center">
-							<img height=175px width=195px href="#home"
-								src="pages-front/img/home/icon1.png" alt="Responsive image"><br>
-							<b> <font color="#BD2125" size="5px"><br>IT Staff
-									Outsourcing Services</font>
-							</b>
-						</p>
-					</div>
-					<div class="resize" data-aos="fade-up" data-aos-duration="800">
-						<p>
-							<br>- Programmer : Java, J2EE, ASP.NET, C#.NET, VB
-						</p>
-						<p>- System Analyst : Object Oriented Analysis and UML</p>
-						<p>- Specialist : COBOL, AS400, SAP, Oracle</p>
-						<p>- Business Analyst, Tester, Test Lead, Test Managers</p>
-						<p>- Project Lead, Project Managers</p>
-						<p>- BI, Network Engineers, DBA</p>
-						<p>- System Engineer, IT Support, Help Desk</p>
-					</div>
-					<br>
-				</div>
-				<div class="col-md-4">
-					<div data-aos="fade-down" data-aos-duration="800">
-						<p align="center">
-							<img height=175px width=175px href="#home"
-								src="pages-front/img/home/icon3.png" alt="Responsive image"><br>
-							<b> <font color="#BD2125" size="5px"><br>Our
-									Software Specialist</font>
-							</b>
-						</p>
-					</div>
-					<div class="resize" data-aos="fade-up" data-aos-duration="800">
-						<p>
-							<br>- Stock & Warehouse Management
-						</p>
-						<p>- Sale Order Workflow</p>
-						<p>- Purchase Order Management System</p>
-						<p>- Online E-Commerce Web Application</p>
-						<p>- Corporate Web Design & Enterprise Content Management
-							(CMS)</p>
-						<p>- Banking System</p>
-						<p>- Customer Relationship Management (CRM)</p>
-						<p>- Enterprise Resource Planning (ERP)</p>
-					</div>
-					<br>
-				</div>
-			</div>
+    <div class="col-md-4">
+        <div data-aos="fade-down" data-aos-duration="800" class="text-center">
+            <img height="175px" width="175px" src="pages-front/img/home/icon2.png" alt="Responsive image" class="img-fluid">
+            <br>
+            <h2 style="color:#BD2125!important; font-weight:bold; font-size:22px;">We specialize in providing</h2>
+        </div>
+        <div class="resize" data-aos="fade-up" data-aos-duration="800" style="margin-bottom:20px!important;">
+            <p><br>- Professional IT Staff Outsourcing Services.</p>
+            <p>- IT consultants for medium small businesses clients.</p>
+            <p>- Custom Software Solutions in design, development & management, e-business consultation & execution, and Internet technology.</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div data-aos="fade-down" data-aos-duration="800" class="text-center">
+            <img height="175px" width="175px" src="pages-front/img/home/icon1.png" alt="Responsive image" class="img-fluid" style="padding-bottom:10px;">
+            <h2 style="color:#BD2125!important; font-weight:bold; font-size:22px;">IT Staff Outsourcing Services</h2>
+        </div>
+        <div class="resize" data-aos="fade-up" data-aos-duration="800" style="margin-bottom:20px!important;">
+            <p><br>- Programmer : Java, J2EE, ASP.NET, C#.NET, VB</p>
+            <p>- System Analyst : Object Oriented Analysis and UML</p>
+            <p>- Specialist : COBOL, AS400, SAP, Oracle</p>
+            <p>- Business Analyst, Tester, Test Lead, Test Managers</p>
+            <p>- Project Lead, Project Managers</p>
+            <p>- BI, Network Engineers, DBA</p>
+            <p>- System Engineer, IT Support, Help Desk</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div data-aos="fade-down" data-aos-duration="800" class="text-center">
+            <img height="175px" width="175px" src="pages-front/img/home/icon3.png" alt="Responsive image" class="img-fluid">
+            <h2 style="color:#BD2125!important; font-weight:bold; font-size:22px;">Our Software Specialist</h2>
+        </div>
+        <div class="resize" data-aos="fade-up" data-aos-duration="800">
+            <p><br>- Stock & Warehouse Management</p>
+            <p>- Sale Order Workflow</p>
+            <p>- Purchase Order Management System</p>
+            <p>- Online E-Commerce Web Application</p>
+            <p>- Corporate Web Design & Enterprise Content Management (CMS)</p>
+            <p>- Banking System</p>
+            <p>- Customer Relationship Management (CRM)</p>
+            <p>- Enterprise Resource Planning (ERP)</p>
+        </div>
+    </div>
+    
+</div>
+<br><br>
+
 		</div>
 	</div>
 
@@ -183,7 +187,7 @@ a {
 							height="100px"><br> <b>
 							<p>
 								<font color="#BD2125" size="5px">Website Development 
-							</p> </font>
+							</font></p> 
 						</b>
 						<div class="resize">&nbsp;&nbsp;Web Programming Language
 							Java, J2EE, JSP, Servlet ASP.NET, VB, VC#, PHP, HTML, AJAX,
@@ -195,7 +199,7 @@ a {
 							height="100px"><br>
 							<p>
 								<font color="#BD2125" size="5px">Enterprise Technology 
-							</p> </font> </b>
+							</font></p>  </b>
 						<div class="resize">&nbsp;&nbsp;UML, RUP, SOA Web 2.0, SOAP,
 							Web Service,</div>
 					</div>
@@ -207,7 +211,7 @@ a {
 							height="100px"><br>
 							<p>
 								<font color="#BD2125" size="5px">Database Technology 
-							</p> </font> </b>
+							</font></p>  </b>
 						<div class="resize">&nbsp;&nbsp;Oracle, MySQL, SQL SERVER,
 							DB2, Sybase, PostgreSQL</div>
 					</div>
@@ -218,8 +222,9 @@ a {
 								height="100px"><br>
 							<p>
 								<font color="#BD2125" size="5px">Smartphone / Tablet 
-							</p>
 							</font>
+							</p>
+							
 					</b>
 					<div class="resize">&nbsp;&nbsp;iPhone, iPad, Andriod, J2ME,
 						BB</div>
@@ -329,18 +334,16 @@ a {
 	<div class="jobbg">
 		<div class="jobon">
 			<div data-aos="fade-down" data-aos-duration="800">
-				<font color="#BD2125">
-					<h2>
+					<p style="font-size:30px; color:#BD2125;">
 						<b>Open Position</b>
-					</h2>
-				</font>
-				<h4>JOIN US!</h4>
+					</p>
+				<p style="font-size:20px; font-weight:normal!important;">JOIN US!</p>
 			</div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="job" items="${jobList}">
 						<tr data-aos="fade-up" data-aos-duration="800">
-							<th><a href="${job.page_uri_id}"><font size="4px">${job.position}</font></a><h6>BTS</h6></th>
+							<th><a href="${job.page_uri_id}"><font size="4px">${job.position}</font></a><p style="font-size:20px; font-weight:normal!important;">BTS</p></th>
 							<th>
 								<div class="d-lg-block">
 								<a href="${job.page_uri_id}"><p align="right">
