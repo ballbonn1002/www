@@ -49,7 +49,7 @@
 
 				<ul class="navbar-nav mr-auto ">
 					<li class=""><b><a class="nav-link " id="navbar-hover"
-							href="/home"
+							href="/"
 							style="padding-left: 30px; padding-right: 30px; color: black">Home</a></b>
 					</li>
 					<!---เมนู out team กับ intership

@@ -616,6 +616,11 @@ a {
 
 
 </style>
+
+ <script>
+   if(location.search) location.replace(location.href.replace(/\?.+/, ""));
+ </script>
+
 </head>
 <body>
 	<!-- Google Tag Manager (noscript) -->

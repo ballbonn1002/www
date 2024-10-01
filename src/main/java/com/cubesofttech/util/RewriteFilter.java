@@ -72,7 +72,6 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String requestURI = getRequestURI(httpRequest);
-        requestURI = requestURI.replaceAll("([&?])fbclid=[^&]*(&)?", "$1").replaceAll("[&?]$", "");
         log.debug("RewriteFilter get Request URI: " + requestURI);
         
         

@@ -8,149 +8,180 @@
 
 
 <url>
-  <loc>http://www.cubesofttech.com/</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/home</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/home</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/services</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/services</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/software-development</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/blog</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/it-outsource</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/contacts</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/mobile-app-development</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/java-programmer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/software-tester</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/front-end-developer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/news</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/business-analyst</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/contacts</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/system-analyst</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers/java-programmer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/mobile-developer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers/software-tester</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/.net-programmer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers/front-end-developer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers-php-programmer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers/business-analyst</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/careers/etl-developer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers/system-analyst</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/blog/what-is-it-outsourcing</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/careers/mobile-developer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.cubesofttech.com/careers/.net-programmer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.cubesofttech.com/careers-php-programmer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.cubesofttech.com/careers/etl-developer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.cubesofttech.com/blog/what-is-outsource</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/blog/what-is-web-developer</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-it-outsourcing</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/blog/what-is-sdlc</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-web-business-analyst</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/blog/what-is-outsource</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-web-software-tester</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/cube-softtech-open-for-internships-and-co-op-positions</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-mobile-application</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/halloween-party-2023</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-web-automation-testing/</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/cube-softtech-volunteer-activities-2023</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-web-application</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/back-office-team-christmas-party-2023</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-web-developer</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/cube-softtech-back-office-team-at-mo-mo-paradise</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/blog/what-is-sdlc</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/congratulations-to-5-years-employees</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/news/cube-softtech-open-for-internships-and-co-op-positions</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/cube-softtech-perk-and-benefits</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/news/halloween-party-2023</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/blog/what-do-you-get-as-it-outsource-employee-with-cube-softtech</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/news/cube-softtech-volunteer-activities-2023</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/cube-open-position-for-hr-admin-and-it-recruiter</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/news/back-office-team-christmas-party-2023</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://www.cubesofttech.com/news/cube-softtech-annual-health-benefits-of-2000-baht</loc>
-  <lastmod>2024-07-22T14:20:07+00:00</lastmod>
+  <loc>https://www.cubesofttech.com/news/cube-softtech-back-office-team-at-mo-mo-paradise</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+<url>
+  <loc>https://www.cubesofttech.com/news/cube-softtech-perk-and-benefits</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.cubesofttech.com/news/cube-open-position-for-hr-admin-and-it-recruiter</loc>
+  <lastmod>2024-10-01T07:53:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
 
 </urlset>
