@@ -71,10 +71,28 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
         }
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String requestURI = getRequestURI(httpRequest);
-        log.debug("RewriteFilter get Request URI: " + requestURI);
         
+        // Get the request URI
+        String requestURI = httpRequest.getRequestURI();
+
+        // Get the query string if it exists
+        String queryString = httpRequest.getQueryString();
         
+        // Log to verify the full request
+        log.debug("Original Request URI: " + requestURI);
+        log.debug("Original Query String: " + queryString);
+        
+        // If there's a query string, concatenate it to the request URI and strip it off
+        if (queryString != null && !queryString.isEmpty()) {
+            requestURI = requestURI + "?" + queryString;
+        }
+
+        // Now remove the query parameters from the full URI
+        requestURI = requestURI.replaceAll("\\?.*$", "");
+        
+        log.debug("Cleaned Request URI: " + requestURI);
+
+        // Continue with the existing logic
         PageUri pageUri = null;
         try {
             pageUri = pageUriDAO.findById(requestURI);
@@ -96,6 +114,7 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
             chain.doFilter(request, response);
         }
     }
+
     
 
 	/**
