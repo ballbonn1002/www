@@ -90,7 +90,9 @@
 		<div style="padding:40px, 0px, 40px, 0px;">
 		<div data-aos="zoom-out-up" data-aos-duration="800">
 			<div style="text-align: center;">
-    			<img src="/pages-front/img/services/it-outsource.jpg" width="60%" height="60%" style="object-fit: cover; margin-bottom: 50px;">
+    			<img src="/pages-front/img/services/it-outsource.jpg" width="60%" height="60%" 
+    			alt="it outsource"
+    			style="object-fit: cover; margin-bottom: 50px;">
 			</div> 
 		</div>
 		<div data-aos="zoom-out-up" data-aos-duration="800">

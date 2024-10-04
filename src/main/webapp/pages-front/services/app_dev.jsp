@@ -110,7 +110,9 @@
 		<div style="padding:40px, 0px, 40px, 0px;">
 		<div data-aos="zoom-out-up" data-aos-duration="800">
 			<div style="text-align: center;">
-    			<img src="/pages-front/img/services/mobile-app-development.jpg" height="450px" style="object-fit: cover; margin-bottom: 50px;">
+    			<img src="/pages-front/img/services/mobile-app-development.jpg" height="450px" 
+    			alt="Mobile App Development"
+    			style="object-fit: cover; margin-bottom: 50px;">
 			</div> 
 		</div>
 		<div data-aos="zoom-out-up" data-aos-duration="800">
@@ -170,7 +172,8 @@
 				<h3 style="color:#BD2125; margin-bottom:20px;">Hybrid Applications</h3>
 			</div>
 			<div data-aos="zoom-out-up" data-aos-duration="800">
-				<p style="word-break: break-word;">ทำทุกอย่างให้ง่ายขึ้นด้วยการพัฒนา Mobile Application แบบ Hybrid Application ลูกผสมระหว่าง Native และ Web Application 
+				<p style="word-break: break-word;">ทำทุกอย่างให้ง่ายขึ้นด้วยการพัฒนา Mobile Application แบบ Hybrid Application ลูกผสมระหว่าง Native และ 
+				<a href="https://www.cubesofttech.com/blog/what-is-web-application" target="_blank">Web Application</a> 
 				ที่จะทำให้คุณสามารถใช้งาน แอปพลิเคชันได้ทุกแพลตฟอร์มจากการเขียนโค้ดเพียงชุดเดียว มีข้อดีทั้งประหยัดเวลาในการพัฒนาแอปพลิเคชัน ประหยัดต้นทุน อัปเดตง่าย และใช้งานได้อย่างเต็มที่</p>
 				<br>
 			</div>

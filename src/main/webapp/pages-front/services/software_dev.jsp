@@ -93,7 +93,9 @@
 		<div style="padding:40px, 0px, 40px, 0px;">
 			<div data-aos="zoom-out-up" data-aos-duration="800">
 				<div style="text-align: center;">
-    				<img src="/pages-front/img/services/it_developer_bg.jpg" width="60%" height="60%" style="object-fit: cover; margin-bottom: 50px;">
+    				<img src="/pages-front/img/services/it_developer_bg.jpg" width="60%" height="60%" 
+    				alt="software development"
+    				style="object-fit: cover; margin-bottom: 50px;">
 				</div> 
 			</div>
 			<div data-aos="zoom-out-up" data-aos-duration="800">
@@ -108,7 +110,8 @@
 				เรามุ่งมั่นที่จะพัฒนาระบบการทำงานผ่านการนำเสนอ Solution ที่ล้ำสมัย ด้วยบริการ Software Development
 				ที่จะช่วยเพิ่มประสิทธิภาพในการทำงานให้กับทุกองค์กร
 				เรามีทีมงานมืออาชีพที่พร้อมให้คำแนะนำระบบซอฟต์แวร์ที่ตอบสนองต่อการทำงานสำหรับองค์กร ด้วยประสบการณ์กว่า
-				10 ปี เราสามารถวิเคราะห์ความต้องการของลูกค้าได้อย่างตรงจุด และออกแบบหรือจัดหา IT Oursource
+				10 ปี เราสามารถวิเคราะห์ความต้องการของลูกค้าได้อย่างตรงจุด และออกแบบหรือจัดหา <a href="https://www.cubesofttech.com/it-outsource" 
+				target="_blank">IT Oursource</a>
 				ให้ตรงกับความต้องการสำหรับลูกค้าแต่ละรายโดยเฉพาะ หากคุณกำลังมองหาผู้พัฒนาซอฟต์แวร์ Cube SoftTech
 				ยินดีให้บริการ</p>
 				<br><br>
@@ -137,7 +140,8 @@
             		<img src="/pages-front/img/services/softdev_icon/web_design_icon.png" 
             		alt="Responsive image" style="width: 85px; height: 85px; object-fit: cover;" class="imgservices mb-3">
             		<h3 style="color:#BD2125; font-weight:bold;">Custom Web and Mobile Applications</h3>
-            		<p style="word-break: break-word; ">บริการออกแบบเว็บไซต์และโมบายแอปพลิเคชัน
+            		<p style="word-break: break-word; ">บริการออกแบบเว็บไซต์และโมบายแอปพลิเคชัน <a href="https://www.cubesofttech.com/blog/what-is-mobile-application" 
+				target="_blank">Mobile application</a> 
             		ยกระดับการดำเนินงานด้วยแอปพลิเคชันบนมือถือและเว็บไซต์ที่ออกแบบเฉพาะสำหรับองค์กรของคุณ
             		เพิ่มประสิทธิภาพและสร้างความประทับใจให้ลูกค้า</p>
         		</div>
