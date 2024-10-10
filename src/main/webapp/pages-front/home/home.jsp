@@ -215,17 +215,17 @@ a {
 						<div class="resize">&nbsp;&nbsp;Oracle, MySQL, SQL SERVER,
 							DB2, Sybase, PostgreSQL</div>
 					</div>
-					<b>
+					
 						<div class="col-md-6" data-aos="fade-up" data-aos-duration="800">
 							<br> <img class="icon" href="#home"
 								src="pages-front/img/home/icon7.png" alt="Responsive image"
 								height="100px"><br>
 							<p>
-								<font color="#BD2125" size="5px">Smartphone / Tablet 
+								<font color="#BD2125" size="5px"><b>Smartphone / Tablet </b>
 							</font>
 							</p>
 							
-					</b>
+					
 					<div class="resize">&nbsp;&nbsp;iPhone, iPad, Andriod, J2ME,
 						BB</div>
 				</div>

@@ -240,6 +240,7 @@ public class BlogAction extends ActionSupport {
 			if(blog != null && !"".equals(blog.getFileId())) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
 				log.debug(blog.getFileId());
+				request.setAttribute("name", file.getName());
 				request.setAttribute("path", file.getPath());
 			}
 			
