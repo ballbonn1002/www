@@ -13,7 +13,7 @@
 	crossorigin="anonymous"></script>
 
 <!-- Main Header -->
-<div class="header" style="padding-bottom: 10px !important">
+<div class="header" style="margin-bottom: 10px !important">
 	<div class="progress-container"></div>
 	<div class="" id="myBar" sytle="padding-bottom:0px!important">
 		<!--Navbar-->
@@ -126,15 +126,32 @@
 			<!-- Collapsible content -->
 		</nav>
 	</div>
+	
 </div>
 <!--/.Navbar-->
 <button class="btn btn-sm" onclick="topFunction()" id="myBtn"
 	title="Go to top">
-	<i class="fa fa-arrow-up" style="font-size: 26px;"></i>
+	<i class="fas fa-arrow-up" style="font-size: 26px; text-align:center;"></i>
 </button>
 <!-- endmenu -->
 
 <style>
+
+#myBtn {
+    padding: 10px;
+  }
+
+  @media (max-width: 767px) {
+    #myBtn {
+      padding: 5px;
+      font-size: 12px;
+    }
+
+    #myIcon {
+      font-size: 18px;
+    }
+  }
+
 /* Dropdown Menu */
 .dropdown-menu {
     display: none; /* Hide by default */

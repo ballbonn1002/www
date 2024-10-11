@@ -20,10 +20,6 @@
         <put-attribute name="body" value="/pages-front/home/home.jsp" />
     </definition>
 	
-	<definition name="footer" extends="frontBaseLayout">
-    	<put-attribute name="footer" value="/pages-front/_layout/footer.jsp"/>
-	</definition>
-	
     <definition name="services" extends="frontBaseLayout">
         <put-attribute name="title" value="Our Services" />
         <put-attribute name="body" value="/pages-front/services/services.jsp" />
