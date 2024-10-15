@@ -308,7 +308,7 @@ hr.detailnew {
 				<div class="col-lg-9" id="articledetail">
 							<c:if test="${!empty path}">
 								<div style="text-align: center;">
-    								<img src=${constant.imgContext}${path}
+    								<img src="${constant.imgContext}${path}"
     								width="70%" height="70%" style="object-fit: cover; 
     								margin-bottom: 20px;" alt= "${name}">
 								</div> 
