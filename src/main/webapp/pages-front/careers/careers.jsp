@@ -45,10 +45,10 @@ a {
 	<div class="jobbg">
 		<div class="jobon">
 			<div data-aos="fade-up" data-aos-duration="800">
-				<p align="center">
+				<h1 align="center">
 					<b> <font color="#BD2125" size="5px">Why Cube SoftTech</font><br>
 					</b>
-				</p>
+				</h1>
 				<p align="center">As a company that is experiencing rapid
 					growth, Cube SoftTech is always open to adding bright and motivated
 					individuals to our strong talent pool. We are committed to

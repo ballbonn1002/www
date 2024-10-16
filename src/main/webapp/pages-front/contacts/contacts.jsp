@@ -65,9 +65,9 @@
 			<div class="row">
 				<div class="col-lg-6 col-xs-12" data-aos="zoom-in"
 					data-aos-duration="800">
-					<b> <font color="#BD2125" size="4px"> Cube SoftTech
+					<h1 style="font-weight:bold;"><b> <font color="#BD2125" size="4px"> Cube SoftTech
 							Co.,Ltd.</font><br> <br>
-					</b>
+					</b></h1>
 					<div class="row">
 						<div class="col-sm-2" align="center">
 							<img src="pages-front/img/contact/icon06.png" width="40" height="40" />
@@ -81,7 +81,7 @@
 							<img alt="" src="pages-front/img/contact/icon09.png" width="50" height="50">
 						</div>
 						<div class="col-sm-9 contact-sm" style="padding-top: 14px">
-							02 679 8855, 088 022 9400</div>
+							<a href="tel:026798855">02 679 8855</a>, <a href="tel:0880229400">088 022 9400</a></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-2 contact-sm" align="center">

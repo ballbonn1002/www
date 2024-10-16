@@ -144,7 +144,7 @@ p	{
 
 .active {
 	border-color: white white #BD2125 !important;
-	border-bottom: 4px solid;
+	border-bottom: 4px solid!important;
 	color: #BD2125 !important;
 }
 
@@ -345,6 +345,7 @@ p {
 .dropdown-item {
     background-color: transparent!important; /* Removes the default background */
     color: black!important; /* Sets the text color to black or any other color you prefer */
+    
 }
 
 .dropdown-item:hover {
@@ -356,7 +357,7 @@ p {
 }
 
 .dropdown-item.active {
-    
+    border: none!important;
 }
 
 
