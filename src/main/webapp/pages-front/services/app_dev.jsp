@@ -271,8 +271,7 @@
             			<span style="color:#BD2125; font-weight:bold; word-break: break-all;">รูปแบบการทำงานที่หลากหลาย</span>
             			<p class="pad">
             				เราสามารถเขียนโปรแกรมได้หลายภาษา ไม่ว่าจะเป็น Java, J2EE, JSP, Servlet ASP.NET, VB, VC#, PHP, HTML, AJAX, jQuery, 
-            				XML เพื่อสร้าง <a href="https://www.cubesofttech.com/blog/what-is-mobile-application" 
-							target="_blank">Mobile App </a>ได้ทุกระบบปฏิบัติการ
+            				XML เพื่อสร้าง Mobile App ได้ทุกระบบปฏิบัติการ
         				</p>
         			</div>
         			
