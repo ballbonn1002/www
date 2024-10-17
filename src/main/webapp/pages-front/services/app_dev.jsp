@@ -119,9 +119,7 @@
 				<p style="word-break: break-word;">“บริการพัฒนาแอปพลิเคชันบนสมาร์ตโฟนสำหรับองค์กรโดยผู้เชี่ยวชาญมากประสบการณ์”</p>
 		</div>
 		<div data-aos="zoom-out-up" data-aos-duration="800">
-				<p style="word-break: break-word;">เพิ่มขีดจำกัดในการแข่งขันทางธุรกิจ พร้อมก้าวสู่ความสำเร็จ ด้วยการพัฒนา 
-				<a href="https://www.cubesofttech.com/blog/what-is-mobile-application" 
-				target="_blank">Mobile App Development </a>
+				<p style="word-break: break-word;">เพิ่มขีดจำกัดในการแข่งขันทางธุรกิจ พร้อมก้าวสู่ความสำเร็จ ด้วยการพัฒนา Mobile App Development
 				กับทีมพัฒนาซอฟต์แวร์มืออาชีพ ลดภาระงานในองค์กร เพิ่มประสิทธิภาพการทำงาน และมอบประสบการณ์ที่ดีให้กับลูกค้าของคุณ</p>
 				<br>
 		</div>
@@ -129,8 +127,7 @@
 				<h2 style="color:#BD2125; font-weight:bold;margin-bottom:20px;">Mobile App Development คืออะไร</h2>
 			</div>
 			<div data-aos="zoom-out-up" data-aos-duration="800">
-				<p style="word-break: break-word;"><a href="https://www.cubesofttech.com/blog/what-is-mobile-application" 
-				target="_blank">Mobile App Development </a> คือกระบวนการออกแบบและสร้างแอปพลิเคชันที่ใช้กับสมาร์ตโฟนหรือแท็บเล็ตที่สามารถใช้ได้ทั้งสำหรับระบบปฏิบัติการ 
+				<p style="word-break: break-word;">Mobile App Development คือกระบวนการออกแบบและสร้างแอปพลิเคชันที่ใช้กับสมาร์ตโฟนหรือแท็บเล็ตที่สามารถใช้ได้ทั้งสำหรับระบบปฏิบัติการ 
 				iOS และ Android มีกระบวนการตั้งแต่การวางแผน การออกแบบ พัฒนาและทดสอบก่อนใช้งานจริง ซึ่งการพัฒนาแอปพลิเคชันบนมือถือนั้นจะมีการคำนึงถึงปัจจัยต่าง ๆ ไม่ว่าจะเป็นการรองรับการใช้งาน 
 				การออกแบบ UX/UI และประสิทธิภาพของการใช้งาน รวมถึงความปลอดภัยของข้อมูลผู้ใช้งานอีกด้วย</p>
 				<br>
@@ -292,8 +289,7 @@
             			<i class="bi bi-check-circle-fill p-2" style="font-size: 1.2em; vertical-align: middle; color:green"></i> 
             			<span style="color:#BD2125; font-weight:bold; word-break: break-all;">ช่วยประหยัดทรัพยากรได้มากกว่า</span>
             			<p class="pad">
-            				การเลือกใช้บริการทำ <a href="https://www.cubesofttech.com/blog/what-is-mobile-application" 
-							target="_blank">Mobile App Development</a> กับองค์กรที่มีความเชี่ยวชาญจะช่วยลดต้นทุนและประหยัดเวลาในการพัฒนาแอปพลิเคชันได้มากกว่า 
+            				การเลือกใช้บริการทำ Mobile App Development กับองค์กรที่มีความเชี่ยวชาญจะช่วยลดต้นทุนและประหยัดเวลาในการพัฒนาแอปพลิเคชันได้มากกว่า 
             				อีกทั้งยังช่วยให้พนักงานในองค์กรของคุณสามารถโฟกัสกับหน้าที่หลักได้อย่างมีประสิทธิภาพ
         				</p>
         			</div>
