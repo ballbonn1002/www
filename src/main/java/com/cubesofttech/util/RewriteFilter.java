@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,15 +66,20 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        if (!(request instanceof HttpServletRequest)) {
+        if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
             chain.doFilter(request, response);
             return;
         }
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         
-        // Get the request URI
+        // Get the context path and request URI
+        String contextPath = httpRequest.getContextPath();
         String requestURI = httpRequest.getRequestURI();
+        
+        // Remove the context path from the request URI for simpler comparison
+        String relativeURI = requestURI.substring(contextPath.length());
 
         // Get the query string if it exists
         String queryString = httpRequest.getQueryString();
@@ -82,6 +88,14 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
         log.debug("Original Request URI: " + requestURI);
         log.debug("Original Query String: " + queryString);
         
+        // Check if the relative URI is "/home" and redirect to "/"
+        if ("/home".equals(relativeURI)) {
+            String redirectTo = contextPath + "/";
+            log.debug("/home change to: " + redirectTo);
+            httpResponse.sendRedirect(redirectTo);
+            return; // Exit the filter after the redirect
+        }
+
         // If there's a query string, concatenate it to the request URI and strip it off
         if (queryString != null && !queryString.isEmpty()) {
             requestURI = requestURI + "?" + queryString;
@@ -115,7 +129,7 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
         }
     }
 
-    
+
 
 	/**
      * Return the filter configuration object for this filter.
