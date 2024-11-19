@@ -23,7 +23,7 @@
 	JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
 	
 <meta name="classification" content="Computers and Internet">
-<meta name="robots" content="all">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot" content="archive">
 <meta name="distribution" content="Global">
 <meta name="language" content="en-th">
