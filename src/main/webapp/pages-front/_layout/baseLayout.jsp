@@ -16,15 +16,11 @@
 <meta name="description"
 	content="${meta}">
 <meta name="keywords"
-	content="Java Outsourcing, IT Staff Outsourcing, Outsource IT Staff, IT Outsource, 
-	Staff Outsourcing, IT Staffing solutions, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง, IT Solution, IT Consulting, Software Development, 
-	Software Solutions, Mobile Software, Mobile Software Development Company, พัฒนาโปรแกรม, พัฒนาซอฟต์แวร์, พัฒนาโมบายล์แอพพลิเคชั่น, 
-	โมบายด์แอพพลิเคชั่น, ออกแบบและวิเคราะห์ระบบ, Custom Software solutions, IT Staff Outsourcing services, IT Services, Web Development, 
-	JAVA Development, J2EE Web Development, รับพัฒนาโปรแกรมภาษา Java, จาวา, project management, it consultancy">
+	content="">
 	
 <meta name="classification" content="Computers and Internet">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="googlebot" content="archive">
+<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="distribution" content="Global">
 <meta name="language" content="en-th">
 <meta name="rating" content="General">
