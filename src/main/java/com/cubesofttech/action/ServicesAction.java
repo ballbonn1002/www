@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.model.Blog;
+import com.cubesofttech.system.Constant;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ServicesAction extends ActionSupport {
@@ -16,13 +18,18 @@ public class ServicesAction extends ActionSupport {
 	HttpServletRequest request = ServletActionContext.getRequest();
 	HttpServletResponse response = ServletActionContext.getResponse();
 	
+	@Autowired
+	private Constant constant;
+	
 	public String init() {
-		List<Blog> blogList = null;
+		
 		try {			
-			
+			request.setAttribute("constant", constant);
+			log.debug(constant.getWebPath());
 			
 			return SUCCESS;
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error(e);
 			return ERROR;
 		}

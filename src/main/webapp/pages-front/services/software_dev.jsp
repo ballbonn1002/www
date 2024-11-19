@@ -10,14 +10,14 @@
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Cube SoftTech.Co., Ltd.",
+      "name": "Home",
       "item": "${constant.webPath}/"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Cube SoftTech Services",
-      "item": "${constant.webPath}/services"
+      "name": "Software development",
+      "item": "${constant.webPath}"
     }
   ]
 }
