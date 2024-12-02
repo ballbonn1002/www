@@ -280,7 +280,14 @@ a {
 
 	</div>
 	<div class="articleblockbg">
-		
+		<div>
+			<ul class="breadcrumb">
+				<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
+				<li><a href="${requestURI}">
+					<c:if test="${fn:contains(requestURI, 'blog')}">Blog</c:if>
+					<c:if test="${fn:contains(requestURI, 'news')}">News</c:if></a></li>
+			</ul>
+		</div>
 		<div id="articledetail1">
 			<div class="row articleblockbg2">
 				<div class="col-lg-6">

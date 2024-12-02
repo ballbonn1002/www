@@ -611,6 +611,11 @@ a {
 	left: 0;
 }
 
+a {
+  color: inherit !important; /* ใช้สีเดียวกับพ่อแม่ขององค์ประกอบ */
+  text-decoration: none; /* ถ้าต้องการลบเส้นใต้ด้วย */
+}
+
 
 </style>
 

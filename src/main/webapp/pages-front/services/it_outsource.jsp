@@ -1,4 +1,5 @@
 <!-- New SoftDev -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="application/ld+json">
 {
@@ -83,9 +84,18 @@
 	</div>
 
 
-
-
 	<div class="welcomebg">
+		<div>
+			<ul class="breadcrumb">
+				<li><a href="/home">Home</a>&nbsp;>&nbsp;</li>
+				<c:if test="${page.model != null}">
+					<li><a href="/services" style="text-transform: capitalize" id="model">${page.model}</a>&nbsp;>&nbsp;</li>
+				</c:if>
+				<c:if test="${page.pageUriId != null}">
+					<li><a href="${requestURI}" id="parent">IT Outsource</a></li>
+				</c:if>
+			</ul>
+		</div>
 		<div class="welcomecon">
 		<div style="padding:40px, 0px, 40px, 0px;">
 		<div data-aos="zoom-out-up" data-aos-duration="800">
@@ -317,6 +327,8 @@
 <script>
 	$(document).ready(function () {
 		$('a[href^="/services"]').addClass('active');
+		$('#parent').addClass('active');
+		$('#model').removeClass('active');
 		$('nav-link').addClass('navbar-hover');
 		
 	});

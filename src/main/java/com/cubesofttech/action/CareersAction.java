@@ -108,6 +108,11 @@ public class CareersAction extends ActionSupport {
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("constant", constant);
+			
+			String requestURI = RewriteFilter.getRequestURI(request);
+			log.debug(requestURI);
+			request.setAttribute("requestURI", requestURI);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,6 +128,10 @@ public class CareersAction extends ActionSupport {
 			log.debug(job.getPosition());
 			request.setAttribute("job", job);
 			request.setAttribute("jobId", job_id);
+			
+			String requestURI = RewriteFilter.getRequestURI(request);
+			log.debug(requestURI);
+			request.setAttribute("requestURI", requestURI);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

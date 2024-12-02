@@ -43,6 +43,12 @@ a {
 			consultants | Custom Software Solutions</font> <br> <br>
 	</div>
 	<div class="jobbg">
+		<div>
+			<ul class="breadcrumb">
+				<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
+				<li><a href="${requestURI}">Careers</a></li>
+			</ul>
+		</div>
 		<div class="jobon">
 			<div data-aos="fade-up" data-aos-duration="800">
 				<h1 align="center">
