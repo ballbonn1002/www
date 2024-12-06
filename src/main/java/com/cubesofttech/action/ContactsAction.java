@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ContactsAction extends ActionSupport {
@@ -95,6 +96,9 @@ public class ContactsAction extends ActionSupport {
 	public String init() {
 		try {			
 			request.setAttribute("constant", constant);
+			String requestURI = RewriteFilter.getRequestURI(request);
+			log.debug(requestURI);
+			request.setAttribute("requestURI", requestURI);
 			
 			return SUCCESS;
 		} catch (Exception e) {

@@ -109,9 +109,9 @@
 	<div class="welcomebg">
 		<div>
 			<ul class="breadcrumb">
-				<li><a href="/home">Home</a>&nbsp;>&nbsp;</li>
+				<li><a href="/home">Home</a>&nbsp;/&nbsp;</li>
 				<c:if test="${page.model != null}">
-					<li><a href="/services" style="text-transform: capitalize" id="model">${page.model}</a>&nbsp;>&nbsp;</li>
+					<li><a href="/services" style="text-transform: capitalize" id="model">${page.model}</a>&nbsp;/&nbsp;</li>
 				</c:if>
 				<c:if test="${page.pageUriId != null}">
 					<li><a href="${requestURI}" id="parent">Mobile App Development</a></li>
@@ -406,7 +406,7 @@
 <script>
 	$(document).ready(function () {
 		$('a[href^="/services"]').addClass('active');
-		$('#parent').addClass('active');
+		//$('#parent').addClass('active');
 		$('#model').removeClass('active');
 		$('nav-link').addClass('navbar-hover');
 		

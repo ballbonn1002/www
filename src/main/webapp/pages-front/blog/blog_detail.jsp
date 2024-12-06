@@ -306,11 +306,11 @@ hr.detailnew {
 		<div class="detail">
 			<div>
 				<ul class="breadcrumb">
-					<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
-					<li><a href="javascript:history.back()">
+					<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
+					<li><a href="javascript:history.back()" id="model">
 						<c:if test="${fn:contains(requestURI, 'blog')}">Blog</c:if>
-						<c:if test="${fn:contains(requestURI, 'news')}">News</c:if></a>&nbsp;>&nbsp;</li>
-					<li><a href="/" id="parent">${blog.topic}</a></li>
+						<c:if test="${fn:contains(requestURI, 'news')}">News</c:if></a>&nbsp;/&nbsp;</li>
+					<li><a href="${requestURI}" id="parent">${blog.topic}</a></li>
 				</ul>
 			</div>
 			<div class="row">
@@ -421,7 +421,7 @@ hr.detailnew {
 		}else{
 			$('a[href="/news"]').addClass('active');
 		}
-		$('#parent').addClass('active');
+		$('#parent').removeClass('active');
 	});
 	
 	function showNav() {

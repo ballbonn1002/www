@@ -282,8 +282,8 @@ a {
 	<div class="articleblockbg">
 		<div>
 			<ul class="breadcrumb">
-				<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
-				<li><a href="${requestURI}">
+				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
+				<li><a href="${requestURI}" id="model">
 					<c:if test="${fn:contains(requestURI, 'blog')}">Blog</c:if>
 					<c:if test="${fn:contains(requestURI, 'news')}">News</c:if></a></li>
 			</ul>
@@ -355,7 +355,7 @@ a {
 		}else{
 			$('a[href="/news"]').addClass('active');
 		}
-		
+		$('#model').removeClass('active');
 	});
 	
 	function showNav() {

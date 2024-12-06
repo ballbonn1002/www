@@ -34,9 +34,9 @@
 	<div class="detail" data-aos="zoom-in" data-aos-duration="800">
 		<div>
 			<ul class="breadcrumb">
-				<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
-				<li><a href="javascript:history.back()">Careers</a>&nbsp;>&nbsp;</li>
-				<li><a class="active" href="${requestURI}">${job.position}</a></li>
+				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
+				<li><a href="javascript:history.back()">Careers</a>&nbsp;/&nbsp;</li>
+				<li><a href="${requestURI}">${job.position}</a></li>
 			</ul>
 		</div>
 		<c:forEach var="job" items="${job}">

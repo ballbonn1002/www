@@ -417,6 +417,10 @@ a {
 	padding-bottom: 2%;
 }
 
+.breadcrumb {
+    background-color: transparent !important;
+}
+
 .videocon {
 	position: static;
 	overflow: hidden;

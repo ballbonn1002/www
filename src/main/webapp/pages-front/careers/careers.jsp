@@ -45,8 +45,8 @@ a {
 	<div class="jobbg">
 		<div>
 			<ul class="breadcrumb">
-				<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
-				<li><a href="${requestURI}">Careers</a></li>
+				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
+				<li><a href="${requestURI}" id="model">Careers</a></li>
 			</ul>
 		</div>
 		<div class="jobon">
@@ -566,6 +566,7 @@ a {
 	
 	$(document).ready(function() {
 		$('a[href="/careers"]').addClass('active');
+		$('#model').removeClass('active');
 	});
 	
 	window.onscroll = function () { scrollFunction() };
