@@ -90,9 +90,7 @@
 			<div>
 				<ul class="breadcrumb">
 					<li><a href="/home">Home</a>&nbsp;/&nbsp;</li>
-					<c:if test="${page.model != null}">
-						<li><a href="/services" style="text-transform: capitalize" id="model">${page.model}</a>&nbsp;/&nbsp;</li>
-					</c:if>
+					<li><a href="/services" id="model">Services</a>&nbsp;/&nbsp;</li>
 					<li><a class="currentPage">Software Development</a></li>
 				</ul>
 			</div>

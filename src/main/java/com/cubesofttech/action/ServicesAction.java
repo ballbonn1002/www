@@ -33,11 +33,6 @@ public class ServicesAction extends ActionSupport {
 			log.debug(requestURI);
 			request.setAttribute("requestURI", requestURI);
 			
-			PageUri page = pageUriDAO.findById(requestURI);
-			log.debug(page);
-
-			request.setAttribute("page", page);
-			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
