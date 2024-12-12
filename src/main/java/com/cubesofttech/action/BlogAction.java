@@ -245,20 +245,20 @@ public class BlogAction extends ActionSupport {
 			}
 			
 			if(blog.getArticleTypeId().equals(1)) {
-				request.setAttribute("requestURI", "/news");
+				request.setAttribute("pageURI", "/news");
 			}else if(blog.getArticleTypeId().equals(2)) {
-				request.setAttribute("requestURI", "/blog");
+				request.setAttribute("pageURI", "/blog");
 			}
 			
 			List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
-			//log.debug(relatedBlogs);
 			request.setAttribute("relatedBlogs", relatedBlogs);
 			
 			List<Blog> blogList = blogDAO.findAllWithPageUri();
-//			request.setAttribute("relatedBlogs", blogList);
 			request.setAttribute("latestBlogs", blogList);
 			log.debug(constant);
 			request.setAttribute("constant", constant);
+	        request.setAttribute("requestURI", requestURI);
+
 			
 			return SUCCESS;
 		} catch (Exception e) {

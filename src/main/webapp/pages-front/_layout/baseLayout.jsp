@@ -145,6 +145,11 @@ p	{
 	color: #BD2125 !important;
 }
 
+.currentPage {
+	border-color: white white #BD2125 !important;
+	color: #BD2125 !important;
+}
+
 .setpo {
 	margin-right: -20px;
 }

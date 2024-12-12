@@ -129,9 +129,13 @@ public class CareersAction extends ActionSupport {
 			request.setAttribute("job", job);
 			request.setAttribute("jobId", job_id);
 			
-			String requestURI = RewriteFilter.getRequestURI(request);
+			String requestURI = (String) request.getAttribute("rewrittenRequestURI");
+			if (requestURI == null) {
+	            requestURI = request.getRequestURI(); // Fallback if not set
+	        }
 			log.debug(requestURI);
 			request.setAttribute("requestURI", requestURI);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

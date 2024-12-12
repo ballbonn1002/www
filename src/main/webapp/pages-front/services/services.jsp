@@ -67,7 +67,7 @@
 		<div>
 			<ul class="breadcrumb">
 				<li><a href="/">Home</a>&nbsp;>&nbsp;</li>
-				<li><a href="${requestURI}">Services</a></li>
+				<li><a class="currentPage">Services</a></li>
 			</ul>
 		</div>
 		<div class="welcomecon">

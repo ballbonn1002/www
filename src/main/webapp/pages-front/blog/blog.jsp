@@ -283,7 +283,7 @@ a {
 		<div>
 			<ul class="breadcrumb">
 				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
-				<li><a href="${requestURI}" id="model">
+				<li><a class="currentPage" id="model">
 					<c:if test="${fn:contains(requestURI, 'blog')}">Blog</c:if>
 					<c:if test="${fn:contains(requestURI, 'news')}">News</c:if></a></li>
 			</ul>

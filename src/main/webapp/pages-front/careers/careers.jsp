@@ -46,7 +46,7 @@ a {
 		<div>
 			<ul class="breadcrumb">
 				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
-				<li><a href="${requestURI}" id="model">Careers</a></li>
+				<li><a class="currentPage" id="model">Careers</a></li>
 			</ul>
 		</div>
 		<div class="jobon">

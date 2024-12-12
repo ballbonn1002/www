@@ -29,16 +29,17 @@
 .parallax {
 	background-image: url("/pages-front/img/job/bg.jpg");
 }
+.breadcrumb {
+	padding: 0 !important; 
+}
 </style>
 <div class="parallax show-on-scroll">
 	<div class="detail" data-aos="zoom-in" data-aos-duration="800">
-		<div>
-			<ul class="breadcrumb">
-				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
-				<li><a href="javascript:history.back()">Careers</a>&nbsp;/&nbsp;</li>
-				<li><a href="${requestURI}">${job.position}</a></li>
-			</ul>
-		</div>
+		<ul class="breadcrumb">
+			<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
+			<li><a href="javascript:history.back()">Careers</a>&nbsp;/&nbsp;</li>
+			<li><a class="currentPage">${job.position}</a></li>
+		</ul>
 		<c:forEach var="job" items="${job}">
 			<h4><c:if test="${job.name != null}">
 				<font color="#BD2125">Job Ref : ${job.name}</font>

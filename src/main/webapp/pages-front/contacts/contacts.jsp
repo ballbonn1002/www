@@ -44,6 +44,9 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+.breadcrumb {
+	padding: 0 !important; 
+}
 
 .captcha {
 	background-color: #eef2f7;
@@ -89,7 +92,7 @@
 		<div class="contactbg">
 			<ul class="breadcrumb">
 				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
-				<li><a href="${requestURI}" id="model">Contacts</a></li>
+				<li><a class="currentPage" id="model">Contacts</a></li>
 			</ul>
 			<div class="row">
 				<div class="col-lg-6 col-xs-12" data-aos="zoom-in"

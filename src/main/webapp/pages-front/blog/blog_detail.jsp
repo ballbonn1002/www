@@ -292,8 +292,8 @@ hr.detailnew {
 <div class="parallax show-on-scroll">
 	<div align="center" class="logojob"
 		data-aos="fade-down" data-aos-duration="800">
-		<c:if test="${fn:contains(requestURI, 'blog')}"><div class="job-block font-weight-bolder">BLOG</div></c:if>
-		<c:if test="${fn:contains(requestURI, 'news')}"><div class="job-block font-weight-bolder">NEWS</div></c:if>
+		<c:if test="${fn:contains(pageURI, 'blog')}"><div class="job-block font-weight-bolder">BLOG</div></c:if>
+		<c:if test="${fn:contains(pageURI, 'news')}"><div class="job-block font-weight-bolder">NEWS</div></c:if>
 		<br> <font size="5px">Professional IT People ~ Innovative
 			IT Solutions<br>
 		</font> <font size="3px">IT Staff Outsourcing Services | IT
@@ -308,9 +308,9 @@ hr.detailnew {
 				<ul class="breadcrumb">
 					<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
 					<li><a href="javascript:history.back()" id="model">
-						<c:if test="${fn:contains(requestURI, 'blog')}">Blog</c:if>
-						<c:if test="${fn:contains(requestURI, 'news')}">News</c:if></a>&nbsp;/&nbsp;</li>
-					<li><a href="${requestURI}" id="parent">${blog.topic}</a></li>
+						<c:if test="${fn:contains(pageURI, 'blog')}">Blog</c:if>
+						<c:if test="${fn:contains(pageURI, 'news')}">News</c:if></a>&nbsp;/&nbsp;</li>
+					<li><a class="currentPage" id="parent">${blog.topic}</a></li>
 				</ul>
 			</div>
 			<div class="row">
