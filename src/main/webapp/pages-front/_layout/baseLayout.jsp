@@ -13,7 +13,7 @@
 <meta charset="utf-8">
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
 <link rel="icon" type="image/x-icon" href="/pages-front/img/logo/favicon.png">
-<link rel="canonical" href="${requestURI}">
+<link rel="canonical" href="https://www.cubesofttech.com${requestURI}">
 <meta name="description"
 	content="${meta}">
 <meta name="keywords"
