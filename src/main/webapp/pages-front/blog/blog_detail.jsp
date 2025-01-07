@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="${blog.topic}">
+<meta property="og:description" content="คำอธิบายสั้น ๆ เกี่ยวกับบทความ">
 <meta property="og:image" content="${constant.imgContext}${path}">
 <meta property="og:url" content="http://www.cubesofttech.com/${bloguri}">
 <meta property="og:type" content="article">
@@ -174,10 +175,6 @@ p {
 	border-bottom: 2px solid rgb(233, 233, 233);
 }
 
-a:link {
-	color: #000;
-}
-
 .detail {
 	background-color: white;
 	box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
@@ -336,7 +333,8 @@ hr.detailnew {
 								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/svg/facebook_square.svg" width="25px"
-								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
+								height="25px">
+								</a>&nbsp;&nbsp;&nbsp; <a
 								href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/svg/twitter_x.svg" width="25px"
@@ -421,7 +419,7 @@ hr.detailnew {
 		}else{
 			$('a[href="/news"]').addClass('active');
 		}
-		$('#parent').removeClass('active');
+		
 	});
 	
 	function showNav() {
