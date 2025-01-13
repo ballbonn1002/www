@@ -8,7 +8,7 @@
 <meta property="og:title" content="${blog.topic}">
 <meta property="og:description" content="คำอธิบายสั้น ๆ เกี่ยวกับบทความ">
 <meta property="og:image" content="${constant.imgContext}${path}">
-<meta property="og:url" content="http://www.cubesofttech.com/${bloguri}">
+<meta property="og:url" content="https://www.cubesofttech.com/${bloguri}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Cube SoftTech">
 
@@ -173,6 +173,13 @@ p {
 
 .ft {
 	border-bottom: 2px solid rgb(233, 233, 233);
+}
+a:link {
+	color: #000;
+}
+
+#articledetail a {
+	color: #337ab7 !important;
 }
 
 .detail {
