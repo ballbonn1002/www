@@ -93,6 +93,7 @@ private String metaDescription = "Cube SoftTech is an innovative, high-quality s
             String redirectTo = contextPath + "/";
             log.debug("/home change to: " + redirectTo);
             httpResponse.sendRedirect(redirectTo);
+            
             return; // Exit the filter after the redirect
         }
 
