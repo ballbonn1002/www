@@ -20,7 +20,7 @@ public class Footer implements Serializable {
     }
 	
 	 public Footer(
-	            long footer_id
+	            Integer footer_id
 	            , String parent_footer_id
 	            , String footer_name
 	            , String footer_url	
@@ -44,7 +44,7 @@ public class Footer implements Serializable {
 	    }
 	 	@Id
 	    @Column(name = "footer_id")
-	    private long footer_id;	
+	    private Integer footer_id;	
 	    @Column(name = "parent_footer_id")
 	    private String parent_footer_id;
 	    @Column(name = "footer_name")
@@ -68,7 +68,7 @@ public class Footer implements Serializable {
 			return footer_id;
 		}
 
-		public void setFooter_id(long footer_id) {
+		public void setFooter_id(Integer footer_id) {
 			this.footer_id = footer_id;
 		}
 

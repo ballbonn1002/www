@@ -71,7 +71,7 @@ public class FooterDAOImpl implements FooterDAO {
     }
 
     @Override
-    public Footer findById(long footer_id) throws Exception {
+    public Footer findById(Integer footer_id) throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
         Footer footer = null;
         try {
@@ -83,7 +83,7 @@ public class FooterDAOImpl implements FooterDAO {
     }
 
     @Override
-    public List<Map<String, Object>> findParentIdByFooterId(long footer_id) throws Exception {
+    public List<Map<String, Object>> findParentIdByFooterId(Integer footer_id) throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
         List<Map<String, Object>> parentFooter = null;
         try {
@@ -114,18 +114,18 @@ public class FooterDAOImpl implements FooterDAO {
     }
 
     @Override
-    public Long getMaxId() throws Exception {
+    public Integer getMaxId() throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
-        Long maxId = null;
+        Integer maxId = null;
         try {
             Criteria criteria = session.createCriteria(Footer.class).setProjection(Projections.max("footer_id"));
-            maxId = (Long) criteria.uniqueResult();
+            maxId = (Integer) criteria.uniqueResult();
             if (maxId == null) {
-                maxId = 0L;
+                maxId = 0;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            maxId = 0L;
+            maxId = 0;
         }
         return maxId;
     }
@@ -133,7 +133,7 @@ public class FooterDAOImpl implements FooterDAO {
     @Override
     public boolean hasChildFooters(String footerId) {
         String hql = "SELECT COUNT(f) FROM Footer f WHERE f.parent_footer_id = :footer_id";
-        Long count = (Long) sessionFactory.getCurrentSession()
+        Integer count = (Integer) sessionFactory.getCurrentSession()
             .createQuery(hql)
             .setParameter("footer_id", footerId)
             .uniqueResult();
@@ -167,4 +167,34 @@ public class FooterDAOImpl implements FooterDAO {
         }
         return footerList;
     }
+
+	@Override
+	public List<Footer> findParent() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Footer> footer = null;
+        try {
+        	String sql = "SELECT * FROM Footer WHERE parent_footer_id = 0";
+            SQLQuery query = session.createSQLQuery(sql);
+            query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+            footer = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return footer;
+	}
+
+	@Override
+	public List<Map<String, Object>> findAllChildFooter() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> childFooter = null;
+		try {
+			String sql = "SELECT * FROM `Footer` WHERE parent_footer_id != 0";
+            SQLQuery query = session.createSQLQuery(sql);
+            query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+            childFooter = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return childFooter;
+	}
 }

@@ -60,38 +60,73 @@
     					</div>
 					</div>
                 </div>
+
                 <div class="col-md col-sm col-xs " align="left">
-                    <div class="footer-section">
-                        <a href="/services" class="footer-heading">Services</a><br>
-                        <a href="/services" class="footer-link1">Services</a><br>
-                        <a href="/software-development" class="footer-link1">Software Development</a><br>
-                        <a href="/it-outsource" class="footer-link1">IT Outsource</a><br>
-                        <a href="/mobile-app-development" class="footer-link1">Mobile App Development</a><br>
-                        
-                    </div>
-                    <div class="footer-section">
-                        <a href="/careers" class="footer-heading">Careers</a><br>
-                        <c:forEach var="career" items="${Careers}">
-                            <a href="${career.footer_url}" class="footer-link2">${career.footer_name}</a><br/>
-                        </c:forEach>
-                    </div>
+                <c:forEach var="ft" items="${Footer}">
+                	<div class="footer-section">
+                		<a href="${ft.footer_url}" class="footer-heading">${ft.footer_name}</a><br>
+                		<c:forEach var="cft" items="${ChildFooter}"> 
+                			<c:if test="${cft.parent_footer_id == ft.footer_id}">
+                			<a href="${cft.footer_url}" class="footer-link2">${cft.footer_name}</a><br/></c:if>
+                		</c:forEach>
+                	</div>
+                </c:forEach>
                 </div>
+                
+ <%--                <div class="col-md col-sm col-xs " align="left">
+                	<c:forEach var="article" items="${Article}" varStatus="status" end="0">
+                	<div class="footer-section">
+                		<c:if test="${article.article_type_id == 2}">
+                			<a href="${article.page_uri_id}" class="footer-heading" style="text-transform: capitalize;">${article.header_name}</a><br>
+                		</c:if>
+                		<c:set var="count" value="0" />
+                		<c:forEach var="a" items="${Article}" varStatus="status">
+                			<c:if test="${a.article_type_id == 2 and count <= 10}">
+                			<a href="${a.page_uri_id}" class="footer-link2">${a.topic}</a><br/>
+                			<c:set var="count" value="${count + 1}" />
+                			</c:if>
+                		</c:forEach>
+                	</div>
+                	</c:forEach>
+                </div> --%>
                 <div class="col-md col-sm col-xs " align="left">
-                    <div class="footer-section">
-                        <a href="/blog" class="footer-heading">Blog</a><br>
-                        <c:forEach var="blog" items="${Blog}">
-                            <a href="${blog.footer_url}" class="footer-link2">${blog.footer_name}</a><br/>
-                        </c:forEach>
-                    </div>
+                	<div class="footer-section">
+                		<c:set var="count" value="0"/>
+                		<c:forEach var="article" items="${Article}" varStatus="status">
+                			<c:if test="${article.article_type_id == 2 and count < 1}">
+                				<a href="/${article.header_name}" class="footer-heading" style="text-transform: capitalize;">${article.header_name}</a><br>
+                				<c:set var="count" value="${count + 1}"/>
+                			</c:if>
+                		</c:forEach>
+                		<c:set var="count1" value="0" />
+                		<c:forEach var="a" items="${Article}">
+							<c:if test="${a.article_type_id == 2 and count1 < 10}">
+							<a href="${a.page_uri_id}" class="footer-link2">${a.topic}</a><br/>
+							<c:set var="count1" value="${count1 + 1}" />
+							</c:if>
+						</c:forEach>
+                	</div>
                 </div>
+                
                 <div class="col-md col-sm col-xs " align="left">
-                    <div class="footer-section">
-                        <a href="/news" class="footer-heading">News</a><br>
-                        <c:forEach var="news" items="${News}">
-                            <a href="${news.footer_url}" class="footer-link2">${news.footer_name}</a><br/>
-                        </c:forEach>
-                    </div>
+					<div class="footer-section">
+					<c:set var="count" value="0"/>
+					<c:forEach var="article" items="${Article}" varStatus="status">
+						<c:if test="${article.article_type_id == 1 and count < 1}">
+							<a href="/${article.header_name}" class="footer-heading" style="text-transform: capitalize;">${article.header_name}</a><br>
+							<c:set var="count" value="${count + 1}"/>
+						</c:if>
+					</c:forEach>
+					<c:set var="count1" value="0" />
+					<c:forEach var="a" items="${Article}">
+						<c:if test="${a.article_type_id == 1 and count1 < 10}">
+						<a href="${a.page_uri_id}" class="footer-link2">${a.topic}</a><br/>
+						<c:set var="count1" value="${count1 + 1}" />
+						</c:if>
+					</c:forEach>
+					</div>
                 </div>
+                
             </div>
             <br>
         </div>

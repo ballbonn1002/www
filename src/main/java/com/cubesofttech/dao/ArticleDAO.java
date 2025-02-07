@@ -1,7 +1,7 @@
 package com.cubesofttech.dao;
 
 import java.util.List;
-
+import java.util.Map;
 
 import com.cubesofttech.model.Article;
 
@@ -30,4 +30,7 @@ public interface ArticleDAO {
 	List<Article> types() throws Exception;
 
 	List<Article> tags() throws Exception;
+	
+	public List<Map<String, Object>> findAllPageUriArticle() throws Exception;
+	
 }

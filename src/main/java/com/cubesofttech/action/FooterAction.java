@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cubesofttech.dao.ArticleDAO;
 import com.cubesofttech.dao.FooterDAO;
 import com.cubesofttech.model.Footer;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,6 +22,8 @@ public class FooterAction extends ActionSupport {
 
     @Autowired
     private FooterDAO footerDAO;
+    @Autowired
+	private ArticleDAO articleDAO;
 
     private List<Footer> footerList;
     private Footer footer;
@@ -34,16 +37,14 @@ public class FooterAction extends ActionSupport {
         
         try {
         	HttpSession session = request.getSession();
-            List<Map<String, Object>> footerList = footerDAO.findAll();
-            List<Map<String, Object>> newsList = footerDAO.findByFooterName("News");
-            List<Map<String, Object>> blogList = footerDAO.findByFooterName("Blog");
-            List<Map<String, Object>> careersList = footerDAO.findByFooterName("Careers");
-
+            List<Map<String, Object>> articleList = articleDAO.findAllPageUriArticle();
+        	List<Footer> footerList = footerDAO.findParent();
+        	List<Map<String, Object>> footerChild = footerDAO.findAllChildFooter();
+        	
             session.setAttribute("Footer", footerList);
-            session.setAttribute("Blog", blogList);
-            session.setAttribute("Careers", careersList);
-            session.setAttribute("News", newsList);
-
+            session.setAttribute("ChildFooter", footerChild);
+            session.setAttribute("Article", articleList);
+            
             return SUCCESS;
         } catch (Exception e) {
             log.error("Error occurred while fetching footer data", e);
