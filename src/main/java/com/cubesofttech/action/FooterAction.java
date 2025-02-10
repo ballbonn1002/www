@@ -48,6 +48,7 @@ public class FooterAction extends ActionSupport {
             return SUCCESS;
         } catch (Exception e) {
             log.error("Error occurred while fetching footer data", e);
+            e.printStackTrace();
             return ERROR;
         }
     }

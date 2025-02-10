@@ -173,7 +173,7 @@ public class FooterDAOImpl implements FooterDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Footer> footer = null;
         try {
-        	String sql = "SELECT * FROM Footer WHERE parent_footer_id = 0";
+        	String sql = "SELECT * FROM Footer WHERE parent_footer_id = 0 AND status = 1";
             SQLQuery query = session.createSQLQuery(sql);
             query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
             footer = query.list();
@@ -188,7 +188,7 @@ public class FooterDAOImpl implements FooterDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> childFooter = null;
 		try {
-			String sql = "SELECT * FROM `Footer` WHERE parent_footer_id != 0";
+			String sql = "SELECT * FROM `Footer` WHERE parent_footer_id != 0 AND status = 1";
             SQLQuery query = session.createSQLQuery(sql);
             query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
             childFooter = query.list();
