@@ -101,7 +101,7 @@ public class FooterDAOImpl implements FooterDAO {
     public boolean checkExistByName(String footer_name) {
         try {
             String sanitizedFooterName = footer_name.replace("'", "''");
-            String hql = "FROM Footer WHERE footer_name = '" + sanitizedFooterName + "'";
+            String hql = "FROM footer WHERE footer_name = '" + sanitizedFooterName + "'";
             Footer footer = (Footer) sessionFactory.getCurrentSession()
                 .createQuery(hql)
                 .setMaxResults(1)
@@ -132,7 +132,7 @@ public class FooterDAOImpl implements FooterDAO {
 
     @Override
     public boolean hasChildFooters(String footerId) {
-        String hql = "SELECT COUNT(f) FROM Footer f WHERE f.parent_footer_id = :footer_id";
+        String hql = "SELECT COUNT(f) FROM footer f WHERE f.parent_footer_id = :footer_id";
         Integer count = (Integer) sessionFactory.getCurrentSession()
             .createQuery(hql)
             .setParameter("footer_id", footerId)
@@ -142,7 +142,7 @@ public class FooterDAOImpl implements FooterDAO {
 
     @Override
     public boolean deleteById(String footerId) {
-        String hql = "DELETE FROM Footer f WHERE f.footer_id = :footer_id";
+        String hql = "DELETE FROM footer f WHERE f.footer_id = :footer_id";
         int result = sessionFactory.getCurrentSession()
             .createQuery(hql)
             .setParameter("footer_id", footerId)
@@ -173,7 +173,7 @@ public class FooterDAOImpl implements FooterDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Footer> footer = null;
         try {
-        	String sql = "SELECT * FROM Footer WHERE parent_footer_id = 0 AND status = 1";
+        	String sql = "SELECT * FROM footer WHERE parent_footer_id = 0 AND status = 1";
             SQLQuery query = session.createSQLQuery(sql);
             query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
             footer = query.list();
@@ -188,7 +188,7 @@ public class FooterDAOImpl implements FooterDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> childFooter = null;
 		try {
-			String sql = "SELECT * FROM `Footer` WHERE parent_footer_id != 0 AND status = 1";
+			String sql = "SELECT * FROM footer WHERE parent_footer_id != 0 AND status = 1";
             SQLQuery query = session.createSQLQuery(sql);
             query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
             childFooter = query.list();
