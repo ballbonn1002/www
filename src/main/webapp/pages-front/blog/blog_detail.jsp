@@ -8,7 +8,7 @@
 <meta property="og:title" content="${blog.topic}">
 <meta property="og:description" content="คำอธิบายสั้น ๆ เกี่ยวกับบทความ">
 <meta property="og:image" content="${constant.imgContext}${path}">
-<meta property="og:url" content="https://www.cubesofttech.com/${bloguri}">
+<meta property="og:url" content="https://www.cubesofttech.com${bloguri}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Cube SoftTech">
 
@@ -323,7 +323,7 @@ hr.detailnew {
 								<div style="text-align: center;">
     								<img src="${constant.imgContext}${path}"
     								width="70%" height="70%" style="object-fit: cover; 
-    								margin-bottom: 20px;" alt= "${name}">
+    								margin-bottom: 20px;" alt= "${alt_name}">
 								</div> 
 							</c:if>
 					<!-- <span id="datetag"></span>|  -->

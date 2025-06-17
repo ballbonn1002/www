@@ -236,12 +236,12 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("blog", blog);
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
-			
 			if(blog != null && !"".equals(blog.getFileId())) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
 				log.debug(blog.getFileId());
 				request.setAttribute("name", file.getName());
 				request.setAttribute("path", file.getPath());
+				request.setAttribute("alt_name", file.getAltName());
 			}
 			
 			if(blog.getArticleTypeId().equals(1)) {
@@ -258,7 +258,6 @@ public class BlogAction extends ActionSupport {
 			log.debug(constant);
 			request.setAttribute("constant", constant);
 	        request.setAttribute("requestURI", requestURI);
-
 			
 			return SUCCESS;
 		} catch (Exception e) {
