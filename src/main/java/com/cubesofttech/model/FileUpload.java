@@ -21,22 +21,28 @@ public class FileUpload implements Serializable {
     }
     public FileUpload(
             Integer fileId	
+            , String page
+            , String pageId
             , String userId	
             , String name	
             , String type	
             , String size	
             , String path	
+            , String altName
             , String userCreate	
             , String userUpdate	
             , java.sql.Timestamp timeCreate	
             , java.sql.Timestamp timeUpdate	
         ) {
         this.fileId = fileId;	
+        this.page = page;
+        this.pageId = pageId;
         this.userId = userId;	
         this.name = name;	
         this.type = type;	
         this.size = size;	
-        this.path = path;	
+        this.path = path;
+        this.altName = altName;
         this.userCreate = userCreate;	
         this.userUpdate = userUpdate;	
         this.timeCreate = timeCreate;	
@@ -46,6 +52,10 @@ public class FileUpload implements Serializable {
     @Id
     @Column(name = "file_id")
     private Integer fileId;	
+    @Column(name = "page")
+    private String page;	
+    @Column(name = "page_id")
+    private String pageId;	
     @Column(name = "user_id")
     private String userId;	
     @Column(name = "name")
@@ -56,6 +66,8 @@ public class FileUpload implements Serializable {
     private String size;	
     @Column(name = "path")
     private String path;	
+    @Column(name = "alt_name")
+    private String altName;
     @Column(name = "user_create")
     private String userCreate;	
     @Column(name = "user_update")
@@ -73,7 +85,19 @@ public class FileUpload implements Serializable {
     public void setFileId(Integer fileId) {
         this.fileId = fileId;
     }
-    public String getUserId() {
+    public String getPage() {
+		return page;
+	}
+	public void setPage(String page) {
+		this.page = page;
+	}
+	public String getPageId() {
+		return pageId;
+	}
+	public void setPageId(String pageId) {
+		this.pageId = pageId;
+	}
+	public String getUserId() {
         return this.userId;
     }		
     public void setUserId(String userId) {
@@ -103,7 +127,13 @@ public class FileUpload implements Serializable {
     public void setPath(String path) {
         this.path = path;
     }
-    public String getUserCreate() {
+    public String getAltName() {
+		return altName;
+	}
+	public void setAltName(String altName) {
+		this.altName = altName;
+	}
+	public String getUserCreate() {
         return this.userCreate;
     }		
     public void setUserCreate(String userCreate) {
@@ -131,7 +161,7 @@ public class FileUpload implements Serializable {
 
     
     public String toString() {
-        return super.toString() + "fileId=[" + fileId + "]\n" + "userId=[" + userId + "]\n" + "typeId=["  + "name=[" + name + "]\n" + "type=[" + type + "]\n" + "size=[" + size + "]\n" + "path=[" + path + "]\n" + "userCreate=[" + userCreate + "]\n" + "userUpdate=[" + userUpdate + "]\n" + "timeCreate=[" + timeCreate + "]\n" + "timeUpdate=[" + timeUpdate + "]\n";
+        return super.toString() + "fileId=[" + fileId + "]\n" + "page=[" + page + "]\n" + "pageId=[" + pageId + "]\n" + "userId=[" + userId + "]\n" + "typeId=["  + "name=[" + name + "]\n" + "type=[" + type + "]\n" + "size=[" + size + "]\n" + "path=[" + path + "]\n" + "altName=[" + altName + "]\n" + "userCreate=[" + userCreate + "]\n" + "userUpdate=[" + userUpdate + "]\n" + "timeCreate=[" + timeCreate + "]\n" + "timeUpdate=[" + timeUpdate + "]\n";
     }
 
     public boolean equals(Object obj) {
@@ -145,6 +175,14 @@ public class FileUpload implements Serializable {
         if (!(that.getFileId() == null ? this.getFileId() == null
                         : that.getFileId().equals(this.getFileId()))) {
                 return false;
+        }
+        if (!(that.getPage() == null ? this.getPage() == null
+                : that.getPage().equals(this.getPage()))) {
+        return false;
+        }
+        if (!(that.getPageId() == null ? this.getPageId() == null
+                : that.getPageId().equals(this.getPageId()))) {
+        return false;
         }
         if (!(that.getUserId() == null ? this.getUserId() == null
                         : that.getUserId().equals(this.getUserId()))) {
@@ -165,6 +203,10 @@ public class FileUpload implements Serializable {
         if (!(that.getPath() == null ? this.getPath() == null
                         : that.getPath().equals(this.getPath()))) {
                 return false;
+        }
+        if(!(that.getAltName() == null ? this.getAltName() == null
+        				: that.getAltName().equals(this.getAltName()))) {
+        		return false;
         }
         if (!(that.getUserCreate() == null ? this.getUserCreate() == null
                         : that.getUserCreate().equals(this.getUserCreate()))) {
