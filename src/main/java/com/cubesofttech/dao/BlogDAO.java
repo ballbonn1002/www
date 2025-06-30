@@ -6,8 +6,6 @@ import com.cubesofttech.model.Blog;
 
 public interface BlogDAO {
 	
-	public List<Blog> findAll1() throws Exception;
-
 	public Blog findByArticleId(Integer articleId) throws Exception;
 	
 	public List<Blog> findAllWithPageUri() throws Exception;
