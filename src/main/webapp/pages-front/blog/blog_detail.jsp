@@ -335,6 +335,8 @@ hr.detailnew {
 					</span></font>
 					<div class="articledetail">
 						<h1>${blog.topic}</h1>
+						 <c:if test="${blog.timePost != null}"><p class="text-muted" style="padding: 0px 0px 0px 0px">Last updated : 
+							<fmt:formatDate pattern = "d MMM yyyy" value = "${blog.timePost}"/></p></c:if>
 						<p>
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
 								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
@@ -355,6 +357,7 @@ hr.detailnew {
 								src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 								height="25px"></a>
 						</p>
+						
 						<br>
 						<!-- HTML Display here -->
 						<br> ${blog.detail}
