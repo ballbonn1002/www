@@ -232,7 +232,7 @@ public class BlogAction extends ActionSupport {
 	        request.setAttribute("bloguri", requestURI);
 			
 			Blog blog = blogDAO.findByArticleId(getArticleId());
-			
+			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
