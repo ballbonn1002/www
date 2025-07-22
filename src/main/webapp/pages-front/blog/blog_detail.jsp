@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="${blog.topic}">
-<meta property="og:description" content="คำอธิบายสั้น ๆ เกี่ยวกับบทความ">
+<meta property="og:description" content="${metaDescription}">
 <meta property="og:image" content="${constant.imgContext}${path}">
 <meta property="og:url" content="https://www.cubesofttech.com${bloguri}">
 <meta property="og:type" content="article">
@@ -18,13 +18,18 @@
   "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": ""
+    "@id": "https://www.cubesofttech.com${bloguri}"
   },
   "headline": "${blog.topic}",
-  "image": "${constant.imgContext}${path}",  
+  "description": "${metaDescription}",
+  "image": "${constant.imgContext}${path}", 
   "author": {
-    "@type": "",
-    "name": ""
+    "@type": "Organization",
+    "name": "Cube SoftTech",
+	"url": "https://www.cubesofttech.com",
+	"sameAs": [
+  		"https://www.facebook.com/CubeSoftTech",
+	]
   },  
   "publisher": {
     "@type": "Organization",
@@ -34,7 +39,8 @@
       "url": "${constant.webPath}/pages-front/img/logo/cubesofttech.png"
     }
   },
-  "datePublished": "${blog.timeCreate}"
+  "datePublished": "${datePublished}",
+  "dateModified": "${dateModified}"
 }
 </script>
 <style>

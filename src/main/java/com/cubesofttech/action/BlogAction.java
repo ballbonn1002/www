@@ -1,6 +1,9 @@
 package com.cubesofttech.action;
 
 import java.io.File;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +36,8 @@ public class BlogAction extends ActionSupport {
 	public static final String USERID = "userId";
 	public static final String ARTICLEID = "articleId";
 	public static final Integer MAXLATESTBLOG = 10;
-	
+	private String metaDescription = "Cube SoftTech is an innovative, high-quality software development company. We are a professional company, focused on IT consulting, web application development &amp; integration. Our services cover every aspect of web / mobile development, from start to finish. From one off projects to a fully outsourced development team., Java Outsourcing, IT Staff Outsourcing, IT Outsource, Staff Outsourcing, IT Staffing solutions, Outsource IT Staff, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง";
+
 	@Autowired
 	private Constant constant;
 	
@@ -258,7 +262,28 @@ public class BlogAction extends ActionSupport {
 			log.debug(constant);
 			request.setAttribute("constant", constant);
 	        request.setAttribute("requestURI", requestURI);
+	        
+	        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+	        if (blog.getTimePost() == null) return null;
+	        ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +08:00
+	        request.setAttribute("datePublished", zonedDateTime.format(formatter));
+	        
+	        if (blog.getTimeUpdate() == null) return null;
+	        ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +08:00
+	        request.setAttribute("dateModified", zonedDateTime2.format(formatter));	        
 			
+	        PageUri pageUri = null;
+	        try {
+	            pageUri = pageUriDAO.findById(requestURI);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        if (pageUri != null) {
+	            log.debug("Page URI found");
+	            request.setAttribute("title", pageUri.getTitle());
+	            request.setAttribute("metaDescription", pageUri.getMeta());
+	        }
+	        
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
