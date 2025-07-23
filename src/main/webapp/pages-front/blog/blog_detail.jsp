@@ -325,6 +325,7 @@ hr.detailnew {
 			</div>
 			<div class="row">
 				<div class="col-lg-9" id="articledetail">
+					<article itemscope itemtype="https://schema.org/Article">
 							<c:if test="${!empty path}">
 								<div style="text-align: center;">
     								<img src="${constant.imgContext}${path}"
@@ -340,9 +341,11 @@ hr.detailnew {
  							</c:forEach>
 					</span></font>
 					<div class="articledetail">
-						<h1>${blog.topic}</h1>
+					<header>
+						<h1 itemprop="headline">${blog.topic}</h1>
 						 <c:if test="${blog.timePost != null}"><p class="text-muted" style="padding: 0px 0px 0px 0px">Last updated : 
 							<fmt:formatDate pattern = "d MMM yyyy" value = "${blog.timePost}"/></p></c:if>
+					</header>
 						<p>
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
 								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
@@ -366,9 +369,10 @@ hr.detailnew {
 						
 						<br>
 						<!-- HTML Display here -->
-						<br> ${blog.detail}
+						<br> <section itemprop="articleBody" class="articledetail">${blog.detail}</section>
 						<!-- HTML Display here -->
 					</div>
+					</article>
 				</div>
 				<div class="col-lg-3 vtnew">
 					<b><h5 class="arrelate">
