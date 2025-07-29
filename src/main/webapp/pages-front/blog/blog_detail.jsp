@@ -28,7 +28,7 @@
     "name": "Cube SoftTech",
 	"url": "https://www.cubesofttech.com",
 	"sameAs": [
-  		"https://www.facebook.com/CubeSoftTech",
+  		"https://www.facebook.com/CubeSoftTech"
 	]
   },  
   "publisher": {
