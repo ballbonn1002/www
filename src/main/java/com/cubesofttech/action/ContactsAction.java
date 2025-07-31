@@ -112,6 +112,7 @@ public class ContactsAction extends ActionSupport {
 			log.debug(contactName+"/"+contactEmail);
 			log.debug(contactTel+"/"+contactMessage);
 			emailService.sendEmailContact(contactName, contactEmail, contactTel, contactMessage);
+			log.debug("end sending email");
 			
 			return SUCCESS;
 		} catch (Exception e) {
