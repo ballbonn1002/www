@@ -240,7 +240,7 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("blog", blog);
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
-			if(blog != null && !"".equals(blog.getFileId())) {
+			if(blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
 				log.debug(blog.getFileId());
 				request.setAttribute("name", file.getName());
