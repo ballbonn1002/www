@@ -58,15 +58,17 @@ public class BlogDAOImpl implements BlogDAO {
 	public List<Blog> findAllBlogsWithPageUri() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
+		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
 		try {
 			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, a.detail, a.file_id, a.time_post, a.user_create, a.user_update, "
 				+ "a.time_create, a.time_update, u.name, f.path, p.page_uri_id, a.status "
 				+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 				+ "LEFT JOIN file f ON a.file_id = f.file_id "
 				+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-				+ "WHERE a.article_type_id = 2 AND a.status = 1 AND a.time_post <= CURRENT_TIMESTAMP ORDER BY a.time_post DESC ";
+				+ "WHERE p.page_uri_id LIKE '%blog%' AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			query.setTimestamp("nowParam", nowTs);
 			articleList = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,15 +81,17 @@ public class BlogDAOImpl implements BlogDAO {
 	public List<Blog> findAllNewsWithPageUri() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
+		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
 		try {
 			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, a.detail, a.file_id, a.time_post, a.user_create, a.user_update, "
 				+ "a.time_create, a.time_update, u.name, f.path, p.page_uri_id, a.status "
 				+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 				+ "LEFT JOIN file f ON a.file_id = f.file_id "
 				+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-				+ "WHERE a.article_type_id = 1 AND a.status = 1 AND a.time_post <= CURRENT_TIMESTAMP ORDER BY a.time_post DESC ";	
+				+ "WHERE p.page_uri_id LIKE '%news%' AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";	
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			query.setTimestamp("nowParam", nowTs);
 			articleList = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
