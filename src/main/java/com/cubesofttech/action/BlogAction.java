@@ -23,6 +23,7 @@ import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.FileUpload;
 import com.cubesofttech.model.PageUri;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.ArticleHtmlSanitizer;
 import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -238,6 +239,10 @@ public class BlogAction extends ActionSupport {
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
+			log.debug("blog.detail: " + blog.getDetail());
+			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
+			request.setAttribute("cleanDetail", cleanDetail);
+			log.debug("cleanDetail: " + cleanDetail);
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
 			if(blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
