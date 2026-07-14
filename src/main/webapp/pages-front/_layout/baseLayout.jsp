@@ -12,16 +12,17 @@
 <head>
 <meta charset="utf-8">
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
-<link rel="icon" type="image/x-icon" href="/pages-front/img/logo/favicon.png">
+<link rel="icon" type="image/x-icon"
+	href="/pages-front/img/logo/favicon.png">
 <link rel="canonical" href="https://www.cubesofttech.com${requestURI}">
-<meta name="description"
-	content="${meta}">
-<meta name="keywords"
-	content="">
-	
+<meta name="description" content="${meta}">
+<meta name="keywords" content="">
+
 <meta name="classification" content="Computers and Internet">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="robots"
+	content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot"
+	content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="distribution" content="Global">
 <meta name="language" content="en-th">
 <meta name="rating" content="General">
@@ -90,23 +91,33 @@
 	href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
 
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <style>
 body, html {
-	font-family: 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif;
+	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif !important;
 	font-size: 15px;
 	scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif;
+	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif !important;
 }
 
-p	{
-	color:black;
+p {
+	color: black;
 }
 
 #navbar-hover:hover {
@@ -115,8 +126,6 @@ p	{
 	border-color: white white #BD2125 !important;
 	border-bottom: 4px solid;
 }
-
-
 
 .parallax {
 	/* Set a specific height */
@@ -141,7 +150,7 @@ p	{
 
 .active {
 	border-color: white white #BD2125 !important;
-	border-bottom: 4px solid!important;
+	border-bottom: 4px solid !important;
 	color: #BD2125 !important;
 }
 
@@ -303,9 +312,9 @@ p {
 	text-align: center;
 	padding-left: 10%;
 	padding-right: 10%;
-	width:100%;
-	height:504px;
-	padding:50px 216px 50px 216px;
+	width: 100%;
+	height: 504px;
+	padding: 50px 216px 50px 216px;
 }
 
 .vl {
@@ -326,50 +335,44 @@ p {
 		padding-top: 5%;
 		padding-bottom: 15px;
 	}
-
 }
-
 
 /* Ensure the dropdown menu doesn't disappear when hovering over it */
 .nav-item .dropdown-menu {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%; /* Position below the button */
-    min-width: 160px; /* Adjust width as needed */
-    z-index: 1000; /* Ensure it appears above other content */
+	display: none; /* Hidden by default */
+	position: absolute;
+	top: 100%; /* Position below the button */
+	min-width: 160px; /* Adjust width as needed */
+	z-index: 1000; /* Ensure it appears above other content */
 }
 
 /* Add a smooth transition for better UX */
 .nav-item.dropdown .dropdown-menu {
-    transition: all 0.3s ease;
+	transition: all 0.3s ease;
 }
 
 .dropdown-item {
-    background-color: transparent!important; /* Removes the default background */
-    color: black!important; /* Sets the text color to black or any other color you prefer */
-    
+	background-color: transparent !important;
+	/* Removes the default background */
+	color: black !important;
+	/* Sets the text color to black or any other color you prefer */
 }
 
 .dropdown-item:hover {
-    background-color: inherit!important;
-    color: #BD2125!important;
-    border-color: white white #BD2125 !important;
-	border-bottom: 4px solid!important;
-    
+	background-color: inherit !important;
+	color: #BD2125 !important;
+	border-color: white white #BD2125 !important;
+	border-bottom: 4px solid !important;
 }
 
 .dropdown-item.active {
-    border: none!important;
+	border: none !important;
 }
-
-
-
 
 @media screen and (min-width: 870px) {
 	.imgservices2 {
 		
 	}
-
 }
 
 .hl {
@@ -424,7 +427,7 @@ a {
 }
 
 .breadcrumb {
-    background-color: transparent !important;
+	background-color: transparent !important;
 }
 
 .videocon {
@@ -622,16 +625,15 @@ a {
 }
 
 a {
-  color: inherit !important; /* ใช้สีเดียวกับพ่อแม่ขององค์ประกอบ */
-  text-decoration: none; /* ถ้าต้องการลบเส้นใต้ด้วย */
+	color: inherit !important; /* ใช้สีเดียวกับพ่อแม่ขององค์ประกอบ */
+	text-decoration: none; /* ถ้าต้องการลบเส้นใต้ด้วย */
 }
-
-
 </style>
 
- <script>
-   if(location.search) location.replace(location.href.replace(/\?.+/, ""));
- </script>
+<script>
+	if (location.search)
+		location.replace(location.href.replace(/\?.+/, ""));
+</script>
 
 </head>
 <body>

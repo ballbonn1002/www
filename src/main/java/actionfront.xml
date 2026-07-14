@@ -10,6 +10,13 @@
         </result-types>
         
         <!-- Actions -->
+        <!-- Internal redesign preview toggle - not linked anywhere in the UI.
+             Both methods call response.sendRedirect() directly and return NONE,
+             so no <result> mapping is needed (or safe to add - the response is
+             already committed by the time Struts would try to render one). -->
+        <action name="redesign-preview-on" class="com.cubesofttech.action.RedesignPreviewAction" method="on" />
+        <action name="redesign-preview-off" class="com.cubesofttech.action.RedesignPreviewAction" method="off" />
+
         <action name="home" class="com.cubesofttech.action.HomeAction" method="init">
             <result name="success" type="tiles">home</result>
             <result name="error">/pages-front/index.jsp</result>
@@ -57,16 +64,19 @@
 
         <action name="blog" class="com.cubesofttech.action.BlogAction" method="init">
             <result name="success" type="tiles">blog</result>
+            <result name="redesign" type="tiles">blog.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
         <action name="blog_detail" class="com.cubesofttech.action.BlogAction" method="blogDetail">
             <result name="success" type="tiles">blog.detail</result>
+            <result name="redesign" type="tiles">blog.detail.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
         <action name="news" class="com.cubesofttech.action.BlogAction" method="init">
             <result name="success" type="tiles">news</result>
+            <result name="redesign" type="tiles">news.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 

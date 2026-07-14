@@ -2,16 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%-- whole-site redesign toggle: swap the entire navbar markup based on the
-     redesignPreview cookie (see RedesignPreviewAction). jsp:include is used
-     instead of jsp:forward because this file is itself included by Tiles -
-     forwarding from inside an included fragment is invalid per servlet spec. --%>
-<c:choose>
-	<c:when test="${cookie.redesignPreview.value == '1'}">
-		<jsp:include page="/pages-front/redesign/_layout/header.jsp" />
-	</c:when>
-	<c:otherwise>
-
 	<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
 <link rel="stylesheet"
@@ -63,41 +53,7 @@
 							href="/"
 							style="padding-left: 30px; padding-right: 30px; color: black">Home</a></b>
 					</li>
-					<!---เมนู out team กับ intership
-                        <li class="">
-                    <div class="dropdown show">
-                        <a class="nav-link dropdown-toggle" id="navbar-hover" href="#"style="padding-left: 30px;padding-right: 30px; color:black" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       <b> About US</b>
-                        </a>
-                        <div class="dropdown-menu menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-i" id="navbar-hover" href="#"> <b>Our Story </b></a>
-                            <a class="dropdown-i" id="navbar-hover" href="ourteam.php"> <b>Our Team </b></a>
-                            <a class="dropdown-i" id="navbar-hover" href="internship.php"> <b>Internship Programe </b></a>
-                       </div>
-                      </div>
-                        </li>
---->
-					<!-- 
-					<li class=""><b> <a class="nav-link " id="navbar-hover"
-							href="services.php"
-							style="padding-left: 30px; padding-right: 30px; color: black">Services</a></b>
-					</li>
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="job.php"
-							style="padding-left: 30px; padding-right: 30px; color: black">Careers</a></b>
-					</li>
-					-->
-					<!---เมนู article   -->
-					<!-- 
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="articleAll.php"
-							style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b>
-					</li>
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="contact.php"
-							style="padding-left: 30px; padding-right: 30px; color: black">Contacts</a></b>
-					</li>
--->
+
 					<li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="/services" id="navbar-hover" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 30px; padding-right: 30px; color: black; font-weight: bold;">
         					Services
@@ -120,7 +76,7 @@
 					<!---เมนู article   -->
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
 							href="/blog"
-							style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b>
+							style="padding-left: 30px; padding-right: 30px; color: black">New Blog</a></b>
 					</li>
 					<li class=""><b> <a class="nav-link" id="navbar-hover"
 							href="/news"
@@ -144,6 +100,8 @@
 	title="Go to top">
 	<i class="fas fa-arrow-up" style="font-size: 26px; text-align:center;"></i>
 </button>
+<!-- redesignToggleBtn is rendered unconditionally by the original
+     pages-front/_layout/header.jsp, not duplicated here -->
 
 <style>
 
@@ -223,42 +181,3 @@ $(document).ready(function () {
 
 
 </script>
-
-	</c:otherwise>
-</c:choose>
-
-<%-- toggle button itself: always rendered regardless of which header markup
-     was chosen above, so you can always switch back --%>
-<c:choose>
-	<c:when test="${cookie.redesignPreview.value == '1'}">
-		<a id="redesignToggleBtn" class="btn btn-sm" href="/redesign-preview-off"
-			title="Switch back to the original pages">Preview: NEW</a>
-	</c:when>
-	<c:otherwise>
-		<a id="redesignToggleBtn" class="btn btn-sm" href="/redesign-preview-on"
-			title="Preview the redesigned pages">Preview: OLD</a>
-	</c:otherwise>
-</c:choose>
-<!-- endmenu -->
-
-<style>
-#redesignToggleBtn {
-	position: fixed;
-	bottom: 20px;
-	left: 20px;
-	z-index: 99;
-	padding: 8px 14px;
-	background-color: rgb(255, 255, 255);
-	color: rgb(255, 0, 128);
-	border-radius: 4px;
-	font-size: 13px;
-	text-decoration: none;
-	opacity: 0.55;
-}
-
-#redesignToggleBtn:hover {
-	opacity: 1;
-	color: #fff;
-	text-decoration: none;
-}
-</style>

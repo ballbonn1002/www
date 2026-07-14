@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,6 +38,7 @@ public class BlogAction extends ActionSupport {
 	public static final String USERID = "userId";
 	public static final String ARTICLEID = "articleId";
 	public static final Integer MAXLATESTBLOG = 10;
+	public static final String REDESIGN = "redesign";
 	private String metaDescription = "Cube SoftTech is an innovative, high-quality software development company. We are a professional company, focused on IT consulting, web application development &amp; integration. Our services cover every aspect of web / mobile development, from start to finish. From one off projects to a fully outsourced development team., Java Outsourcing, IT Staff Outsourcing, IT Outsource, Staff Outsourcing, IT Staffing solutions, Outsource IT Staff, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง";
 
 	@Autowired
@@ -212,16 +214,34 @@ public class BlogAction extends ActionSupport {
 			if(blogList != null && !blogList.isEmpty()) {
 				request.setAttribute("newBlog", blogList.get(0));
 			}
-			
+
 			request.setAttribute("constant", constant);
-			
-			return SUCCESS;
+
+			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
 			return ERROR;
 		}
 	}
-	
+
+	/**
+	 * Internal-only preview toggle: set via /redesign-preview-on (see
+	 * RedesignPreviewAction), never exposed as a URL parameter that a
+	 * regular visitor could set themselves.
+	 */
+	private boolean isRedesignPreviewEnabled() {
+		Cookie[] cookies = request.getCookies();
+		if (cookies == null) {
+			return false;
+		}
+		for (Cookie cookie : cookies) {
+			if (RedesignPreviewAction.COOKIE_NAME.equals(cookie.getName()) && "1".equals(cookie.getValue())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public String blogDetail() {
 		try {
 			log.debug(getArticleId());
@@ -288,8 +308,8 @@ public class BlogAction extends ActionSupport {
 	            request.setAttribute("title", pageUri.getTitle());
 	            request.setAttribute("metaDescription", pageUri.getMeta());
 	        }
-	        
-			return SUCCESS;
+
+			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;
