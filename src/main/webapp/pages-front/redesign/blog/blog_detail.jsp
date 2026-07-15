@@ -79,18 +79,10 @@ body, html {
 	margin-right: -20px;
 }
 
-.container {
-	z-index: 0;
-	width: 100%;
-}
-
-.header {
-	position: fixed;
-	top: 0;
-	z-index: 1;
-	width: 100%;
-	background-color: #f1f1f1;
-}
+/* .container / .header removed - this page doesn't use those classes itself;
+   they were only colliding with header.jsp's real .container (hamburger
+   icon) and .header (navbar wrapper), since Tiles concatenates every
+   fragment's <style> into one page. */
 
 /* The progress container (grey background) */
 

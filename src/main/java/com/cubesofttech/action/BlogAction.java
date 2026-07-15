@@ -29,7 +29,7 @@ import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BlogAction extends ActionSupport {
-	
+
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
 	HttpServletResponse response = ServletActionContext.getResponse();
@@ -43,22 +43,22 @@ public class BlogAction extends ActionSupport {
 
 	@Autowired
 	private Constant constant;
-	
+
 	@Autowired
 	private BlogDAO blogDAO;
-	
+
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
-	
+
 	@Autowired
 	private TagArDAO tagArDAO;
-	
+
 	@Autowired
 	private ArticleRelatedDAO articleRelatedDAO;
-	
+
 	@Autowired
 	private PageUriDAO pageUriDAO;
-	
+
 	private Blog blog;
 	private int articleId;
 	private File fileUpload;
@@ -199,18 +199,18 @@ public class BlogAction extends ActionSupport {
 
 	public String init() {
 		List<Blog> blogList = null;
-		try {			
+		try {
 			String requestURI = RewriteFilter.getRequestURI(request);
 			log.debug(requestURI);
 			request.setAttribute("requestURI", requestURI);
-			
+
 			if(requestURI.contains("news")) {
 				blogList = blogDAO.findAllNewsWithPageUri();
 			}else {
 				blogList = blogDAO.findAllBlogsWithPageUri();
 			}
 			request.setAttribute("blogList", blogList);
-			
+
 			if(blogList != null && !blogList.isEmpty()) {
 				request.setAttribute("newBlog", blogList.get(0));
 			}
@@ -226,8 +226,8 @@ public class BlogAction extends ActionSupport {
 
 	/**
 	 * Internal-only preview toggle: set via /redesign-preview-on (see
-	 * RedesignPreviewAction), never exposed as a URL parameter that a
-	 * regular visitor could set themselves.
+	 * RedesignPreviewAction), never exposed as a URL parameter that a regular
+	 * visitor could set themselves.
 	 */
 	private boolean isRedesignPreviewEnabled() {
 		Cookie[] cookies = request.getCookies();
@@ -245,17 +245,17 @@ public class BlogAction extends ActionSupport {
 	public String blogDetail() {
 		try {
 			log.debug(getArticleId());
-			
+
 			String requestURI = (String) request.getAttribute("rewrittenRequestURI");
-	        if (requestURI == null) {
-	            requestURI = request.getRequestURI(); // Fallback if not set
-	        }
-	        log.debug("Request URI: " + requestURI);
-	        
-	        // Set attributes for JSP
-	        request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
-	        request.setAttribute("bloguri", requestURI);
-			
+			if (requestURI == null) {
+				requestURI = request.getRequestURI(); // Fallback if not set
+			}
+			log.debug("Request URI: " + requestURI);
+
+			// Set attributes for JSP
+			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
+			request.setAttribute("bloguri", requestURI);
+
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
@@ -265,49 +265,52 @@ public class BlogAction extends ActionSupport {
 			log.debug("cleanDetail: " + cleanDetail);
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
-			if(blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
+			if (blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
 				log.debug(blog.getFileId());
 				request.setAttribute("name", file.getName());
 				request.setAttribute("path", file.getPath());
 				request.setAttribute("alt_name", file.getAltName());
 			}
-			
-			if(blog.getArticleTypeId().equals(1)) {
+
+			if (blog.getArticleTypeId().equals(1)) {
 				request.setAttribute("pageURI", "/news");
-			}else if(blog.getArticleTypeId().equals(2)) {
+			} else if (blog.getArticleTypeId().equals(2)) {
 				request.setAttribute("pageURI", "/blog");
 			}
-			
+
 			List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
 			request.setAttribute("relatedBlogs", relatedBlogs);
-			
+
 			List<Blog> blogList = blogDAO.findAllWithPageUri();
 			request.setAttribute("latestBlogs", blogList);
 			log.debug(constant);
 			request.setAttribute("constant", constant);
-	        request.setAttribute("requestURI", requestURI);
-	        
-	        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-	        if (blog.getTimePost() == null) return null;
-	        ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +08:00
-	        request.setAttribute("datePublished", zonedDateTime.format(formatter));
-	        
-	        if (blog.getTimeUpdate() == null) return null;
-	        ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +08:00
-	        request.setAttribute("dateModified", zonedDateTime2.format(formatter));	        
-			
-	        PageUri pageUri = null;
-	        try {
-	            pageUri = pageUriDAO.findById(requestURI);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        if (pageUri != null) {
-	            log.debug("Page URI found");
-	            request.setAttribute("title", pageUri.getTitle());
-	            request.setAttribute("metaDescription", pageUri.getMeta());
-	        }
+			request.setAttribute("requestURI", requestURI);
+
+			DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+			if (blog.getTimePost() == null)
+				return null;
+			ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +08:00
+			request.setAttribute("datePublished", zonedDateTime.format(formatter));
+
+			if (blog.getTimeUpdate() == null)
+				return null;
+			ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or
+																												// +08:00
+			request.setAttribute("dateModified", zonedDateTime2.format(formatter));
+
+			PageUri pageUri = null;
+			try {
+				pageUri = pageUriDAO.findById(requestURI);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (pageUri != null) {
+				log.debug("Page URI found");
+				request.setAttribute("title", pageUri.getTitle());
+				request.setAttribute("metaDescription", pageUri.getMeta());
+			}
 
 			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
