@@ -213,6 +213,7 @@ public class BlogAction extends ActionSupport {
 
 			if(blogList != null && !blogList.isEmpty()) {
 				request.setAttribute("newBlog", blogList.get(0));
+				request.setAttribute("blogList", blogList);
 			}
 
 			request.setAttribute("constant", constant);

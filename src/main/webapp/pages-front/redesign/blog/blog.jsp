@@ -90,6 +90,7 @@
    ========================================================================== */
 	
 	
+	
 .bar {
 	width: 30px;
 	height: 3px;
@@ -156,7 +157,7 @@ a {
    without this, the fixed height/50% width applied at every screen size,
    fighting Bootstrap's own mobile stacking and breaking the layout below
    992px. */
-@media (min-width: 992px) {
+@media ( min-width : 992px) {
 	.article-preview__row .col-lg-6 {
 		-ms-flex: 0 0 50%;
 		flex: 0 0 50%;
@@ -164,9 +165,9 @@ a {
 		height: 500px;
 	}
 
-/* 	.article-preview__image { */
-/* 		height: 100%; */
-/* 	} */
+	/* 	.article-preview__image { */
+	/* 		height: 100%; */
+	/* 	} */
 }
 
 .article-preview__media {
@@ -176,7 +177,7 @@ a {
 
 .article-preview__image {
 	width: 100%;
-/* 	height: auto; */
+	/* 	height: auto; */
 	object-fit: cover;
 	border-radius: 10px;
 	display: block;
@@ -200,60 +201,40 @@ a {
 	line-height: 32px;
 }
 
-@media (min-width: 992px) {
+@media ( min-width : 992px) {
 	.article-preview__title {
 		font-size: 36px;
 		line-height: 48px;
 	}
 }
 
-/* ย้ายการตัดความสูง/overflow มาไว้ตรงนี้แทน กันข้อความ+HTML ที่ฝังมายาวเกิน
-   โดยไม่กระทบปุ่มที่อยู่ข้างล่าง */
+/* cleanDetail is a plain-text excerpt now (see ArticleHtmlSanitizer.toPreviewText,
+   called in the scriptlet above) capped at 200 chars server-side, not raw
+   rich-text HTML - so this only needs to clamp plain text, no more
+   child-margin resets, heading hiding, or fade overlay for markup that no
+   longer exists here. */
 .article-preview__excerpt {
-	max-height: 180px;
-	overflow: hidden;
 	margin: 0 0 1rem 0;
 	line-height: 1.6;
+	display: -webkit-box;
+	-webkit-line-clamp: 6;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 	position: relative;
 }
 
-/* รีเซ็ต margin ของทุก element ที่ฝังมากับ rich text
-   กัน margin สะสมกินพื้นที่ 130px แบบไม่จำเป็น */
-.article-preview__excerpt>* {
-	margin: 0 0 0.5em 0;
-}
-
-.article-preview__excerpt>*:last-child {
-	margin-bottom: 0;
-}
-
-.article-preview__excerpt img {
-	max-width: 100%;
-}
-
-/* ซ่อน heading ใหญ่ๆ ที่อาจฝังมาใน rich text ไม่ให้กิน 130px
-   เพราะใน preview card ไม่ควรมี h1/h2 ซ้อนกับ title หลัก */
-.article-preview__excerpt h1, .article-preview__excerpt h2,
-	.article-preview__excerpt h3 {
-	display: none;
-}
-
-/* เพิ่ม fade เงาไล่สีตรงขอบล่าง บอก user ว่ายังมีเนื้อหาต่อ (ไม่ตัดห้วนๆ) */
+/* Soft fade over the last line instead of an abrupt line-clamp cutoff -
+   fades to #F5F5F5 (articleblockbg's background) since .article-preview__content
+   has no background of its own and sits directly on top of it. */
 .article-preview__excerpt::after {
 	content: "";
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 200px;
-	background: linear-gradient(to bottom, rgba(255, 255, 255, 0),
-		rgba(255, 255, 255, 0.5));
+	height: 3em;
+	background: linear-gradient(to bottom, rgba(245, 245, 245, 0), rgba(245, 245, 245, 1));
 	pointer-events: none;
-}
-
-.article-preview__excerpt * {
-	margin: 0 !important;
-	padding: 0 !important;
 }
 
 /* Scoped Bootstrap-button override: only applies to this exact CTA
@@ -296,9 +277,9 @@ a {
 
 .articleblockbg2 {
 	padding-top: 0%;
-	padding-bottom: 3rem;
-/* 	padding-left: 3%; */
-/* 	padding-right: 3%; */
+	padding-bottom: 4rem;
+	/* 	padding-left: 3%; */
+	/* 	padding-right: 3%; */
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
@@ -334,13 +315,28 @@ a {
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-	min-height: 150px; /* เปลี่ยนจาก height ตายตัว เป็น min-height */
+	min-height: 200px; /* เปลี่ยนจาก height ตายตัว เป็น min-height */
 	display: flex; /* ต้องมีตัวนี้ ไม่งั้น margin-top:auto ใช้ไม่ได้ */
 	flex-direction: column;
 }
 
 .ardetail__meta {
 	margin-top: auto;
+}
+
+/* Plain-text excerpt per card (see ArticleHtmlSanitizer.toPreviewText,
+   called per-iteration in the c:forEach loop below) - same reasoning as
+   .article-preview__excerpt: capped server-side, so this only needs to
+   clamp plain text. */
+.ardetail__excerpt {
+	margin: 0.5rem 0;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #555;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .aum {
@@ -375,19 +371,21 @@ a {
 		</c:if>
 
 		<%
-			// BlogDAO's native-SQL queries (findAllBlogsWithPageUri/findAllNewsWithPageUri)
-			// use AliasToEntityMapResultTransformer, so "newBlog" is really a
-			// java.util.Map<String,Object> at runtime, not a Blog entity - the DAO's
-			// declared List<Blog> return type doesn't reflect that. EL (${newBlog.detail})
-			// works either way since it resolves Map keys and bean getters the same way,
-			// but a Java-level cast has to match the real runtime type.
-			Object newBlogRaw = request.getAttribute("newBlog");
-			String rawDetail = "";
-			if (newBlogRaw instanceof Map) {
-				Object detail = ((Map) newBlogRaw).get("detail");
-				rawDetail = detail != null ? detail.toString() : "";
-			}
-			request.setAttribute("cleanDetail", ArticleHtmlSanitizer.clean(rawDetail));
+		// BlogDAO's native-SQL queries (findAllBlogsWithPageUri/findAllNewsWithPageUri)
+		// use AliasToEntityMapResultTransformer, so "newBlog" is really a
+		// java.util.Map<String,Object> at runtime, not a Blog entity - the DAO's
+		// declared List<Blog> return type doesn't reflect that. EL (${newBlog.detail})
+		// works either way since it resolves Map keys and bean getters the same way,
+		// but a Java-level cast has to match the real runtime type.
+		Object newBlogRaw = request.getAttribute("newBlog");
+
+		String rawDetail = "";
+		if (newBlogRaw instanceof Map) {
+			Object detail = ((Map) newBlogRaw).get("detail");
+			rawDetail = detail != null ? detail.toString() : "";
+		}
+		// 			request.setAttribute("cleanDetail", ArticleHtmlSanitizer.toPreviewText(rawDetail, 1000));
+		request.setAttribute("cleanDetail", ArticleHtmlSanitizer.clean(rawDetail));
 		%>
 
 		<div class="page-header">
@@ -424,14 +422,15 @@ a {
 						<div
 							class="d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small">
 							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-calendar3"></i> <span>${newBlog.createDate}</span>
+								<i class="bi bi-calendar3"></i> <span><fmt:formatDate
+										pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
 							</div>
 
 							<div class="vr"></div>
 
 							<div class="d-flex align-items-center gap-2">
 								<i class="bi bi-pencil-square"></i> <span>By
-									${newBlog.author}</span>
+									${newBlog.name}</span>
 							</div>
 						</div>
 
@@ -445,6 +444,19 @@ a {
 		</article>
 		<div class="row article-list-row" id="articledetail">
 			<c:forEach var="blog" items="${blogList}" varStatus="Count" begin="1">
+				<%
+				// Same Map-vs-Blog situation as newBlog above: each "blog" here is a
+				// java.util.Map for this iteration (set by c:forEach as a page-scoped
+				// attribute), not a Blog entity - see the scriptlet near the top of
+				// this file for why.
+				Object blogRaw = pageContext.getAttribute("blog");
+				String blogDetailRaw = "";
+				if (blogRaw instanceof Map) {
+					Object d = ((Map) blogRaw).get("detail");
+					blogDetailRaw = d != null ? d.toString() : "";
+				}
+				pageContext.setAttribute("blogPreviewText", ArticleHtmlSanitizer.toPreviewText(blogDetailRaw, 120));
+				%>
 				<div class="col-12 col-sm-6 col-lg-4 articleblockbg2">
 					<div class="articleblockbg3">
 						<a href="${blog.page_uri_id}" role="button"> <img
@@ -455,15 +467,16 @@ a {
 					</div>
 					<div class="ardetail">
 						<h3 class="aum text-ellipsis-2">${blog.topic}</h3>
+						<div class="ardetail__excerpt">${blogPreviewText}</div>
 						<div
 							class="ardetail__meta d-flex align-items-center flex-wrap gap-4 text-secondary small">
 							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-calendar3"></i> <span>${blog.createDate}</span>
+								<i class="bi bi-calendar3"></i> <span><fmt:formatDate
+										pattern="d MMMM yyyy" value="${blog.time_post}" /></span>
 							</div>
 							<div class="vr"></div>
 							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-pencil-square"></i> <span>By
-									${blog.author}</span>
+								<i class="bi bi-pencil-square"></i> <span>By ${blog.name}</span>
 							</div>
 						</div>
 					</div>

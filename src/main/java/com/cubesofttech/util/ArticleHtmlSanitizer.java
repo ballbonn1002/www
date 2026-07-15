@@ -77,6 +77,32 @@ public final class ArticleHtmlSanitizer {
 	}
 
 	/**
+	 * Plain-text teaser for listing/preview cards - not a smaller version of
+	 * clean(). A preview card has no business rendering formatted HTML (any
+	 * tag/attribute that slips through is one more way a source article can
+	 * break a card it wasn't designed for), and stripping to text also makes
+	 * the excerpt length predictable, which HTML of arbitrary structure never
+	 * is.
+	 */
+	public static String toPreviewText(String rawHtml, int maxLength) {
+		if (rawHtml == null || rawHtml.isEmpty()) {
+			return "";
+		}
+		Document doc = Jsoup.parseBodyFragment(rawHtml);
+		doc.select("script, style, meta, title, link, head").remove();
+		String text = doc.body().text().trim();
+		if (text.length() <= maxLength) {
+			return text;
+		}
+		String truncated = text.substring(0, maxLength);
+		int lastSpace = truncated.lastIndexOf(' ');
+		if (lastSpace > 0) {
+			truncated = truncated.substring(0, lastSpace);
+		}
+		return truncated + "...";
+	}
+
+	/**
 	 * Runs before everything else so no source classname/inline style can
 	 * survive. Anything reintroduced after this point (the FAQ rebuild) is
 	 * markup this class generated itself, not the source's.
