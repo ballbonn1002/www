@@ -151,12 +151,22 @@ a {
 /* Scoped grid override: only affects the two col-lg-6 columns inside this
    page's featured-article row, instead of every col-lg-6 element site-wide
    (services.jsp and contacts.jsp also define col-lg-6 markup and would
-   otherwise inherit this height unintentionally if ever rendered together). */
-.article-preview__row .col-lg-6 {
-	-ms-flex: 0 0 50%;
-	flex: 0 0 50%;
-	max-width: 50%;
-	height: 500px;
+   otherwise inherit this height unintentionally if ever rendered together).
+   Wrapped in the same lg breakpoint Bootstrap itself uses for col-lg-6 -
+   without this, the fixed height/50% width applied at every screen size,
+   fighting Bootstrap's own mobile stacking and breaking the layout below
+   992px. */
+@media (min-width: 992px) {
+	.article-preview__row .col-lg-6 {
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+		height: 500px;
+	}
+
+/* 	.article-preview__image { */
+/* 		height: 100%; */
+/* 	} */
 }
 
 .article-preview__media {
@@ -166,7 +176,7 @@ a {
 
 .article-preview__image {
 	width: 100%;
-	height: 100%;
+/* 	height: auto; */
 	object-fit: cover;
 	border-radius: 10px;
 	display: block;
@@ -183,17 +193,24 @@ a {
 
 .article-preview__title {
 	width: 100%;
-	font-size: 36px;
+	font-size: 24px;
 	color: #BD2125;
 	font-weight: bold;
 	margin: 0 0 1rem 0;
-	line-height: 48px;
+	line-height: 32px;
+}
+
+@media (min-width: 992px) {
+	.article-preview__title {
+		font-size: 36px;
+		line-height: 48px;
+	}
 }
 
 /* ย้ายการตัดความสูง/overflow มาไว้ตรงนี้แทน กันข้อความ+HTML ที่ฝังมายาวเกิน
    โดยไม่กระทบปุ่มที่อยู่ข้างล่าง */
 .article-preview__excerpt {
-	max-height: 200px;
+	max-height: 180px;
 	overflow: hidden;
 	margin: 0 0 1rem 0;
 	line-height: 1.6;
@@ -279,9 +296,9 @@ a {
 
 .articleblockbg2 {
 	padding-top: 0%;
-	padding-bottom: 3%;
-	padding-left: 3%;
-	padding-right: 3%;
+	padding-bottom: 3rem;
+/* 	padding-left: 3%; */
+/* 	padding-right: 3%; */
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
@@ -384,7 +401,7 @@ a {
 		<article class="article-preview" id="articledetail1">
 			<div class="row article-preview__row">
 
-				<div class="col-lg-6 order-lg-2">
+				<div class="col-12 col-lg-6 order-lg-2">
 					<figure class="article-preview__media">
 						<a href="${newBlog.page_uri_id}" class="article-preview__link"
 							aria-label="อ่านบทความ: ${newBlog.topic}"> <img
@@ -395,7 +412,7 @@ a {
 					</figure>
 				</div>
 
-				<div class="col-lg-6 order-lg-1">
+				<div class="col-12 col-lg-6 order-lg-1">
 					<div class="article-preview__content">
 						<h2 class="article-preview__title">${newBlog.topic}</h2>
 
@@ -428,7 +445,7 @@ a {
 		</article>
 		<div class="row article-list-row" id="articledetail">
 			<c:forEach var="blog" items="${blogList}" varStatus="Count" begin="1">
-				<div class="col-lg-4 articleblockbg2">
+				<div class="col-12 col-sm-6 col-lg-4 articleblockbg2">
 					<div class="articleblockbg3">
 						<a href="${blog.page_uri_id}" role="button"> <img
 							class="article-card__image"
