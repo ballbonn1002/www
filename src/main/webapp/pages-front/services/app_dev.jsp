@@ -400,12 +400,6 @@
 	crossorigin="anonymous"></script>
 	
 <script>
-	$(document).ready(function () {
-		$('a[href^="/services"]').addClass('active');
-		$('#model').removeClass('active');
-		$('nav-link').addClass('navbar-hover');
-		
-	});
 	AOS.init();
 	window.onscroll = function () { scrollFunction() };
 	

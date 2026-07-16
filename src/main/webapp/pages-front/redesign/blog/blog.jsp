@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="comp"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/ld+json">
@@ -55,41 +56,6 @@
 	font-size: 16px;
 	font-weight: 600;
 }
-
-/* .container / .header removed - this page doesn't use those classes itself;
-   they were only colliding with header.jsp's real .container (hamburger
-   icon) and .header (navbar wrapper), since Tiles concatenates every
-   fragment's <style> into one page. */
-
-/* ==========================================================================
-   2. Navbar (cross-fragment: styles elements rendered by header.jsp)
-   ========================================================================== */
-/* #navbar-hover:hover { */
-/* 	color: #BD2125 !important; */
-/* 	text-decoration: none; */
-/* 	border-color: white white #BD2125 !important; */
-/* 	border-bottom: 4px solid; */
-/* } */
-
-/* /* Targets the nav-links rendered by header.jsp (toggled via the JS */
-/*    requestURI check below), not anything inside this page's own markup. */
-/*    Left unscoped/global on purpose - see refactor notes for why. */
-* /
-	/* .parallax .active { */
-	/* 	border-color: white white #BD2125 !important; */
-	/* 	border-bottom: 4px solid; */
-	/* 	color: #BD2125 !important; */
-	/* } */
-	/* ==========================================================================
-   3. Mobile menu icon (cross-fragment: header.jsp's hamburger button)
-   header.jsp's <div class="bar"> bars (its collapse toggle icon) have no
-   style of their own and depend on whatever body fragment Tiles renders
-   alongside them providing this rule. Unused by this page's own markup,
-   but required for the hamburger icon to render on this page. See
-   refactor notes.
-   ========================================================================== */
-	
-	
 	
 .bar {
 	width: 30px;
@@ -233,7 +199,8 @@ a {
 	left: 0;
 	width: 100%;
 	height: 3em;
-	background: linear-gradient(to bottom, rgba(245, 245, 245, 0), rgba(245, 245, 245, 1));
+	background: linear-gradient(to bottom, rgba(245, 245, 245, 0),
+		rgba(245, 245, 245, 1));
 	pointer-events: none;
 }
 
@@ -457,29 +424,9 @@ a {
 				}
 				pageContext.setAttribute("blogPreviewText", ArticleHtmlSanitizer.toPreviewText(blogDetailRaw, 120));
 				%>
-				<div class="col-12 col-sm-6 col-lg-4 articleblockbg2">
-					<div class="articleblockbg3">
-						<a href="${blog.page_uri_id}" role="button"> <img
-							class="article-card__image"
-							src="${constant.imgContext}${blog.path}" width="100%"
-							height="250px" alt="${blog.topic}" loading="lazy">
-						</a>
-					</div>
-					<div class="ardetail">
-						<h3 class="aum text-ellipsis-2">${blog.topic}</h3>
-						<div class="ardetail__excerpt">${blogPreviewText}</div>
-						<div
-							class="ardetail__meta d-flex align-items-center flex-wrap gap-4 text-secondary small">
-							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-calendar3"></i> <span><fmt:formatDate
-										pattern="d MMMM yyyy" value="${blog.time_post}" /></span>
-							</div>
-							<div class="vr"></div>
-							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-pencil-square"></i> <span>By ${blog.name}</span>
-							</div>
-						</div>
-					</div>
+				<div class="col-12 col-sm-6 col-lg-4">
+					<comp:blogCard blog="${blog}" constant="${constant}"
+						excerpt="${blogPreviewText}" />
 				</div>
 			</c:forEach>
 		</div>
@@ -499,16 +446,6 @@ a {
 
 <script type="text/javascript">
 	AOS.init();
-	$(document).ready(function() {
-		var requestURI = '${requestURI}';
-		console.log("requestURI: " + requestURI);
-		if (requestURI.includes("blog")) {
-			$('a[href="/blog"]').addClass('active');
-		} else {
-			$('a[href="/news"]').addClass('active');
-		}
-		$('#model').removeClass('active');
-	});
 
 	function showNav() {
 		var x = document.getElementById("navDemo");

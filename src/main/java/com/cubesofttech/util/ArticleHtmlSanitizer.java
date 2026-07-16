@@ -7,8 +7,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,6 +36,14 @@ import org.jsoup.safety.Safelist;
  * the source's, and safe to style.
  */
 public final class ArticleHtmlSanitizer {
+
+	private static final Logger log = Logger.getLogger(ArticleHtmlSanitizer.class);
+
+	// A label is a handful of characters at most ("คำถามที่ 12: " being the
+	// longest realistic case) - bounding the regex to this prefix keeps its
+	// cost independent of how long the question text after it happens to be,
+	// instead of scaling with whatever an AI-generated article pastes in.
+	private static final int LABEL_SCAN_LIMIT = 100;
 
 	// Strips whatever the source used to label a question: "Q:", "Q.", plain "Q ",
 	// "1.", "1)", "(1)", "1-", Thai numerals ("๑."), or the Thai phrase "คำถามที่ 1:" —
@@ -69,6 +79,7 @@ public final class ArticleHtmlSanitizer {
 			return "";
 		}
 		Document doc = Jsoup.parseBodyFragment(rawHtml);
+		removeDisallowedDocumentTags(doc);
 		stripClassAndStyleAttributes(doc);
 		removeEmptySpacerElements(doc);
 		removeDisallowedIframes(doc);
@@ -100,6 +111,28 @@ public final class ArticleHtmlSanitizer {
 			truncated = truncated.substring(0, lastSpace);
 		}
 		return truncated + "...";
+	}
+
+	/**
+	 * Editors sometimes paste an entire source web page into the rich-text
+	 * editor instead of just the article body (copying a competitor's post,
+	 * a press release page, etc.), which drags that page's own
+	 * <style>/<script>/<meta>/<title> along into blog.detail without anyone
+	 * noticing at publish time - the extra markup doesn't show up in the
+	 * editor's WYSIWYG preview, only in the raw HTML actually saved.
+	 *
+	 * A <style> tag doesn't care how deep it ends up in the DOM: once it
+	 * renders anywhere on the page, the browser applies its rules
+	 * document-wide. A source page's leftover rule as generic as
+	 * ".detail { margin-left: 10%; ... }" can silently repaint parts of this
+	 * site's own layout that happen to reuse that class name, and a <script>
+	 * tag runs with the same trust as this site's own scripts. This has to
+	 * run before every other step (including stripClassAndStyleAttributes)
+	 * so nothing downstream spends time walking, unwrapping, or
+	 * FAQ-detecting content that's getting deleted wholesale anyway.
+	 */
+	private static void removeDisallowedDocumentTags(Document doc) {
+		doc.select("style, script, meta, title, link, head").remove();
 	}
 
 	/**
@@ -178,6 +211,23 @@ public final class ArticleHtmlSanitizer {
 	}
 
 	/**
+	 * lookingAt() only checks for a match anchored at the start of the
+	 * region, so unlike replaceFirst() (which internally does a find() scan)
+	 * there's no chance of the label pattern matching further into the
+	 * string than intended. The match is run against a bounded prefix, not
+	 * the full question text, so cost doesn't grow with article length.
+	 */
+	private static String stripLeadingQaLabel(String text) {
+		String head = text.length() > LABEL_SCAN_LIMIT ? text.substring(0, LABEL_SCAN_LIMIT) : text;
+		Matcher matcher = LEADING_QA_LABEL.matcher(head);
+		String result = matcher.lookingAt() ? text.substring(matcher.end()) : text;
+		if (log.isDebugEnabled()) {
+			log.debug("FAQ label stripped: [" + text + "] -> [" + result + "]");
+		}
+		return result;
+	}
+
+	/**
 	 * Collects every sibling after the FAQ heading up to the next heading of
 	 * the same level, flattens them down to the text-bearing leaf elements
 	 * (skipping wrapper divs with no text of their own, regardless of how
@@ -213,7 +263,7 @@ public final class ArticleHtmlSanitizer {
 				currentItem = new Element("div").addClass("faq-item");
 				rebuilt.appendChild(currentItem);
 				Element question = new Element("div").addClass("faq-question");
-				question.text(LEADING_QA_LABEL.matcher(text).replaceFirst(""));
+				question.text(stripLeadingQaLabel(text));
 				currentItem.appendChild(question);
 			} else {
 				Element answer = new Element("p");

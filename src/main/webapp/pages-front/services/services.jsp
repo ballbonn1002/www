@@ -206,11 +206,6 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
 <script>
-	$(document).ready(function () {
-		$('a[href^="/services"]').addClass('active');
-		$('nav-link').addClass('navbar-hover');
-		
-	});
 	AOS.init();
 	window.onscroll = function () { scrollFunction() };
 	

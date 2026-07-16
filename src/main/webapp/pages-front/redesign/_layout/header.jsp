@@ -1,6 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<%--
+	Nav active-state is decided here, server-side, at render time - not by
+	JS in every content page after the fact. requestURI is a request
+	attribute every Action already sets (BlogAction, ServicesAction,
+	CareersAction, ContactsAction, HomeAction - see RewriteFilter.getRequestURI),
+	so this reads it rather than creating a new source of truth or reaching
+	into pageContext.request directly.
+
+	Each condition is computed once here and reused below, instead of
+	inlining the same fn:contains(...) expression at every nav-link - the
+	Services dropdown in particular needs the same "is any of my 4 paths
+	current" check on both its parent link and (implicitly) its children.
+--%>
+<c:set var="isHomeActive" value="${requestURI == '/'}" />
+<c:set var="isServicesActive"
+	value="${fn:contains(requestURI, '/services') or fn:contains(requestURI, '/software-development') or fn:contains(requestURI, '/it-outsource') or fn:contains(requestURI, '/mobile-app-development')}" />
+<c:set var="isCareersActive" value="${fn:contains(requestURI, '/careers')}" />
+<c:set var="isBlogActive" value="${fn:contains(requestURI, '/blog')}" />
+<c:set var="isNewsActive" value="${fn:contains(requestURI, '/news')}" />
+<c:set var="isContactsActive" value="${fn:contains(requestURI, '/contacts')}" />
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"
 	type="text/javascript"></script>
@@ -21,7 +43,7 @@
 	<div class="" id="myBar" sytle="padding-bottom:0px!important">
 		<!--Navbar-->
 		<nav class="navbar  navbar-expand-lg navbar-light bg-light fixed-top"
-			style="padding-bottom: 0px !important; margin-bottom: 0px !important; position: relative;">
+			style="padding-bottom: 0px !important; margin-bottom: 0px !important;">
 			<!-- Navbar brand -->
 			<a href="/"> <img width=175px
 				src="/pages-front/img/logo/cubesofttech.png" alt="Responsive image">
@@ -50,15 +72,16 @@
 
 				<div class="navbar-menu-frame">
 				<ul class="navbar-nav">
-					<li class=""><b><a class="nav-link " id="navbar-hover"
-							href="/"
+					<li class=""><b><a
+							class="nav-link ${isHomeActive ? 'active' : ''}"
+							id="navbar-hover" href="/"
 							style="padding-left: 30px; padding-right: 30px; color: black">Home</a></b>
 					</li>
 
 					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="/services"
-						id="navbar-hover" role="button" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false"
+						class="nav-link dropdown-toggle ${isServicesActive ? 'active' : ''}"
+						href="/services" id="navbar-hover" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 						style="padding-left: 30px; padding-right: 30px; color: black; font-weight: bold;">
 							Services </a>
 						<div class="dropdown-menu" aria-labelledby="navbar-hover">
@@ -71,21 +94,25 @@
 
 
 
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="/careers"
+					<li class=""><b> <a
+							class="nav-link ${isCareersActive ? 'active' : ''}"
+							id="navbar-hover" href="/careers"
 							style="padding-left: 30px; padding-right: 30px; color: black">Careers</a></b>
 					</li>
 
 					<!---เมนู article   -->
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
+					<li class=""><b> <a
+							class="nav-link ${isBlogActive ? 'active' : ''}" id="navbar-hover"
 							href="/blog"
 							style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b></li>
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
+					<li class=""><b> <a
+							class="nav-link ${isNewsActive ? 'active' : ''}" id="navbar-hover"
 							href="/news"
 							style="padding-left: 30px; padding-right: 30px; color: black">News</a></b>
 					</li>
-					<li class=""><b> <a class="nav-link" id="navbar-hover"
-							href="/contacts"
+					<li class=""><b> <a
+							class="nav-link ${isContactsActive ? 'active' : ''}"
+							id="navbar-hover" href="/contacts"
 							style="padding-left: 30px; padding-right: 30px; color: black">Contacts</a></b>
 					</li>
 

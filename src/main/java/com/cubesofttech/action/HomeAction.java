@@ -14,6 +14,7 @@ import com.cubesofttech.dao.JobDAO;
 import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.Job;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HomeAction extends ActionSupport {
@@ -30,7 +31,13 @@ public class HomeAction extends ActionSupport {
 	
 	public String init() {
 		List<Blog> blogList = null;
-		try {			
+		try {
+			// header.jsp's navbar needs this to render the "Home" nav-link
+			// as active server-side - every other action already sets this
+			// same attribute (see BlogAction, ServicesAction, CareersAction,
+			// ContactsAction), this one just never did.
+			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
+
 			blogList = blogDAO.findAllWithPageUri();
 			request.setAttribute("blogList", blogList);
 			if(blogList != null && !blogList.isEmpty()) {

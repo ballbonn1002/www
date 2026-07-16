@@ -202,8 +202,6 @@
 <script type="text/javascript">
 	AOS.init();
 	$(document).ready(function() {
-		$('a[href^="/contacts"]').addClass('active');
-		$('#model').removeClass('active');
 
 		// เมื่อกดปุ่ม "Send"
 	    $('#sendEmail').click(function (e) {

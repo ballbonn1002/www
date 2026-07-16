@@ -347,17 +347,7 @@ a {
 
 <script type="text/javascript">
 	AOS.init();
-	$(document).ready(function() {
-		var requestURI = '${requestURI}';
-		console.log("requestURI: "+requestURI);
-		if(requestURI.includes("blog")){
-			$('a[href="/blog"]').addClass('active');
-		}else{
-			$('a[href="/news"]').addClass('active');
-		}
-		$('#model').removeClass('active');
-	});
-	
+
 	function showNav() {
         var x = document.getElementById("navDemo");
         if (x.className.indexOf("w3-show") == -1) {

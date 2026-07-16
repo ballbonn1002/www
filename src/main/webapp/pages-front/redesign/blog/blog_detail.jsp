@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="comp"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="com.cubesofttech.util.ArticleHtmlSanitizer"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="${blog.topic}">
@@ -45,9 +48,10 @@
 </script>
 <style>
 body, html {
-	font-family: 'Open Sans', sans-serif;
+	margin-top: 50px;
 	font-size: 15px;
 	scroll-behavior: smooth;
+	padding-right: 0 !important;
 }
 
 #navbar-hover:hover {
@@ -57,16 +61,104 @@ body, html {
 	border-bottom: 4px solid;
 }
 
-.parallax {
-	/* The image used */
-	background-image: url("/pages-front/img/article/bgarticle.jpg");
-	/* Set a specific height */
-	min-height: 500px;
-	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
+.article-hero {
+	position: relative;
+	height: 480px;
+	margin-top: 24px;
+	overflow: hidden;
+	background-color: #1A1A1A;
+}
+
+.article-hero::before, .article-hero::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: var(--hero-image, none);
 	background-position: center;
 	background-repeat: no-repeat;
+}
+
+.article-hero::before {
 	background-size: cover;
+	filter: blur(20px) brightness(0.6);
+	transform: scale(1.15);
+}
+
+.article-hero::after {
+	background-size: contain;
+}
+
+.article-hero__expand-btn {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	z-index: 3;
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.article-hero__expand-btn:hover {
+	background-color: rgba(0, 0, 0, 0.75);
+	color: #fff;
+}
+
+.article-hero-modal__content {
+	background: transparent;
+	border: none;
+}
+
+.article-hero-modal__image {
+	max-width: 80vw;
+	max-height: 80vh;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	border-radius: 10px;
+	align-self: center;
+}
+
+.article-hero-modal__close {
+	font-size: 32px !important;
+	position: absolute;
+	top: -40px;
+	right: 0;
+	color: #fff !important;
+	opacity: 1;
+	text-shadow: none;
+	z-index: 1;
+}
+
+@media ( max-width : 767px) {
+	.article-hero {
+		height: 280px;
+	}
+}
+
+.article-hero-card {
+	position: relative;
+	margin-top: -140px;
+	border-radius: 16px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+	padding: 30px 20px;
+}
+
+@media ( max-width : 767px) {
+	.article-hero-card {
+		margin-top: -80px;
+	}
 }
 
 .active {
@@ -151,7 +243,6 @@ p {
 	transition: 0.4s;
 }
 
-
 .vl {
 	border-left: 2px solid rgb(233, 233, 233);
 	height: 140px;
@@ -172,32 +263,13 @@ p {
 .ft {
 	border-bottom: 2px solid rgb(233, 233, 233);
 }
+
 a:link {
 	color: #000;
 }
 
-#articledetail a {
-	color: #337ab7 !important;
-}
-
 .detail {
 	background-color: white;
-	box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
-	margin-left: 0%;
-	margin-right: 0%;
-	margin-top: 0%;
-	margin-bottom: 5%;
-	padding-left: 5%;
-	padding-right: 3%;
-	padding-top: 5%;
-	padding-bottom: 5%;
-}
-
-@media only screen and (max-width: 600px) {
-	.detail {
-		padding-left: 5%;
-		padding-right: 5%;
-	}
 }
 
 hr.detailnew {
@@ -221,35 +293,142 @@ hr.detailnew {
 	margin-right: 5%;
 }
 
-.arrelate {
-	padding-left: 5%;
+/* Distraction-free reading layout: the article column is centered with
+   its own reading-measure max-width instead of the old col-lg-9 (9/12 of
+   the whole page), and there's no more col-lg-3 sidebar running alongside
+   it - related articles moved to their own horizontal section below the
+   content instead (see .related-articles-section). This matters for this
+   site specifically because the blog exists for SEO/topical-authority,
+   not pageview count: a sidebar competing for attention the whole way
+   down encourages bouncing away before finishing the article, and read-
+   through is what actually feeds the ranking signal this content is for.
+
+   720px keeps .article-body's 17px text at roughly 75-90 characters per
+   line - the classic 50-75 English-character reading measure, nudged up
+   because Thai runs a little denser per line than Latin text at the same
+   width (no inter-word spaces, stacked vowel/tone marks). Mobile skips
+   the max-width entirely: the screen is already narrow enough that
+   constraining it further would only waste space, not help readability. */
+.article-content {
+	margin: 0 auto;
 }
 
-.vtnew {
-	border-left: 2px solid lightgray;
-	margin: 0 0 0;
+@media ( min-width : 768px) {
+	.article-content {
+		max-width: 720px;
+	}
 }
 
+.related-articles-section {
+	margin-top: 4rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--article-border, #E7DEDE);
+}
+
+.related-articles-section__heading {
+	margin-bottom: 1.5rem;
+}
+
+.related-articles-section__cta {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 50px;
+}
+
+.related-articles-section__cta-btn {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	overflow: hidden;
+	z-index: 1;
+	padding: 0.6rem 1.75rem;
+	border: 3px solid #BD2125;
+	border-radius: 10px;
+	color: #000;              /* สี base เป็นดำตามที่บอก */
+	background-color: transparent;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.related-articles-section__cta-btn::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: #BD2125;
+	transform: scaleX(0);
+	transform-origin: left;
+	z-index: -1;
+	transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.related-articles-section__cta-btn:hover::before {
+	transform: scaleX(1);
+}
+
+.related-articles-section__cta-btn:hover {
+	color: #fff;
+	text-decoration: none;
+}
+
+/* สำคัญ: บังคับให้ text กับ icon ใช้สีเดียวกับปุ่มหลักเสมอ (currentColor)
+   กันกรณีมี color ถูก set แยกไว้เองจนไม่ตาม parent ตอน hover */
+.related-articles-section__cta-btn-text {
+	color: inherit;
+}
+
+.related-articles-section__cta-btn-icon {
+	color: currentColor;   /* icon font (Bootstrap Icons) ใช้ currentColor เป็น default อยู่แล้ว แต่ใส่ชัดๆ กันเหนียว */
+	width: 0;
+	opacity: 0;
+	transform: translateX(-8px);
+	transition: width 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+	font-size: 18px;
+}
+
+.related-articles-section__cta-btn:hover .related-articles-section__cta-btn-icon {
+	width: 18px;
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.article-tags {
+	margin: 0.75rem 0;
+}
+
+/* .articleblockbg2/3, .ardetail, .aum, .ardetail__meta/__excerpt,
+   .text-ellipsis-2, .article-card__image match blog.jsp's card design
+   exactly - both pages render the same shared WEB-INF/tags/blogCard.tag,
+   so the two need matching CSS to actually look the same, not just share
+   markup. No col-* grid class here (unlike blog.jsp) since these cards
+   stack full-width in this page's narrow sidebar column instead of a
+   3-per-row full-width row. */
 .articleblockbg2 {
-	padding-top: 5%;
-	padding-bottom: 3%;
-	padding-left: 5%;
-	padding-right: 0;
-	margin-left: 5%;
-	width: 100%;
+	padding-top: 0%;
+	padding-bottom: 4rem;
+	text-align: left;
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	cursor: pointer;
 }
 
 .articleblockbg2:hover {
+	transform: translateY(-6px);
+}
+
+.articleblockbg2:hover .aum {
 	color: #BD2125;
 }
 
 .articleblockbg3 {
-	transition: transform .2s;
-	/* Animation */
+	overflow: hidden;
+	border-radius: 10px 10px 0 0;
 }
 
-.articleblockbg3:hover {
-	transform: scale(1.05);
+.article-card__image {
+	object-fit: cover;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
 .ardetail {
@@ -257,30 +436,45 @@ hr.detailnew {
 	padding-bottom: 5%;
 	padding-left: 5%;
 	padding-right: 5%;
-	background-color: #f0f0f0;
-	box-shadow: 0px 11px 18px -16px rgba(0, 0, 0, 0.75);
+	background-color: white;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+}
+
+.ardetail__meta {
+	margin-top: auto;
+}
+
+.ardetail__excerpt {
+	margin: 0.5rem 0;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #555;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .aum {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;
-	-ms-text-overflow: ellipsis;
 	overflow: hidden;
-	width: 300px;
+	width: 100%;
 	font-size: 20px;
-	color: #BD2125;
+	color: #000;
 	font-weight: bold;
-	padding-right: 5%;
+	transition: color 0.2s ease;
 }
 
-.aum1 {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;
-	-ms-text-overflow: ellipsis;
+.text-ellipsis-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 	overflow: hidden;
-	width: 300px;
+	word-break: break-word;
 }
 
 /* =====================================================================
@@ -309,28 +503,31 @@ hr.detailnew {
 	font-size: 17px;
 	line-height: 1.85;
 	color: var(--article-ink);
+	margin: 40px;
 }
 
-.article-body h2,
-.article-body h3,
-.article-body h4 {
+.article-body h2, .article-body h3, .article-body h4 {
 	color: var(--article-ink);
 	font-weight: 700;
 	line-height: 1.4;
 }
+
 .article-body h2 {
 	font-size: 26px;
 	margin: 52px 0 20px;
 	padding-bottom: 12px;
 	border-bottom: 1px solid var(--article-border);
 }
+
 .article-body h2:first-child {
 	margin-top: 0;
 }
+
 .article-body h3 {
 	font-size: 20px;
 	margin: 34px 0 14px;
 }
+
 .article-body h4 {
 	font-size: 17px;
 	margin: 24px 0 10px;
@@ -349,18 +546,20 @@ hr.detailnew {
 	color: var(--article-accent);
 	text-decoration: underline;
 }
+
 .article-body a:hover {
 	color: var(--article-accent-strong);
 }
 
-.article-body ul,
-.article-body ol {
+.article-body ul, .article-body ol {
 	margin: 0 0 24px;
 	padding-left: 1.4em;
 }
+
 .article-body li {
 	margin-bottom: 10px;
 }
+
 .article-body li::marker {
 	color: var(--article-accent);
 	font-weight: 700;
@@ -376,10 +575,12 @@ hr.detailnew {
 	font-weight: 600;
 	color: var(--article-ink);
 }
+
 .article-body blockquote p {
 	margin: 0;
 }
-.article-body blockquote p + p {
+
+.article-body blockquote p+p {
 	margin-top: 10px;
 }
 
@@ -405,7 +606,7 @@ hr.detailnew {
    from the source are overridden so it scales responsively */
 .article-body iframe {
 	width: 100%;
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 16/9;
 	height: auto;
 	border: none;
 	border-radius: 10px;
@@ -424,19 +625,21 @@ hr.detailnew {
 	font-size: 15px;
 	-webkit-overflow-scrolling: touch;
 }
-.article-body th,
-.article-body td {
+
+.article-body th, .article-body td {
 	padding: 12px 16px;
 	border-bottom: 1px solid var(--article-border);
 	text-align: left;
 	vertical-align: top;
 	white-space: nowrap;
 }
+
 .article-body th {
 	background: var(--article-accent-soft);
 	color: var(--article-ink);
 	font-weight: 700;
 }
+
 .article-body tr:last-child td {
 	border-bottom: none;
 }
@@ -448,18 +651,22 @@ hr.detailnew {
 	padding: 22px 0;
 	border-bottom: 1px solid var(--article-border);
 }
+
 .article-body .faq-item:last-child {
 	border-bottom: none;
 }
-.article-body .faq-item > *:last-child {
+
+.article-body .faq-item>*:last-child {
 	margin-bottom: 0;
 }
+
 .article-body .faq-question {
 	font-size: 18px;
 	font-weight: 700;
 	color: var(--article-ink);
 	margin: 0 0 8px;
 }
+
 .article-body .faq-question::before {
 	content: "Q. ";
 	color: var(--article-accent);
@@ -473,170 +680,171 @@ hr.detailnew {
 <!-- endmenu -->
 <!--------------------------home------------------------------------>
 
-<div class="parallax show-on-scroll">
-	<div align="center" class="logojob"
-		data-aos="fade-down" data-aos-duration="800">
-		<c:if test="${fn:contains(pageURI, 'blog')}"><div class="job-block font-weight-bolder">BLOG</div></c:if>
-		<c:if test="${fn:contains(pageURI, 'news')}"><div class="job-block font-weight-bolder">NEWS</div></c:if>
-		<br> <font size="5px">Professional IT People ~ Innovative
-			IT Solutions<br>
-		</font> <font size="3px">IT Staff Outsourcing Services | IT
-			consultants | Custom Software Solutions</font>
+<div class="article-hero"
+	<c:if test="${!empty path}">style="--hero-image: url('${constant.imgContext}${path}');"</c:if>>
+	<c:if test="${!empty path}">
+		<button type="button" class="article-hero__expand-btn"
+			data-toggle="modal" data-target="#heroImageModal"
+			aria-label="ดูรูปเต็ม">
+			<i class="bi bi-arrows-fullscreen"></i>
+		</button>
+	</c:if>
+</div>
 
-	</div>
-	<br>
-
-	<div>
-		<div class="detail">
-			<div>
-				<ul class="breadcrumb">
-					<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
-					<li><a href="javascript:history.back()" id="model">
-						<c:if test="${fn:contains(pageURI, 'blog')}">Blog</c:if>
-						<c:if test="${fn:contains(pageURI, 'news')}">News</c:if></a>&nbsp;/&nbsp;</li>
-					<li><a class="currentPage" id="parent">${blog.topic}</a></li>
-				</ul>
-			</div>
-			<div class="row">
-				<div class="col-lg-9" id="articledetail">
-					<article itemscope itemtype="https://schema.org/Article">
-							<c:if test="${!empty path}">
-								<div style="text-align: center;">
-    								<img src="${constant.imgContext}${path}"
-    								width="70%" height="70%" style="object-fit: cover; 
-    								margin-bottom: 20px;" alt= "${alt_name}">
-								</div> 
-							</c:if>
-					<!-- <span id="datetag"></span>|  -->
-					Tags : <font color="#BD2125"><span id="articletag"> 
-							<c:forEach
- 								var="tag" items="${tags}" varStatus="Count">
- 								<c:if test="${tag.article_id eq blog.articleId}">${tag.name} </c:if>
- 							</c:forEach>
-					</span></font>
-					<div class="articledetail">
-					<header>
-						<h1 itemprop="headline">${blog.topic}</h1>
-						 <c:if test="${blog.timePost != null}"><p class="text-muted" style="padding: 0px 0px 0px 0px">Last updated : 
-							<fmt:formatDate pattern = "d MMM yyyy" value = "${blog.timePost}"/></p></c:if>
-					</header>
-						<p>
-							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
-								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
-								target="_blank"><img
-								src="/pages-front/img/articleshares/svg/facebook_square.svg" width="25px"
-								height="25px">
-								</a>&nbsp;&nbsp;&nbsp; <a
-								href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
-								target="_blank"><img
-								src="/pages-front/img/articleshares/svg/twitter_x.svg" width="25px"
-								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com${bloguri}"
-								target="_blank"><img
-								src="/pages-front/img/articleshares/svg/gmail.svg" width="28px"
-								height="28px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com${bloguri}"
-								target="_blank"><img
-								src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
-								height="25px"></a>
-						</p>
-						
-						<br>
-						<!-- HTML Display here -->
-						<br> <section itemprop="articleBody" class="article-body">${cleanDetail}</section>
-						<!-- HTML Display here -->
-					</div>
-					</article>
-				</div>
-				<div class="col-lg-3 vtnew">
-					<b><h5 class="arrelate">
-							<font color="gray">บทความที่เกี่ยวข้อง</b></font>
-					</h5>
-					<div class="row" id="articledetail1">
-						<c:forEach var="relatedBlog" items="${relatedBlogs}" varStatus="Count">
-							<div class="articleblockbg2">
-								<left>
-								<div class="articleblockbg3">
-									<a class="" href="${relatedBlog.page_uri_id}"
-										role="button"> <img src="${constant.imgContext}${relatedBlog.path}" width="100%"
-										height="180px" style="object-fit: cover;"></a>
-								</div>
-								<div class="ardetail">
-									<div class="aum">${relatedBlog.topic}</div>
-								</div>
-								</left>
-							</div>
-						</c:forEach>
-					</div>
-					<br>
-					<hr class="detailnew">
-					<br> <b><h5 class="arrelate">
-							<font color="gray">บทความล่าสุด</b></font>
-					</h5>
-					<div class="row" id="articledetail2">
-						<c:forEach var="latestBlog" items="${latestBlogs}" varStatus="Count">
-							<c:if test="${Count.count <= maxLatestBlog}">
-								<div class="articleblockbg2">
-									<left> <a class=""
-										href="${latestBlog.page_uri_id}" role="button"></a>
-									<div class="aum1">
-										<a class="" href="${latestBlog.page_uri_id}"
-											role="button">${latestBlog.topic}</a>
-									</div>
-									</left>
-								</div>
-							</c:if>
-						</c:forEach>
-					</div>
-				</div>
+<c:if test="${!empty path}">
+	<div class="modal fade" id="heroImageModal" tabindex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl"
+			role="document">
+			<div class="modal-content article-hero-modal__content">
+				<button type="button" class="close article-hero-modal__close"
+					data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<img src="${constant.imgContext}${path}" alt="${blog.topic}"
+					class="article-hero-modal__image">
 			</div>
 		</div>
 	</div>
+</c:if>
+
+<div class="container">
+	<div class="article-content">
+		<div class="detail article-hero-card">
+			<h1 itemprop="headline" style="color: #BD2125;">${blog.topic}</h1>
+
+			<div class="article-tags">
+				Tags : <font color="#BD2125"><span id="articletag"> <c:forEach
+							var="tag" items="${tags}" varStatus="Count">
+							<c:if test="${tag.article_id eq blog.articleId}">${tag.name} </c:if>
+						</c:forEach>
+				</span></font>
+			</div>
+
+			<div
+				class="article-meta-bar d-flex flex-wrap align-items-center justify-content-between gap-3">
+				<c:if test="${blog.timeUpdate != null}">
+					<div
+						class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
+						<i class="bi bi-calendar3"></i> <span>Last Update : <fmt:formatDate
+								pattern="d MMMM yyyy" value="${blog.timeUpdate}" /></span>
+					</div>
+				</c:if>
+
+				<div class="article-shares d-flex align-items-center gap-3">
+					<b>SHARES</b> <a
+						href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
+						target="_blank"><img
+						src="/pages-front/img/articleshares/svg/facebook_square.svg"
+						width="25px" height="25px"></a> <a
+						href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
+						target="_blank"><img
+						src="/pages-front/img/articleshares/svg/twitter_x.svg"
+						width="25px" height="25px"></a> <a
+						href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com${bloguri}"
+						target="_blank"><img
+						src="/pages-front/img/articleshares/svg/gmail.svg" width="28px"
+						height="28px"></a> <a
+						href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com${bloguri}"
+						target="_blank"><img
+						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
+						height="25px"></a>
+				</div>
+			</div>
+		</div>
+
+		<article itemscope itemtype="https://schema.org/Article">
+			<section itemprop="articleBody" class="article-body">${cleanDetail}</section>
+		</article>
+	</div>
+
+	<%--
+		relatedBlogs is manually curated by editors (article_related table) and
+		may be empty for articles nobody has linked yet - falling back to
+		latestBlogs (already fetched above for this same request) means this
+		section still does its job (give the reader another article, which is
+		also an internal link for SEO) instead of rendering an empty heading
+		with nothing under it.
+	--%>
+	<c:set var="relatedCardSource"
+		value="${not empty relatedBlogs ? relatedBlogs : latestBlogs}" />
+
+	<section class="related-articles-section">
+		<h2 class="related-articles-section__heading">
+			<font color="gray">บทความที่เกี่ยวข้อง</font>
+		</h2>
+		<div class="row">
+			<%-- end="2" caps this at 3 cards (indices 0-2) regardless of which
+				 list is used - relatedBlogs is already limited to 3 at the DAO
+				 level, but latestBlogs has no such limit, so this is what
+				 actually enforces the cap in the fallback case. --%>
+			<c:forEach var="relatedBlog" items="${relatedCardSource}" end="2"
+				varStatus="Count">
+				<%
+				Object relatedBlogRaw = pageContext.getAttribute("relatedBlog");
+				String relatedBlogDetailRaw = "";
+				if (relatedBlogRaw instanceof Map) {
+					Object d = ((Map) relatedBlogRaw).get("detail");
+					relatedBlogDetailRaw = d != null ? d.toString() : "";
+				}
+				pageContext.setAttribute("relatedBlogPreviewText", ArticleHtmlSanitizer.toPreviewText(relatedBlogDetailRaw, 120));
+				%>
+				<div class="col-12 col-sm-6 col-lg-4">
+					<comp:blogCard blog="${relatedBlog}" constant="${constant}"
+						excerpt="${relatedBlogPreviewText}" />
+				</div>
+			</c:forEach>
+		</div>
+
+		<div class="related-articles-section__cta">
+			<a href="${pageURI}" class="related-articles-section__cta-btn"> <span
+				class="related-articles-section__cta-btn-text">ดูบทความทั้งหมด</span>
+				<i class="bi bi-arrow-right related-articles-section__cta-btn-icon"></i>
+			</a>
+		</div>
+	</section>
 </div>
 
 
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"
+	type="text/javascript"></script>
+<script data-cfasync="false"
+	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
-
 	AOS.init();
-	
-	$(document).ready(function() {
-		var requestURI = '${requestURI}';
-		console.log("requestURI: "+requestURI);
-		if(requestURI.includes("blog")){
-			$('a[href="/blog"]').addClass('active');
-		}else{
-			$('a[href="/news"]').addClass('active');
-		}
-		
+
+	$('#heroImageModal').on('hidden.bs.modal', function() {
+		$('body').css('padding-right', '');
+		$('.modal-backdrop').remove();
 	});
-	
+
 	function showNav() {
-        var x = document.getElementById("navDemo");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-        }
-    }
-	
-	window.onscroll = function () { scrollFunction() };
+		var x = document.getElementById("navDemo");
+		if (x.className.indexOf("w3-show") == -1) {
+			x.className += " w3-show";
+		} else {
+			x.className = x.className.replace(" w3-show", "");
+		}
+	}
+
+	window.onscroll = function() {
+		scrollFunction()
+	};
 	function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            document.getElementById("myBtn").style.display = "block";
-        } else {
-            document.getElementById("myBtn").style.display = "none";
-        }
-    }
-	
+		if (document.body.scrollTop > 20
+				|| document.documentElement.scrollTop > 20) {
+			document.getElementById("myBtn").style.display = "block";
+		} else {
+			document.getElementById("myBtn").style.display = "none";
+		}
+	}
+
 	function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
-	
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+	}
 </script>

@@ -107,13 +107,15 @@
 
 <style>
 body, html {
-	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif !important;
+	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai',
+		sans-serif !important;
 	font-size: 15px;
 	scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif !important;
+	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai',
+		sans-serif !important;
 }
 
 p {
@@ -171,7 +173,7 @@ p {
 .header {
 	position: fixed;
 	top: 0;
-	z-index: 1;
+	z-index: 1030;
 	width: 100%;
 	background-color: #f1f1f1;
 }
@@ -204,33 +206,33 @@ p {
 	padding-bottom: 15px;
 }
 
-.detail {
-	background-color: white;
-	box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
-	margin-left: 10%;
-	margin-right: 10%;
-	margin-top: 10%;
-	margin-bottom: 5%;
-	padding-left: 5%;
-	padding-right: 5%;
-	padding-top: 5%;
-}
+/* .detail { */
+/* 	background-color: white; */
+/* 	box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75); */
+/* 	margin-left: 10%; */
+/* 	margin-right: 10%; */
+/* 	margin-top: 10%; */
+/* 	margin-bottom: 5%; */
+/* 	padding-left: 5%; */
+/* 	padding-right: 5%; */
+/* 	padding-top: 5%; */
+/* } */
 
 @media screen and (max-width: 870px) {
 	.vl {
 		display: none;
 	}
-	.detail {
-		background-color: white;
-		box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
-		margin-left: 2%;
-		margin-right: 2%;
-		margin-top: 15%;
-		margin-bottom: 1%;
-		padding-left: 5%;
-		padding-right: 5%;
-		padding-top: 5%;
-	}
+/* 	.detail { */
+/* 		background-color: white; */
+/* 		box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75); */
+/* 		margin-left: 2%; */
+/* 		margin-right: 2%; */
+/* 		margin-top: 15%; */
+/* 		margin-bottom: 1%; */
+/* 		padding-left: 5%; */
+/* 		padding-right: 5%; */
+/* 		padding-top: 5%; */
+/* 	} */
 }
 
 .servicecon {

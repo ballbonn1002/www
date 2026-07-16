@@ -39,9 +39,10 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<ArticleRelated> articleRelated = null;
 		try {
-			String sql = "SELECT ar.article_id, ar.related_article_id, a.topic, f.path, p.page_uri_id "
+			String sql = "SELECT ar.article_id, ar.related_article_id, a.topic, a.detail, a.time_post, u.name, f.path, p.page_uri_id "
 					+ "FROM article_related ar "
 					+ "INNER JOIN article a ON ar.related_article_id = a.article_id "
+					+ "LEFT JOIN user u ON a.user_id = u.id "
 					+ "LEFT JOIN file f ON f.file_id = a.file_id "
 					+ "LEFT JOIN page_uri p ON p.model_id = ar.related_article_id "
 					+ "WHERE ar.article_id = :articleId "
@@ -49,6 +50,10 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter("articleId", articleId);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			// Capped at 3 cards - the related-articles section on blog_detail.jsp
+			// shows a fixed-width row of cards, not an unbounded list, so this
+			// caps it at the source instead of over-fetching and cutting in the JSP.
+			query.setMaxResults(3);
 			articleRelated = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
