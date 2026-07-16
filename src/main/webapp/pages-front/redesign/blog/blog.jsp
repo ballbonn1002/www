@@ -33,9 +33,19 @@
 /* ==========================================================================
    1. Layout - Hero / Page header
    ========================================================================== */
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: #F5F5F5;
+	/* หรือสีพื้นหลังหลักของเว็บ ให้ตรงกับ section แรก */
+	min-height: 100%;
+	overscroll-behavior-y: none;
+	/* กัน bounce ทะลุไปเห็น background นอกหน้า (รองรับ Chrome/Edge) */
+}
+
 .articleblockbg {
 	background-color: #F5F5F5;
-	padding-top: 1%;
+	padding-top: 3%;
 	padding-bottom: 5%;
 	padding-left: 10%;
 	padding-right: 10%;
@@ -56,7 +66,7 @@
 	font-size: 16px;
 	font-weight: 600;
 }
-	
+
 .bar {
 	width: 30px;
 	height: 3px;
@@ -160,11 +170,14 @@ a {
 
 .article-preview__title {
 	width: 100%;
-	font-size: 24px;
-	color: #BD2125;
 	font-weight: bold;
 	margin: 0 0 1rem 0;
-	line-height: 32px;
+	background: linear-gradient(135deg, #BD2125 0%, #55090b 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: #BD2125;
+	/* fallback สำหรับ browser ที่ไม่รองรับ background-clip: text */
 }
 
 @media ( min-width : 992px) {
