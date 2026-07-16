@@ -15,6 +15,18 @@
 <link rel="icon" type="image/x-icon"
 	href="/pages-front/img/logo/favicon.png">
 <link rel="canonical" href="https://www.cubesofttech.com${requestURI}">
+<%-- pageBaseUri/currentPage/totalPages are only set by BlogAction.init()
+	 (blog/news listing pages) - every other page just skips this block. --%>
+<c:if test="${not empty pageBaseUri}">
+	<c:if test="${currentPage > 1}">
+		<link rel="prev"
+			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage - 1}">
+	</c:if>
+	<c:if test="${currentPage < totalPages}">
+		<link rel="next"
+			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage + 1}">
+	</c:if>
+</c:if>
 <meta name="description" content="${meta}">
 <meta name="keywords" content="">
 
@@ -633,8 +645,19 @@ a {
 </style>
 
 <script>
-	if (location.search)
-		location.replace(location.href.replace(/\?.+/, ""));
+	// Strips tracking/junk query params (fbclid, utm_*, etc.) off every
+	// page load, but keeps "page" - blog.jsp's pagination depends on
+	// ?page=N surviving this, unlike every other param this was written
+	// to clean up. Only replace()s when the URL actually needs trimming,
+	// so an already-clean "?page=2" doesn't get an extra, pointless
+	// history entry every load.
+	if (location.search) {
+		var pageMatch = /(?:^|[?&])page=([^&]*)/.exec(location.search);
+		var cleanUrl = location.pathname + (pageMatch ? "?page=" + pageMatch[1] : "");
+		if (cleanUrl !== location.pathname + location.search) {
+			location.replace(cleanUrl);
+		}
+	}
 </script>
 
 </head>

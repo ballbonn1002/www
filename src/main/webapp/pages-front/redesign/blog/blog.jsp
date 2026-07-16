@@ -335,6 +335,51 @@ a {
 	overflow: hidden;
 	word-break: break-word;
 }
+
+/* baseLayout.jsp has its own sitewide ".pagination { position: absolute;
+   right: 0; ... }" rule that careers.jsp's job listing depends on - reusing
+   the bare .pagination class here would inherit that and get pulled out of
+   flow to the right edge. Scoped under .blog-pagination (added alongside
+   .pagination on this page's <ul> in blog_list.jsp) instead of touching the
+   shared rule. */
+.pagination.blog-pagination {
+	position: static;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 2rem;
+}
+
+.blog-pagination .page-item {
+	margin: 0 4px;
+}
+
+.blog-pagination .page-link {
+	margin-left: 0; /* cancel Bootstrap's default -1px border-collapse between items */
+	border-radius: 8px;
+	border-color: #e9dcdc;
+	color: #BD2125;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.blog-pagination .page-link:hover {
+	background-color: #fdeceb;
+	color: #8f1a1d;
+}
+
+/* Active page: a soft tint of the brand red (not the solid, full-strength
+   #BD2125) with dark red text on top, so the page number stays legible
+   instead of disappearing into a solid block. */
+.blog-pagination .page-item.active .page-link {
+	background-color: #f3c9c9;
+	border-color: #f3c9c9;
+	color: #7a1215;
+	font-weight: 600;
+}
+
+.blog-pagination .page-item.disabled .page-link {
+	opacity: 0.5;
+}
 </style>
 
 
@@ -422,27 +467,7 @@ a {
 
 			</div>
 		</article>
-		<div class="row article-list-row" id="articledetail">
-			<c:forEach var="blog" items="${blogList}" varStatus="Count" begin="1">
-				<%
-				// Same Map-vs-Blog situation as newBlog above: each "blog" here is a
-				// java.util.Map for this iteration (set by c:forEach as a page-scoped
-				// attribute), not a Blog entity - see the scriptlet near the top of
-				// this file for why.
-				Object blogRaw = pageContext.getAttribute("blog");
-				String blogDetailRaw = "";
-				if (blogRaw instanceof Map) {
-					Object d = ((Map) blogRaw).get("detail");
-					blogDetailRaw = d != null ? d.toString() : "";
-				}
-				pageContext.setAttribute("blogPreviewText", ArticleHtmlSanitizer.toPreviewText(blogDetailRaw, 120));
-				%>
-				<div class="col-12 col-sm-6 col-lg-4">
-					<comp:blogCard blog="${blog}" constant="${constant}"
-						excerpt="${blogPreviewText}" />
-				</div>
-			</c:forEach>
-		</div>
+		<%@ include file="blog_list.jsp"%>
 	</div>
 
 	<br>

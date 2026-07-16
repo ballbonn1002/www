@@ -4,6 +4,7 @@ import java.io.File;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -39,6 +40,16 @@ public class BlogAction extends ActionSupport {
 	public static final String ARTICLEID = "articleId";
 	public static final Integer MAXLATESTBLOG = 10;
 	public static final String REDESIGN = "redesign";
+	// 12 divides evenly into the 3-per-row grid (col-lg-4) blog.jsp renders,
+	// so a page never ends on a half-empty row.
+	public static final int PAGE_SIZE = 12;
+	// The featured "latest article" card is always the single newest
+	// article, fetched separately from (and never duplicated into) the
+	// paginated grid below it - the grid's dataset starts right after it.
+	private static final int HERO_COUNT = 1;
+	// Sentinel in the page-number list blog.jsp's pagination component reads
+	// to know where to render "..." instead of a page link.
+	public static final int PAGE_ELLIPSIS = -1;
 	private String metaDescription = "Cube SoftTech is an innovative, high-quality software development company. We are a professional company, focused on IT consulting, web application development &amp; integration. Our services cover every aspect of web / mobile development, from start to finish. From one off projects to a fully outsourced development team., Java Outsourcing, IT Staff Outsourcing, IT Outsource, Staff Outsourcing, IT Staffing solutions, Outsource IT Staff, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง";
 
 	@Autowired
@@ -74,8 +85,21 @@ public class BlogAction extends ActionSupport {
 	private String fileName;
 	private String fileType;
 	private String srcDelete;
+	// Bound from the "page" request param (blog.jsp?page=2) - 1-based,
+	// defaults to page 1 when absent. Only clamped against <1 here; the
+	// upper bound (page beyond how many actually exist) isn't known until
+	// init() has queried the count, so that clamp happens there instead.
+	private int page = 1;
 
 	File articleImageFile;
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page < 1 ? 1 : page;
+	}
 
 	public String getAuthor() {
 		return author;
@@ -198,31 +222,106 @@ public class BlogAction extends ActionSupport {
 	}
 
 	public String init() {
-		List<Blog> blogList = null;
 		try {
 			String requestURI = RewriteFilter.getRequestURI(request);
 			log.debug(requestURI);
 			request.setAttribute("requestURI", requestURI);
 
-			if(requestURI.contains("news")) {
-				blogList = blogDAO.findAllNewsWithPageUri();
-			}else {
-				blogList = blogDAO.findAllBlogsWithPageUri();
-			}
-			request.setAttribute("blogList", blogList);
+			boolean isNews = requestURI.contains("news");
 
-			if(blogList != null && !blogList.isEmpty()) {
-				request.setAttribute("newBlog", blogList.get(0));
-				request.setAttribute("blogList", blogList);
+			// Hero card: always the single newest article, independent of
+			// whatever grid page is showing - fetched on its own instead of
+			// reusing the grid query's first row, since the grid below
+			// deliberately never includes this article (see the offset in
+			// fetchGridPage()).
+			List<Blog> heroFetch = isNews
+					? blogDAO.findAllNewsWithPageUri(HERO_COUNT, 0)
+					: blogDAO.findAllBlogsWithPageUri(HERO_COUNT, 0);
+			if (heroFetch != null && !heroFetch.isEmpty()) {
+				request.setAttribute("newBlog", heroFetch.get(0));
 			}
 
+			long totalArticles = isNews ? blogDAO.countAllNews() : blogDAO.countAllBlogs();
+			long totalGridArticles = Math.max(totalArticles - HERO_COUNT, 0);
+			int totalPages = (int) Math.max(1, Math.ceil(totalGridArticles / (double) PAGE_SIZE));
+
+			// A page beyond what actually exists (or a value setPage()
+			// already couldn't make sense of) quietly falls back to the
+			// last valid page instead of rendering an empty grid or letting
+			// a bad request param surface as an error to the visitor.
+			if (page > totalPages) {
+				page = totalPages;
+			}
+
+			request.setAttribute("blogList", fetchGridPage(isNews, page));
+			request.setAttribute("currentPage", page);
+			request.setAttribute("totalPages", totalPages);
+			request.setAttribute("pageNumbers", buildPageNumbers(page, totalPages));
 			request.setAttribute("constant", constant);
+
+			// Clean path (no query string) for baseLayout.jsp to build
+			// rel="next"/rel="prev" links from - requestURI above already
+			// has ?page=N mixed in for the *current* request, which isn't
+			// reusable for constructing a link to a *different* page.
+			request.setAttribute("pageBaseUri", isNews ? "/news" : "/blog");
+
+			// RewriteFilter sets "title" to "" for every request that isn't
+			// a PageUri-forwarded CMS page (blog/news included) - safe to
+			// overwrite here. Page 1 keeps the plain tiles title ("Blog"/
+			// "News") unchanged; later pages get a suffix so their <title>
+			// isn't byte-identical to page 1's (duplicate-content signal).
+			if (page > 1) {
+				request.setAttribute("title", " - หน้า " + page);
+			}
 
 			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
 			return ERROR;
 		}
+	}
+
+	/**
+	 * Fetches exactly one page's worth of grid articles, offset past the
+	 * hero article so the two never overlap regardless of which page is
+	 * requested.
+	 */
+	private List<Blog> fetchGridPage(boolean isNews, int pageNum) throws Exception {
+		int offset = HERO_COUNT + (pageNum - 1) * PAGE_SIZE;
+		return isNews
+				? blogDAO.findAllNewsWithPageUri(PAGE_SIZE, offset)
+				: blogDAO.findAllBlogsWithPageUri(PAGE_SIZE, offset);
+	}
+
+	/**
+	 * Page numbers for the Bootstrap pagination component, with PAGE_ELLIPSIS
+	 * standing in for a "..." gap - always shows page 1, the current page's
+	 * immediate neighbors, and the last page, collapsing everything between
+	 * into a single ellipsis rather than listing every page when there are
+	 * many.
+	 */
+	private List<Integer> buildPageNumbers(int currentPage, int totalPages) {
+		List<Integer> pages = new ArrayList<Integer>();
+		if (totalPages <= 1) {
+			pages.add(1);
+			return pages;
+		}
+
+		int windowStart = Math.max(2, currentPage - 1);
+		int windowEnd = Math.min(totalPages - 1, currentPage + 1);
+
+		pages.add(1);
+		if (windowStart > 2) {
+			pages.add(PAGE_ELLIPSIS);
+		}
+		for (int p = windowStart; p <= windowEnd; p++) {
+			pages.add(p);
+		}
+		if (windowEnd < totalPages - 1) {
+			pages.add(PAGE_ELLIPSIS);
+		}
+		pages.add(totalPages);
+		return pages;
 	}
 
 	/**

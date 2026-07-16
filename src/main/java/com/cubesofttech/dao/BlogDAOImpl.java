@@ -55,7 +55,7 @@ public class BlogDAOImpl implements BlogDAO {
 	}
 
 	@Override
-	public List<Blog> findAllBlogsWithPageUri() throws Exception {
+	public List<Blog> findAllBlogsWithPageUri(int limit, int offset) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
 		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
@@ -69,16 +69,18 @@ public class BlogDAOImpl implements BlogDAO {
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			query.setTimestamp("nowParam", nowTs);
+			query.setFirstResult(offset);
+			query.setMaxResults(limit);
 			articleList = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return articleList;
 	}
 
 	@Override
-	public List<Blog> findAllNewsWithPageUri() throws Exception {
+	public List<Blog> findAllNewsWithPageUri(int limit, int offset) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
 		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
@@ -88,15 +90,52 @@ public class BlogDAOImpl implements BlogDAO {
 				+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 				+ "LEFT JOIN file f ON a.file_id = f.file_id "
 				+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-				+ "WHERE p.page_uri_id LIKE '%news%' AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";	
+				+ "WHERE p.page_uri_id LIKE '%news%' AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			query.setTimestamp("nowParam", nowTs);
+			query.setFirstResult(offset);
+			query.setMaxResults(limit);
 			articleList = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return articleList;
 	}
-	
+
+	@Override
+	public long countAllBlogs() throws Exception {
+		return countByPageUriLike("%blog%");
+	}
+
+	@Override
+	public long countAllNews() throws Exception {
+		return countByPageUriLike("%news%");
+	}
+
+	/**
+	 * Total row count behind findAllBlogsWithPageUri/findAllNewsWithPageUri's
+	 * WHERE clause - numbered pagination (unlike a "load more" button) has to
+	 * know how many pages exist up front to render the page-number list, so
+	 * this runs as its own COUNT query rather than fetching everything to
+	 * measure it in Java.
+	 */
+	private long countByPageUriLike(String pageUriPattern) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
+		Number count = 0;
+		try {
+			String sql = "SELECT COUNT(*) "
+				+ "FROM article a LEFT JOIN page_uri p ON a.article_id = p.model_id "
+				+ "WHERE p.page_uri_id LIKE :pageUriPattern AND a.status = 1 AND a.time_post <= :nowParam";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setString("pageUriPattern", pageUriPattern);
+			query.setTimestamp("nowParam", nowTs);
+			count = (Number) query.uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count == null ? 0 : count.longValue();
+	}
+
 }
