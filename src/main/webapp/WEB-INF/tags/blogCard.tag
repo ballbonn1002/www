@@ -24,9 +24,22 @@
 --%>
 <div class="articleblockbg2">
 	<div class="articleblockbg3">
-		<a href="${blog.page_uri_id}" role="button"> <img
-			class="article-card__image" src="${constant.imgContext}${blog.path}"
-			width="100%" height="250px" alt="${blog.topic}" loading="lazy">
+		<%--
+			.article-card__media/.article-card__skeleton only have an effect on
+			blog.jsp, which defines their CSS (aspect-ratio box + shimmer +
+			fade-in, all scoped under .js-skel there). blog_detail.jsp's sidebar
+			reuses this same tag but never adds that CSS or the .js-skel class,
+			so there this wrapper/skeleton render as inert, unstyled elements
+			and the card looks exactly as it did before - the skeleton screen
+			feature is intentionally scoped to the blog list grid only.
+		--%>
+		<a href="${blog.page_uri_id}" role="button">
+			<div class="article-card__media">
+				<span class="article-card__skeleton" aria-hidden="true"></span>
+				<img class="article-card__image"
+					src="${constant.imgContext}${blog.path}" width="100%"
+					height="250px" alt="${blog.topic}" loading="lazy">
+			</div>
 		</a>
 	</div>
 	<div class="ardetail">

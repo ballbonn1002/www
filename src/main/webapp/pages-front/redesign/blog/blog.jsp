@@ -157,6 +157,44 @@ a {
 	display: block;
 }
 
+/* Unlike the grid cards below, this image already has valid width/height
+   HTML attributes (805/475) - browsers derive an aspect-ratio from those
+   automatically and reserve the right box before the image loads, so
+   there's no CLS bug to fix here. This block only adds the same
+   shimmer/fade-in polish as the grid, layered on top of that existing
+   space via position:absolute - it never resizes the box itself. */
+.article-preview__skeleton {
+	position: absolute;
+	inset: 0;
+	border-radius: 10px;
+	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%);
+	background-size: 200% 100%;
+	animation: skeleton-shimmer 1.4s ease-in-out infinite;
+	transition: opacity 0.25s ease;
+}
+
+.article-preview__skeleton.is-hidden {
+	opacity: 0;
+}
+
+.js-skel .article-preview__image {
+	opacity: 0;
+	transition: opacity 0.35s ease;
+}
+
+.js-skel .article-preview__image.is-loaded {
+	opacity: 1;
+}
+
+/* Cache-hit path (setupSkeletonPlaceholders' .is-instant) - three class
+   selectors here outweigh the two-class .js-skel .article-preview__image
+   rule above, so this wins regardless of source order and the opacity
+   jump happens with no transition at all. */
+.article-preview__media.is-instant .article-preview__image,
+.article-preview__media.is-instant .article-preview__skeleton {
+	transition: none;
+}
+
 /* เปลี่ยนจาก height:400px + overflow:hidden ตายตัว
    มาเป็น flex column เพื่อดันปุ่มลงล่างสุดได้ */
 .article-preview__content {
@@ -164,6 +202,7 @@ a {
 	display: flex;
 	flex-direction: column;
 	text-align: left;
+	height: 85%;
 }
 
 .article-preview__title {
@@ -185,8 +224,8 @@ a {
 	}
 }
 
-/* cleanDetail is a plain-text excerpt now (see ArticleHtmlSanitizer.toPreviewText,
-   called in the scriptlet above) capped at 200 chars server-side, not raw
+/* cleanDetail is a plain-text excerpt (see ArticleHtmlSanitizer.toPreviewText,
+   called in the scriptlet above) capped at 1000 chars server-side, not raw
    rich-text HTML - so this only needs to clamp plain text, no more
    child-margin resets, heading hiding, or fade overlay for markup that no
    longer exists here. */
@@ -278,10 +317,75 @@ a {
 	border-radius: 10px 10px 0 0;
 }
 
+/* Wraps the card image so its box (and therefore the space the browser
+   reserves for it before the image loads) comes from aspect-ratio alone,
+   never from the actual downloaded image's dimensions - this is what
+   keeps CLS at 0 for this grid regardless of what size photo the CMS
+   author uploaded. */
+.article-card__media {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+}
+
 .article-card__image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
+}
+
+/* Shimmer placeholder, same box as the image above it. Only fades out
+   once .js-skel is on <html> (set by the inline script right after this
+   style block) and the image has actually finished loading - see
+   setupSkeletonPlaceholders() below. Purely decorative (aria-hidden), so
+   unlike the reveal-card content below it's fine for this to leave the
+   layout flow once hidden. */
+.article-card__skeleton {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%);
+	background-size: 200% 100%;
+	animation: skeleton-shimmer 1.4s ease-in-out infinite;
+	transition: opacity 0.25s ease;
+}
+
+.article-card__skeleton.is-hidden {
+	opacity: 0;
+}
+
+@keyframes skeleton-shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
+
+/* Fade-in only applies once JS (.js-skel) is confirmed running - without
+   it the image is visible immediately like before this feature existed,
+   so a visitor or crawler with JS off never sees a permanently blank
+   card. */
+.js-skel .article-card__image {
+	opacity: 0;
+	transition: opacity 0.35s ease;
+}
+
+.js-skel .article-card__image.is-loaded {
+	opacity: 1;
+}
+
+/* Same cache-hit override as the hero image above - see the comment there. */
+.article-card__media.is-instant .article-card__image,
+.article-card__media.is-instant .article-card__skeleton {
+	transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.article-card__skeleton,
+	.article-preview__skeleton {
+		animation: none;
+	}
 }
 
 .ardetail {
@@ -378,8 +482,40 @@ a {
 .blog-pagination .page-item.disabled .page-link {
 	opacity: 0.5;
 }
+
+/* ==========================================================================
+   8. Scroll reveal (article cards) - progressive enhancement only, see
+   initScrollReveal() below. Scoped under .js-skel and
+   prefers-reduced-motion: no-preference together, so a card renders fully
+   visible with zero animation whenever JS hasn't run or the visitor asked
+   for reduced motion (the JS still runs in that case, it just has no CSS
+   left to toggle). Only opacity/transform animate - never a property that
+   triggers layout reflow. --reveal-delay is set per-card by JS for the
+   stagger; cards already in the initial viewport skip it entirely (stays
+   at its 0ms default).
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+	.js-skel .article-list-row .reveal-card {
+		opacity: 0;
+		transform: translateY(14px);
+		transition: opacity 0.35s ease, transform 0.35s ease;
+		transition-delay: var(--reveal-delay, 0ms);
+	}
+
+	.js-skel .article-list-row .reveal-card.is-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
 </style>
 
+<%-- Sets .js-skel on <html> before the grid below is parsed/painted, so the
+	skeleton/reveal CSS above (both scoped under .js-skel) only ever takes
+	effect when JS actually ran - with JS off, every image and card renders
+	visible immediately like before this feature existed. Must stay this
+	early (ahead of the grid markup) so there's no flash of a fully-opaque
+	image before the skeleton CSS applies. --%>
+<script>document.documentElement.classList.add('js-skel');</script>
 
 <!--------------------------home------------------------------------>
 <div class="parallax show-on-scroll">
@@ -407,26 +543,28 @@ a {
 			Object detail = ((Map) newBlogRaw).get("detail");
 			rawDetail = detail != null ? detail.toString() : "";
 		}
-		// 			request.setAttribute("cleanDetail", ArticleHtmlSanitizer.toPreviewText(rawDetail, 1000));
-		request.setAttribute("cleanDetail", ArticleHtmlSanitizer.clean(rawDetail));
+		// Plain-text teaser, not clean()'s rich HTML - this excerpt is clamped
+		// to 6 lines by .article-preview__excerpt's CSS, and that clamp
+		// (-webkit-line-clamp + display:-webkit-box) only behaves reliably
+		// against flowing text. Block-level children from clean() (<p>, and
+		// especially any <img> the article body happens to embed) caused a
+		// visible reflow once those async-loaded images finished - the
+		// clamped box has to recompute once content it was measured against
+		// changes size. Plain text has nothing left to load asynchronously,
+		// so there's nothing left to reflow around.
+		request.setAttribute("cleanDetail", ArticleHtmlSanitizer.toPreviewText(rawDetail, 2000));
 		%>
 
-		<div class="page-header">
-			<h1 class="page-title">${pageLabel}</h1>
-
-			<ul class="breadcrumb">
-				<li><a href="/">Home</a>&nbsp;/&nbsp;</li>
-				<li><a class="currentPage" id="model">${pageLabel}</a></li>
-			</ul>
-		</div>
+		<comp:pageHeader label="${pageLabel}" />
 		<article class="article-preview" id="articledetail1">
 			<div class="row article-preview__row">
 
 				<div class="col-12 col-lg-6 order-lg-2">
 					<figure class="article-preview__media">
 						<a href="${newBlog.page_uri_id}" class="article-preview__link"
-							aria-label="อ่านบทความ: ${newBlog.topic}"> <img
-							class="article-preview__image"
+							aria-label="อ่านบทความ: ${newBlog.topic}">
+							<span class="article-preview__skeleton" aria-hidden="true"></span>
+							<img class="article-preview__image"
 							src="${constant.imgContext}/${newBlog.path}"
 							alt="${newBlog.topic}" width="805" height="475">
 						</a>
@@ -507,4 +645,97 @@ a {
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 	}
+
+	// Swaps a shimmer placeholder for its real image once the image has
+	// actually finished loading. img.complete already true (cache hit /
+	// image loaded faster than this script ran) skips straight to the
+	// loaded state instead of waiting on a 'load' event that already fired.
+	// imageSelector is a full CSS selector for the <img> elements
+	// themselves (not a container) - reused for both the hero image and
+	// every grid card image below.
+	function setupSkeletonPlaceholders(imageSelector) {
+		var images = document.querySelectorAll(imageSelector);
+		images.forEach(function(img) {
+			var skeleton = img.previousElementSibling;
+			var wrapper = img.closest('.article-card__media, .article-preview__media');
+
+			function reveal() {
+				img.classList.add('is-loaded');
+				if (skeleton) {
+					skeleton.classList.add('is-hidden');
+				}
+			}
+
+			if (img.complete) {
+				// Cache hit (common on refresh) - the image was already
+				// decoded before this script even ran, so there was no real
+				// wait to mask. Playing the fade+shimmer crossfade anyway
+				// just reads as a flicker, not a loading transition, so skip
+				// the animation and snap straight to the loaded state.
+				if (wrapper) {
+					wrapper.classList.add('is-instant');
+				}
+				reveal();
+			} else {
+				img.addEventListener('load', reveal);
+				// A broken image link shouldn't leave the shimmer running forever.
+				img.addEventListener('error', reveal);
+			}
+		});
+	}
+
+	// Fades each card in as it scrolls into view. Cards already visible in
+	// the viewport at page load show immediately (no stagger delay) so the
+	// first screenful never feels like it's waiting on an animation; cards
+	// below the fold get a short stagger as they're discovered so the grid
+	// doesn't reveal on top of itself all at once.
+	function initScrollReveal(gridSelector) {
+		var cards = document.querySelectorAll(gridSelector + ' .reveal-card');
+		var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		if (reduceMotion) {
+			// The reveal CSS is scoped under prefers-reduced-motion: no-preference,
+			// so it never hid these cards in the first place - nothing to do.
+			return;
+		}
+
+		if (!('IntersectionObserver' in window)) {
+			// No IntersectionObserver support: reveal everything immediately
+			// instead of leaving cards stuck at opacity:0 forever (.js-skel's
+			// CSS did hide them, since that part isn't feature-detected).
+			cards.forEach(function(card) {
+				card.classList.add('is-visible');
+			});
+			return;
+		}
+
+		var viewportHeight = window.innerHeight;
+		var staggerIndex = 0;
+
+		var observer = new IntersectionObserver(function(entries, obs) {
+			entries.forEach(function(entry) {
+				if (!entry.isIntersecting) {
+					return;
+				}
+				entry.target.classList.add('is-visible');
+				obs.unobserve(entry.target);
+			});
+		}, { threshold: 0.3 });
+
+		cards.forEach(function(card) {
+			var rect = card.getBoundingClientRect();
+			var alreadyInViewport = rect.top < viewportHeight && rect.bottom > 0;
+			if (alreadyInViewport) {
+				card.classList.add('is-visible');
+				return;
+			}
+			card.style.setProperty('--reveal-delay', (staggerIndex * 70) + 'ms');
+			staggerIndex++;
+			observer.observe(card);
+		});
+	}
+
+	setupSkeletonPlaceholders('#articledetail1 .article-preview__image');
+	setupSkeletonPlaceholders('#articledetail .article-card__image');
+	initScrollReveal('#articledetail');
 </script>

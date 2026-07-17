@@ -88,4 +88,10 @@
         <put-attribute name="title" value="Contact Us" />
         <put-attribute name="body" value="/pages-front/contacts/contacts.jsp" />
     </definition>
+
+    <!-- internal redesign preview - selected by ContactsAction based on the redesignPreview cookie -->
+    <definition name="contacts.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="Contact Us" />
+        <put-attribute name="body" value="/pages-front/redesign/contacts/contacts.jsp" />
+    </definition>
 </tiles-definitions>

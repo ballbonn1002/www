@@ -34,7 +34,16 @@
 		}
 		pageContext.setAttribute("blogPreviewText", ArticleHtmlSanitizer.toPreviewText(blogDetailRaw, 120));
 		%>
-		<div class="col-12 col-sm-6 col-lg-4">
+		<%--
+			reveal-card lives on this column wrapper rather than blogCard.tag
+			itself - .articleblockbg2 inside the card already has its own
+			:hover transform (lift on hover), and animating transform on that
+			same element for scroll-reveal would fight it once a card becomes
+			visible. Keeping the two on separate elements avoids that, and
+			also keeps blogCard.tag (shared with blog_detail.jsp's sidebar,
+			which isn't part of this scroll-reveal feature) untouched here.
+		--%>
+		<div class="col-12 col-sm-6 col-lg-4 reveal-card">
 			<comp:blogCard blog="${blog}" constant="${constant}"
 				excerpt="${blogPreviewText}" />
 		</div>

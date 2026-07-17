@@ -82,11 +82,13 @@
 
         <action name="contacts" class="com.cubesofttech.action.ContactsAction" method="init">
             <result name="success" type="tiles">contacts</result>
+            <result name="redesign" type="tiles">contacts.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
         <action name="sendEmailContact" class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
             <result name="success" type="tiles">contacts</result>
+            <result name="redesign" type="tiles">contacts.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
     </package>
