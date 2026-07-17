@@ -47,6 +47,9 @@ public class BlogAction extends ActionSupport {
 	// article, fetched separately from (and never duplicated into) the
 	// paginated grid below it - the grid's dataset starts right after it.
 	private static final int HERO_COUNT = 1;
+	// "No limit" for the old (non-redesign) blog.jsp/news pages, which have
+	// no pagination UI and always expect every article in one shot.
+	private static final int LEGACY_UNPAGINATED_LIMIT = 10000;
 	// Sentinel in the page-number list blog.jsp's pagination component reads
 	// to know where to render "..." instead of a page link.
 	public static final int PAGE_ELLIPSIS = -1;
@@ -228,57 +231,91 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("requestURI", requestURI);
 
 			boolean isNews = requestURI.contains("news");
+			boolean redesign = isRedesignPreviewEnabled();
 
-			// Hero card: always the single newest article, independent of
-			// whatever grid page is showing - fetched on its own instead of
-			// reusing the grid query's first row, since the grid below
-			// deliberately never includes this article (see the offset in
-			// fetchGridPage()).
-			List<Blog> heroFetch = isNews
-					? blogDAO.findAllNewsWithPageUri(HERO_COUNT, 0)
-					: blogDAO.findAllBlogsWithPageUri(HERO_COUNT, 0);
-			if (heroFetch != null && !heroFetch.isEmpty()) {
-				request.setAttribute("newBlog", heroFetch.get(0));
+			if (redesign) {
+				initRedesignPagination(isNews);
+			} else {
+				// The un-redesigned blog.jsp/news pages have no pagination
+				// UI of their own - they render every article at once, with
+				// the hero as blogList's own index 0 (their forEach skips it
+				// via begin="1"). Left exactly as it worked before this
+				// feature existed, so the old/new toggle keeps comparing
+				// like for like.
+				initLegacyUnpaginated(isNews);
 			}
 
-			long totalArticles = isNews ? blogDAO.countAllNews() : blogDAO.countAllBlogs();
-			long totalGridArticles = Math.max(totalArticles - HERO_COUNT, 0);
-			int totalPages = (int) Math.max(1, Math.ceil(totalGridArticles / (double) PAGE_SIZE));
-
-			// A page beyond what actually exists (or a value setPage()
-			// already couldn't make sense of) quietly falls back to the
-			// last valid page instead of rendering an empty grid or letting
-			// a bad request param surface as an error to the visitor.
-			if (page > totalPages) {
-				page = totalPages;
-			}
-
-			request.setAttribute("blogList", fetchGridPage(isNews, page));
-			request.setAttribute("currentPage", page);
-			request.setAttribute("totalPages", totalPages);
-			request.setAttribute("pageNumbers", buildPageNumbers(page, totalPages));
 			request.setAttribute("constant", constant);
 
-			// Clean path (no query string) for baseLayout.jsp to build
-			// rel="next"/rel="prev" links from - requestURI above already
-			// has ?page=N mixed in for the *current* request, which isn't
-			// reusable for constructing a link to a *different* page.
-			request.setAttribute("pageBaseUri", isNews ? "/news" : "/blog");
-
-			// RewriteFilter sets "title" to "" for every request that isn't
-			// a PageUri-forwarded CMS page (blog/news included) - safe to
-			// overwrite here. Page 1 keeps the plain tiles title ("Blog"/
-			// "News") unchanged; later pages get a suffix so their <title>
-			// isn't byte-identical to page 1's (duplicate-content signal).
-			if (page > 1) {
-				request.setAttribute("title", " - หน้า " + page);
-			}
-
-			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
 			return ERROR;
 		}
+	}
+
+	/**
+	 * Redesign path: hero and grid are two separate queries (grid offset
+	 * past the hero article - see fetchGridPage()), plus the totalPages/
+	 * pageNumbers/SEO attributes the new blog_list.jsp pagination and
+	 * baseLayout.jsp's rel=next/prev/title need.
+	 */
+	private void initRedesignPagination(boolean isNews) throws Exception {
+		List<Blog> heroFetch = isNews
+				? blogDAO.findAllNewsWithPageUri(HERO_COUNT, 0)
+				: blogDAO.findAllBlogsWithPageUri(HERO_COUNT, 0);
+		if (heroFetch != null && !heroFetch.isEmpty()) {
+			request.setAttribute("newBlog", heroFetch.get(0));
+		}
+
+		long totalArticles = isNews ? blogDAO.countAllNews() : blogDAO.countAllBlogs();
+		long totalGridArticles = Math.max(totalArticles - HERO_COUNT, 0);
+		int totalPages = (int) Math.max(1, Math.ceil(totalGridArticles / (double) PAGE_SIZE));
+
+		// A page beyond what actually exists (or a value setPage() already
+		// couldn't make sense of) quietly falls back to the last valid page
+		// instead of rendering an empty grid or letting a bad request param
+		// surface as an error to the visitor.
+		if (page > totalPages) {
+			page = totalPages;
+		}
+
+		request.setAttribute("blogList", fetchGridPage(isNews, page));
+		request.setAttribute("currentPage", page);
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("pageNumbers", buildPageNumbers(page, totalPages));
+
+		// Clean path (no query string) for baseLayout.jsp to build
+		// rel="next"/rel="prev" links from - requestURI already has
+		// ?page=N mixed in for the *current* request, which isn't reusable
+		// for constructing a link to a *different* page.
+		request.setAttribute("pageBaseUri", isNews ? "/news" : "/blog");
+
+		// RewriteFilter sets "title" to "" for every request that isn't a
+		// PageUri-forwarded CMS page (blog/news included) - safe to
+		// overwrite here. Page 1 keeps the plain tiles title ("Blog"/
+		// "News") unchanged; later pages get a suffix so their <title>
+		// isn't byte-identical to page 1's (duplicate-content signal).
+		if (page > 1) {
+			request.setAttribute("title", " - หน้า " + page);
+		}
+	}
+
+	/**
+	 * Old path: one query, every article, exactly as it worked before
+	 * pagination existed. LEGACY_UNPAGINATED_LIMIT stands in for "no limit"
+	 * (the standard LIMIT/OFFSET idiom for it) rather than adding a second
+	 * no-arg DAO method back just for this one caller.
+	 */
+	private void initLegacyUnpaginated(boolean isNews) throws Exception {
+		List<Blog> blogList = isNews
+				? blogDAO.findAllNewsWithPageUri(LEGACY_UNPAGINATED_LIMIT, 0)
+				: blogDAO.findAllBlogsWithPageUri(LEGACY_UNPAGINATED_LIMIT, 0);
+
+		if (blogList != null && !blogList.isEmpty()) {
+			request.setAttribute("newBlog", blogList.get(0));
+		}
+		request.setAttribute("blogList", blogList);
 	}
 
 	/**

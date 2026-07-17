@@ -49,8 +49,6 @@ html, body {
 	padding-bottom: 5%;
 	padding-left: 10%;
 	padding-right: 10%;
-	box-shadow: 0px 11px 18px -16px rgba(0, 0, 0, 0.75);
-	margin-bottom: 5%;
 	margin-top: 32px;
 }
 
