@@ -54,12 +54,20 @@
 	JS off and is a normal crawlable link for search engines. BlogAction
 	already clamped currentPage into [1, totalPages], so no bounds-checking
 	needed here beyond what disables Previous/Next at the ends.
+
+	#articledetail appended to every href - without it, clicking a page
+	number reloads the whole document and lands back at the very top (the
+	hero), which never changes between pages, forcing a scroll past it to
+	see the new results every time. The fragment jumps straight to this
+	grid's own id instead. Native browser anchor scroll, no JS - still
+	works with JS off. #articledetail has scroll-margin-top set in
+	blog.css so the fixed navbar doesn't cover the first row.
 --%>
 <c:if test="${totalPages > 1}">
 	<nav aria-label="Blog pagination">
 		<ul class="pagination blog-pagination justify-content-center">
 			<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-				<a class="page-link" href="?page=${currentPage - 1}"
+				<a class="page-link" href="?page=${currentPage - 1}#articledetail"
 					aria-label="Previous" tabindex="${currentPage == 1 ? '-1' : '0'}">Previous</a>
 			</li>
 
@@ -70,14 +78,14 @@
 					</c:when>
 					<c:otherwise>
 						<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
-							<a class="page-link" href="?page=${pageNum}">${pageNum}</a>
+							<a class="page-link" href="?page=${pageNum}#articledetail">${pageNum}</a>
 						</li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 
 			<li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-				<a class="page-link" href="?page=${currentPage + 1}"
+				<a class="page-link" href="?page=${currentPage + 1}#articledetail"
 					aria-label="Next" tabindex="${currentPage == totalPages ? '-1' : '0'}">Next</a>
 			</li>
 		</ul>

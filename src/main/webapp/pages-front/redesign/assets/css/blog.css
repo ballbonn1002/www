@@ -228,6 +228,12 @@ a {
    ========================================================================== */
 .article-list-row {
 	padding-top: 60px;
+	/* Pagination links in blog_list.jsp point at #articledetail (this
+	   element) so a page change lands here instead of back at the hero.
+	   The navbar is Bootstrap fixed-top (~70px, see redesign/_layout/
+	   header.jsp's .navbar min-height) - without this offset the jump
+	   would land the first card row right under it, half-covered. */
+	scroll-margin-top: 80px;
 }
 
 .articleblockbg2 {
