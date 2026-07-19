@@ -421,9 +421,12 @@ hr.detailnew {
 </div>
 
 
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<%--
+	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
+	<head> (every page shares it) - this page had its own second copy of
+	both. Safe to drop here specifically (checked first): this page
+	doesn't call $.ajax/.load/any jQuery effects method.
+--%>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 

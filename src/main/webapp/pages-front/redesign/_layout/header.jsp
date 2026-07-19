@@ -45,7 +45,10 @@
 		<nav class="navbar  navbar-expand-lg navbar-light bg-light fixed-top"
 			style="padding-bottom: 0px !important; margin-bottom: 0px !important;">
 			<!-- Navbar brand -->
-			<a href="/"> <img width=175px
+			<%-- Same fix as the legacy header - width=175px (unquoted, invalid
+				 unit) never reserved layout space; width/height below are the
+				 image's real 376x91 ratio scaled to the same 175px display width. --%>
+			<a href="/"> <img width="175" height="42"
 				src="/pages-front/img/logo/cubesofttech.png" alt="Responsive image">
 			</a>
 			<!-- Collapse button -->

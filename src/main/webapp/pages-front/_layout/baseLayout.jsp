@@ -11,6 +11,62 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<%--
+	Critical inline CSS - deliberately the very first thing in <head>,
+	before any <link>/<script>, so the very first paint already matches the
+	site's real background (#F5F5F5) instead of the browser's white
+	default. Every page's own <style> block re-declares this same color
+	further down (duplicated, not shared - see blog.jsp/contacts.jsp etc.),
+	so this doesn't replace those, it just closes the gap between "browser
+	has nothing to paint yet" and "that per-page <style> has been parsed".
+--%>
+<style>
+html{background-color:#F5F5F5;}
+/* Top loading bar - #page-loading-bar (div right after <body>) + the
+   click listener further down toggle .is-loading on it. Sits fixed at
+   z-index above everything so a visitor sees "something is happening"
+   the instant they click an internal link, instead of nothing until the
+   new document starts painting. Never explicitly hidden again after a
+   click - the whole document gets replaced by the incoming navigation,
+   so there's nothing to reset once that happens. */
+#page-loading-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 3px;
+	width: 0;
+	background-color: #BD2125;
+	z-index: 99999;
+	opacity: 0;
+	transition: width 0.4s ease-out, opacity 0.2s ease-out;
+}
+#page-loading-bar.is-loading {
+	width: 90%;
+	opacity: 1;
+	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s ease-out;
+}
+
+/* Cross-document View Transitions - the <meta name="view-transition"
+   content="same-origin"> tag this replaced was an early-draft syntax the
+   spec dropped before ever shipping in a browser; a browser that doesn't
+   recognize a meta tag's name just ignores it silently (no console
+   warning, no error), which is exactly why it sat here doing nothing
+   without anyone noticing. @view-transition is the actual CSS Working
+   Draft syntax (shipped in Chrome/Edge 126+) - progressive enhancement
+   only, unsupported browsers skip the whole at-rule the same silent way.
+   Both the origin and destination page of a navigation need this rule
+   present for the transition to run, which this already satisfies since
+   baseLayout.jsp is the one <head> every page shares.
+   Wrapped in prefers-reduced-motion so it's off entirely for anyone who's
+   asked their OS for less motion, rather than just visually thinning it
+   out - confirmed against Chrome's own documented pattern for this exact
+   case, since @media nesting an at-rule like this is otherwise unusual. */
+@media (prefers-reduced-motion: no-preference) {
+	@view-transition {
+		navigation: auto;
+	}
+}
+</style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
 <link rel="icon" type="image/x-icon"
 	href="/pages-front/img/logo/favicon.png">
@@ -26,6 +82,23 @@
 		<link rel="next"
 			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage + 1}">
 	</c:if>
+</c:if>
+<%--
+	Hero image preload for the blog/news "แนะนำล่าสุด" article-preview
+	section - newBlog is only ever set by BlogAction.init() (the blog/news
+	listing pages), same guard pattern as pageBaseUri above, so this is a
+	no-op (empty output) on every other page on the site, not just visually
+	scoped but literally absent from those pages' HTML. Struts2 runs the
+	Action to completion before Tiles renders this <head> at all, so
+	newBlog/constant are already on the request by the time this line runs
+	- no ordering problem to work around. path comes from the exact same
+	${newBlog.path} the <img> itself uses further down in blog.jsp, rather
+	than a second hardcoded copy, so the two can never drift apart if a
+	newer article becomes the featured one.
+--%>
+<c:if test="${not empty newBlog}">
+	<link rel="preload" as="image"
+		href="${constant.imgContext}/${newBlog.path}" fetchpriority="high">
 </c:if>
 <meta name="description" content="${meta}">
 <meta name="keywords" content="">
@@ -82,14 +155,28 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+<%--
+	defer on all three - none had it before, which meant the browser had to
+	fully fetch+parse+execute jQuery, then Popper, then Bootstrap.js, all
+	before it could even start building the rest of the page, let alone
+	reach the AOS.init() call further down each page (that delay is what
+	turned a plain white-flash into "everything AOS hid at opacity:0 pops
+	in at once" - see the fade-in/scroll-reveal findings for those pages).
+	defer preserves their relative execution order (still jQuery, then
+	Popper, then Bootstrap.js, each after the previous finishes) and runs
+	them after HTML parsing completes but before DOMContentLoaded - safe
+	here because every page's own jQuery-dependent code on this site is
+	already wrapped in $(document).ready(...), which by definition doesn't
+	run until after that same point anyway.
+--%>
+<script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 	crossorigin="anonymous"></script>
-<script
+<script defer
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
 	crossorigin="anonymous"></script>
-<script
+<script defer
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
@@ -109,7 +196,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+	rel="stylesheet">
 
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -229,22 +318,21 @@ p {
 /* 	padding-right: 5%; */
 /* 	padding-top: 5%; */
 /* } */
-
 @media screen and (max-width: 870px) {
 	.vl {
 		display: none;
 	}
-/* 	.detail { */
-/* 		background-color: white; */
-/* 		box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75); */
-/* 		margin-left: 2%; */
-/* 		margin-right: 2%; */
-/* 		margin-top: 15%; */
-/* 		margin-bottom: 1%; */
-/* 		padding-left: 5%; */
-/* 		padding-right: 5%; */
-/* 		padding-top: 5%; */
-/* 	} */
+	/* 	.detail { */
+	/* 		background-color: white; */
+	/* 		box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75); */
+	/* 		margin-left: 2%; */
+	/* 		margin-right: 2%; */
+	/* 		margin-top: 15%; */
+	/* 		margin-bottom: 1%; */
+	/* 		padding-left: 5%; */
+	/* 		padding-right: 5%; */
+	/* 		padding-top: 5%; */
+	/* 	} */
 }
 
 .servicecon {
@@ -653,7 +741,8 @@ a {
 	// history entry every load.
 	if (location.search) {
 		var pageMatch = /(?:^|[?&])page=([^&]*)/.exec(location.search);
-		var cleanUrl = location.pathname + (pageMatch ? "?page=" + pageMatch[1] : "");
+		var cleanUrl = location.pathname
+				+ (pageMatch ? "?page=" + pageMatch[1] : "");
 		if (cleanUrl !== location.pathname + location.search) {
 			location.replace(cleanUrl);
 		}
@@ -662,6 +751,46 @@ a {
 
 </head>
 <body>
+	<div id="page-loading-bar" aria-hidden="true"></div>
+	<%--
+		Inline and this early deliberately - needs to be registered before
+		the visitor can click anything. Only triggers for a real same-origin
+		page navigation: skips #anchors, javascript:/mailto:/tel: links,
+		target!=_self links (new tab), download links, and any link to
+		another origin (those aren't "this site loading", nothing to show a
+		bar for). No corresponding "hide" call anywhere - once a real
+		navigation starts, this whole document (bar included) is on its way
+		out, so there's nothing left to reset.
+	--%>
+	<script>
+		document.addEventListener('click', function(e) {
+			var link = e.target.closest('a[href]');
+			if (!link) {
+				return;
+			}
+			var href = link.getAttribute('href');
+			if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0
+					|| href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) {
+				return;
+			}
+			if (link.target && link.target !== '_self') {
+				return;
+			}
+			if (link.hasAttribute('download')) {
+				return;
+			}
+			var url;
+			try {
+				url = new URL(href, window.location.href);
+			} catch (err) {
+				return;
+			}
+			if (url.origin !== window.location.origin) {
+				return;
+			}
+			document.getElementById('page-loading-bar').className = 'is-loading';
+		});
+	</script>
 	<!-- Google Tag Manager (noscript) -->
 	<noscript>
 		<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF235VW"

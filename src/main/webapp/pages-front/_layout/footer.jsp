@@ -12,7 +12,7 @@
         <div class="dropdown1">
             <div class="row">
                 <div class="col-md col-sm col-xs " align="left">
-                	<img src="/pages-front/img/logo/logo2-w.png" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
+                	<img src="/pages-front/img/logo/logo2-w.png" width="200" height="74" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
                     <div class="footer-section">
                         <p class="footer-heading">Cube SoftTech Co., Ltd.</p><br>
                         <a href="https://maps.app.goo.gl/a1N8Xi2qvhbVKFsW8" class="footer-link" target="_blank">
@@ -133,7 +133,7 @@
         <div class="dropdown2">
         
         	<div align="center">
-        		<img src="/pages-front/img/logo/logo2-w.png" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
+        		<img src="/pages-front/img/logo/logo2-w.png" width="200" height="74" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
                 <div class="footer-section">
                 	<p class="footer-heading">Cube SoftTech Co., Ltd.</p><br>
                     <a href="https://maps.app.goo.gl/a1N8Xi2qvhbVKFsW8" class="footer-link" target="_blank">

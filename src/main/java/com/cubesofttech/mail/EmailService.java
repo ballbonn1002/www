@@ -76,8 +76,9 @@ public class EmailService {
     }
     
 
-    public void sendEmailContact(String name, String email, String tel, String msg) {
+    public void sendEmailContact(String firstName, String lastName, String email, String tel, String msg) {
     	try {
+    		String name = firstName + " " + lastName;
     		SimpleMailMessage message = new SimpleMailMessage();
     		message.setFrom("contact@cubesofttech.com");
     		message.setTo("contact@cubesofttech.com");
@@ -85,7 +86,7 @@ public class EmailService {
     		message.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel+"\n Message : \n"+msg);
     		log.debug("message" + message);
     		mailSender.send(message);
-    		
+
     		log.debug("message" + message);
     	} catch (Exception e) {
     		e.printStackTrace();

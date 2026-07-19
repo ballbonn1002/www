@@ -49,7 +49,14 @@
 					class="navbar  navbar-expand-lg navbar-light bg-light fixed-top"
 					style="padding-bottom: 0px !important; margin-bottom: 0px !important">
 					<!-- Navbar brand -->
-					<a href="/"> <img width=175px
+					<%-- width=175px (unquoted, invalid unit) never actually reserved
+						 layout space - the width attribute only accepts a plain
+						 integer. width/height below are the image's real 376x91
+						 intrinsic ratio scaled to the same 175px display width, so
+						 the browser can compute and reserve the right box before the
+						 logo has even downloaded - this is the header, so it's the
+						 first thing that would otherwise shift on every single page. --%>
+					<a href="/"> <img width="175" height="42"
 						src="/pages-front/img/logo/cubesofttech.png"
 						alt="Responsive image">
 					</a>

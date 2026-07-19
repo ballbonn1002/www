@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src/main/java"/>
+	<!-- Test source folder for TestNG unit tests (e.g. ContactFormValidatorTest) -
+	     output kept separate from build/classes below so test classes don't
+	     end up bundled into the deployed webapp's WEB-INF/classes. -->
+	<classpathentry kind="src" path="src/test/java" output="build/test-classes"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/apache-tomcat-7.0.47">

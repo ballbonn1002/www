@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.RewriteFilter;
+import com.cubesofttech.validation.ContactFormValidator;
+import com.cubesofttech.validation.ValidationResult;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ContactsAction extends ActionSupport {
@@ -27,7 +29,8 @@ public class ContactsAction extends ActionSupport {
 	@Autowired
 	private Constant constant;
 	
-	private String contactName;
+	private String firstName;
+	private String lastName;
 	private String contactEmail;
 	private String contactTel;
 	private String contactMessage;
@@ -64,12 +67,20 @@ public class ContactsAction extends ActionSupport {
 		this.emailService = emailService;
 	}
 
-	public String getContactName() {
-		return contactName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getContactEmail() {
@@ -112,10 +123,12 @@ public class ContactsAction extends ActionSupport {
 
 	public String sendEmailContact() {
 		try {
-			log.debug(contactName+"/"+contactEmail);
-			log.debug(contactTel+"/"+contactMessage);
-			emailService.sendEmailContact(contactName, contactEmail, contactTel, contactMessage);
-			log.debug("end sending email");
+			ValidationResult firstNameResult = ContactFormValidator.validateFirstName(firstName);
+			ValidationResult lastNameResult = ContactFormValidator.validateLastName(lastName);
+			ValidationResult emailResult = ContactFormValidator.validateEmail(contactEmail);
+			ValidationResult phoneResult = ContactFormValidator.validatePhone(contactTel);
+			boolean allValid = firstNameResult.isValid() && lastNameResult.isValid() && emailResult.isValid()
+					&& phoneResult.isValid();
 
 			// Both results re-render the same contacts JSP (there's no
 			// separate "thank you" view) - it needs the same request
@@ -124,6 +137,33 @@ public class ContactsAction extends ActionSupport {
 			// come out blank on the page shown right after a submit.
 			request.setAttribute("constant", constant);
 			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
+
+			// Repopulate whatever was typed either way (invalid submission
+			// or not) so a validation failure never wipes the form - the
+			// one exception is the captcha, which always has to be
+			// re-solved regardless of why the page is re-rendering.
+			request.setAttribute("firstName", firstName);
+			request.setAttribute("lastName", lastName);
+			request.setAttribute("contactEmail", contactEmail);
+			request.setAttribute("contactTel", contactTel);
+			request.setAttribute("contactMessage", contactMessage);
+
+			if (!allValid) {
+				// Null (valid field) just means "no error" to the JSTL
+				// ${not empty ...} checks driving the error markup - no
+				// need to conditionally omit these.
+				request.setAttribute("firstNameError", firstNameResult.getErrorMessage());
+				request.setAttribute("lastNameError", lastNameResult.getErrorMessage());
+				request.setAttribute("emailError", emailResult.getErrorMessage());
+				request.setAttribute("phoneError", phoneResult.getErrorMessage());
+				return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+			}
+
+			log.debug(firstNameResult.getValue()+" "+lastNameResult.getValue()+"/"+emailResult.getValue());
+			log.debug(phoneResult.getValue()+"/"+contactMessage);
+			emailService.sendEmailContact(firstNameResult.getValue(), lastNameResult.getValue(),
+					emailResult.getValue(), phoneResult.getValue(), contactMessage);
+			log.debug("end sending email");
 
 			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {

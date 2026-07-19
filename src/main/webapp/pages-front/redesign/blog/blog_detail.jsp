@@ -420,6 +420,21 @@ hr.detailnew {
 	color: #BD2125;
 }
 
+/* The whole card is one <a> now (blogCard.tag) - links are inline by
+   default, which would otherwise collapse/misrender the block-level
+   .articleblockbg3/.ardetail stacked inside it, and reset its default
+   blue/underlined styling since this is a card, not a text link.
+   :hover needed separately - Bootstrap's own "a:hover{text-decoration:
+   underline}" (in the CDN stylesheet loaded site-wide) has higher
+   specificity than the bare class selector below at rest, so without
+   this the underline was reappearing the moment you hovered the card. */
+.articleblockbg2__link,
+.articleblockbg2__link:hover {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
 .articleblockbg3 {
 	overflow: hidden;
 	border-radius: 10px 10px 0 0;
@@ -806,10 +821,14 @@ hr.detailnew {
 </div>
 
 
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js"
-	type="text/javascript"></script>
+<%--
+	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
+	<head> (every page shares it) - this page had its own second copy of
+	both. Safe to drop here specifically (checked first): no $.ajax/.load/
+	effects calls on this page. AOS.init() below still needs to stay -
+	baseLayout.jsp only loads the library, each page still calls .init()
+	itself.
+--%>
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>

@@ -57,18 +57,11 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
 .breadcrumb {
 	padding: 0 !important;
 }
 
-/* .page-header/.page-title match redesign/blog/blog.jsp's copy exactly -
-   both pages render the same shared WEB-INF/tags/pageHeader.tag, so this
-   needs to stay in sync with that one, not just share markup. Neither
-   rule sets a background (the tag itself doesn't either, and .breadcrumb
-   is already forced transparent site-wide in baseLayout.jsp) - this hero
-   sits on the .parallax photo background above, unlike blog's flat
-   .articleblockbg, so double check text/link contrast here specifically
-   once this section gets its real redesign treatment. */
 .page-header {
 	display: flex;
 	justify-content: space-between;
@@ -82,6 +75,192 @@
 	font-weight: 600;
 }
 
+.contact-heading {
+	color: #BD2125;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 1.25rem;
+}
+
+.contact-info-column {
+	display: flex;
+}
+
+/* Photo background (pages-front/img/contact/team-desk-bg.jpg, royalty-free)
+   instead of a flat tint - still deliberately no box-shadow, the form
+   column is the one surface meant to read as raised/elevated
+   (.contact-form-box below). The ::before overlay darkens the photo for
+   text contrast without baking that darkness into the image file itself,
+   so it stays easy to tune later. Text inside switches to white via the
+   scoped .contact-heading/a overrides below - the same .contact-heading
+   class is also used on .contact-form-box's "Contact Us" heading, which
+   needs to stay the brand red it already had on that white background. */
+.contact-info-group {
+	/* .contact-info-column's default flex-direction is row - without this,
+	   a flex item sizes to its own content by default (flex-basis:auto),
+	   so as the row's only child it would shrink to wrap its text/icons
+	   instead of spanning the column, only stretching in height. flex:1
+	   makes it grow to fill the remaining width too. */
+	flex: 1;
+	position: relative;
+	background: url("pages-front/img/contact/team-desk-bg.jpg") center/cover
+		no-repeat;
+	border-radius: 16px;
+	padding: 40px;
+	color: #fff;
+	/* Content vertically centered in the box - now that this box stretches
+	   to match .contact-form-box's height, its own rows/headings would
+	   otherwise just sit at the top with empty space below if the form
+	   column ends up taller. */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.contactbg {
+	background-color: #F5F5F5;
+	padding-top: 3%;
+	padding-bottom: 5%;
+	padding-left: 10%;
+	padding-right: 10%;
+	margin-top: 32px;
+}
+
+.contact-info-group::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	/* Bumped from 0.65 - this photo (bright café/laptop screen) runs a lot
+	   lighter overall than the wood-desk one it replaced, so the white text
+	   needed more darkening underneath it to stay readable. */
+	background-color: rgba(0, 0, 0, 0.72);
+	border-radius: inherit;
+}
+
+.contact-info-group>* {
+	position: relative;
+}
+
+.contact-info-group .contact-heading {
+	color: #fff;
+}
+
+.contact-info-group a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+/* One row per company-info line (address/phone/email/Facebook), replacing
+   the old .row > .col-sm-2 + .col-sm-9 grid plus a hand-tuned inline
+   padding-top per row to nudge the icon into line with its text - flex's
+   align-items:center does that for every row uniformly instead. */
+.contact-info-row {
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.contact-info-row:last-child {
+	margin-bottom: 0;
+}
+
+/* Bigger than the site's 15px base - this box has more visual weight now
+   (photo background, centered content) so the copy needed to scale up to
+   match instead of looking small against it. Scoped past the icon badge
+   (:not) so the badge's own icon sizing above is untouched. */
+.contact-info-row span:not(.contact-info-row__icon) {
+	font-size: 17px;
+}
+
+/* Circular badge normalizes the four source icons (40-55px, inconsistent
+   sizes) into one consistent footprint instead of resizing the actual PNG
+   files - object-fit:contain on the img inside keeps each icon's own
+   aspect ratio. */
+.contact-info-row__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background-color: #fff;
+	flex-shrink: 0;
+}
+
+.contact-info-row__icon img {
+	max-width: 22px;
+	max-height: 22px;
+	object-fit: contain;
+}
+
+/* Icon-font entries (bi-clock, no PNG asset exists for these) share the
+   same badge - sized/colored here since an <i> glyph has no intrinsic
+   size like the PNGs do. */
+.contact-info-row__icon i {
+	font-size: 20px;
+	color: #BD2125;
+}
+
+/* Second group, same flat/tinted treatment as .contact-info-group so the
+   two read as a matched pair - just spaced below the first instead of
+   sharing its box. */
+.contact-social-group {
+	margin-top: 1.5rem;
+}
+
+.contact-social-links {
+	display: flex;
+	gap: 0.75rem;
+}
+
+/* Circular badges, same 44px footprint as .contact-info-row__icon above,
+   for the same reason - one consistent size across both groups. Hover
+   inverts fg/bg instead of just a color change, since these are the only
+   icons on this page that are themselves the click target (not just
+   decoration next to a text link). */
+.contact-social-links__item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background-color: #fff;
+	color: #BD2125;
+	font-size: 18px;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-social-links__item:hover {
+	background-color: #BD2125;
+	color: #fff;
+}
+
+/* Moved off the inline style on the column div - same padding/radius/
+   shadow values, just as a named rule instead of a one-off inline block.
+   This is the page's one elevated surface (see .contact-info-group above). */
+.contact-form-box {
+	background-color: #fff;
+	border-radius: 16px;
+	padding: 40px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Bootstrap 4's own .form-control default is border-radius:0.25rem (4px) -
+   overriding just within this form to match the rounder 16px boxes/badges
+   used everywhere else on this page. */
+.contact-form-box .form-control {
+	border-radius: 10px;
+}
+
+/* #sendEmail specifically (not every .btn-danger site-wide) - same 10px
+   radius as the inputs above for one consistent look, and full-width
+   since a form this size reads better with one clear, wide call to
+   action than a small button off to the side. */
+#sendEmail {
+	border-radius: 10px;
+	width: 100%;
+}
+
 .captcha {
 	background-color: #eef2f7;
 	font-size: 20px;
@@ -93,107 +272,151 @@
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
-    -ms-user-select: none;
+	-ms-user-select: none;
 }
 
 .message {
-    margin-top: 15px;
-    /*font-size: 16px;*/
-    font-weight: bold;
+	margin-top: 15px;
+	/*font-size: 16px;*/
+	font-weight: bold;
 }
 
 .message.green {
-    color: #28a745;
+	color: #28a745;
 }
 
 .message.red {
-    color: #dc3545;
+	color: #dc3545;
 }
 </style>
 
 <div class="parallax show-on-srcoll">
-	<comp:pageHeader label="Contacts" />
+	<div class="contactbg">
+		<comp:pageHeader label="Contacts" />
 
-	<form id="contactForm" action="sendEmailContact" method="post">
-		<div class="contactbg">
+		<form id="contactForm" action="sendEmailContact" method="post">
 			<div class="row">
-				<div class="col-lg-6 col-xs-12" data-aos="zoom-in"
+				<div class="col-12 col-lg-6 contact-info-column" data-aos="zoom-in"
 					data-aos-duration="800">
-					<h1 style="font-weight: bold;">
-						<b> <font color="#BD2125" size="4px"> Cube SoftTech
-								Co.,Ltd.</font><br> <br>
-						</b>
-					</h1>
-					<div class="row">
-						<div class="col-sm-2" align="center">
-							<img src="pages-front/img/contact/icon06.png" width="40"
-								height="40" />
+					<div class="contact-info-group">
+						<h2 class="contact-heading">Cube SoftTech Co.,Ltd.</h2>
+
+						<%-- No PNG icon asset for business hours - bi-clock (Bootstrap
+							 Icons, already loaded site-wide in baseLayout.jsp) instead of
+							 adding a new image file. --%>
+						<div class="contact-info-row d-flex align-items-center">
+							<span class="contact-info-row__icon"><i
+								class="bi bi-clock"></i></span> <span>Mon - Fri, 9.00-18.00</span>
 						</div>
-						<div class="col-sm-9 contact-sm">160/170-2, 12A Fl., ITF
-							Silom Palace Building Silom Rd., Suriyawong, Bangrak Bangrak,
-							Bangkok 10500 Thailand</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2 contact-sm" align="center">
-							<img alt="" src="pages-front/img/contact/icon09.png" width="50"
-								height="50">
+
+						<div class="contact-info-row d-flex align-items-center">
+							<span class="contact-info-row__icon"> <img
+								src="pages-front/img/contact/icon09.png" width="50" height="50"
+								alt="">
+							</span> <span> <a href="tel:026798855">02 679 8855</a><br> <a
+								href="tel:0880229400">088 022 9400</a>
+							</span>
 						</div>
-						<div class="col-sm-9 contact-sm" style="padding-top: 14px">
-							<a href="tel:026798855">02 679 8855</a>, <a href="tel:0880229400">088
-								022 9400</a>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2 contact-sm" align="center">
-							<img src="pages-front/img/contact/icon07.png" width="40"
-								height="40" />
-						</div>
-						<div class="col-sm-9 contact-sm" style="padding-top: 9px">
-							<a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+
+						<div class="contact-info-row d-flex align-items-center">
+							<span class="contact-info-row__icon"> <img
+								src="pages-front/img/contact/icon07.png" width="40" height="40"
+								alt="">
+							</span> <span> <a href="/cdn-cgi/l/email-protection"
+								class="__cf_email__"
 								data-cfemail="e68f888089a685938483958980929283858ec885898b">info@cubesofttech.com</a>
+							</span>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2 contact-sm" align="center">
-							<img src="pages-front/img/contact/icon08.png" width="55"
-								height="55" />
+
+						<div class="contact-info-row d-flex align-items-center">
+							<span class="contact-info-row__icon"> <img
+								src="pages-front/img/contact/icon06.png" width="40" height="40"
+								alt="">
+							</span> <span>160/170-2, 12A Fl., ITF Silom Palace Building Silom
+								Rd., Suriyawong, Bangrak Bangrak, Bangkok 10500 Thailand</span>
 						</div>
-						<div class="col-sm-9 contact-sm " style="padding-top: 15px">
-							<a href="https://www.facebook.com/CubeSoftTech/">
-								https://www.facebook.com/CubeSoftTech/</a>
-						</div>
+
+						<%--
+							One box now, not two - Social Media is just a second
+							sub-section inside the same .contact-info-group, spaced apart
+							with .contact-social-group's margin-top instead of its own
+							background/border. Line/LinkedIn/YouTube hrefs are
+							placeholders ("#") - only the Facebook URL is real (carried
+							over from the row removed earlier). Swap in the actual
+							company links before this goes live.
+						--%>
 					</div>
 				</div>
-				<div class="col-lg-6 col-xs-12 contact-us-sm" data-aos="zoom-in"
+
+				<div class="col-12 col-lg-6 contact-form-box" data-aos="zoom-in"
 					data-aos-duration="800">
-					<b> <font color="#BD2125" size="4px">Contact Us</font><br>
-						<br>
-					</b>
-					<div class="form-group">
-						<input type="name" class="form-control" placeholder="Name"
-							name="contactName">
+					<h2 class="contact-heading">Contact Us</h2>
+					<%--
+						col-md-6 rather than col-6 - below md this form still sits
+						inside a col-12 (single-column, full page width) at that
+						breakpoint since the page's own two-column split only kicks
+						in at lg, so there's no room concern for these two side by
+						side once md hits; below md they stack full-width instead of
+						being squeezed to a cramped half-width each on small phones.
+					--%>
+					<%--
+						value="${...}"/is-invalid/.invalid-feedback below are the
+						server-side half of validation (see ContactsAction -
+						firstName/firstNameError etc. are request attributes it sets,
+						empty/absent on a fresh GET). is-invalid is a Bootstrap 4
+						class (red border), .invalid-feedback is Bootstrap's matching
+						message element (red text, shown via Bootstrap's own CSS
+						whenever the sibling input carries is-invalid) - the blur
+						handlers below toggle the exact same classes client-side, so
+						a field looks identical whichever side caught the problem.
+					--%>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<input type="text"
+								class="form-control ${not empty firstNameError ? 'is-invalid' : ''}"
+								placeholder="First name" name="firstName" id="firstName"
+								value="${firstName}">
+							<div class="invalid-feedback">${firstNameError}</div>
+						</div>
+						<div class="form-group col-md-6">
+							<input type="text"
+								class="form-control ${not empty lastNameError ? 'is-invalid' : ''}"
+								placeholder="Last name" name="lastName" id="lastName"
+								value="${lastName}">
+							<div class="invalid-feedback">${lastNameError}</div>
+						</div>
 					</div>
 					<div class="form-group">
-						<input type="email" class="form-control" placeholder="E-Mail"
-							name="contactEmail">
+						<input type="email"
+							class="form-control ${not empty emailError ? 'is-invalid' : ''}"
+							placeholder="E-Mail" name="contactEmail" id="contactEmail"
+							value="${contactEmail}">
+						<div class="invalid-feedback">${emailError}</div>
 					</div>
 					<div class="form-group">
-						<input type="phone" class="form-control" placeholder="Telephone"
-							name="contactTel">
+						<input type="tel"
+							class="form-control ${not empty phoneError ? 'is-invalid' : ''}"
+							placeholder="Telephone" name="contactTel" id="contactTel"
+							value="${contactTel}">
+						<div class="invalid-feedback">${phoneError}</div>
 					</div>
 					<div class="form-group">
-						<textarea type="comment" class="form-control" rows="3"
-							placeholder="Message" name="contactMessage"></textarea>
+						<textarea class="form-control" rows="3" placeholder="Message"
+							name="contactMessage" id="contactMessage">${contactMessage}</textarea>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
 							<div class="col-lg-10 col-md-11 captcha" id="captcha"></div>
-							<button class="col-lg-2 col-md-1 input-group btn btn-info" type="button" id="refreshCaptcha"
-								style="font-size:22px; align-items: center; justify-content: center;"><i class="fa">&#xf021;</i></button>
+							<button class="col-lg-2 col-md-1 input-group btn btn-info"
+								type="button" id="refreshCaptcha"
+								style="font-size: 22px; align-items: center; justify-content: center;">
+								<i class="fa">&#xf021;</i>
+							</button>
 						</div>
 					</div>
 					<div class="form-group">
-						<input name="captchaInput" class="form-control" id="captchaInput" placeholder="Type the characters above: " />
+						<input name="captchaInput" class="form-control" id="captchaInput"
+							placeholder="Type the characters above: " />
 						<div class="message" id="message"></div>
 					</div>
 					<div class="form-group text-right">
@@ -201,8 +424,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 
 </div>
 <div style="overflow: hidden;">
@@ -212,79 +435,203 @@
 		allowfullscreen=""></iframe>
 </div>
 
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js"
-	type="text/javascript"></script>
+<%--
+	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
+	<head> (every page shares it) - this page had its own second copy of
+	both. Safe to drop here specifically (checked first): the CAPTCHA and
+	real-time validation logic below only use basic jQuery (click/text/
+	val/css/on/siblings), no $.ajax/.load/effects methods. AOS.init()
+	below still needs to stay - baseLayout.jsp only loads the library,
+	each page still calls .init() itself.
+--%>
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
+	// Mirrors com.cubesofttech.validation.ContactFormValidator - there's no
+	// shared code path between Java and this vanilla JS, so this is a
+	// manually-kept-in-sync copy of the same rules. Server-side (see
+	// ContactsAction) is the authoritative check; this is real-time (blur)
+	// feedback only and can't be relied on alone.
+	var NAME_PATTERN = /^[ก-๏a-zA-Z\s-]+$/;
+	var NAME_MAX_LENGTH = 50;
+	var EMAIL_PATTERN = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+	var EMAIL_MAX_LENGTH = 254;
+	var PHONE_ALLOWED_CHARS = /^\+?[0-9\s-]+$/;
+	var PHONE_LOCAL = /^0[0-9]{8,9}$/;
+	var PHONE_INTL = /^\+66[0-9]{8,9}$/;
+
+	function validateNameValue(value, requiredMessage) {
+		var trimmed = (value || '').trim();
+		if (!trimmed) {
+			return requiredMessage;
+		}
+		if (trimmed.length > NAME_MAX_LENGTH || !NAME_PATTERN.test(trimmed)) {
+			return 'กรุณากรอกเฉพาะตัวอักษร ไม่ใช่ตัวเลขหรือสัญลักษณ์';
+		}
+		return null;
+	}
+
+	function validateEmailValue(value) {
+		var trimmed = (value || '').trim();
+		if (!trimmed) {
+			return 'กรุณากรอกอีเมล';
+		}
+		if (trimmed.length > EMAIL_MAX_LENGTH || !EMAIL_PATTERN.test(trimmed)) {
+			return 'อีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง (เช่น name@example.com)';
+		}
+		return null;
+	}
+
+	function validatePhoneValue(value) {
+		var trimmed = (value || '').trim();
+		if (!trimmed) {
+			return 'กรุณากรอกเบอร์โทรศัพท์';
+		}
+		if (!PHONE_ALLOWED_CHARS.test(trimmed)) {
+			return 'เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก';
+		}
+		var stripped = trimmed.replace(/[\s-]/g, '');
+		if (!PHONE_LOCAL.test(stripped) && !PHONE_INTL.test(stripped)) {
+			return 'เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก';
+		}
+		return null;
+	}
+
+	// Applies one field's result to the DOM (Bootstrap's own
+	// is-invalid/is-valid + the .invalid-feedback sibling it already
+	// renders server-side) - the one place both the blur handlers and the
+	// pre-submit check below touch the DOM, so a field looks identical
+	// regardless of which one caught the problem.
+	function applyFieldValidation($input, errorMessage) {
+		var $feedback = $input.siblings('.invalid-feedback');
+		if (errorMessage) {
+			$input.addClass('is-invalid').removeClass('is-valid');
+			$feedback.text(errorMessage);
+		} else {
+			$input.addClass('is-valid').removeClass('is-invalid');
+			$feedback.text('');
+		}
+		return !errorMessage;
+	}
+
+	function validateField(fieldId) {
+		var $input = $('#' + fieldId);
+		var value = $input.val();
+		var errorMessage;
+		if (fieldId === 'firstName') {
+			errorMessage = validateNameValue(value, 'กรุณากรอกชื่อ');
+		} else if (fieldId === 'lastName') {
+			errorMessage = validateNameValue(value, 'กรุณากรอกนามสกุล');
+		} else if (fieldId === 'contactEmail') {
+			errorMessage = validateEmailValue(value);
+		} else if (fieldId === 'contactTel') {
+			errorMessage = validatePhoneValue(value);
+		}
+		return applyFieldValidation($input, errorMessage);
+	}
+
 	AOS.init();
-	$(document).ready(function() {
+	$(document)
+			.ready(
+					function() {
 
-		// เมื่อกดปุ่ม "Send"
-	    $('#sendEmail').click(function (e) {
-	    	e.preventDefault(); // ป้องกันการส่งฟอร์มทันที
-	    	const captcha = $('#captcha').text(); // ดึงค่า CAPTCHA
-	        const userInput = $('#captchaInput').val(); // ดึงค่าที่ผู้ใช้กรอก
-	        // ตรวจสอบว่า CAPTCHA ตรงกับค่าที่กรอกหรือไม่
-	        if (captcha === userInput) {
-	            $('#message').text('CAPTCHA ถูกต้อง').css('color', 'green');
+						// Real-time feedback as each field loses focus,
+						// rather than only finding out everything's wrong
+						// at once on submit.
+						$('#firstName, #lastName, #contactEmail, #contactTel')
+								.on('blur', function() {
+									validateField(this.id);
+								});
 
-	            // ส่งฟอร์มจริงหลังจากยืนยัน CAPTCHA ถูกต้อง
-	            $('#contactForm').submit(); // ส่งฟอร์มจริง
-	        } else {
-	            const newCaptcha = generateRandomCaptcha();
-	            $('#captcha').text(newCaptcha);
-	            $('#message').text('การยืนยันล้มเหลว! กรุณาลองใหม่').css('color', 'red');
-	        }
-	    });
+						// เมื่อกดปุ่ม "Send"
+						$('#sendEmail')
+								.click(
+										function(e) {
+											e.preventDefault(); // ป้องกันการส่งฟอร์มทันที
 
-	    // เมื่อกดปุ่ม "รีเฟรช" CAPTCHA
-	    $('#refreshCaptcha').click(function () {
-	        $('#captcha').text(generateRandomCaptcha()); // สร้าง CAPTCHA ใหม่
-	        $('#message').text('');
-	        $('#captchaInput').val('');
-	    });
+											// ตรวจก่อน CAPTCHA - เรียก validator
+											// เดียวกับที่ blur ใช้ ให้แน่ใจว่าทุกช่อง
+											// ผ่านครบก่อนไปเช็ค CAPTCHA
+											var firstNameValid = validateField('firstName');
+											var lastNameValid = validateField('lastName');
+											var emailValid = validateField('contactEmail');
+											var phoneValid = validateField('contactTel');
+											if (!firstNameValid || !lastNameValid
+													|| !emailValid || !phoneValid) {
+												return;
+											}
 
-	    // ฟังก์ชันสำหรับสร้าง CAPTCHA
-	    function generateRandomCaptcha() {
-	        const CAPTCHA_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-	        let captcha = '';
-	        for (let i = 0; i < 6; i++) {
-	            const randomIndex = Math.floor(Math.random() * CAPTCHA_CHARACTERS.length);
-	            captcha += CAPTCHA_CHARACTERS.charAt(randomIndex);
-	        }
-	        return captcha;
-	    }
+											const captcha = $('#captcha')
+													.text(); // ดึงค่า CAPTCHA
+											const userInput = $('#captchaInput')
+													.val(); // ดึงค่าที่ผู้ใช้กรอก
+											// ตรวจสอบว่า CAPTCHA ตรงกับค่าที่กรอกหรือไม่
+											if (captcha === userInput) {
+												$('#message').text(
+														'CAPTCHA ถูกต้อง').css(
+														'color', 'green');
 
-	    // สร้าง CAPTCHA เริ่มต้น
-	    $('#captcha').text(generateRandomCaptcha());
-	});
+												// ส่งฟอร์มจริงหลังจากยืนยัน CAPTCHA ถูกต้อง
+												$('#contactForm').submit(); // ส่งฟอร์มจริง
+											} else {
+												const newCaptcha = generateRandomCaptcha();
+												$('#captcha').text(newCaptcha);
+												$('#message')
+														.text(
+																'การยืนยันล้มเหลว! กรุณาลองใหม่')
+														.css('color', 'red');
+											}
+										});
+
+						// เมื่อกดปุ่ม "รีเฟรช" CAPTCHA
+						$('#refreshCaptcha').click(function() {
+							$('#captcha').text(generateRandomCaptcha()); // สร้าง CAPTCHA ใหม่
+							$('#message').text('');
+							$('#captchaInput').val('');
+						});
+
+						// ฟังก์ชันสำหรับสร้าง CAPTCHA
+						function generateRandomCaptcha() {
+							const CAPTCHA_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+							let captcha = '';
+							for (let i = 0; i < 6; i++) {
+								const randomIndex = Math.floor(Math.random()
+										* CAPTCHA_CHARACTERS.length);
+								captcha += CAPTCHA_CHARACTERS
+										.charAt(randomIndex);
+							}
+							return captcha;
+						}
+
+						// สร้าง CAPTCHA เริ่มต้น
+						$('#captcha').text(generateRandomCaptcha());
+					});
 
 	function showNav() {
-        var x = document.getElementById("navDemo");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-        }
-    }
+		var x = document.getElementById("navDemo");
+		if (x.className.indexOf("w3-show") == -1) {
+			x.className += " w3-show";
+		} else {
+			x.className = x.className.replace(" w3-show", "");
+		}
+	}
 
-	window.onscroll = function () { scrollFunction() };
+	window.onscroll = function() {
+		scrollFunction()
+	};
 	function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            document.getElementById("myBtn").style.display = "block";
-        } else {
-            document.getElementById("myBtn").style.display = "none";
-        }
-    }
+		if (document.body.scrollTop > 20
+				|| document.documentElement.scrollTop > 20) {
+			document.getElementById("myBtn").style.display = "block";
+		} else {
+			document.getElementById("myBtn").style.display = "none";
+		}
+	}
 	function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
-
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+	}
 </script>

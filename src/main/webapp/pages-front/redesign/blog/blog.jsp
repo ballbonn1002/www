@@ -198,11 +198,120 @@ a {
 /* เปลี่ยนจาก height:400px + overflow:hidden ตายตัว
    มาเป็น flex column เพื่อดันปุ่มลงล่างสุดได้ */
 .article-preview__content {
+	position: relative; /* anchors .article-preview__content-skeleton below */
 	min-height: 400px;
 	display: flex;
 	flex-direction: column;
 	text-align: left;
 	height: 85%;
+}
+
+/* Skeleton overlay for title/excerpt/meta/CTA - shown by default (no JS
+   needed to appear), covers the same box the real content occupies.
+   Doesn't need its own background: the real content underneath is
+   opacity:0 at this point (see the .js-skel block further down), so
+   there's nothing for these bars to visually compete with. */
+.article-preview__content-skeleton {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	transition: opacity 0.25s ease;
+}
+
+.article-preview__title-skeleton,
+.article-preview__excerpt-skeleton,
+.article-preview__meta-skeleton,
+.article-preview__cta-skeleton {
+	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%);
+	background-size: 200% 100%;
+	animation: skeleton-shimmer 1.4s ease-in-out infinite;
+	border-radius: 6px;
+}
+
+/* Two bars roughly matching the title's 2-line real-world wrap, second
+   one shorter so it doesn't look like a single solid block. */
+.article-preview__title-skeleton {
+	height: 28px;
+	width: 90%;
+	margin-bottom: 0.5rem;
+}
+
+@media (min-width: 992px) {
+	.article-preview__title-skeleton {
+		height: 40px;
+	}
+}
+
+.article-preview__title-skeleton--short {
+	width: 55%;
+}
+
+/* Four bars for the 6-line-clamped excerpt's rough shape - not all six,
+   enough to read as "several lines of text" without the overlay itself
+   needing to match the real line count exactly. */
+.article-preview__excerpt-skeleton {
+	height: 14px;
+	width: 100%;
+}
+
+.article-preview__excerpt-skeleton--short {
+	width: 65%;
+}
+
+.article-preview__meta-skeleton {
+	height: 14px;
+	width: 35%;
+	margin-top: 0.5rem;
+}
+
+.article-preview__cta-skeleton {
+	height: 44px;
+	width: 150px;
+	border-radius: 10px;
+	margin-top: auto; /* same "pinned to bottom" behavior as the real CTA */
+}
+
+/* Real content hidden behind the skeleton above until the hero image
+   loads (see handleImageLoad() below, which adds .is-revealed to
+   .article-preview__content) - opacity only, per every element here
+   staying fully present in the DOM/View Source the whole time, so
+   nothing is ever hidden from a crawler that doesn't run this JS. */
+.js-skel .article-preview__content .article-preview__title,
+.js-skel .article-preview__content .article-preview__excerpt,
+.js-skel .article-preview__content .article-preview__divider,
+.js-skel .article-preview__content .article-preview__meta,
+.js-skel .article-preview__content .article-preview__cta {
+	opacity: 0;
+	transition: opacity 0.35s ease;
+}
+
+.js-skel .article-preview__content.is-revealed .article-preview__title,
+.js-skel .article-preview__content.is-revealed .article-preview__excerpt,
+.js-skel .article-preview__content.is-revealed .article-preview__divider,
+.js-skel .article-preview__content.is-revealed .article-preview__meta,
+.js-skel .article-preview__content.is-revealed .article-preview__cta {
+	opacity: 1;
+}
+
+.js-skel .article-preview__content.is-revealed .article-preview__content-skeleton {
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* Same cache-hit reasoning as .article-preview__media/.article-card__media
+   elsewhere - if the hero image was already complete (cache hit) by the
+   time this ran, there was no real wait to mask, so the whole content
+   block should snap to its final state instead of visibly crossfading. */
+.article-preview__content.is-instant,
+.article-preview__content.is-instant .article-preview__title,
+.article-preview__content.is-instant .article-preview__excerpt,
+.article-preview__content.is-instant .article-preview__divider,
+.article-preview__content.is-instant .article-preview__meta,
+.article-preview__content.is-instant .article-preview__cta,
+.article-preview__content.is-instant .article-preview__content-skeleton {
+	transition: none;
 }
 
 .article-preview__title {
@@ -312,6 +421,21 @@ a {
 	color: #BD2125;
 }
 
+/* The whole card is one <a> now (blogCard.tag) - links are inline by
+   default, which would otherwise collapse/misrender the block-level
+   .articleblockbg3/.ardetail stacked inside it, and reset its default
+   blue/underlined styling since this is a card, not a text link.
+   :hover needed separately - Bootstrap's own "a:hover{text-decoration:
+   underline}" (in the CDN stylesheet loaded site-wide) has higher
+   specificity than the bare class selector below at rest, so without
+   this the underline was reappearing the moment you hovered the card. */
+.articleblockbg2__link,
+.articleblockbg2__link:hover {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
 .articleblockbg3 {
 	overflow: hidden;
 	border-radius: 10px 10px 0 0;
@@ -362,6 +486,21 @@ a {
 	100% { background-position: -200% 0; }
 }
 
+/* Skeletons start paused - only the cards initScrollReveal has already
+   marked .is-visible (on screen at load, or scrolled into view) get their
+   shimmer running. Without this, all 12 grid skeletons animate at once
+   from the moment the page loads, most of which the visitor can't even
+   see yet - unnecessary compositor work stacking on top of everything
+   else fighting for the main thread during page load. Reuses .is-visible
+   rather than adding a second observer. */
+.js-skel .article-card__skeleton {
+	animation-play-state: paused;
+}
+
+.js-skel .reveal-card.is-visible .article-card__skeleton {
+	animation-play-state: running;
+}
+
 /* Fade-in only applies once JS (.js-skel) is confirmed running - without
    it the image is visible immediately like before this feature existed,
    so a visitor or crawler with JS off never sees a permanently blank
@@ -383,8 +522,28 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
 	.article-card__skeleton,
-	.article-preview__skeleton {
+	.article-preview__skeleton,
+	.article-preview__title-skeleton,
+	.article-preview__excerpt-skeleton,
+	.article-preview__meta-skeleton,
+	.article-preview__cta-skeleton {
 		animation: none;
+	}
+
+	/* Matching specificity to the .js-skel-scoped rules that set these
+	   transitions (see .article-preview__content above) so this actually
+	   overrides them instead of losing the cascade tie - skeleton/content
+	   should snap straight to their final state with no fade at all here,
+	   not just a stripped-down animation. */
+	.js-skel .article-preview__image,
+	.js-skel .article-preview__content .article-preview__title,
+	.js-skel .article-preview__content .article-preview__excerpt,
+	.js-skel .article-preview__content .article-preview__divider,
+	.js-skel .article-preview__content .article-preview__meta,
+	.js-skel .article-preview__content .article-preview__cta,
+	.article-preview__skeleton,
+	.article-preview__content-skeleton {
+		transition: none;
 	}
 }
 
@@ -506,6 +665,17 @@ a {
 		opacity: 1;
 		transform: translateY(0);
 	}
+
+	/* Cards already in the viewport at page load (initScrollReveal's
+	   .is-instant) skip the transition entirely instead of just skipping
+	   the stagger delay - they still had opacity 0.35s + transform 0.35s
+	   playing on top of that same card's image doing its own
+	   skeleton-to-photo crossfade at the same moment, which is what read
+	   as "something stacking" on reload. Four class selectors here beat
+	   the three-class base rule above regardless of source order. */
+	.js-skel .article-list-row .reveal-card.is-instant {
+		transition: none;
+	}
 }
 </style>
 
@@ -566,13 +736,39 @@ a {
 							<span class="article-preview__skeleton" aria-hidden="true"></span>
 							<img class="article-preview__image"
 							src="${constant.imgContext}/${newBlog.path}"
-							alt="${newBlog.topic}" width="805" height="475">
+							alt="${newBlog.topic}" width="805" height="475"
+							fetchpriority="high">
 						</a>
 					</figure>
 				</div>
 
 				<div class="col-12 col-lg-6 order-lg-1">
 					<div class="article-preview__content">
+						<%--
+							Skeleton overlay for the whole content block - shown by
+							default (CSS, no JS needed to appear), faded out as one
+							unit together with the image once it loads (see
+							setupHeroSkeleton() below). Widths vary per bar
+							(full/short) on purpose so it reads as a natural
+							paragraph shape instead of identical rectangles stacked
+							up. aria-hidden since it's decorative - the real content
+							right below it is what screen readers/crawlers see,
+							unaffected by any of this (opacity only, never
+							display:none, never removed from the DOM).
+						--%>
+						<div class="article-preview__content-skeleton" aria-hidden="true">
+							<div class="article-preview__title-skeleton"></div>
+							<div
+								class="article-preview__title-skeleton article-preview__title-skeleton--short"></div>
+							<div class="article-preview__excerpt-skeleton"></div>
+							<div class="article-preview__excerpt-skeleton"></div>
+							<div class="article-preview__excerpt-skeleton"></div>
+							<div
+								class="article-preview__excerpt-skeleton article-preview__excerpt-skeleton--short"></div>
+							<div class="article-preview__meta-skeleton"></div>
+							<div class="article-preview__cta-skeleton"></div>
+						</div>
+
 						<h2 class="article-preview__title">${newBlog.topic}</h2>
 
 						<%-- 						<div class="article-preview__excerpt">${newBlog.detail}</div> --%>
@@ -581,7 +777,7 @@ a {
 						<hr class="my-4 article-preview__divider">
 
 						<div
-							class="d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small">
+							class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small">
 							<div class="d-flex align-items-center gap-2">
 								<i class="bi bi-calendar3"></i> <span><fmt:formatDate
 										pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
@@ -609,50 +805,30 @@ a {
 	<br>
 </div>
 
-
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js"
-	type="text/javascript"></script>
-<script data-cfasync="false"
-	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
-
+<%--
+	Deliberately its own <script> block, placed here (right after the grid
+	exists) rather than after the AOS/jQuery/Cloudflare/FontAwesome <script
+	src> tags below - none of those are dependencies of this code (it's
+	plain vanilla JS), but a non-deferred <script src> still blocks the
+	parser until it finishes loading+executing. With this block stuck after
+	all four of them, every card sat at opacity:0 (see .js-skel CSS above)
+	for however long those four unrelated network round-trips took, then
+	all snapped visible at once the moment this code finally got to run -
+	that's what read as the whole page jerking on load, not any single
+	animation's timing. Running this first removes that artificial wait
+	entirely.
+--%>
 <script type="text/javascript">
-	AOS.init();
-
-	function showNav() {
-		var x = document.getElementById("navDemo");
-		if (x.className.indexOf("w3-show") == -1) {
-			x.className += " w3-show";
-		} else {
-			x.className = x.className.replace(" w3-show", "");
-		}
-	}
-
-	window.onscroll = function() {
-		scrollFunction()
-	};
-	function scrollFunction() {
-		if (document.body.scrollTop > 20
-				|| document.documentElement.scrollTop > 20) {
-			document.getElementById("myBtn").style.display = "block";
-		} else {
-			document.getElementById("myBtn").style.display = "none";
-		}
-	}
-	function topFunction() {
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-	}
-
 	// Swaps a shimmer placeholder for its real image once the image has
 	// actually finished loading. img.complete already true (cache hit /
 	// image loaded faster than this script ran) skips straight to the
 	// loaded state instead of waiting on a 'load' event that already fired.
 	// imageSelector is a full CSS selector for the <img> elements
-	// themselves (not a container) - reused for both the hero image and
-	// every grid card image below.
+	// themselves (not a container) - used for every grid card image below.
+	// The hero image has its own setupHeroSkeleton() instead (further
+	// down): unlike a grid card, the hero also has to reveal its title/
+	// excerpt/meta/CTA in that same moment, which this function has no
+	// reason to know about.
 	function setupSkeletonPlaceholders(imageSelector) {
 		var images = document.querySelectorAll(imageSelector);
 		images.forEach(function(img) {
@@ -703,8 +879,10 @@ a {
 			// No IntersectionObserver support: reveal everything immediately
 			// instead of leaving cards stuck at opacity:0 forever (.js-skel's
 			// CSS did hide them, since that part isn't feature-detected).
+			// is-instant same as the already-in-viewport case below - there's
+			// no real staged reveal happening here, so nothing should animate.
 			cards.forEach(function(card) {
-				card.classList.add('is-visible');
+				card.classList.add('is-visible', 'is-instant');
 			});
 			return;
 		}
@@ -726,7 +904,12 @@ a {
 			var rect = card.getBoundingClientRect();
 			var alreadyInViewport = rect.top < viewportHeight && rect.bottom > 0;
 			if (alreadyInViewport) {
-				card.classList.add('is-visible');
+				// No transition here - this card is already on screen, so
+				// there's nothing to reveal. Its image may still be running
+				// its own skeleton-to-photo crossfade at this same moment;
+				// animating the whole card on top of that read as jank on
+				// reload, not a smooth reveal.
+				card.classList.add('is-visible', 'is-instant');
 				return;
 			}
 			card.style.setProperty('--reveal-delay', (staggerIndex * 70) + 'ms');
@@ -735,7 +918,104 @@ a {
 		});
 	}
 
-	setupSkeletonPlaceholders('#articledetail1 .article-preview__image');
+	// Hero-specific: reveals the image AND the title/excerpt/meta/CTA
+	// skeleton overlay together, in one moment, rather than just the image
+	// like setupSkeletonPlaceholders does for grid cards. Split into three
+	// named functions (setup/load/error) rather than one block, matching
+	// how setupSkeletonPlaceholders/initScrollReveal are already split
+	// above.
+	function setupHeroSkeleton() {
+		var img = document.querySelector('#articledetail1 .article-preview__image');
+		if (!img) {
+			return;
+		}
+		if (img.complete) {
+			// Cache hit - no real wait happened, so skip straight to the
+			// final state instead of visibly crossfading (same reasoning
+			// as setupSkeletonPlaceholders' .is-instant above).
+			var wrapper = img.closest('.article-preview__media');
+			if (wrapper) {
+				wrapper.classList.add('is-instant');
+			}
+			var content = document.querySelector('#articledetail1 .article-preview__content');
+			if (content) {
+				content.classList.add('is-instant');
+			}
+			handleImageLoad(img);
+		} else {
+			img.addEventListener('load', function() {
+				handleImageLoad(img);
+			});
+			img.addEventListener('error', function() {
+				handleImageError(img);
+			});
+		}
+	}
+
+	function handleImageLoad(img) {
+		img.classList.add('is-loaded');
+		var skeleton = img.previousElementSibling;
+		if (skeleton) {
+			skeleton.classList.add('is-hidden');
+		}
+		var content = document.querySelector('#articledetail1 .article-preview__content');
+		if (content) {
+			content.classList.add('is-revealed');
+		}
+	}
+
+	function handleImageError(img) {
+		// The <img> itself falls back to the browser's own broken-image
+		// treatment (icon + alt text) - not something to fix here. What
+		// this function owns is making sure a failed image doesn't leave
+		// the title/excerpt/meta/CTA stuck behind their skeleton forever:
+		// same reveal as a successful load.
+		handleImageLoad(img);
+	}
+
+	setupHeroSkeleton();
 	setupSkeletonPlaceholders('#articledetail .article-card__image');
 	initScrollReveal('#articledetail');
+</script>
+
+<%--
+	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
+	<head> (every page shares it) - this page had its own second copy of
+	both. Safe to drop here specifically (checked first): this page has
+	zero data-aos elements anyway (the grid/hero use the custom
+	skeleton+reveal system instead), and no $.ajax/.load/effects calls.
+	AOS.init() below still needs to stay - baseLayout.jsp only loads the
+	library, each page still calls .init() itself.
+--%>
+<script data-cfasync="false"
+	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+<script type="text/javascript">
+	AOS.init();
+
+	function showNav() {
+		var x = document.getElementById("navDemo");
+		if (x.className.indexOf("w3-show") == -1) {
+			x.className += " w3-show";
+		} else {
+			x.className = x.className.replace(" w3-show", "");
+		}
+	}
+
+	window.onscroll = function() {
+		scrollFunction()
+	};
+	function scrollFunction() {
+		if (document.body.scrollTop > 20
+				|| document.documentElement.scrollTop > 20) {
+			document.getElementById("myBtn").style.display = "block";
+		} else {
+			document.getElementById("myBtn").style.display = "none";
+		}
+	}
+	function topFunction() {
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+	}
 </script>
