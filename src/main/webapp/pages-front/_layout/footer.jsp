@@ -267,13 +267,23 @@
 document.addEventListener('DOMContentLoaded', function() {
 $(document).ready(function () {
 
-    // Event delegation for collapsible buttons
+    // Event delegation for collapsible buttons. Used to rely on
+    // Bootstrap 5's own JS to open/close the clicked section (this
+    // handler only closed the *other* ones + rotated the icon) - now
+    // does the open/close itself too (the .classList.toggle('show') /
+    // aria-expanded lines below), since Bootstrap 5 was removed
+    // entirely (see the CSS/JS <link>/<script> comment further down -
+    // its reboot was overriding Bootstrap 4 styling on every page
+    // site-wide, not just here).
     document.querySelector('.dropdown2').addEventListener('click', function(event) {
         const target = event.target.closest('.btn-link');
 
         if (target) {
             const toggleIcon = target.querySelector('.bi'); // Select the icon directly
-            
+            const targetSelector = target.getAttribute('data-bs-target');
+            const targetCollapse = targetSelector ? document.querySelector(targetSelector) : null;
+            const wasOpen = targetCollapse ? targetCollapse.classList.contains('show') : false;
+
             // Close other dropdowns and reset their icons
             const allButtons = document.querySelectorAll('.btn-link');
             allButtons.forEach(button => {
@@ -289,8 +299,15 @@ $(document).ready(function () {
                             collapseElement.classList.remove('show'); // Close other dropdowns
                         }
                     }
+                    button.setAttribute('aria-expanded', 'false');
                 }
             });
+
+            // Toggle the clicked section itself
+            if (targetCollapse) {
+                targetCollapse.classList.toggle('show', !wasOpen);
+            }
+            target.setAttribute('aria-expanded', String(!wasOpen));
 
             // Toggle current dropdown icon
             toggleIcon.classList.toggle('rotate-90');
@@ -314,6 +331,15 @@ $(document).ready(function () {
 
 
 <style>
+/* Bootstrap 5's own .collapse/.collapse.show, copied here now that
+   Bootstrap 5 itself has been removed (see the click handler above and
+   the CSS/JS <link>/<script> comment further down for why). Instant
+   show/hide, not Bootstrap 5's animated height transition - simpler,
+   and nothing here was relying on the animation specifically. */
+.collapse:not(.show) {
+    display: none;
+}
+
 .bi {
     transition: transform 0.3s ease; /* Smooth transition for rotation */
 }
@@ -485,19 +511,29 @@ footer .active {
 </style>
 
 <%--
-	Bootstrap 4.3.1 CSS/JS and an older Bootstrap Icons removed from here -
-	both were exact/near-duplicates of what baseLayout.jsp's <head> already
-	provides (same 4.3.1 CDN URL + integrity hash; Icons 1.10.5 vs the
-	1.11.3 already loaded). footer.jsp has zero data-toggle/data-target
-	markup (Bootstrap 4's JS API) - only data-bs-* (Bootstrap 5's, used by
-	the .dropdown2 collapse above), so it never needed this file's own
-	Bootstrap 4 JS at all. That copy had no defer, so it ran synchronously
-	before baseLayout's deferred jQuery had executed - $.fn was still
-	undefined when this file's util.js tried to register onto it, which is
-	what threw "Cannot read properties of undefined (reading 'fn')".
-	Bootstrap 5.3.0 bundle kept below - it's what .dropdown2 actually
-	needs, and it doesn't touch jQuery/$.fn at all (Bootstrap 5 dropped
-	the jQuery dependency), so it isn't affected by this same timing issue.
+	Bootstrap 4.3.1 CSS/JS and an older Bootstrap Icons removed from here
+	earlier - both were exact/near-duplicates of what baseLayout.jsp's
+	<head> already provides (same 4.3.1 CDN URL + integrity hash; Icons
+	1.10.5 vs the 1.11.3 already loaded).
+
+	Bootstrap 5.3.0 (CSS + JS bundle) removed too, for a bigger reason:
+	its own reboot layer restyles bare HTML elements/Bootstrap utility
+	classes (figure, .navbar, .dropdown-menu, .breadcrumb, .gap-*, .vr,
+	and however many more weren't found yet) on every page site-wide,
+	not just here in footer - a <link rel="stylesheet"> applies to the
+	whole document no matter where its own tag sits in the HTML. Since
+	footer is always the last tile rendered, its Bootstrap 5 rules were
+	winning the cascade tie against Bootstrap 4's matching ones (same
+	specificity, later wins) the moment this file's CSS finished
+	loading, several hundred ms into every page load.
+
+	.dropdown2's 5 collapsible sections were the only real dependency on
+	Bootstrap 5 in this whole file (data-bs-toggle="collapse") - every
+	other Bootstrap-looking class here (.container/.row/.col-*/.btn/
+	.d-flex/etc.) is also defined by Bootstrap 4.3.1 above, so those
+	fall back to that instead, no separate fix needed for them. The
+	collapse open/close itself is now handled by the click handler
+	above instead (plain classList.toggle('show') + aria-expanded), and
+	.collapse's display:none/block CSS is copied into this file's own
+	<style> block above - see the comment there.
 --%>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

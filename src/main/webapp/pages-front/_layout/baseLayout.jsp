@@ -566,6 +566,21 @@ a {
 	background-color: transparent !important;
 }
 
+/* footer.jsp's Bootstrap 5.3.0 CSS (needed there for its own data-bs-*
+   collapse widgets) defines its own bare ".breadcrumb" too, using
+   var(--bs-breadcrumb-padding-x/y) - same specificity as Bootstrap
+   4.3.1's own ".breadcrumb" (already loaded above), and footer's is
+   always the last one parsed, so its padding was winning on every page
+   that uses .breadcrumb site-wide (blog/news, careers, services,
+   contacts - both old and new). "html .breadcrumb" (element + class)
+   beats a bare ".breadcrumb" from either version on specificity alone.
+   Value below is Bootstrap 4's own default - this doesn't change how
+   the site already looked, it just stops it flickering to Bootstrap
+   5's slightly different one partway through a page load. */
+html .breadcrumb {
+	padding: 0.75rem 1rem;
+}
+
 .videocon {
 	position: static;
 	overflow: hidden;
