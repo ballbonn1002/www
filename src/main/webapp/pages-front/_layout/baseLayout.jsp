@@ -82,6 +82,20 @@ html{background-color:#F5F5F5;}
 		<link rel="next"
 			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage + 1}">
 	</c:if>
+	<%--
+		blog.css itself is <link>'d from inside blog.jsp (a Tiles "body"
+		fragment - no <head> of its own to put it in), which the parser
+		doesn't reach until after everything else in <head> plus the whole
+		header tile have already been fetched/painted. Preloading it here
+		starts that fetch in parallel with every other <head> resource
+		instead, so by the time the parser reaches the real <link
+		rel="stylesheet"> down in the body, the file is very likely already
+		in cache and applies close to instantly. Same pageBaseUri guard as
+		the rel=prev/next links above - only true on the redesign blog/news
+		listing page, the one page that actually links this file.
+	--%>
+	<link rel="preload" as="style"
+		href="/pages-front/redesign/assets/css/blog.css">
 </c:if>
 <%--
 	Hero image preload for the blog/news "แนะนำล่าสุด" article-preview
@@ -151,6 +165,32 @@ html{background-color:#F5F5F5;}
 </script>
 <!-- END Global site tag (gtag.js) - Google Analytics -->
 
+<%--
+	preconnect for every external origin this head fetches a stylesheet or
+	blocking/deferred script from. Without these, each CDN pays its own
+	DNS+TLS handshake only once the browser's HTML parser actually reaches
+	that <link>/<script> tag, so they land staggered instead of roughly
+	together - that staggered arrival is what shows up as "CSS trickling
+	in", each one's rules snapping on and reflowing the page a beat after
+	the last. crossorigin is only added where the real fetch below also
+	uses crossorigin (the SRI/integrity-checked ones) - adding it to a
+	plain, non-CORS fetch would open the wrong connection type and the
+	browser would just open a second one for the real request anyway.
+	Consolidated here - previously this was two separate, byte-identical
+	duplicate preconnect pairs further down for fonts.googleapis.com/
+	fonts.gstatic.com only, and no hint at all for any other origin below.
+--%>
+<link rel="preconnect" href="https://stackpath.bootstrapcdn.com"
+	crossorigin>
+<link rel="preconnect" href="https://code.jquery.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+<link rel="preconnect" href="https://www.w3schools.com">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -190,12 +230,6 @@ html{background-color:#F5F5F5;}
 	href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
 	rel="stylesheet">
@@ -788,7 +822,16 @@ a {
 			if (url.origin !== window.location.origin) {
 				return;
 			}
-			document.getElementById('page-loading-bar').className = 'is-loading';
+			var bar = document.getElementById('page-loading-bar');
+			bar.className = 'is-loading';
+			// Forces the browser to commit the style change (and get a
+			// paint in) before this handler returns and the actual
+			// navigation proceeds - on a fast/local response, the new
+			// page could otherwise start tearing this one down before
+			// the bar ever painted a single visible frame. Reading a
+			// layout property is what forces that commit; the value
+			// itself isn't used for anything.
+			void bar.offsetWidth;
 		});
 	</script>
 	<!-- Google Tag Manager (noscript) -->

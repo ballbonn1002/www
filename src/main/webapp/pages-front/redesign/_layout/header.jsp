@@ -24,18 +24,22 @@
 <c:set var="isNewsActive" value="${fn:contains(requestURI, '/news')}" />
 <c:set var="isContactsActive" value="${fn:contains(requestURI, '/contacts')}" />
 
-<script src="https://code.jquery.com/jquery-2.2.0.min.js"
-	type="text/javascript"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-	crossorigin="anonymous"></script>
+<%--
+	jQuery/Bootstrap Icons/Bootstrap CSS+JS were all being loaded a second
+	time right here - baseLayout.jsp's <head> (shared by every page,
+	rendered before this "header" tile) already provides all four: same
+	Bootstrap 4.3.1 CSS/JS (byte-identical CDN URL + integrity hash), a
+	newer Bootstrap Icons (1.11.3 vs this copy's 1.10.5), and jQuery
+	(3.3.1 slim vs this copy's 2.2.0 - two different versions of jQuery
+	on the same page). None had defer/async, so all four were blocking
+	the parser for a completely redundant download on every single page
+	load. Removed - the script below now relies on baseLayout's copies,
+	wrapped in DOMContentLoaded since those load with defer (deferred
+	scripts finish before DOMContentLoaded fires, so $ and .collapse()
+	are guaranteed ready by then; they're not necessarily ready yet at
+	the point this tile is parsed, since defer runs after parsing, not
+	inline where the tag sits).
+--%>
 
 <!-- Main Header -->
 <div class="header" style="margin-bottom: 10px !important">
@@ -141,6 +145,20 @@
 	min-height: 70px;
 }
 
+/* footer.jsp loads Bootstrap 5.3.0's CSS (needed there for its own
+   data-bs-* collapse widgets - can't remove it, see the comment further
+   down near that <link>). A stylesheet applies to the whole document
+   regardless of where in the page its own <link> physically sits, so
+   Bootstrap 5's own ".navbar { padding: var(--bs-navbar-padding-x) }"
+   rule was overriding Bootstrap 4's ".navbar { padding: .5rem 1rem }"
+   here too, the moment footer's CSS finished loading - same specificity
+   (single class), later one in the cascade wins. Fixed with a more
+   specific selector instead of !important, so it wins on specificity
+   regardless of load order or which Bootstrap version loads last. */
+nav.navbar.fixed-top {
+	padding: 0.5rem 1rem;
+}
+
 .navbar-menu-frame {
 	display: flex;
 	align-items: center;
@@ -180,8 +198,12 @@
 	}
 }
 
-/* Dropdown Menu */
-.dropdown-menu {
+/* Dropdown Menu - .navbar prefix on every rule here (not bare
+   .dropdown-menu) for the same reason as nav.navbar.fixed-top above:
+   footer.jsp's Bootstrap 5 CSS defines its own bare ".dropdown-menu"
+   too, same specificity, and would win once it loads since it comes
+   later in the document. */
+.navbar .dropdown-menu {
 	display: none; /* Hide by default */
 	position: absolute; /* Position below the button */
 	top: 100%; /* Position below the button */
@@ -197,7 +219,7 @@
 
 /* Ensure dropdown menu is properly positioned on smaller screens */
 @media ( max-width : 767px) {
-	.dropdown-menu {
+	.navbar .dropdown-menu {
 		position: static;
 		/* Make dropdown menu appear in normal flow on small screens */
 		margin-top: 0; /* Adjust margin for small screens */
@@ -206,37 +228,45 @@
 
 /* Optional: Adjust for larger screens if needed */
 @media ( min-width : 768px) {
-	.dropdown-menu {
+	.navbar .dropdown-menu {
 		top: 100%; /* Adjust position if necessary */
 	}
 }
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		// Handle dropdown toggle on click
-		$('.dropdown-toggle').on('click', function(event) {
-			event.preventDefault();
-			$(this).next('.dropdown-menu').toggle();
-		});
+	// DOMContentLoaded, not $(document).ready() directly - $ isn't
+	// guaranteed to exist yet at this point (jQuery now only loads once,
+	// deferred, from baseLayout.jsp - see the removed duplicate above).
+	// Deferred scripts always finish before DOMContentLoaded fires, so by
+	// the time this callback runs, $ and the .collapse() plugin are both
+	// ready.
+	document.addEventListener('DOMContentLoaded', function() {
+		$(document).ready(function() {
+			// Handle dropdown toggle on click
+			$('.dropdown-toggle').on('click', function(event) {
+				event.preventDefault();
+				$(this).next('.dropdown-menu').toggle();
+			});
 
-		// Handle navbar toggling on small screens
-		$('.navbar-toggler').on('click', function() {
-			var target = $(this).data('target');
-			$(target).collapse('toggle');
-		});
+			// Handle navbar toggling on small screens
+			$('.navbar-toggler').on('click', function() {
+				var target = $(this).data('target');
+				$(target).collapse('toggle');
+			});
 
-		// Prevent closing when clicking inside the navbar
-		$('.navbar').on('click', function(event) {
-			event.stopPropagation();
-		});
+			// Prevent closing when clicking inside the navbar
+			$('.navbar').on('click', function(event) {
+				event.stopPropagation();
+			});
 
-		// Close dropdowns and navbar when clicking outside
-		$(document).on('click', function(event) {
-			if (!$(event.target).closest('.navbar').length) {
-				$('.dropdown-menu').hide();
-				$('.navbar-collapse').collapse('hide'); // Hide the navbar when clicking outside
-			}
+			// Close dropdowns and navbar when clicking outside
+			$(document).on('click', function(event) {
+				if (!$(event.target).closest('.navbar').length) {
+					$('.dropdown-menu').hide();
+					$('.navbar-collapse').collapse('hide'); // Hide the navbar when clicking outside
+				}
+			});
 		});
 	});
 </script>

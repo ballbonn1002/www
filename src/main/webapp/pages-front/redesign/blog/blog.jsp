@@ -32,8 +32,7 @@
 <link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
 
 <!--------------------------home------------------------------------>
-<div class="parallax show-on-scroll">
-	<br>
+
 	<div class="articleblockbg">
 		<c:set var="pageLabel" value="" />
 		<c:if test="${fn:contains(requestURI, 'blog')}">
@@ -146,8 +145,6 @@
 		</script>
 	</div>
 
-	<br>
-</div>
 
 <%--
 	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's

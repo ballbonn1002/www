@@ -257,6 +257,14 @@
 <!-- Footer -->
 
 <script>
+// DOMContentLoaded, not $(document).ready() directly - jQuery only loads
+// once now, deferred, from baseLayout.jsp (a duplicate synchronous copy
+// that used to load earlier in redesign/_layout/header.jsp was removed -
+// this script was unknowingly depending on that copy's timing, not
+// baseLayout's deferred one, which hadn't necessarily run yet at this
+// point in parsing). Deferred scripts always finish before
+// DOMContentLoaded fires, so $ is guaranteed ready inside this callback.
+document.addEventListener('DOMContentLoaded', function() {
 $(document).ready(function () {
 
     // Event delegation for collapsible buttons
@@ -288,6 +296,7 @@ $(document).ready(function () {
             toggleIcon.classList.toggle('rotate-90');
         }
     });
+});
 });
 
 (function() {
@@ -475,8 +484,20 @@ footer .active {
 
 </style>
 
+<%--
+	Bootstrap 4.3.1 CSS/JS and an older Bootstrap Icons removed from here -
+	both were exact/near-duplicates of what baseLayout.jsp's <head> already
+	provides (same 4.3.1 CDN URL + integrity hash; Icons 1.10.5 vs the
+	1.11.3 already loaded). footer.jsp has zero data-toggle/data-target
+	markup (Bootstrap 4's JS API) - only data-bs-* (Bootstrap 5's, used by
+	the .dropdown2 collapse above), so it never needed this file's own
+	Bootstrap 4 JS at all. That copy had no defer, so it ran synchronously
+	before baseLayout's deferred jQuery had executed - $.fn was still
+	undefined when this file's util.js tried to register onto it, which is
+	what threw "Cannot read properties of undefined (reading 'fn')".
+	Bootstrap 5.3.0 bundle kept below - it's what .dropdown2 actually
+	needs, and it doesn't touch jQuery/$.fn at all (Bootstrap 5 dropped
+	the jQuery dependency), so it isn't affected by this same timing issue.
+--%>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

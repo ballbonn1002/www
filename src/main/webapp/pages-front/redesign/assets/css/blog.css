@@ -9,6 +9,30 @@
    ========================================================================== */
 
 /* ==========================================================================
+   0. Bootstrap 5 reboot guard
+   footer.jsp loads Bootstrap 5.3.0's CSS (needed there for its own
+   data-bs-* collapse widgets - see footer.jsp for why it can't just be
+   removed). A <link rel="stylesheet"> applies to the whole document no
+   matter where its own tag physically sits in the HTML, so Bootstrap
+   5's reboot layer (its version of normalize.css) restyles bare HTML
+   elements everywhere once it finishes loading, not just inside footer.
+   Same root cause already found and fixed for nav.navbar / .navbar
+   .dropdown-menu in header.jsp: two frameworks' reboots both targeting
+   the same bare tag selector, same specificity, whichever finishes
+   loading last wins the tie - footer's is always last since it's the
+   last tile rendered.
+   Fixed the same way every time: a selector scoped under
+   .articleblockbg (this page's own top-level wrapper) beats a bare tag
+   selector from either Bootstrap version on specificity alone,
+   regardless of load order - no !important needed. Add new entries
+   here as more turn up, instead of scattering one-off fixes through
+   the rest of the file.
+   ========================================================================== */
+.articleblockbg figure {
+	margin: 0;
+}
+
+/* ==========================================================================
    1. Layout - Hero / Page header
    ========================================================================== */
 html, body {

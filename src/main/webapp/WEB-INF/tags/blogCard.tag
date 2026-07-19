@@ -52,9 +52,17 @@
 				together.
 			--%>
 			<div class="article-card__media">
+				<%--
+					width/height are a 16:9 intrinsic-ratio hint matching
+					.article-card__media's CSS aspect-ratio (blog.css) - actual
+					rendered size is still 100% of the wrapper either way (CSS
+					below overrides these). Previously "100%"/"250px", which
+					aren't valid HTML attribute values (must be plain integers),
+					so browsers ignored them outright as an aspect-ratio hint.
+				--%>
 				<img class="article-card__image"
-					src="${constant.imgContext}${blog.path}" width="100%"
-					height="250px" alt="${blog.topic}"
+					src="${constant.imgContext}${blog.path}" width="320"
+					height="180" alt="${blog.topic}"
 					<c:if test="${eager}">fetchpriority="high"</c:if>
 					<c:if test="${!eager}">loading="lazy"</c:if>>
 			</div>
