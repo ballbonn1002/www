@@ -36,13 +36,11 @@
 	<a href="${blog.page_uri_id}" class="articleblockbg2__link">
 		<div class="articleblockbg3">
 			<%--
-				.article-card__media/.article-card__skeleton only have an effect on
-				blog.jsp, which defines their CSS (aspect-ratio box + shimmer +
-				fade-in, all scoped under .js-skel there). blog_detail.jsp's sidebar
-				reuses this same tag but never adds that CSS or the .js-skel class,
-				so there this wrapper/skeleton render as inert, unstyled elements
-				and the card looks exactly as it did before - the skeleton screen
-				feature is intentionally scoped to the blog list grid only.
+				.article-card__media only has an effect on blog.jsp, which
+				defines its aspect-ratio CSS. blog_detail.jsp's sidebar reuses
+				this same tag but never adds that CSS, so there this wrapper
+				renders as an inert, unstyled element and the card looks exactly
+				as it did before.
 			--%>
 			<%--
 				eager (from the caller, defaults to false/lazy when omitted -
@@ -54,7 +52,6 @@
 				together.
 			--%>
 			<div class="article-card__media">
-				<span class="article-card__skeleton" aria-hidden="true"></span>
 				<img class="article-card__image"
 					src="${constant.imgContext}${blog.path}" width="100%"
 					height="250px" alt="${blog.topic}"

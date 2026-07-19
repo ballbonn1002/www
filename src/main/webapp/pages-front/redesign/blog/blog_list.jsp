@@ -35,21 +35,13 @@
 		pageContext.setAttribute("blogPreviewText", ArticleHtmlSanitizer.toPreviewText(blogDetailRaw, 120));
 		%>
 		<%--
-			reveal-card lives on this column wrapper rather than blogCard.tag
-			itself - .articleblockbg2 inside the card already has its own
-			:hover transform (lift on hover), and animating transform on that
-			same element for scroll-reveal would fight it once a card becomes
-			visible. Keeping the two on separate elements avoids that, and
-			also keeps blogCard.tag (shared with blog_detail.jsp's sidebar,
-			which isn't part of this scroll-reveal feature) untouched here.
-
 			eager on the first row only (col-lg-4 = 3 per row at desktop
 			width, the widest breakpoint this grid has) - these are the only
 			cards guaranteed to already be on screen at load, so they're the
 			only ones that should compete for the connection pool alongside
 			the hero image instead of waiting their turn behind it.
 		--%>
-		<div class="col-12 col-sm-6 col-lg-4 reveal-card">
+		<div class="col-12 col-sm-6 col-lg-4">
 			<comp:blogCard blog="${blog}" constant="${constant}"
 				excerpt="${blogPreviewText}" eager="${Count.count <= 3}" />
 		</div>
