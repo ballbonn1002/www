@@ -3,9 +3,11 @@
    Extracted verbatim from that file's inline <style> block so it can be
    cached across page loads instead of re-downloaded with every response.
    Rules unchanged - see blog.jsp's own history for the reasoning behind
-   each section (pagination scoping, etc). Skeleton/shimmer loading and
-   scroll-reveal-on-scroll were removed by request - images/cards render
-   normally now, no JS-driven fade-in.
+   each section (pagination scoping, etc). A fuller skeleton/shimmer +
+   scroll-reveal-on-scroll system was removed by request for feeling
+   over-engineered; section 8 below is a deliberately smaller re-add
+   (image loading shimmer only, nothing else) - see that section's own
+   comment.
    ========================================================================== */
 
 /* ==========================================================================
@@ -445,4 +447,57 @@ a {
 
 .blog-pagination .page-item.disabled .page-link {
 	opacity: 0.5;
+}
+
+/* ==========================================================================
+   8. Image loading skeleton
+   Deliberately minimal, not a re-add of the fuller skeleton/shimmer +
+   scroll-reveal system removed earlier - that one covered text too
+   (title/excerpt/meta bars) and cards fading in on scroll, which is
+   what read as "over" on a second look. This is just the shimmer
+   placeholder behind each <img> (hero + grid cards) until it finishes
+   loading, nothing else - text and layout render immediately as
+   normal, same as now. .article-preview__media / .article-card__media
+   already have position:relative (see sections 6/7 above), so the
+   skeleton span just needs position:absolute to sit behind the image.
+   ========================================================================== */
+.articleblockbg .img-skeleton {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%);
+	background-size: 200% 100%;
+	animation: img-skeleton-shimmer 1.4s ease-in-out infinite;
+	transition: opacity 0.25s ease;
+}
+
+.articleblockbg .img-skeleton.is-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+@keyframes img-skeleton-shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
+
+.articleblockbg .article-preview__image,
+.articleblockbg .article-card__image {
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.articleblockbg .article-preview__image.is-loaded,
+.articleblockbg .article-card__image.is-loaded {
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.articleblockbg .img-skeleton {
+		animation: none;
+	}
+	.articleblockbg .article-preview__image,
+	.articleblockbg .article-card__image {
+		transition: none;
+	}
 }

@@ -53,6 +53,14 @@
 			--%>
 			<div class="article-card__media">
 				<%--
+					img-skeleton span: only has an effect on blog.jsp, same as
+					.article-card__media's own aspect-ratio CSS (see the comment
+					on that class further up) - blog_detail.jsp's sidebar doesn't
+					load blog.css, so this renders as an inert, unstyled span
+					there, same as everything else this tag already shares.
+				--%>
+				<span class="img-skeleton" aria-hidden="true"></span>
+				<%--
 					width/height are a 16:9 intrinsic-ratio hint matching
 					.article-card__media's CSS aspect-ratio (blog.css) - actual
 					rendered size is still 100% of the wrapper either way (CSS

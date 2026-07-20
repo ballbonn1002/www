@@ -76,6 +76,7 @@
 					<figure class="article-preview__media">
 						<a href="${newBlog.page_uri_id}" class="article-preview__link"
 							aria-label="อ่านบทความ: ${newBlog.topic}">
+							<span class="img-skeleton" aria-hidden="true"></span>
 							<img class="article-preview__image"
 							src="${constant.imgContext}/${newBlog.path}"
 							alt="${newBlog.topic}" width="805" height="475"
@@ -142,6 +143,32 @@
 					target.scrollIntoView();
 				}
 			}
+		</script>
+
+		<%--
+			Minimal image-loading skeleton (blog.css section 8) - fades each
+			<img> in and hides its shimmer span once that specific image has
+			actually finished loading. img.complete already true (cache hit)
+			skips straight to the loaded state instead of waiting on a 'load'
+			event that already fired.
+		--%>
+		<script>
+			document.querySelectorAll('.article-preview__image, .article-card__image')
+				.forEach(function(img) {
+					var skeleton = img.previousElementSibling;
+					function reveal() {
+						img.classList.add('is-loaded');
+						if (skeleton && skeleton.classList.contains('img-skeleton')) {
+							skeleton.classList.add('is-hidden');
+						}
+					}
+					if (img.complete) {
+						reveal();
+					} else {
+						img.addEventListener('load', reveal);
+						img.addEventListener('error', reveal);
+					}
+				});
 		</script>
 	</div>
 
