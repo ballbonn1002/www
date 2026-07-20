@@ -17,7 +17,7 @@ public class ContactFormValidatorTest {
 	public void firstName_rejectsEmpty() {
 		ValidationResult result = ContactFormValidator.validateFirstName("");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "กรุณากรอกชื่อ");
+		Assert.assertEquals(result.getErrorMessage(), "Please enter your first name");
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class ContactFormValidatorTest {
 	public void lastName_rejectsEmpty() {
 		ValidationResult result = ContactFormValidator.validateLastName("");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "กรุณากรอกนามสกุล");
+		Assert.assertEquals(result.getErrorMessage(), "Please enter your last name");
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ContactFormValidatorTest {
 	public void name_rejectsDigits() {
 		ValidationResult result = ContactFormValidator.validateFirstName("John123");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "กรุณากรอกเฉพาะตัวอักษร ไม่ใช่ตัวเลขหรือสัญลักษณ์");
+		Assert.assertEquals(result.getErrorMessage(), "Please enter letters only, not numbers or symbols");
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class ContactFormValidatorTest {
 	public void email_rejectsEmpty() {
 		ValidationResult result = ContactFormValidator.validateEmail("");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "กรุณากรอกอีเมล");
+		Assert.assertEquals(result.getErrorMessage(), "Please enter your email");
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class ContactFormValidatorTest {
 	public void email_rejectsMissingAtSign() {
 		ValidationResult result = ContactFormValidator.validateEmail("nameexample.com");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "อีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง (เช่น name@example.com)");
+		Assert.assertEquals(result.getErrorMessage(), "Invalid email - please check and try again (e.g. name@example.com)");
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class ContactFormValidatorTest {
 	public void phone_rejectsEmpty() {
 		ValidationResult result = ContactFormValidator.validatePhone("");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "กรุณากรอกเบอร์โทรศัพท์");
+		Assert.assertEquals(result.getErrorMessage(), "Please enter your phone number");
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class ContactFormValidatorTest {
 	public void phone_rejectsLetters() {
 		ValidationResult result = ContactFormValidator.validatePhone("081abc5678");
 		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(result.getErrorMessage(), "เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก");
+		Assert.assertEquals(result.getErrorMessage(), "Invalid phone number - please enter 9-10 digits only");
 	}
 
 	@Test

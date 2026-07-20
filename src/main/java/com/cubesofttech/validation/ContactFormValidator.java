@@ -45,11 +45,11 @@ public final class ContactFormValidator {
 	}
 
 	public static ValidationResult validateFirstName(String value) {
-		return validateName(value, "กรุณากรอกชื่อ");
+		return validateName(value, "Please enter your first name");
 	}
 
 	public static ValidationResult validateLastName(String value) {
-		return validateName(value, "กรุณากรอกนามสกุล");
+		return validateName(value, "Please enter your last name");
 	}
 
 	private static ValidationResult validateName(String value, String requiredMessage) {
@@ -62,7 +62,7 @@ public final class ContactFormValidator {
 		// malformed), so an over-length name is just another flavor of
 		// "not a well-formed name".
 		if (trimmed.length() > NAME_MAX_LENGTH || !NAME_PATTERN.matcher(trimmed).matches()) {
-			return ValidationResult.invalid("กรุณากรอกเฉพาะตัวอักษร ไม่ใช่ตัวเลขหรือสัญลักษณ์");
+			return ValidationResult.invalid("Please enter letters only, not numbers or symbols");
 		}
 		return ValidationResult.valid(trimmed);
 	}
@@ -70,10 +70,10 @@ public final class ContactFormValidator {
 	public static ValidationResult validateEmail(String value) {
 		String trimmed = value == null ? "" : value.trim();
 		if (trimmed.isEmpty()) {
-			return ValidationResult.invalid("กรุณากรอกอีเมล");
+			return ValidationResult.invalid("Please enter your email");
 		}
 		if (trimmed.length() > EMAIL_MAX_LENGTH || !EMAIL_PATTERN.matcher(trimmed).matches()) {
-			return ValidationResult.invalid("อีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง (เช่น name@example.com)");
+			return ValidationResult.invalid("Invalid email - please check and try again (e.g. name@example.com)");
 		}
 		return ValidationResult.valid(trimmed);
 	}
@@ -81,10 +81,10 @@ public final class ContactFormValidator {
 	public static ValidationResult validatePhone(String value) {
 		String trimmed = value == null ? "" : value.trim();
 		if (trimmed.isEmpty()) {
-			return ValidationResult.invalid("กรุณากรอกเบอร์โทรศัพท์");
+			return ValidationResult.invalid("Please enter your phone number");
 		}
 		if (!PHONE_ALLOWED_CHARS.matcher(trimmed).matches()) {
-			return ValidationResult.invalid("เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก");
+			return ValidationResult.invalid("Invalid phone number - please enter 9-10 digits only");
 		}
 
 		String stripped = trimmed.replaceAll("[\\s-]", "");
@@ -97,6 +97,6 @@ public final class ContactFormValidator {
 			// which form the visitor typed.
 			return ValidationResult.valid("0" + stripped.substring(3));
 		}
-		return ValidationResult.invalid("เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก");
+		return ValidationResult.invalid("Invalid phone number - please enter 9-10 digits only");
 	}
 }

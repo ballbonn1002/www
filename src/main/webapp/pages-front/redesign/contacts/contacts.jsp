@@ -472,7 +472,7 @@
 			return requiredMessage;
 		}
 		if (trimmed.length > NAME_MAX_LENGTH || !NAME_PATTERN.test(trimmed)) {
-			return 'กรุณากรอกเฉพาะตัวอักษร ไม่ใช่ตัวเลขหรือสัญลักษณ์';
+			return 'Please enter letters only, not numbers or symbols';
 		}
 		return null;
 	}
@@ -480,10 +480,10 @@
 	function validateEmailValue(value) {
 		var trimmed = (value || '').trim();
 		if (!trimmed) {
-			return 'กรุณากรอกอีเมล';
+			return 'Please enter your email';
 		}
 		if (trimmed.length > EMAIL_MAX_LENGTH || !EMAIL_PATTERN.test(trimmed)) {
-			return 'อีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง (เช่น name@example.com)';
+			return 'Invalid email - please check and try again (e.g. name@example.com)';
 		}
 		return null;
 	}
@@ -491,14 +491,14 @@
 	function validatePhoneValue(value) {
 		var trimmed = (value || '').trim();
 		if (!trimmed) {
-			return 'กรุณากรอกเบอร์โทรศัพท์';
+			return 'Please enter your phone number';
 		}
 		if (!PHONE_ALLOWED_CHARS.test(trimmed)) {
-			return 'เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก';
+			return 'Invalid phone number - please enter 9-10 digits only';
 		}
 		var stripped = trimmed.replace(/[\s-]/g, '');
 		if (!PHONE_LOCAL.test(stripped) && !PHONE_INTL.test(stripped)) {
-			return 'เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก';
+			return 'Invalid phone number - please enter 9-10 digits only';
 		}
 		return null;
 	}
@@ -525,9 +525,9 @@
 		var value = $input.val();
 		var errorMessage;
 		if (fieldId === 'firstName') {
-			errorMessage = validateNameValue(value, 'กรุณากรอกชื่อ');
+			errorMessage = validateNameValue(value, 'Please enter your first name');
 		} else if (fieldId === 'lastName') {
-			errorMessage = validateNameValue(value, 'กรุณากรอกนามสกุล');
+			errorMessage = validateNameValue(value, 'Please enter your last name');
 		} else if (fieldId === 'contactEmail') {
 			errorMessage = validateEmailValue(value);
 		} else if (fieldId === 'contactTel') {
@@ -536,6 +536,16 @@
 		return applyFieldValidation($input, errorMessage);
 	}
 
+	// DOMContentLoaded, not $(document).ready() directly - $ isn't
+	// guaranteed to exist yet at this point (jQuery loads deferred from
+	// baseLayout.jsp; this page's own local copy was already removed -
+	// see the comment above). Deferred scripts always finish before
+	// DOMContentLoaded fires, so $ is ready by the time this callback
+	// runs. Without this wrap, $(document).ready(...) below threw
+	// immediately and silently killed this entire script block -
+	// including the CAPTCHA generation and all the blur-validation
+	// handlers further down, which is why both looked broken at once.
+	document.addEventListener('DOMContentLoaded', function() {
 	AOS.init();
 	$(document)
 			.ready(
@@ -574,7 +584,7 @@
 											// ตรวจสอบว่า CAPTCHA ตรงกับค่าที่กรอกหรือไม่
 											if (captcha === userInput) {
 												$('#message').text(
-														'CAPTCHA ถูกต้อง').css(
+														'CAPTCHA correct').css(
 														'color', 'green');
 
 												// ส่งฟอร์มจริงหลังจากยืนยัน CAPTCHA ถูกต้อง
@@ -584,7 +594,7 @@
 												$('#captcha').text(newCaptcha);
 												$('#message')
 														.text(
-																'การยืนยันล้มเหลว! กรุณาลองใหม่')
+																'Verification failed - please try again')
 														.css('color', 'red');
 											}
 										});
@@ -612,6 +622,7 @@
 						// สร้าง CAPTCHA เริ่มต้น
 						$('#captcha').text(generateRandomCaptcha());
 					});
+	});
 
 	function showNav() {
 		var x = document.getElementById("navDemo");
