@@ -73,7 +73,19 @@
 			<div class="row article-preview__row">
 
 				<div class="col-12 col-lg-6 order-lg-2">
-					<figure class="article-preview__media">
+					<%--
+						data-aos on this wrapper, not the <img> itself - the image
+						already has its own opacity transition for the loading
+						skeleton (blog.css section 8, toggled by the img-skeleton
+						script below); AOS also drives opacity/transform on
+						whatever element carries data-aos, and having both target
+						the same element would fight over it (whichever set
+						opacity last would win, could leave the image stuck
+						invisible). Animating the figure instead sidesteps that
+						- the image's own fade-in still works exactly as before,
+						independent of this.
+					--%>
+					<figure class="article-preview__media" data-aos="fade-up">
 						<a href="${newBlog.page_uri_id}" class="article-preview__link"
 							aria-label="อ่านบทความ: ${newBlog.topic}">
 							<span class="img-skeleton" aria-hidden="true"></span>
@@ -87,7 +99,8 @@
 
 				<div class="col-12 col-lg-6 order-lg-1">
 					<div class="article-preview__content">
-						<h2 class="article-preview__title">${newBlog.topic}</h2>
+						<h2 class="article-preview__title" data-aos="fade-up"
+							data-aos-delay="100">${newBlog.topic}</h2>
 
 						<%-- 						<div class="article-preview__excerpt">${newBlog.detail}</div> --%>
 						<%-- No itemprop="articleBody" here - this is a truncated teaser
@@ -95,12 +108,14 @@
 							 microdata belongs only on blog_detail.jsp's real articleBody,
 							 confirmed working there via Google Rich Results Test - do not
 							 add it back here or touch blog_detail.jsp. --%>
-						<div class="article-preview__excerpt">${cleanDetail}</div>
+						<div class="article-preview__excerpt" data-aos="fade-up"
+							data-aos-delay="200">${cleanDetail}</div>
 
-						<hr class="my-4 article-preview__divider">
+						<hr class="my-4 article-preview__divider" data-aos="fade-up" data-aos-delay="300">
 
 						<div
-							class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small">
+							class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small"
+							data-aos="fade-up" data-aos-delay="300">
 							<div class="d-flex align-items-center gap-2">
 								<i class="bi bi-calendar3"></i> <span><fmt:formatDate
 										pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
@@ -115,7 +130,8 @@
 						</div>
 
 						<a href="${newBlog.page_uri_id}"
-							class="btn btn-danger btn-lg article-preview__cta" role="button">Read
+							class="btn btn-danger btn-lg article-preview__cta" role="button"
+							data-aos="fade-up" data-aos-delay="400">Read
 							More</a>
 					</div>
 				</div>
@@ -186,7 +202,12 @@
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
-	AOS.init();
+	// once:true - AOS defaults to replaying an element's animation every
+	// time it re-enters the viewport (scrolling back up past it counts
+	// too), not just the first time. Plays once per element instead.
+	AOS.init({
+		once : true
+	});
 
 	function showNav() {
 		var x = document.getElementById("navDemo");

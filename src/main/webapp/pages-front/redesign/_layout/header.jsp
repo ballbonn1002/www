@@ -141,6 +141,25 @@
      pages-front/_layout/header.jsp, not duplicated here -->
 
 <style>
+/* --navbar-offset: total space the fixed navbar actually occupies
+   (min-height below + this .header div's own margin-bottom:10px,
+   set inline further up this file) - the one number every redesign
+   page's own top-level wrapper should clear so the navbar (fixed,
+   z-index above content) never covers it. Defined once here since
+   header.jsp is the file that actually owns the navbar's height -
+   CSS custom properties resolve at paint time, not file-load-order
+   time, so any other stylesheet on the page (blog.css, contacts.jsp's
+   own <style>, future pages) can reference var(--navbar-offset)
+   safely regardless of whether this file's <style> block happens to
+   load before or after theirs.
+   Previously every page guessed its own fixed pixel value instead
+   (blog.jsp/contacts.jsp both independently landed on the same
+   under-shooting 32px) - change this one value here if the navbar's
+   real height ever changes, instead of hunting through every page. */
+:root {
+	--navbar-offset: 50px;
+}
+
 .navbar {
 	min-height: 70px;
 }

@@ -58,10 +58,6 @@
 	background-size: cover;
 }
 
-.breadcrumb {
-	padding: 0 !important;
-}
-
 .page-header {
 	display: flex;
 	justify-content: space-between;
@@ -117,13 +113,20 @@
 	justify-content: center;
 }
 
+/* padding-top combines the page's own 3% breathing room with
+   --navbar-offset (defined once in header.jsp) for real structural
+   clearance under the fixed navbar - same fix as .articleblockbg in
+   blog.css, was independently guessed as margin-top:32px here too
+   before, which under-shot the navbar's actual ~80px footprint.
+   padding, not margin, so .contactbg's own background-color fills
+   that space too instead of showing the page background through a
+   gap. */
 .contactbg {
 	background-color: #F5F5F5;
-	padding-top: 3%;
+	padding-top: calc(3% + var(--navbar-offset, 80px));
 	padding-bottom: 5%;
 	padding-left: 10%;
 	padding-right: 10%;
-	margin-top: 32px;
 }
 
 .contact-info-group::before {

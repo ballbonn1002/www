@@ -78,13 +78,18 @@ html, body {
 	/* กัน bounce ทะลุไปเห็น background นอกหน้า (รองรับ Chrome/Edge) */
 }
 
+/* padding-top combines the page's own 3% breathing room with
+   --navbar-offset (header.jsp) for real structural clearance under
+   the fixed navbar - was a flat margin-top:32px before, which
+   under-shot the navbar's actual ~80px footprint. padding, not
+   margin, so .articleblockbg's own background-color fills that
+   space too instead of showing the page background through a gap. */
 .articleblockbg {
 	background-color: #F5F5F5;
-	padding-top: 3%;
+	padding-top: calc(3% + var(--navbar-offset, 80px));
 	padding-bottom: 5%;
 	padding-left: 10%;
 	padding-right: 10%;
-	margin-top: 32px;
 }
 
 .page-header {
@@ -174,19 +179,29 @@ a {
 		height: 500px;
 	}
 
-	/* 	.article-preview__image { */
-	/* 		height: 100%; */
-	/* 	} */
 }
 
+/* .article-preview__media / .article-preview__image / .article-preview__content
+   all now stretch to fill the .col-lg-6's fixed 500px (see above) the
+   same way - the image's own aspect ratio (805x475) used to decide its
+   rendered height instead, so it rarely actually reached 500px, and the
+   text column was capped at 85% of that (425px) for no documented
+   reason - between those two, the CTA button's real bottom edge (via
+   margin-top:auto below) landed at a different height than the image's
+   visible bottom edge, and .article-preview__excerpt sizing itself to
+   however much text actually existed (up to the 6-line clamp, but
+   shorter posts stopped early) shifted the meta/CTA below it up or
+   down post to post. Fixed by making every one of these a hard 100%
+   of the fixed-height column instead of sizing to their own content. */
 .article-preview__media {
 	position: sticky;
 	top: 20px;
+	height: 100%;
 }
 
 .article-preview__image {
 	width: 100%;
-	/* 	height: auto; */
+	height: 100%;
 	object-fit: cover;
 	border-radius: 10px;
 	display: block;
@@ -197,7 +212,8 @@ a {
 	display: flex;
 	flex-direction: column;
 	text-align: left;
-	height: 85%;
+	height: 100%;
+	overflow: hidden;
 }
 
 .article-preview__title {
@@ -223,10 +239,18 @@ a {
    called in the scriptlet above) capped at 500 chars server-side, not raw
    rich-text HTML - so this only needs to clamp plain text, no more
    child-margin resets, heading hiding, or fade overlay for markup that no
-   longer exists here. */
+   longer exists here.
+   height is a hard 6-line reservation now (6 * 1.6 line-height), not
+   just a max via -webkit-line-clamp - a short excerpt used to leave a
+   smaller box, shifting the meta row/CTA button below it up post to
+   post. Fixed height means a short excerpt just leaves blank space in
+   its own box instead, so nothing after it moves. -webkit-line-clamp
+   stays too, still doing its job for long excerpts that actually hit 6
+   lines. */
 .article-preview__excerpt {
 	margin: 0 0 1rem 0;
 	line-height: 1.6;
+	height: 9.6em;
 	display: -webkit-box;
 	-webkit-line-clamp: 6;
 	-webkit-box-orient: vertical;
