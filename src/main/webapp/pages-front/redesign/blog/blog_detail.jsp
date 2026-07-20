@@ -47,8 +47,16 @@
 }
 </script>
 <style>
+/* margin-top removed - it was pushing the whole page (including the
+   hero background below) down before ever reaching .article-hero,
+   which had its own separate margin-top:24px on top of that, stacking
+   into a visible gap of plain body background above the hero image.
+   Letting the hero start right at the very top instead (see
+   .article-hero/.article-hero__expand-btn below) so its background
+   flows behind the fixed navbar like a normal hero section, with only
+   the actually-clickable content inside it pushed down using
+   --navbar-offset (header.jsp) - not the whole page. */
 body, html {
-	margin-top: 50px;
 	font-size: 15px;
 	scroll-behavior: smooth;
 	padding-right: 0 !important;
@@ -64,7 +72,6 @@ body, html {
 .article-hero {
 	position: relative;
 	height: 480px;
-	margin-top: 24px;
 	overflow: hidden;
 	background-color: #1A1A1A;
 }
@@ -93,7 +100,14 @@ body, html {
 
 .article-hero__expand-btn {
 	position: absolute;
-	top: 16px;
+	/* .article-hero now starts right at the top of the page (no more
+	   margin-top pushing the whole hero down - see that rule above),
+	   so its own top edge sits behind the fixed navbar. This button is
+	   real, clickable content though, not background - offset it past
+	   --navbar-offset (header.jsp) plus the original 16px breathing
+	   room, so it lands just below the navbar instead of hidden
+	   underneath it. */
+	top: calc(var(--navbar-offset, 80px) + 28px);
 	right: 16px;
 	z-index: 3;
 	width: 40px;
@@ -153,6 +167,11 @@ body, html {
 	border-radius: 16px;
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 	padding: 30px 20px;
+}
+
+.article-title {
+	color: var(--article-accent);
+	font-weight: 700;
 }
 
 @media ( max-width : 767px) {
@@ -345,7 +364,7 @@ hr.detailnew {
 	padding: 0.6rem 1.75rem;
 	border: 3px solid #BD2125;
 	border-radius: 10px;
-	color: #000;              /* สี base เป็นดำตามที่บอก */
+	color: #BD2125;
 	background-color: transparent;
 	font-weight: 600;
 	text-decoration: none;
@@ -378,19 +397,184 @@ hr.detailnew {
 	color: inherit;
 }
 
+/* width used to animate 0 -> 18px on hover (see below) - animating
+   width triggers a real layout reflow every frame, which visibly
+   shifted/overlapped the text next to it during the transition
+   instead of a clean fade+slide. Width is fixed at 18px always now
+   (icon keeps its slot in the flex row's gap the whole time, nothing
+   reflows) - only opacity/transform animate, which are
+   compositor-only and never touch layout. */
 .related-articles-section__cta-btn-icon {
 	color: currentColor;   /* icon font (Bootstrap Icons) ใช้ currentColor เป็น default อยู่แล้ว แต่ใส่ชัดๆ กันเหนียว */
-	width: 0;
+	width: 18px;
 	opacity: 0;
 	transform: translateX(-8px);
-	transition: width 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+	transition: opacity 0.3s ease, transform 0.3s ease;
 	font-size: 18px;
 }
 
 .related-articles-section__cta-btn:hover .related-articles-section__cta-btn-icon {
-	width: 18px;
 	opacity: 1;
 	transform: translateX(0);
+}
+
+/* ==========================================================================
+   Card carousel - shared by "related articles" and "latest articles"
+   below. Native horizontal scroll + scroll-snap instead of a JS
+   slider library (none loaded on this site, no build step to add
+   one) - still works with touch/trackpad swipe with zero JS, the </>
+   buttons just nudge scrollLeft by one card's width. Scrollbar hidden
+   since the </> buttons are the intended control, but the track is
+   still a real scroll container underneath (keyboard/touch unaffected).
+   ========================================================================== */
+.card-carousel {
+	position: relative;
+	margin: 0 0 1.5rem;
+}
+
+.card-carousel__track {
+	display: flex;
+	gap: 1.25rem;
+	overflow-x: auto;
+	/* scroll-snap-type used to be here - fought with the </> buttons'
+	   own scrollBy({behavior:'smooth'}) (the browser tries to correct
+	   toward the nearest snap point mid-animation), which read as
+	   stiff/jerky instead of one smooth motion - most noticeable on
+	   the smaller latest-articles cards, where snap points sit closer
+	   together. The buttons already land on roughly the right card
+	   themselves (scroll by exactly one card's width + gap), so
+	   nothing here was actually depending on snap to begin with. */
+	scroll-behavior: smooth;
+	padding: 0.25rem 0.25rem 0.75rem;
+	scrollbar-width: none;
+}
+
+.card-carousel__track::-webkit-scrollbar {
+	display: none;
+}
+
+.card-carousel__track>* {
+	flex: 0 0 auto;
+}
+
+.card-carousel__nav {
+	position: absolute;
+	top: 40%;
+	transform: translateY(-50%);
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid var(--article-border, #E7DEDE);
+	background-color: #fff;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #BD2125;
+	font-size: 18px;
+	cursor: pointer;
+	z-index: 2;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.card-carousel__nav:hover {
+	background-color: #BD2125;
+	color: #fff;
+}
+
+/* Was showing both < > permanently regardless of scroll position - the
+   JS below now toggles this native disabled attribute based on actual
+   scroll state (can't go further that way / nothing to scroll at all),
+   so this is what makes that state visible instead of the buttons
+   just sitting there doing nothing when clicked. */
+.card-carousel__nav[disabled] {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.card-carousel__nav--prev {
+	left: -18px;
+}
+
+.card-carousel__nav--next {
+	right: -18px;
+}
+
+@media (max-width: 767px) {
+	/* Small screens: swipe with a finger instead - the buttons sit
+	   right on top of the cards at that width with nowhere good to go. */
+	.card-carousel__nav {
+		display: none;
+	}
+}
+
+/* max-width caps it relative to the viewport too - on a narrow phone
+   (~320-360px wide), a fixed 320px card would be as wide as the
+   whole screen with no peek of the next card at all, and on the
+   smallest phones actually wider than the viewport itself. */
+.card-carousel__item {
+	width: 320px;
+	max-width: 82vw;
+}
+
+/* Latest-articles section reuses .related-articles-section/__heading
+   for the outer spacing/title style (same look, different text) -
+   only the card itself is new. */
+.latest-card {
+	width: 200px;
+	max-width: 50vw;
+}
+
+.latest-card__link {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
+.latest-card__link:hover {
+	color: inherit;
+	text-decoration: none;
+}
+
+.latest-card__media {
+	/* was a <span> (inline by default) - an inline box doesn't reliably
+	   size itself from aspect-ratio/width:100%, nor give a percentage-
+	   height child (.latest-card__image below) a definite height to
+	   resolve against, which is what made images end up different
+	   sizes depending on their own original dimensions instead of all
+	   matching this box. display:block fixes that; changed the tag
+	   itself to <div> below to match (a <span> forced to display:block
+	   works, but the element choice should match how it's actually
+	   used). */
+	display: block;
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	border-radius: 16px;
+	overflow: hidden;
+	margin-bottom: 0.6rem;
+}
+
+.latest-card__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.3s ease;
+}
+
+.latest-card__link:hover .latest-card__image {
+	transform: scale(1.06);
+}
+
+.latest-card__title {
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.4;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .article-tags {
@@ -406,7 +590,6 @@ hr.detailnew {
    3-per-row full-width row. */
 .articleblockbg2 {
 	padding-top: 0%;
-	padding-bottom: 4rem;
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
@@ -440,7 +623,27 @@ hr.detailnew {
 	border-radius: 10px 10px 0 0;
 }
 
+/* Missing entirely before - blogCard.tag's markup wraps the image in
+   .article-card__media (for the aspect-ratio box + to give the
+   absolutely-positioned img-skeleton span something to anchor to),
+   but only .article-card__image itself had a rule here, so that
+   wrapper rendered as a plain unstyled div. Without a fixed
+   aspect-ratio, each card's image area sized itself to whatever the
+   source photo's own dimensions were instead of a consistent box -
+   see blog.css's own copy of this same rule for the pattern this
+   matches. */
+.article-card__media {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+}
+
 .article-card__image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
@@ -464,10 +667,18 @@ hr.detailnew {
 	margin-top: auto;
 }
 
+/* height is a hard 3-line reservation (3 * 1.5 line-height), not just
+   a max via -webkit-line-clamp - same fix as .article-preview__excerpt
+   in blog.css. A short excerpt used to leave a shorter box, so cards
+   next to each other in the carousel ended up different total
+   heights depending on how long each article's excerpt happened to
+   be; fixed height means a short excerpt just leaves blank space in
+   its own box instead, so every card comes out the same height. */
 .ardetail__excerpt {
 	margin: 0.5rem 0;
 	font-size: 14px;
 	line-height: 1.5;
+	height: 4.5em;
 	color: #555;
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
@@ -686,6 +897,38 @@ hr.detailnew {
 	content: "Q. ";
 	color: var(--article-accent);
 }
+
+/* .gap-2/.gap-3/.gap-4/.vr are Bootstrap 5-only utilities - Bootstrap
+   4.3.1 (loaded from baseLayout.jsp, used everywhere on this site)
+   never had gap utilities or .vr at all. footer.jsp used to load
+   Bootstrap 5's CSS too (removed now - see footer.jsp for why:  it was
+   overriding Bootstrap 4's own rules for shared class names like
+   .navbar/.breadcrumb site-wide), which is what silently supplied
+   these specific ones. Now that it's gone, nothing on the page defines
+   them at all - this page has no external stylesheet of its own to
+   hold a fix the way blog.jsp's blog.css does, so it goes directly
+   here instead. Used on this page's own meta/shares row, and on the
+   sidebar cards via blogCard.tag (shared with blog.jsp's grid, which
+   is protected there by blog.css - this page needs its own copy since
+   it doesn't load that file). Values match Bootstrap 5's own scale
+   (each step is 0.5rem). */
+.gap-2 {
+	gap: 0.5rem !important;
+}
+.gap-3 {
+	gap: 1rem !important;
+}
+.gap-4 {
+	gap: 1.5rem !important;
+}
+.vr {
+	display: inline-block !important;
+	align-self: stretch !important;
+	width: 1px !important;
+	min-height: 1em !important;
+	background-color: currentcolor !important;
+	opacity: .25 !important;
+}
 </style>
 
 <button class="btn btn-sm" onclick="topFunction()" id="myBtn"
@@ -726,7 +969,7 @@ hr.detailnew {
 <div class="container">
 	<div class="article-content">
 		<div class="detail article-hero-card">
-			<h1 itemprop="headline" style="color: #BD2125;">${blog.topic}</h1>
+			<h1 itemprop="headline" class="article-title">${blog.topic}</h1>
 
 			<div class="article-tags">
 				Tags : <font color="#BD2125"><span id="articletag"> <c:forEach
@@ -774,50 +1017,109 @@ hr.detailnew {
 	</div>
 
 	<%--
-		relatedBlogs is manually curated by editors (article_related table) and
-		may be empty for articles nobody has linked yet - falling back to
-		latestBlogs (already fetched above for this same request) means this
-		section still does its job (give the reader another article, which is
-		also an internal link for SEO) instead of rendering an empty heading
-		with nothing under it.
+		relatedBlogs is manually curated by editors (article_related table) -
+		may genuinely be empty for articles nobody has linked yet, so this
+		whole section just doesn't render rather than showing an empty
+		heading (was falling back to latestBlogs before to avoid that, but
+		that's its own real section below now instead of a stand-in here).
+		No more end="2" cap either - see ArticleRelatedDAOImpl, the query
+		itself no longer caps at 3, and this is a scrollable row now
+		instead of a fixed 3-card grid, so there's no layout reason to cap
+		it in the JSP either.
 	--%>
-	<c:set var="relatedCardSource"
-		value="${not empty relatedBlogs ? relatedBlogs : latestBlogs}" />
+	<c:if test="${not empty relatedBlogs}">
+		<section class="related-articles-section">
+			<h2 class="related-articles-section__heading">
+				<font color="gray">บทความที่เกี่ยวข้อง</font>
+			</h2>
 
-	<section class="related-articles-section">
-		<h2 class="related-articles-section__heading">
-			<font color="gray">บทความที่เกี่ยวข้อง</font>
-		</h2>
-		<div class="row">
-			<%-- end="2" caps this at 3 cards (indices 0-2) regardless of which
-				 list is used - relatedBlogs is already limited to 3 at the DAO
-				 level, but latestBlogs has no such limit, so this is what
-				 actually enforces the cap in the fallback case. --%>
-			<c:forEach var="relatedBlog" items="${relatedCardSource}" end="2"
-				varStatus="Count">
-				<%
-				Object relatedBlogRaw = pageContext.getAttribute("relatedBlog");
-				String relatedBlogDetailRaw = "";
-				if (relatedBlogRaw instanceof Map) {
-					Object d = ((Map) relatedBlogRaw).get("detail");
-					relatedBlogDetailRaw = d != null ? d.toString() : "";
-				}
-				pageContext.setAttribute("relatedBlogPreviewText", ArticleHtmlSanitizer.toPreviewText(relatedBlogDetailRaw, 120));
-				%>
-				<div class="col-12 col-sm-6 col-lg-4">
-					<comp:blogCard blog="${relatedBlog}" constant="${constant}"
-						excerpt="${relatedBlogPreviewText}" />
+			<div class="card-carousel">
+				<button type="button" class="card-carousel__nav card-carousel__nav--prev"
+					aria-label="เลื่อนดูก่อนหน้า">
+					<i class="bi bi-chevron-left"></i>
+				</button>
+				<div class="card-carousel__track">
+					<c:forEach var="relatedBlog" items="${relatedBlogs}"
+						varStatus="Count">
+						<%
+						Object relatedBlogRaw = pageContext.getAttribute("relatedBlog");
+						String relatedBlogDetailRaw = "";
+						if (relatedBlogRaw instanceof Map) {
+							Object d = ((Map) relatedBlogRaw).get("detail");
+							relatedBlogDetailRaw = d != null ? d.toString() : "";
+						}
+						pageContext.setAttribute("relatedBlogPreviewText", ArticleHtmlSanitizer.toPreviewText(relatedBlogDetailRaw, 120));
+						%>
+						<div class="card-carousel__item">
+							<comp:blogCard blog="${relatedBlog}" constant="${constant}"
+								excerpt="${relatedBlogPreviewText}" />
+						</div>
+					</c:forEach>
 				</div>
-			</c:forEach>
-		</div>
+				<button type="button" class="card-carousel__nav card-carousel__nav--next"
+					aria-label="เลื่อนดูถัดไป">
+					<i class="bi bi-chevron-right"></i>
+				</button>
+			</div>
+		</section>
+	</c:if>
 
-		<div class="related-articles-section__cta">
-			<a href="${pageURI}" class="related-articles-section__cta-btn"> <span
-				class="related-articles-section__cta-btn-text">ดูบทความทั้งหมด</span>
-				<i class="bi bi-arrow-right related-articles-section__cta-btn-icon"></i>
-			</a>
-		</div>
-	</section>
+	<%--
+		Separate from "related" above - this is just "everything recently
+		published", same maxLatestBlog cap (10) and data (latestBlogs) the
+		legacy page's own "บทความล่าสุด" section already uses (see
+		pages-front/blog/blog_detail.jsp), so this mirrors that rather than
+		inventing new scope/limits. Smaller dedicated card (.latest-card,
+		not blogCard.tag) - image + title only, no excerpt/meta, matching
+		what was asked for (a lighter card, not a shrunk copy of the
+		related-articles one). data-aos fade-up with a per-card stagger for
+		the "fades in gently" ask - reusing AOS (already loaded + .init()'d
+		on this page) rather than hand-rolling a second fade system.
+	--%>
+	<c:if test="${not empty latestBlogs}">
+		<section class="related-articles-section">
+			<h2 class="related-articles-section__heading">
+				<font color="gray">บทความล่าสุด</font>
+			</h2>
+
+			<div class="card-carousel">
+				<button type="button" class="card-carousel__nav card-carousel__nav--prev"
+					aria-label="เลื่อนดูก่อนหน้า">
+					<i class="bi bi-chevron-left"></i>
+				</button>
+				<div class="card-carousel__track">
+					<c:forEach var="latestBlog" items="${latestBlogs}"
+						varStatus="Count" end="${maxLatestBlog - 1}">
+						<div class="latest-card" data-aos="fade-up"
+							data-aos-delay="${(Count.count - 1) * 60}">
+							<a href="${latestBlog.page_uri_id}" class="latest-card__link">
+								<div class="latest-card__media">
+									<img class="latest-card__image"
+										src="${constant.imgContext}${latestBlog.path}"
+										alt="${latestBlog.topic}" loading="lazy">
+								</div>
+								<span class="latest-card__title">${latestBlog.topic}</span>
+							</a>
+						</div>
+					</c:forEach>
+				</div>
+				<button type="button" class="card-carousel__nav card-carousel__nav--next"
+					aria-label="เลื่อนดูถัดไป">
+					<i class="bi bi-chevron-right"></i>
+				</button>
+			</div>
+		</section>
+	</c:if>
+
+	<%-- Moved to the very bottom, below both sections - one CTA for
+		 "see everything" rather than sitting between related/latest
+		 like it was splitting them up. --%>
+	<div class="related-articles-section__cta">
+		<a href="${pageURI}" class="related-articles-section__cta-btn"> <span
+			class="related-articles-section__cta-btn-text">ดูบทความทั้งหมด</span>
+			<i class="bi bi-arrow-right related-articles-section__cta-btn-icon"></i>
+		</a>
+	</div>
 </div>
 
 
@@ -835,6 +1137,84 @@ hr.detailnew {
 
 <script type="text/javascript">
 	AOS.init();
+
+	// Card carousels (related/latest articles) - </> buttons animate
+	// scrollLeft by one card's width; the track itself is a plain
+	// scrollable element the whole time, so touch/trackpad swipe and
+	// keyboard scrolling keep working with zero extra code either way.
+	//
+	// Hand-rolled animation instead of track.scrollBy({behavior:'smooth'})
+	// - the browser's own native smooth scroll felt stiff/mechanical
+	// (fixed duration+easing the CSSOM doesn't expose any control over,
+	// varies by browser too). Setting scrollLeft directly every frame
+	// bypasses that entirely, so this owns the whole curve: eased out
+	// (fast start, gentle stop) over a fixed 420ms.
+	function animateScrollLeft(el, toLeft, duration) {
+		var fromLeft = el.scrollLeft;
+		var distance = toLeft - fromLeft;
+		var startTime = null;
+		function easeOutCubic(t) {
+			return 1 - Math.pow(1 - t, 3);
+		}
+		function step(timestamp) {
+			if (startTime === null) {
+				startTime = timestamp;
+			}
+			var progress = Math.min((timestamp - startTime) / duration, 1);
+			el.scrollLeft = fromLeft + distance * easeOutCubic(progress);
+			if (progress < 1) {
+				requestAnimationFrame(step);
+			}
+		}
+		requestAnimationFrame(step);
+	}
+
+	document.querySelectorAll('.card-carousel').forEach(function(carousel) {
+		var track = carousel.querySelector('.card-carousel__track');
+		var prevBtn = carousel.querySelector('.card-carousel__nav--prev');
+		var nextBtn = carousel.querySelector('.card-carousel__nav--next');
+		if (!track) {
+			return;
+		}
+		function scrollByOneCard(direction) {
+			var firstCard = track.firstElementChild;
+			var cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
+			var gap = 20;
+			var maxScrollLeft = track.scrollWidth - track.clientWidth;
+			var target = track.scrollLeft + (cardWidth + gap) * direction;
+			target = Math.max(0, Math.min(target, maxScrollLeft));
+			animateScrollLeft(track, target, 420);
+		}
+		// Was just always visible regardless of scroll position - disables
+		// (fades out, see .card-carousel__nav[disabled] above) whichever
+		// side has nothing left to scroll to, and both sides at once if
+		// every card already fits without scrolling at all. 1px tolerance
+		// since scrollWidth/scrollLeft can be off-by-a-fraction from
+		// subpixel layout, not because the user actually reached the end.
+		function updateNavState() {
+			var maxScrollLeft = track.scrollWidth - track.clientWidth;
+			var canScroll = maxScrollLeft > 1;
+			if (prevBtn) {
+				prevBtn.disabled = !canScroll || track.scrollLeft <= 1;
+			}
+			if (nextBtn) {
+				nextBtn.disabled = !canScroll || track.scrollLeft >= maxScrollLeft - 1;
+			}
+		}
+		if (prevBtn) {
+			prevBtn.addEventListener('click', function() {
+				scrollByOneCard(-1);
+			});
+		}
+		if (nextBtn) {
+			nextBtn.addEventListener('click', function() {
+				scrollByOneCard(1);
+			});
+		}
+		track.addEventListener('scroll', updateNavState, { passive: true });
+		window.addEventListener('resize', updateNavState);
+		updateNavState();
+	});
 
 	$('#heroImageModal').on('hidden.bs.modal', function() {
 		$('body').css('padding-right', '');

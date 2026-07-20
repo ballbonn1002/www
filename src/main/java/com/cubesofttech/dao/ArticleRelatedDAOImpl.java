@@ -50,10 +50,13 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter("articleId", articleId);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-			// Capped at 3 cards - the related-articles section on blog_detail.jsp
-			// shows a fixed-width row of cards, not an unbounded list, so this
-			// caps it at the source instead of over-fetching and cutting in the JSP.
-			query.setMaxResults(3);
+			// No cap - this query backs both blog_detail.jsp's legacy and
+			// redesign pages (same BlogAction.blogDetail() call), so limiting
+			// it here for the redesign's card row was also silently capping
+			// legacy's related-articles list to 3 items. Redesign now shows
+			// this as a scrollable row instead, so it doesn't need a fixed
+			// count either - display-side concerns belong in the JSP, not
+			// the query.
 			articleRelated = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();

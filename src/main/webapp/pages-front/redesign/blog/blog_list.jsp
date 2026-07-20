@@ -66,9 +66,18 @@
 <c:if test="${totalPages > 1}">
 	<nav aria-label="Blog pagination">
 		<ul class="pagination blog-pagination justify-content-center">
+			<%-- .page-link__text hides below 576px (blog.css), leaving just
+				 the chevron icon - "Previous"/"Next" as full words were the
+				 widest items in the whole pagination bar, so they were the
+				 first thing pushing it to wrap on narrow screens.
+				 aria-label on the <a> already gives assistive tech the full
+				 word either way, independent of what's visually shown. --%>
 			<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
 				<a class="page-link" href="?page=${currentPage - 1}#articledetail"
-					aria-label="Previous" tabindex="${currentPage == 1 ? '-1' : '0'}">Previous</a>
+					aria-label="Previous" tabindex="${currentPage == 1 ? '-1' : '0'}">
+					<i class="bi bi-chevron-left page-link__icon" aria-hidden="true"></i>
+					<span class="page-link__text">Previous</span>
+				</a>
 			</li>
 
 			<c:forEach var="pageNum" items="${pageNumbers}">
@@ -86,7 +95,10 @@
 
 			<li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
 				<a class="page-link" href="?page=${currentPage + 1}#articledetail"
-					aria-label="Next" tabindex="${currentPage == totalPages ? '-1' : '0'}">Next</a>
+					aria-label="Next" tabindex="${currentPage == totalPages ? '-1' : '0'}">
+					<span class="page-link__text">Next</span>
+					<i class="bi bi-chevron-right page-link__icon" aria-hidden="true"></i>
+				</a>
 			</li>
 		</ul>
 	</nav>

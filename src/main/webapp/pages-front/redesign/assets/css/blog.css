@@ -216,6 +216,18 @@ a {
 	overflow: hidden;
 }
 
+/* Below 992px the two columns stack (see .article-preview__row
+   .col-lg-6 above - that fixed 500px/50% split only applies at
+   min-width:992px), so the image column ends up directly above this
+   one with no gap at all - Bootstrap's row/col gutters are only
+   horizontal, not vertical, between stacked columns. Title was
+   touching the image's bottom edge as a result. */
+@media (max-width: 991px) {
+	.article-preview__content {
+		margin-top: 1.5rem;
+	}
+}
+
 .article-preview__title {
 	width: 100%;
 	font-weight: bold;
@@ -471,6 +483,32 @@ a {
 
 .blog-pagination .page-item.disabled .page-link {
 	opacity: 0.5;
+}
+
+/* Previous/Next: full text normally, icon-only below 576px (Bootstrap's
+   own sm breakpoint) - those two words were the widest items in the
+   bar, so on a narrow phone they were what pushed the whole pagination
+   row to wrap onto a second line. aria-label on the <a> itself already
+   carries the full word for screen readers regardless of which of
+   these is actually shown. */
+.page-link__icon {
+	display: none;
+}
+
+@media (max-width: 575px) {
+	.page-link__text {
+		display: none;
+	}
+	.page-link__icon {
+		display: inline;
+	}
+	/* Tighter spacing to match - less to fit, less room to fit it in. */
+	.blog-pagination .page-item {
+		margin: 0 2px;
+	}
+	.blog-pagination .page-link {
+		padding: 0.375rem 0.6rem;
+	}
 }
 
 /* ==========================================================================
