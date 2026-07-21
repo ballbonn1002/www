@@ -107,7 +107,7 @@ body, html {
 	   --navbar-offset (header.jsp) plus the original 16px breathing
 	   room, so it lands just below the navbar instead of hidden
 	   underneath it. */
-	top: calc(var(--navbar-offset, 80px) + 28px);
+	top: calc(var(--navbar-offset, 80px)+ 28px);
 	right: 16px;
 	z-index: 3;
 	width: 40px;
@@ -362,9 +362,16 @@ hr.detailnew {
 	overflow: hidden;
 	z-index: 1;
 	padding: 0.6rem 1.75rem;
+	padding-right: max(4px, calc(1.75rem - 8px - 18px));
 	border: 3px solid #BD2125;
 	border-radius: 10px;
-	color: #BD2125;
+	/* !important จำเป็นจริง ๆ ตรงนี้ (ทั้ง resting และ :hover ด้านล่าง) -
+	   baseLayout.jsp มี "a { color: inherit !important; }" ใช้ทั้งเว็บ
+	   (บังคับลิงก์ตามสีพ่อแม่เสมอ กันไม่ให้ลิงก์ในเนื้อหาโผล่เป็นสีฟ้า
+	   default) - !important ชนะ specificity เสมอไม่ว่า selector จะเจาะจง
+	   แค่ไหน ต้องใช้ !important สู้เท่านั้น เหมือน #navbar-hover:hover,
+	   .active, .dropdown-item:hover ที่มีอยู่แล้ว (baseLayout.jsp/header.jsp) */
+	color: #BD2125 !important;
 	background-color: transparent;
 	font-weight: 600;
 	text-decoration: none;
@@ -374,12 +381,14 @@ hr.detailnew {
 .related-articles-section__cta-btn::before {
 	content: "";
 	position: absolute;
-	inset: 0;
 	background-color: #BD2125;
 	transform: scaleX(0);
 	transform-origin: left;
 	z-index: -1;
 	transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+	inset: -3px;
+	border-radius: inherit;
+	will-change: transform;
 }
 
 .related-articles-section__cta-btn:hover::before {
@@ -387,25 +396,16 @@ hr.detailnew {
 }
 
 .related-articles-section__cta-btn:hover {
-	color: #fff;
+	color: #fff !important;
 	text-decoration: none;
 }
 
-/* สำคัญ: บังคับให้ text กับ icon ใช้สีเดียวกับปุ่มหลักเสมอ (currentColor)
-   กันกรณีมี color ถูก set แยกไว้เองจนไม่ตาม parent ตอน hover */
 .related-articles-section__cta-btn-text {
 	color: inherit;
 }
 
-/* width used to animate 0 -> 18px on hover (see below) - animating
-   width triggers a real layout reflow every frame, which visibly
-   shifted/overlapped the text next to it during the transition
-   instead of a clean fade+slide. Width is fixed at 18px always now
-   (icon keeps its slot in the flex row's gap the whole time, nothing
-   reflows) - only opacity/transform animate, which are
-   compositor-only and never touch layout. */
 .related-articles-section__cta-btn-icon {
-	color: currentColor;   /* icon font (Bootstrap Icons) ใช้ currentColor เป็น default อยู่แล้ว แต่ใส่ชัดๆ กันเหนียว */
+	color: currentColor;
 	width: 18px;
 	opacity: 0;
 	transform: translateX(-8px);
@@ -413,19 +413,16 @@ hr.detailnew {
 	font-size: 18px;
 }
 
-.related-articles-section__cta-btn:hover .related-articles-section__cta-btn-icon {
+.related-articles-section__cta-btn:hover .related-articles-section__cta-btn-icon
+	{
 	opacity: 1;
 	transform: translateX(0);
+	margin-right: 4px;
 }
 
 /* ==========================================================================
    Card carousel - shared by "related articles" and "latest articles"
-   below. Native horizontal scroll + scroll-snap instead of a JS
-   slider library (none loaded on this site, no build step to add
-   one) - still works with touch/trackpad swipe with zero JS, the </>
-   buttons just nudge scrollLeft by one card's width. Scrollbar hidden
-   since the </> buttons are the intended control, but the track is
-   still a real scroll container underneath (keyboard/touch unaffected).
+   below.
    ========================================================================== */
 .card-carousel {
 	position: relative;
@@ -436,14 +433,6 @@ hr.detailnew {
 	display: flex;
 	gap: 1.25rem;
 	overflow-x: auto;
-	/* scroll-snap-type used to be here - fought with the </> buttons'
-	   own scrollBy({behavior:'smooth'}) (the browser tries to correct
-	   toward the nearest snap point mid-animation), which read as
-	   stiff/jerky instead of one smooth motion - most noticeable on
-	   the smaller latest-articles cards, where snap points sit closer
-	   together. The buttons already land on roughly the right card
-	   themselves (scroll by exactly one card's width + gap), so
-	   nothing here was actually depending on snap to begin with. */
 	scroll-behavior: smooth;
 	padding: 0.25rem 0.25rem 0.75rem;
 	scrollbar-width: none;
@@ -482,11 +471,6 @@ hr.detailnew {
 	color: #fff;
 }
 
-/* Was showing both < > permanently regardless of scroll position - the
-   JS below now toggles this native disabled attribute based on actual
-   scroll state (can't go further that way / nothing to scroll at all),
-   so this is what makes that state visible instead of the buttons
-   just sitting there doing nothing when clicked. */
 .card-carousel__nav[disabled] {
 	opacity: 0;
 	pointer-events: none;
@@ -500,26 +484,17 @@ hr.detailnew {
 	right: -18px;
 }
 
-@media (max-width: 767px) {
-	/* Small screens: swipe with a finger instead - the buttons sit
-	   right on top of the cards at that width with nowhere good to go. */
+@media ( max-width : 767px) {
 	.card-carousel__nav {
 		display: none;
 	}
 }
 
-/* max-width caps it relative to the viewport too - on a narrow phone
-   (~320-360px wide), a fixed 320px card would be as wide as the
-   whole screen with no peek of the next card at all, and on the
-   smallest phones actually wider than the viewport itself. */
 .card-carousel__item {
 	width: 320px;
 	max-width: 82vw;
 }
 
-/* Latest-articles section reuses .related-articles-section/__heading
-   for the outer spacing/title style (same look, different text) -
-   only the card itself is new. */
 .latest-card {
 	width: 200px;
 	max-width: 50vw;
@@ -537,19 +512,10 @@ hr.detailnew {
 }
 
 .latest-card__media {
-	/* was a <span> (inline by default) - an inline box doesn't reliably
-	   size itself from aspect-ratio/width:100%, nor give a percentage-
-	   height child (.latest-card__image below) a definite height to
-	   resolve against, which is what made images end up different
-	   sizes depending on their own original dimensions instead of all
-	   matching this box. display:block fixes that; changed the tag
-	   itself to <div> below to match (a <span> forced to display:block
-	   works, but the element choice should match how it's actually
-	   used). */
 	display: block;
 	position: relative;
 	width: 100%;
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 16/9;
 	border-radius: 16px;
 	overflow: hidden;
 	margin-bottom: 0.6rem;
@@ -581,14 +547,10 @@ hr.detailnew {
 	margin: 0.75rem 0;
 }
 
-/* .articleblockbg2/3, .ardetail, .aum, .ardetail__meta/__excerpt,
-   .text-ellipsis-2, .article-card__image match blog.jsp's card design
-   exactly - both pages render the same shared WEB-INF/tags/blogCard.tag,
-   so the two need matching CSS to actually look the same, not just share
-   markup. No col-* grid class here (unlike blog.jsp) since these cards
-   stack full-width in this page's narrow sidebar column instead of a
-   3-per-row full-width row. */
 .articleblockbg2 {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 	padding-top: 0%;
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -603,17 +565,10 @@ hr.detailnew {
 	color: #BD2125;
 }
 
-/* The whole card is one <a> now (blogCard.tag) - links are inline by
-   default, which would otherwise collapse/misrender the block-level
-   .articleblockbg3/.ardetail stacked inside it, and reset its default
-   blue/underlined styling since this is a card, not a text link.
-   :hover needed separately - Bootstrap's own "a:hover{text-decoration:
-   underline}" (in the CDN stylesheet loaded site-wide) has higher
-   specificity than the bare class selector below at rest, so without
-   this the underline was reappearing the moment you hovered the card. */
-.articleblockbg2__link,
-.articleblockbg2__link:hover {
-	display: block;
+.articleblockbg2__link, .articleblockbg2__link:hover {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 	color: inherit;
 	text-decoration: none;
 }
@@ -621,21 +576,13 @@ hr.detailnew {
 .articleblockbg3 {
 	overflow: hidden;
 	border-radius: 10px 10px 0 0;
+	flex-shrink: 0;
 }
 
-/* Missing entirely before - blogCard.tag's markup wraps the image in
-   .article-card__media (for the aspect-ratio box + to give the
-   absolutely-positioned img-skeleton span something to anchor to),
-   but only .article-card__image itself had a rule here, so that
-   wrapper rendered as a plain unstyled div. Without a fixed
-   aspect-ratio, each card's image area sized itself to whatever the
-   source photo's own dimensions were instead of a consistent box -
-   see blog.css's own copy of this same rule for the pattern this
-   matches. */
 .article-card__media {
 	position: relative;
 	width: 100%;
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 16/9;
 	overflow: hidden;
 }
 
@@ -659,6 +606,7 @@ hr.detailnew {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	min-height: 200px;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 }
@@ -667,13 +615,6 @@ hr.detailnew {
 	margin-top: auto;
 }
 
-/* height is a hard 3-line reservation (3 * 1.5 line-height), not just
-   a max via -webkit-line-clamp - same fix as .article-preview__excerpt
-   in blog.css. A short excerpt used to leave a shorter box, so cards
-   next to each other in the carousel ended up different total
-   heights depending on how long each article's excerpt happened to
-   be; fixed height means a short excerpt just leaves blank space in
-   its own box instead, so every card comes out the same height. */
 .ardetail__excerpt {
 	margin: 0.5rem 0;
 	font-size: 14px;
@@ -690,6 +631,8 @@ hr.detailnew {
 	overflow: hidden;
 	width: 100%;
 	font-size: 20px;
+	line-height: 1.3;
+	height: 2.6em;
 	color: #000;
 	font-weight: bold;
 	transition: color 0.2s ease;
@@ -703,17 +646,6 @@ hr.detailnew {
 	word-break: break-word;
 }
 
-/* =====================================================================
-   .article-body — central style for ${cleanDetail} (the sanitized article
-   HTML). ArticleHtmlSanitizer (com.cubesofttech.util) strips every
-   class/style attribute from the source content, so this stylesheet styles
-   plain semantic tags (h2, p, ul, blockquote, table, ...) directly and is
-   the only place that controls how article content looks, regardless of
-   the source article's own markup.
-
-   Kept deliberately separate from the pre-existing ".articledetail" class
-   used above for page layout (header/share bar) to avoid selector collisions.
-   ===================================================================== */
 :root {
 	--article-ink: #2B2222;
 	--article-ink-muted: #7A6C6C;
@@ -828,8 +760,6 @@ hr.detailnew {
 	margin: 28px 0;
 }
 
-/* youtube embeds only (see ArticleHtmlSanitizer) — width/height attributes
-   from the source are overridden so it scales responsively */
 .article-body iframe {
 	width: 100%;
 	aspect-ratio: 16/9;
@@ -840,8 +770,6 @@ hr.detailnew {
 	margin: 28px 0;
 }
 
-/* every table renders the same way regardless of source classname —
-   scrolls horizontally on its own, no wrapper div required */
 .article-body table {
 	display: block;
 	overflow-x: auto;
@@ -870,9 +798,6 @@ hr.detailnew {
 	border-bottom: none;
 }
 
-/* .faq-item / .faq-question are generated by ArticleHtmlSanitizer itself
-   (com.cubesofttech.util) — not sourced from the article's own markup — so
-   the classnames are guaranteed consistent across every article. */
 .article-body .faq-item {
 	padding: 22px 0;
 	border-bottom: 1px solid var(--article-border);
@@ -898,29 +823,18 @@ hr.detailnew {
 	color: var(--article-accent);
 }
 
-/* .gap-2/.gap-3/.gap-4/.vr are Bootstrap 5-only utilities - Bootstrap
-   4.3.1 (loaded from baseLayout.jsp, used everywhere on this site)
-   never had gap utilities or .vr at all. footer.jsp used to load
-   Bootstrap 5's CSS too (removed now - see footer.jsp for why:  it was
-   overriding Bootstrap 4's own rules for shared class names like
-   .navbar/.breadcrumb site-wide), which is what silently supplied
-   these specific ones. Now that it's gone, nothing on the page defines
-   them at all - this page has no external stylesheet of its own to
-   hold a fix the way blog.jsp's blog.css does, so it goes directly
-   here instead. Used on this page's own meta/shares row, and on the
-   sidebar cards via blogCard.tag (shared with blog.jsp's grid, which
-   is protected there by blog.css - this page needs its own copy since
-   it doesn't load that file). Values match Bootstrap 5's own scale
-   (each step is 0.5rem). */
 .gap-2 {
 	gap: 0.5rem !important;
 }
+
 .gap-3 {
 	gap: 1rem !important;
 }
+
 .gap-4 {
 	gap: 1.5rem !important;
 }
+
 .vr {
 	display: inline-block !important;
 	align-self: stretch !important;
@@ -1034,7 +948,8 @@ hr.detailnew {
 			</h2>
 
 			<div class="card-carousel">
-				<button type="button" class="card-carousel__nav card-carousel__nav--prev"
+				<button type="button"
+					class="card-carousel__nav card-carousel__nav--prev"
 					aria-label="เลื่อนดูก่อนหน้า">
 					<i class="bi bi-chevron-left"></i>
 				</button>
@@ -1056,7 +971,8 @@ hr.detailnew {
 						</div>
 					</c:forEach>
 				</div>
-				<button type="button" class="card-carousel__nav card-carousel__nav--next"
+				<button type="button"
+					class="card-carousel__nav card-carousel__nav--next"
 					aria-label="เลื่อนดูถัดไป">
 					<i class="bi bi-chevron-right"></i>
 				</button>
@@ -1083,7 +999,8 @@ hr.detailnew {
 			</h2>
 
 			<div class="card-carousel">
-				<button type="button" class="card-carousel__nav card-carousel__nav--prev"
+				<button type="button"
+					class="card-carousel__nav card-carousel__nav--prev"
 					aria-label="เลื่อนดูก่อนหน้า">
 					<i class="bi bi-chevron-left"></i>
 				</button>
@@ -1097,13 +1014,13 @@ hr.detailnew {
 									<img class="latest-card__image"
 										src="${constant.imgContext}${latestBlog.path}"
 										alt="${latestBlog.topic}" loading="lazy">
-								</div>
-								<span class="latest-card__title">${latestBlog.topic}</span>
+								</div> <span class="latest-card__title">${latestBlog.topic}</span>
 							</a>
 						</div>
 					</c:forEach>
 				</div>
-				<button type="button" class="card-carousel__nav card-carousel__nav--next"
+				<button type="button"
+					class="card-carousel__nav card-carousel__nav--next"
 					aria-label="เลื่อนดูถัดไป">
 					<i class="bi bi-chevron-right"></i>
 				</button>
@@ -1111,9 +1028,6 @@ hr.detailnew {
 		</section>
 	</c:if>
 
-	<%-- Moved to the very bottom, below both sections - one CTA for
-		 "see everything" rather than sitting between related/latest
-		 like it was splitting them up. --%>
 	<div class="related-articles-section__cta">
 		<a href="${pageURI}" class="related-articles-section__cta-btn"> <span
 			class="related-articles-section__cta-btn-text">ดูบทความทั้งหมด</span>
@@ -1122,15 +1036,6 @@ hr.detailnew {
 	</div>
 </div>
 
-
-<%--
-	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
-	<head> (every page shares it) - this page had its own second copy of
-	both. Safe to drop here specifically (checked first): no $.ajax/.load/
-	effects calls on this page. AOS.init() below still needs to stay -
-	baseLayout.jsp only loads the library, each page still calls .init()
-	itself.
---%>
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
@@ -1138,17 +1043,6 @@ hr.detailnew {
 <script type="text/javascript">
 	AOS.init();
 
-	// Card carousels (related/latest articles) - </> buttons animate
-	// scrollLeft by one card's width; the track itself is a plain
-	// scrollable element the whole time, so touch/trackpad swipe and
-	// keyboard scrolling keep working with zero extra code either way.
-	//
-	// Hand-rolled animation instead of track.scrollBy({behavior:'smooth'})
-	// - the browser's own native smooth scroll felt stiff/mechanical
-	// (fixed duration+easing the CSSOM doesn't expose any control over,
-	// varies by browser too). Setting scrollLeft directly every frame
-	// bypasses that entirely, so this owns the whole curve: eased out
-	// (fast start, gentle stop) over a fixed 420ms.
 	function animateScrollLeft(el, toLeft, duration) {
 		var fromLeft = el.scrollLeft;
 		var distance = toLeft - fromLeft;
@@ -1169,52 +1063,55 @@ hr.detailnew {
 		requestAnimationFrame(step);
 	}
 
-	document.querySelectorAll('.card-carousel').forEach(function(carousel) {
-		var track = carousel.querySelector('.card-carousel__track');
-		var prevBtn = carousel.querySelector('.card-carousel__nav--prev');
-		var nextBtn = carousel.querySelector('.card-carousel__nav--next');
-		if (!track) {
-			return;
-		}
-		function scrollByOneCard(direction) {
-			var firstCard = track.firstElementChild;
-			var cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
-			var gap = 20;
-			var maxScrollLeft = track.scrollWidth - track.clientWidth;
-			var target = track.scrollLeft + (cardWidth + gap) * direction;
-			target = Math.max(0, Math.min(target, maxScrollLeft));
-			animateScrollLeft(track, target, 420);
-		}
-		// Was just always visible regardless of scroll position - disables
-		// (fades out, see .card-carousel__nav[disabled] above) whichever
-		// side has nothing left to scroll to, and both sides at once if
-		// every card already fits without scrolling at all. 1px tolerance
-		// since scrollWidth/scrollLeft can be off-by-a-fraction from
-		// subpixel layout, not because the user actually reached the end.
-		function updateNavState() {
-			var maxScrollLeft = track.scrollWidth - track.clientWidth;
-			var canScroll = maxScrollLeft > 1;
-			if (prevBtn) {
-				prevBtn.disabled = !canScroll || track.scrollLeft <= 1;
-			}
-			if (nextBtn) {
-				nextBtn.disabled = !canScroll || track.scrollLeft >= maxScrollLeft - 1;
-			}
-		}
-		if (prevBtn) {
-			prevBtn.addEventListener('click', function() {
-				scrollByOneCard(-1);
+	document.querySelectorAll('.card-carousel').forEach(
+			function(carousel) {
+				var track = carousel.querySelector('.card-carousel__track');
+				var prevBtn = carousel
+						.querySelector('.card-carousel__nav--prev');
+				var nextBtn = carousel
+						.querySelector('.card-carousel__nav--next');
+				if (!track) {
+					return;
+				}
+				function scrollByOneCard(direction) {
+					var firstCard = track.firstElementChild;
+					var cardWidth = firstCard ? firstCard
+							.getBoundingClientRect().width : 300;
+					var gap = 20;
+					var maxScrollLeft = track.scrollWidth - track.clientWidth;
+					var target = track.scrollLeft + (cardWidth + gap)
+							* direction;
+					target = Math.max(0, Math.min(target, maxScrollLeft));
+					animateScrollLeft(track, target, 420);
+				}
+
+				function updateNavState() {
+					var maxScrollLeft = track.scrollWidth - track.clientWidth;
+					var canScroll = maxScrollLeft > 1;
+					if (prevBtn) {
+						prevBtn.disabled = !canScroll || track.scrollLeft <= 1;
+					}
+					if (nextBtn) {
+						nextBtn.disabled = !canScroll
+								|| track.scrollLeft >= maxScrollLeft - 1;
+					}
+				}
+				if (prevBtn) {
+					prevBtn.addEventListener('click', function() {
+						scrollByOneCard(-1);
+					});
+				}
+				if (nextBtn) {
+					nextBtn.addEventListener('click', function() {
+						scrollByOneCard(1);
+					});
+				}
+				track.addEventListener('scroll', updateNavState, {
+					passive : true
+				});
+				window.addEventListener('resize', updateNavState);
+				updateNavState();
 			});
-		}
-		if (nextBtn) {
-			nextBtn.addEventListener('click', function() {
-				scrollByOneCard(1);
-			});
-		}
-		track.addEventListener('scroll', updateNavState, { passive: true });
-		window.addEventListener('resize', updateNavState);
-		updateNavState();
-	});
 
 	$('#heroImageModal').on('hidden.bs.modal', function() {
 		$('body').css('padding-right', '');
