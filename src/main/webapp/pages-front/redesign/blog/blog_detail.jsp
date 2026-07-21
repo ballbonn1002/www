@@ -74,9 +74,19 @@ body, html {
 	height: 480px;
 	overflow: hidden;
 	background-color: #1A1A1A;
+	padding: calc(3% + var(--navbar-offset, 65px));
 }
 
-.article-hero::before, .article-hero::after {
+/* Blurred backdrop only now - genuinely decorative (a scaled/blurred
+   duplicate sitting behind the real image below), so CSS background is
+   the correct choice here and doesn't need an alt text of its own. The
+   sharp foreground layer used to be a second ::after pseudo-element on
+   this same background-image trick, which meant the actual hero photo
+   had no <img> tag anywhere and therefore couldn't carry an alt
+   attribute at all - see .article-hero__image below, a real <img>
+   replacing it so the hero image is visible to Google Images/screen
+   readers again, not just decoration. */
+.article-hero::before {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -86,16 +96,19 @@ body, html {
 	background-image: var(--hero-image, none);
 	background-position: center;
 	background-repeat: no-repeat;
-}
-
-.article-hero::before {
 	background-size: cover;
 	filter: blur(20px) brightness(0.6);
 	transform: scale(1.15);
 }
 
-.article-hero::after {
-	background-size: contain;
+.article-hero__image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
 }
 
 .article-hero__expand-btn {
@@ -107,7 +120,7 @@ body, html {
 	   --navbar-offset (header.jsp) plus the original 16px breathing
 	   room, so it lands just below the navbar instead of hidden
 	   underneath it. */
-	top: calc(var(--navbar-offset, 80px)+ 28px);
+	top: calc(var(--navbar-offset, 80px) + 28px);
 	right: 16px;
 	z-index: 3;
 	width: 40px;
@@ -855,6 +868,9 @@ hr.detailnew {
 <div class="article-hero"
 	<c:if test="${!empty path}">style="--hero-image: url('${constant.imgContext}${path}');"</c:if>>
 	<c:if test="${!empty path}">
+		<img class="article-hero__image"
+			src="${constant.imgContext}${path}"
+			alt="${not empty alt_name ? alt_name : blog.topic}">
 		<button type="button" class="article-hero__expand-btn"
 			data-toggle="modal" data-target="#heroImageModal"
 			aria-label="ดูรูปเต็ม">

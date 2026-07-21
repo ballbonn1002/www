@@ -1,13 +1,5 @@
 /* ==========================================================================
-   Blog List page (pages-front/redesign/blog/blog.jsp) - redesign only.
-   Extracted verbatim from that file's inline <style> block so it can be
-   cached across page loads instead of re-downloaded with every response.
-   Rules unchanged - see blog.jsp's own history for the reasoning behind
-   each section (pagination scoping, etc). A fuller skeleton/shimmer +
-   scroll-reveal-on-scroll system was removed by request for feeling
-   over-engineered; section 8 below is a deliberately smaller re-add
-   (image loading shimmer only, nothing else) - see that section's own
-   comment.
+   Blog List page
    ========================================================================== */
 
 /* ==========================================================================
@@ -34,16 +26,6 @@
 	margin: 0;
 }
 
-/* .gap-2/.gap-4 are different from the other entries above: Bootstrap
-   4.3.1 (already loaded, see baseLayout.jsp) has no gap utilities at
-   all, only Bootstrap 5.3.0 (footer.jsp) does - so this isn't two
-   versions disagreeing on a value, it's "no spacing at all until
-   Bootstrap 5 finishes loading, then it pops in". Bootstrap 5 also
-   ships its utilities with !important, so beating it needs !important
-   here too - specificity alone never outranks !important regardless
-   of selector. Values match Bootstrap 5's own scale (each step is
-   0.5rem) so this doesn't change the spacing already being designed
-   around, just removes the pop-in. */
 .articleblockbg .gap-2 {
 	gap: 0.5rem !important;
 }
@@ -51,11 +33,6 @@
 	gap: 1.5rem !important;
 }
 
-/* .vr - same story as .gap-2/.gap-4 above: Bootstrap 4 has no such
-   utility at all, only Bootstrap 5 (footer.jsp) does, so this is a
-   "missing until Bootstrap 5 finally loads" pop-in, not a value fight.
-   Bootstrap 5's own definition, copied here so it's present from the
-   start instead of waiting on footer's late-loading CSS. */
 .articleblockbg .vr {
 	display: inline-block !important;
 	align-self: stretch !important;
@@ -72,18 +49,10 @@ html, body {
 	margin: 0;
 	padding: 0;
 	background-color: #F5F5F5;
-	/* หรือสีพื้นหลังหลักของเว็บ ให้ตรงกับ section แรก */
 	min-height: 100%;
-	overscroll-behavior-y: none;
-	/* กัน bounce ทะลุไปเห็น background นอกหน้า (รองรับ Chrome/Edge) */
+/* 	overscroll-behavior-y: none; */
 }
 
-/* padding-top combines the page's own 3% breathing room with
-   --navbar-offset (header.jsp) for real structural clearance under
-   the fixed navbar - was a flat margin-top:32px before, which
-   under-shot the navbar's actual ~80px footprint. padding, not
-   margin, so .articleblockbg's own background-color fills that
-   space too instead of showing the page background through a gap. */
 .articleblockbg {
 	background-color: #F5F5F5;
 	padding-top: calc(3% + var(--navbar-offset, 80px));
@@ -138,8 +107,6 @@ html, body {
 
 /* ==========================================================================
    5. Global typography resets
-   Broad element selectors (kept as-is - see refactor notes on why they
-   are not scoped in this pass).
    ========================================================================== */
 p {
 	margin: 0 0 0;
@@ -181,18 +148,6 @@ a {
 
 }
 
-/* .article-preview__media / .article-preview__image / .article-preview__content
-   all now stretch to fill the .col-lg-6's fixed 500px (see above) the
-   same way - the image's own aspect ratio (805x475) used to decide its
-   rendered height instead, so it rarely actually reached 500px, and the
-   text column was capped at 85% of that (425px) for no documented
-   reason - between those two, the CTA button's real bottom edge (via
-   margin-top:auto below) landed at a different height than the image's
-   visible bottom edge, and .article-preview__excerpt sizing itself to
-   however much text actually existed (up to the 6-line clamp, but
-   shorter posts stopped early) shifted the meta/CTA below it up or
-   down post to post. Fixed by making every one of these a hard 100%
-   of the fixed-height column instead of sizing to their own content. */
 .article-preview__media {
 	position: sticky;
 	top: 20px;
@@ -216,12 +171,6 @@ a {
 	overflow: hidden;
 }
 
-/* Below 992px the two columns stack (see .article-preview__row
-   .col-lg-6 above - that fixed 500px/50% split only applies at
-   min-width:992px), so the image column ends up directly above this
-   one with no gap at all - Bootstrap's row/col gutters are only
-   horizontal, not vertical, between stacked columns. Title was
-   touching the image's bottom edge as a result. */
 @media (max-width: 991px) {
 	.article-preview__content {
 		margin-top: 1.5rem;
@@ -237,7 +186,6 @@ a {
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 	color: #BD2125;
-	/* fallback สำหรับ browser ที่ไม่รองรับ background-clip: text */
 }
 
 @media ( min-width : 992px) {
@@ -247,18 +195,6 @@ a {
 	}
 }
 
-/* cleanDetail is a plain-text excerpt (see ArticleHtmlSanitizer.toPreviewText,
-   called in the scriptlet above) capped at 500 chars server-side, not raw
-   rich-text HTML - so this only needs to clamp plain text, no more
-   child-margin resets, heading hiding, or fade overlay for markup that no
-   longer exists here.
-   height is a hard 6-line reservation now (6 * 1.6 line-height), not
-   just a max via -webkit-line-clamp - a short excerpt used to leave a
-   smaller box, shifting the meta row/CTA button below it up post to
-   post. Fixed height means a short excerpt just leaves blank space in
-   its own box instead, so nothing after it moves. -webkit-line-clamp
-   stays too, still doing its job for long excerpts that actually hit 6
-   lines. */
 .article-preview__excerpt {
 	margin: 0 0 1rem 0;
 	line-height: 1.6;
@@ -270,9 +206,6 @@ a {
 	position: relative;
 }
 
-/* Soft fade over the last line instead of an abrupt line-clamp cutoff -
-   fades to #F5F5F5 (articleblockbg's background) since .article-preview__content
-   has no background of its own and sits directly on top of it. */
 .article-preview__excerpt::after {
 	content: "";
 	position: absolute;
@@ -285,9 +218,6 @@ a {
 	pointer-events: none;
 }
 
-/* Scoped Bootstrap-button override: only applies to this exact CTA
-   (which already carries both classes), instead of every .btn-danger /
-   .btn-lg button site-wide. */
 .article-preview__cta.btn-danger {
 	color: #fff;
 	background-color: #C41216;
@@ -305,7 +235,7 @@ a {
 .article-preview__cta {
 	display: inline-block;
 	align-self: flex-start;
-	margin-top: auto; /* ดันปุ่มไปอยู่ล่างสุดของกล่องเสมอ */
+	margin-top: auto;
 	border-radius: 10px !important;
 	color: #fff !important;
 }
@@ -313,7 +243,6 @@ a {
 .article-preview__divider {
 	border-top: 1px solid #B2B2B2;
 	opacity: 1;
-	/* ต้อง reset เพราะ Bootstrap default hr มี opacity: 0.25 ทำให้สีเพี้ยนจากที่ตั้งไว้ */
 }
 
 /* ==========================================================================
@@ -321,19 +250,12 @@ a {
    ========================================================================== */
 .article-list-row {
 	padding-top: 60px;
-	/* Pagination links in blog_list.jsp point at #articledetail (this
-	   element) so a page change lands here instead of back at the hero.
-	   The navbar is Bootstrap fixed-top (~70px, see redesign/_layout/
-	   header.jsp's .navbar min-height) - without this offset the jump
-	   would land the first card row right under it, half-covered. */
 	scroll-margin-top: 80px;
 }
 
 .articleblockbg2 {
 	padding-top: 0%;
 	padding-bottom: 4rem;
-	/* 	padding-left: 3%; */
-	/* 	padding-right: 3%; */
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
@@ -343,20 +265,10 @@ a {
 	transform: translateY(-6px);
 }
 
-/* เปลี่ยนสีเฉพาะ title ตอน hover แทนที่จะเปลี่ยนทั้งก้อน
-   เพราะ meta bar (วันที่/ผู้เขียน) ควรคงสีเทาเดิมไว้ ไม่ต้องเปลี่ยนตาม */
 .articleblockbg2:hover .aum {
 	color: #BD2125;
 }
 
-/* The whole card is one <a> now (blogCard.tag) - links are inline by
-   default, which would otherwise collapse/misrender the block-level
-   .articleblockbg3/.ardetail stacked inside it, and reset its default
-   blue/underlined styling since this is a card, not a text link.
-   :hover needed separately - Bootstrap's own "a:hover{text-decoration:
-   underline}" (in the CDN stylesheet loaded site-wide) has higher
-   specificity than the bare class selector below at rest, so without
-   this the underline was reappearing the moment you hovered the card. */
 .articleblockbg2__link,
 .articleblockbg2__link:hover {
 	display: block;
@@ -369,11 +281,6 @@ a {
 	border-radius: 10px 10px 0 0;
 }
 
-/* Wraps the card image so its box (and therefore the space the browser
-   reserves for it before the image loads) comes from aspect-ratio alone,
-   never from the actual downloaded image's dimensions - this is what
-   keeps CLS at 0 for this grid regardless of what size photo the CMS
-   author uploaded. */
 .article-card__media {
 	position: relative;
 	width: 100%;
@@ -399,8 +306,8 @@ a {
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-	min-height: 200px; /* เปลี่ยนจาก height ตายตัว เป็น min-height */
-	display: flex; /* ต้องมีตัวนี้ ไม่งั้น margin-top:auto ใช้ไม่ได้ */
+	min-height: 200px;
+	display: flex;
 	flex-direction: column;
 }
 
@@ -408,10 +315,6 @@ a {
 	margin-top: auto;
 }
 
-/* Plain-text excerpt per card (see ArticleHtmlSanitizer.toPreviewText,
-   called per-iteration in the c:forEach loop below) - same reasoning as
-   .article-preview__excerpt: capped server-side, so this only needs to
-   clamp plain text. */
 .ardetail__excerpt {
 	margin: 0.5rem 0;
 	font-size: 14px;
@@ -440,12 +343,10 @@ a {
 	word-break: break-word;
 }
 
-/* baseLayout.jsp has its own sitewide ".pagination { position: absolute;
-   right: 0; ... }" rule that careers.jsp's job listing depends on - reusing
-   the bare .pagination class here would inherit that and get pulled out of
-   flow to the right edge. Scoped under .blog-pagination (added alongside
-   .pagination on this page's <ul> in blog_list.jsp) instead of touching the
-   shared rule. */
+/* ==========================================================================
+   8. Pagination
+   ========================================================================== */
+
 .pagination.blog-pagination {
 	position: static;
 	display: flex;
@@ -471,9 +372,6 @@ a {
 	color: #8f1a1d;
 }
 
-/* Active page: a soft tint of the brand red (not the solid, full-strength
-   #BD2125) with dark red text on top, so the page number stays legible
-   instead of disappearing into a solid block. */
 .blog-pagination .page-item.active .page-link {
 	background-color: #f3c9c9;
 	border-color: #f3c9c9;
@@ -485,12 +383,6 @@ a {
 	opacity: 0.5;
 }
 
-/* Previous/Next: full text normally, icon-only below 576px (Bootstrap's
-   own sm breakpoint) - those two words were the widest items in the
-   bar, so on a narrow phone they were what pushed the whole pagination
-   row to wrap onto a second line. aria-label on the <a> itself already
-   carries the full word for screen readers regardless of which of
-   these is actually shown. */
 .page-link__icon {
 	display: none;
 }
@@ -502,7 +394,7 @@ a {
 	.page-link__icon {
 		display: inline;
 	}
-	/* Tighter spacing to match - less to fit, less room to fit it in. */
+	
 	.blog-pagination .page-item {
 		margin: 0 2px;
 	}
@@ -512,16 +404,7 @@ a {
 }
 
 /* ==========================================================================
-   8. Image loading skeleton
-   Deliberately minimal, not a re-add of the fuller skeleton/shimmer +
-   scroll-reveal system removed earlier - that one covered text too
-   (title/excerpt/meta bars) and cards fading in on scroll, which is
-   what read as "over" on a second look. This is just the shimmer
-   placeholder behind each <img> (hero + grid cards) until it finishes
-   loading, nothing else - text and layout render immediately as
-   normal, same as now. .article-preview__media / .article-card__media
-   already have position:relative (see sections 6/7 above), so the
-   skeleton span just needs position:absolute to sit behind the image.
+   9. Image loading skeleton
    ========================================================================== */
 .articleblockbg .img-skeleton {
 	position: absolute;

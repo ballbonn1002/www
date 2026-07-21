@@ -466,10 +466,19 @@
 	var PHONE_LOCAL = /^0[0-9]{8,9}$/;
 	var PHONE_INTL = /^\+66[0-9]{8,9}$/;
 
-	function validateNameValue(value, requiredMessage) {
+	// required-empty ("Please enter your...") ไม่เช็คจนกว่าจะกด submit -
+	// blur/input เช็คแค่ format error (อีเมล/เบอร์ผิดรูปแบบ) เท่านั้น ก่อน
+	// submit ครั้งแรก allowRequired จะเป็น false เสมอไม่ว่าจะเคยพิมพ์อะไร
+	// มาก่อนหรือไม่ก็ตาม
+	var formSubmitAttempted = false;
+
+	// requiredMessage คืนเฉพาะตอน allowRequired เป็น true (กด submit แล้ว)
+	// ไม่งั้นช่องว่างถือว่ายังไม่มีอะไรต้องฟ้อง - format error ยังเช็คตาม
+	// ปกติทันทีที่มีค่าอยู่ในช่อง
+	function validateNameValue(value, requiredMessage, allowRequired) {
 		var trimmed = (value || '').trim();
 		if (!trimmed) {
-			return requiredMessage;
+			return allowRequired ? requiredMessage : null;
 		}
 		if (trimmed.length > NAME_MAX_LENGTH || !NAME_PATTERN.test(trimmed)) {
 			return 'Please enter letters only, not numbers or symbols';
@@ -477,10 +486,10 @@
 		return null;
 	}
 
-	function validateEmailValue(value) {
+	function validateEmailValue(value, allowRequired) {
 		var trimmed = (value || '').trim();
 		if (!trimmed) {
-			return 'Please enter your email';
+			return allowRequired ? 'Please enter your email' : null;
 		}
 		if (trimmed.length > EMAIL_MAX_LENGTH || !EMAIL_PATTERN.test(trimmed)) {
 			return 'Invalid email - please check and try again (e.g. name@example.com)';
@@ -488,10 +497,10 @@
 		return null;
 	}
 
-	function validatePhoneValue(value) {
+	function validatePhoneValue(value, allowRequired) {
 		var trimmed = (value || '').trim();
 		if (!trimmed) {
-			return 'Please enter your phone number';
+			return allowRequired ? 'Please enter your phone number' : null;
 		}
 		if (!PHONE_ALLOWED_CHARS.test(trimmed)) {
 			return 'Invalid phone number - please enter 9-10 digits only';
@@ -507,14 +516,20 @@
 	// is-invalid/is-valid + the .invalid-feedback sibling it already
 	// renders server-side) - the one place both the blur handlers and the
 	// pre-submit check below touch the DOM, so a field looks identical
-	// regardless of which one caught the problem.
-	function applyFieldValidation($input, errorMessage) {
+	// regardless of which one caught the problem. ช่องว่างที่ยังไม่ถูก
+	// บังคับ required (errorMessage เป็น null เพราะ allowRequired เป็น
+	// false) ต้องไม่ขึ้นเขียว (is-valid) ด้วย เพราะมันยังไม่ได้ผ่านอะไร
+	// จริง ๆ - แค่ยังไม่ถึงเวลาฟ้องเฉย ๆ ต้องเป็นกลาง (ไม่มี class ทั้งคู่)
+	function applyFieldValidation($input, errorMessage, trimmedValue) {
 		var $feedback = $input.siblings('.invalid-feedback');
 		if (errorMessage) {
 			$input.addClass('is-invalid').removeClass('is-valid');
 			$feedback.text(errorMessage);
-		} else {
+		} else if (trimmedValue) {
 			$input.addClass('is-valid').removeClass('is-invalid');
+			$feedback.text('');
+		} else {
+			$input.removeClass('is-valid').removeClass('is-invalid');
 			$feedback.text('');
 		}
 		return !errorMessage;
@@ -523,17 +538,19 @@
 	function validateField(fieldId) {
 		var $input = $('#' + fieldId);
 		var value = $input.val();
+		var trimmed = (value || '').trim();
+		var allowRequired = formSubmitAttempted;
 		var errorMessage;
 		if (fieldId === 'firstName') {
-			errorMessage = validateNameValue(value, 'Please enter your first name');
+			errorMessage = validateNameValue(value, 'Please enter your first name', allowRequired);
 		} else if (fieldId === 'lastName') {
-			errorMessage = validateNameValue(value, 'Please enter your last name');
+			errorMessage = validateNameValue(value, 'Please enter your last name', allowRequired);
 		} else if (fieldId === 'contactEmail') {
-			errorMessage = validateEmailValue(value);
+			errorMessage = validateEmailValue(value, allowRequired);
 		} else if (fieldId === 'contactTel') {
-			errorMessage = validatePhoneValue(value);
+			errorMessage = validatePhoneValue(value, allowRequired);
 		}
-		return applyFieldValidation($input, errorMessage);
+		return applyFieldValidation($input, errorMessage, trimmed);
 	}
 
 	// DOMContentLoaded, not $(document).ready() directly - $ isn't
@@ -551,6 +568,21 @@
 			.ready(
 					function() {
 
+						// ช่องที่กำลังโชว์ error ค้างอยู่ (is-invalid) ให้เช็คซ้ำ
+						// ทันทีทุกครั้งที่พิมพ์ ไม่ต้องรอ blur รอบถัดไป -
+						// พอแก้/ลบจนข้อความ error ไม่จริงแล้ว จะได้หายทันที
+						// แทนที่จะค้างเตือนอยู่จนกว่าจะออกจากช่องอีกที ส่วน
+						// ช่องที่ยังไม่เคยมี error (สถานะปกติ) จะไม่ไปยุ่ง
+						// เพราะ required ไม่เช็คตอน blur อยู่แล้ว (เช็คตอน
+						// submit เท่านั้น) ไม่งั้นจะกลายเป็นเช็คทุกตัวอักษร
+						// ซึ่งเป็นอาการ heavy-handed แบบที่ไม่อยากได้
+						$('#firstName, #lastName, #contactEmail, #contactTel')
+								.on('input', function() {
+									if ($(this).hasClass('is-invalid')) {
+										validateField(this.id);
+									}
+								});
+
 						// Real-time feedback as each field loses focus,
 						// rather than only finding out everything's wrong
 						// at once on submit.
@@ -564,6 +596,12 @@
 								.click(
 										function(e) {
 											e.preventDefault(); // ป้องกันการส่งฟอร์มทันที
+
+											// กด submit ทั้งที ถือว่า user แสดงเจตนา
+											// ครบแล้ว - ฟิลด์ required ที่ยังว่างอยู่
+											// (ต่อให้ไม่เคย touch มาก่อน) ต้องฟ้องหมด
+											// ตอนนี้
+											formSubmitAttempted = true;
 
 											// ตรวจก่อน CAPTCHA - เรียก validator
 											// เดียวกับที่ blur ใช้ ให้แน่ใจว่าทุกช่อง
