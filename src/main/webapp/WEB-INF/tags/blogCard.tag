@@ -26,9 +26,7 @@
 		</div>
 		<div class="ardetail">
 			<h3 class="aum text-ellipsis-2">${blog.topic}</h3>
-			<c:if test="${not empty excerpt}">
-				<div class="ardetail__excerpt">${excerpt}</div>
-			</c:if>
+			<div class="ardetail__excerpt">${excerpt}</div>
 			<div
 				class="ardetail__meta d-flex align-items-center flex-wrap gap-4 text-secondary small">
 				<div class="d-flex align-items-center gap-2">
