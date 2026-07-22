@@ -220,6 +220,10 @@ a {
 	opacity: 1;
 }
 
+.article-preview__meta {
+	font-size: 15px;
+}
+
 /* ==========================================================================
    7. Article card list
    ========================================================================== */
@@ -234,6 +238,11 @@ a {
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
+	/* .ardetail__meta below reacts to this card's own rendered width via
+	   @container, not a viewport @media breakpoint - a 3-column lg grid
+	   and a 2-column sm one both produce "narrow card" at different
+	   viewport widths, so no single viewport number covers every case. */
+	container-type: inline-size;
 }
 
 .articleblockbg2:hover {
@@ -305,10 +314,40 @@ a {
 	margin-top: auto;
 }
 
+/* Primary fix - reacts to the card's actual width regardless of which
+   grid tier (2-col/3-col) produced it. Falls back to the viewport
+   @media below on browsers without container query support. */
+@container (max-width: 360px) {
+	.ardetail__meta {
+		flex-direction: column;
+		align-items: flex-start !important;
+	}
+	.articleblockbg .ardetail__meta {
+		gap: 4px !important;
+	}
+	.articleblockbg .ardetail__meta .vr {
+		display: none !important;
+	}
+}
+
+@media (max-width: 991px) {
+	.ardetail__meta {
+		flex-direction: column;
+		align-items: flex-start !important;
+	}
+	.articleblockbg .ardetail__meta {
+		gap: 4px !important;
+	}
+	.articleblockbg .ardetail__meta .vr {
+		display: none !important;
+	}
+}
+
 .ardetail__excerpt {
 	margin: 0.5rem 0;
 	font-size: 14px;
 	line-height: 1.5;
+	height: 4.5em;
 	color: #555;
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
@@ -320,6 +359,8 @@ a {
 	overflow: hidden;
 	width: 100%;
 	font-size: 20px;
+	line-height: 1.3;
+	height: 2.6em;
 	color: #000;
 	font-weight: bold;
 	transition: color 0.2s ease;

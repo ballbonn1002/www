@@ -46,18 +46,10 @@
   "dateModified": "${dateModified}"
 }
 </script>
+
+<link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
 <style>
-/* margin-top removed - it was pushing the whole page (including the
-   hero background below) down before ever reaching .article-hero,
-   which had its own separate margin-top:24px on top of that, stacking
-   into a visible gap of plain body background above the hero image.
-   Letting the hero start right at the very top instead (see
-   .article-hero/.article-hero__expand-btn below) so its background
-   flows behind the fixed navbar like a normal hero section, with only
-   the actually-clickable content inside it pushed down using
-   --navbar-offset (header.jsp) - not the whole page. */
 body, html {
-	font-size: 15px;
 	scroll-behavior: smooth;
 	padding-right: 0 !important;
 }
@@ -77,15 +69,6 @@ body, html {
 	padding: calc(3% + var(--navbar-offset, 65px));
 }
 
-/* Blurred backdrop only now - genuinely decorative (a scaled/blurred
-   duplicate sitting behind the real image below), so CSS background is
-   the correct choice here and doesn't need an alt text of its own. The
-   sharp foreground layer used to be a second ::after pseudo-element on
-   this same background-image trick, which meant the actual hero photo
-   had no <img> tag anywhere and therefore couldn't carry an alt
-   attribute at all - see .article-hero__image below, a real <img>
-   replacing it so the hero image is visible to Google Images/screen
-   readers again, not just decoration. */
 .article-hero::before {
 	content: "";
 	position: absolute;
@@ -113,14 +96,7 @@ body, html {
 
 .article-hero__expand-btn {
 	position: absolute;
-	/* .article-hero now starts right at the top of the page (no more
-	   margin-top pushing the whole hero down - see that rule above),
-	   so its own top edge sits behind the fixed navbar. This button is
-	   real, clickable content though, not background - offset it past
-	   --navbar-offset (header.jsp) plus the original 16px breathing
-	   room, so it lands just below the navbar instead of hidden
-	   underneath it. */
-	top: calc(var(--navbar-offset, 80px) + 28px);
+	top: calc(var(--navbar-offset, 80px)+ 28px);
 	right: 16px;
 	z-index: 3;
 	width: 40px;
@@ -203,14 +179,6 @@ body, html {
 	margin-right: -20px;
 }
 
-/* .container / .header removed - this page doesn't use those classes itself;
-   they were only colliding with header.jsp's real .container (hamburger
-   icon) and .header (navbar wrapper), since Tiles concatenates every
-   fragment's <style> into one page. */
-
-/* The progress container (grey background) */
-
-/* The progress bar (scroll indicator) */
 .progress-bar {
 	height: 0px;
 	background: #BD2125;
@@ -325,22 +293,6 @@ hr.detailnew {
 	margin-right: 5%;
 }
 
-/* Distraction-free reading layout: the article column is centered with
-   its own reading-measure max-width instead of the old col-lg-9 (9/12 of
-   the whole page), and there's no more col-lg-3 sidebar running alongside
-   it - related articles moved to their own horizontal section below the
-   content instead (see .related-articles-section). This matters for this
-   site specifically because the blog exists for SEO/topical-authority,
-   not pageview count: a sidebar competing for attention the whole way
-   down encourages bouncing away before finishing the article, and read-
-   through is what actually feeds the ranking signal this content is for.
-
-   720px keeps .article-body's 17px text at roughly 75-90 characters per
-   line - the classic 50-75 English-character reading measure, nudged up
-   because Thai runs a little denser per line than Latin text at the same
-   width (no inter-word spaces, stacked vowel/tone marks). Mobile skips
-   the max-width entirely: the screen is already narrow enough that
-   constraining it further would only waste space, not help readability. */
 .article-content {
 	margin: 0 auto;
 }
@@ -378,12 +330,6 @@ hr.detailnew {
 	padding-right: max(4px, calc(1.75rem - 8px - 18px));
 	border: 3px solid #BD2125;
 	border-radius: 10px;
-	/* !important จำเป็นจริง ๆ ตรงนี้ (ทั้ง resting และ :hover ด้านล่าง) -
-	   baseLayout.jsp มี "a { color: inherit !important; }" ใช้ทั้งเว็บ
-	   (บังคับลิงก์ตามสีพ่อแม่เสมอ กันไม่ให้ลิงก์ในเนื้อหาโผล่เป็นสีฟ้า
-	   default) - !important ชนะ specificity เสมอไม่ว่า selector จะเจาะจง
-	   แค่ไหน ต้องใช้ !important สู้เท่านั้น เหมือน #navbar-hover:hover,
-	   .active, .dropdown-item:hover ที่มีอยู่แล้ว (baseLayout.jsp/header.jsp) */
 	color: #BD2125 !important;
 	background-color: transparent;
 	font-weight: 600;
@@ -564,115 +510,50 @@ hr.detailnew {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	padding-top: 0%;
-	text-align: left;
-	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	cursor: pointer;
-}
-
-.articleblockbg2:hover {
-	transform: translateY(-6px);
-}
-
-.articleblockbg2:hover .aum {
-	color: #BD2125;
+	padding-bottom: 0;
 }
 
 .articleblockbg2__link, .articleblockbg2__link:hover {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	color: inherit;
-	text-decoration: none;
 }
 
 .articleblockbg3 {
-	overflow: hidden;
-	border-radius: 10px 10px 0 0;
 	flex-shrink: 0;
 }
 
 .article-card__media {
-	position: relative;
-	width: 100%;
-	aspect-ratio: 16/9;
 	overflow: hidden;
 }
 
-.article-card__image {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
-
-/* Matches blog.css's copy - see the comment there. */
 .article-card__views-badge {
-	position: absolute;
-	right: 8px;
-	bottom: 8px;
-	display: inline-flex;
-	align-items: center;
-	gap: 4px;
-	padding: 2px 7px;
-	border-radius: 100px;
-	background-color: rgba(0, 0, 0, 0.5);
-	color: #fff;
-	font-size: 11px;
-	line-height: 1.4;
+	font-size: 15px;
 }
 
 .ardetail {
-	padding-top: 5%;
-	padding-bottom: 5%;
-	padding-left: 5%;
-	padding-right: 5%;
-	background-color: white;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	min-height: 200px;
 	flex: 1;
-	display: flex;
-	flex-direction: column;
 }
 
-.ardetail__meta {
-	margin-top: auto;
+@container (max-width: 360px) { .ardetail__meta { flex-direction:column;
+	align-items: flex-start !important;
+	gap: 4px !important;
 }
 
-.ardetail__excerpt {
-	margin: 0.5rem 0;
-	font-size: 14px;
-	line-height: 1.5;
-	height: 4.5em;
-	color: #555;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+.ardetail__meta .vr {
+	display: none !important;
 }
 
-.aum {
-	overflow: hidden;
-	width: 100%;
-	font-size: 20px;
-	line-height: 1.3;
-	height: 2.6em;
-	color: #000;
-	font-weight: bold;
-	transition: color 0.2s ease;
 }
-
-.text-ellipsis-2 {
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	word-break: break-word;
+@media ( max-width : 991px) {
+	.ardetail__meta {
+		flex-direction: column;
+		align-items: flex-start !important;
+		gap: 4px !important;
+	}
+	.ardetail__meta .vr {
+		display: none !important;
+	}
 }
 
 :root {
@@ -884,8 +765,7 @@ hr.detailnew {
 <div class="article-hero"
 	<c:if test="${!empty path}">style="--hero-image: url('${constant.imgContext}${path}');"</c:if>>
 	<c:if test="${!empty path}">
-		<img class="article-hero__image"
-			src="${constant.imgContext}${path}"
+		<img class="article-hero__image" src="${constant.imgContext}${path}"
 			alt="${not empty alt_name ? alt_name : blog.topic}">
 		<button type="button" class="article-hero__expand-btn"
 			data-toggle="modal" data-target="#heroImageModal"
@@ -962,17 +842,6 @@ hr.detailnew {
 		</article>
 	</div>
 
-	<%--
-		relatedBlogs is manually curated by editors (article_related table) -
-		may genuinely be empty for articles nobody has linked yet, so this
-		whole section just doesn't render rather than showing an empty
-		heading (was falling back to latestBlogs before to avoid that, but
-		that's its own real section below now instead of a stand-in here).
-		No more end="2" cap either - see ArticleRelatedDAOImpl, the query
-		itself no longer caps at 3, and this is a scrollable row now
-		instead of a fixed 3-card grid, so there's no layout reason to cap
-		it in the JSP either.
-	--%>
 	<c:if test="${not empty relatedBlogs}">
 		<section class="related-articles-section">
 			<h2 class="related-articles-section__heading">
@@ -1012,18 +881,6 @@ hr.detailnew {
 		</section>
 	</c:if>
 
-	<%--
-		Separate from "related" above - this is just "everything recently
-		published", same maxLatestBlog cap (10) and data (latestBlogs) the
-		legacy page's own "บทความล่าสุด" section already uses (see
-		pages-front/blog/blog_detail.jsp), so this mirrors that rather than
-		inventing new scope/limits. Smaller dedicated card (.latest-card,
-		not blogCard.tag) - image + title only, no excerpt/meta, matching
-		what was asked for (a lighter card, not a shrunk copy of the
-		related-articles one). data-aos fade-up with a per-card stagger for
-		the "fades in gently" ask - reusing AOS (already loaded + .init()'d
-		on this page) rather than hand-rolling a second fade system.
-	--%>
 	<c:if test="${not empty latestBlogs}">
 		<section class="related-articles-section">
 			<h2 class="related-articles-section__heading">
