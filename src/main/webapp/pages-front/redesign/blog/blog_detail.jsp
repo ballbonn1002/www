@@ -807,13 +807,26 @@ hr.detailnew {
 
 			<div
 				class="article-meta-bar d-flex flex-wrap align-items-center justify-content-between gap-3">
-				<c:if test="${blog.timeUpdate != null}">
+				<div class="d-flex flex-wrap align-items-center gap-3">
+					<c:if test="${not empty authorName}">
+						<div
+							class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
+							<i class="bi bi-pencil-square"></i> <span>By ${authorName}</span>
+						</div>
+					</c:if>
+					<c:if test="${blog.timeUpdate != null}">
+						<div
+							class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
+							<i class="bi bi-calendar3"></i> <span>Last Update : <fmt:formatDate
+									pattern="d MMMM yyyy" value="${blog.timeUpdate}" /></span>
+						</div>
+					</c:if>
 					<div
 						class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
-						<i class="bi bi-calendar3"></i> <span>Last Update : <fmt:formatDate
-								pattern="d MMMM yyyy" value="${blog.timeUpdate}" /></span>
+						<i class="bi bi-eye"></i> <span><fmt:formatNumber
+								value="${blog.viewCount}" pattern="#,##0" /> views</span>
 					</div>
-				</c:if>
+				</div>
 
 				<div class="article-shares d-flex align-items-center gap-3">
 					<b>SHARES</b> <a

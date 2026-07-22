@@ -19,4 +19,6 @@ public interface BlogDAO {
 	public long countAllNews() throws Exception;
 
 	public void incrementViewCount(int articleId) throws Exception;
+
+	public String findAuthorNameByUserId(String userId) throws Exception;
 }

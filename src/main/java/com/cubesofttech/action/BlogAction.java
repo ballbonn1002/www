@@ -385,6 +385,7 @@ public class BlogAction extends ActionSupport {
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
+			request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
 			if (!isSpeculativeRequest() && !alreadyViewedThisSession(getArticleId())) {
 				blogDAO.incrementViewCount(getArticleId());
 			}

@@ -157,4 +157,20 @@ public class BlogDAOImpl implements BlogDAO {
 		}
 	}
 
+	@Override
+	public String findAuthorNameByUserId(String userId) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		String name = null;
+		try {
+			String sql = "SELECT name FROM user WHERE id = :userId";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setString("userId", userId);
+			Object result = query.uniqueResult();
+			name = result != null ? result.toString() : null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return name;
+	}
+
 }
