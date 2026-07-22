@@ -15,7 +15,7 @@ import com.cubesofttech.model.ArticleRelated;
 
 @Repository
 public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
-	
+
 	@Autowired
     private SessionFactory sessionFactory;
 
@@ -30,7 +30,7 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
             e.printStackTrace();
         }finally{
             //session.close();
-        }        
+        }
         return articleRelated;
 	}
 
@@ -45,25 +45,21 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
 					+ "LEFT JOIN user u ON a.user_id = u.id "
 					+ "LEFT JOIN file f ON f.file_id = a.file_id "
 					+ "LEFT JOIN page_uri p ON p.model_id = ar.related_article_id "
+					// Guards against the page_uri model_id collision - see BlogDAOImpl.findAllWithPageUri().
 					+ "WHERE ar.article_id = :articleId "
+					+ "AND (p.page_uri_id LIKE '%blog%' OR p.page_uri_id LIKE '%news%') "
 					+ "ORDER BY ar.related_article_id DESC";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter("articleId", articleId);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-			// No cap - this query backs both blog_detail.jsp's legacy and
-			// redesign pages (same BlogAction.blogDetail() call), so limiting
-			// it here for the redesign's card row was also silently capping
-			// legacy's related-articles list to 3 items. Redesign now shows
-			// this as a scrollable row instead, so it doesn't need a fixed
-			// count either - display-side concerns belong in the JSP, not
-			// the query.
+			// No cap - shared by legacy and redesign, display-side limits belong in the JSP.
 			articleRelated = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return articleRelated;
 	}
-	
+
 
 
 }

@@ -16,21 +16,13 @@ import com.cubesofttech.model.Blog;
 public class BlogDAOImpl implements BlogDAO {
 
 	/**
-	 * findAllBlogsWithPageUri/findAllNewsWithPageUri back both the hero
-	 * excerpt (ArticleHtmlSanitizer.toPreviewText, up to 2000 plain-text
-	 * chars) and the grid excerpt (120 plain-text chars) - every caller
-	 * only ever keeps a short prefix of "detail", but the column itself
-	 * can hold a full article body (tens of KB of HTML). Capped here at
-	 * the SQL level, well above the largest plain-text target to absorb
-	 * HTML markup overhead, so no caller's actual truncation length
-	 * changes - this only trims what used to be fetched over the wire and
-	 * then immediately discarded.
+	 * findAllBlogsWithPageUri/findAllNewsWithPageUri
 	 */
 	private static final int DETAIL_PREVIEW_RAW_LENGTH = 8000;
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@Override
 	public Blog findByArticleId(Integer articleId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
@@ -51,12 +43,13 @@ public class BlogDAOImpl implements BlogDAO {
 		List<Blog> articleList = null;
 		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
 		try {
-			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, a.detail, a.file_id, a.status, a.user_create, a.user_update, " 
+			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, a.detail, a.file_id, a.status, a.user_create, a.user_update, "
 					+ "a.time_create, a.time_update, u.name, f.path, p.page_uri_id "
-					+ "FROM article a LEFT JOIN user u ON a.user_id = u.id " 
+					+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 					+ "LEFT JOIN file f ON a.file_id = f.file_id "
 					+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-					+ "WHERE a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
+					+ "WHERE (p.page_uri_id LIKE '%blog%' OR p.page_uri_id LIKE '%news%') "
+					+ "AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			query.setTimestamp("nowParam", nowTs);
@@ -130,10 +123,6 @@ public class BlogDAOImpl implements BlogDAO {
 
 	/**
 	 * Total row count behind findAllBlogsWithPageUri/findAllNewsWithPageUri's
-	 * WHERE clause - numbered pagination (unlike a "load more" button) has to
-	 * know how many pages exist up front to render the page-number list, so
-	 * this runs as its own COUNT query rather than fetching everything to
-	 * measure it in Java.
 	 */
 	private long countByPageUriLike(String pageUriPattern) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
