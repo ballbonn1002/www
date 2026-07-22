@@ -81,11 +81,11 @@
 						data-aos-delay="200">${cleanDetail}</div>
 
 					<hr class="my-4 article-preview__divider" data-aos="fade-up"
-						data-aos-delay="300">
+						data-aos-delay="250">
 
 					<div
 						class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small"
-						data-aos="fade-up" data-aos-delay="300">
+						data-aos="fade-up" data-aos-delay="250">
 						<div class="d-flex align-items-center gap-2">
 							<i class="bi bi-calendar3"></i> <span><fmt:formatDate
 									pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
@@ -101,7 +101,7 @@
 
 					<a href="${newBlog.page_uri_id}"
 						class="btn btn-danger btn-lg article-preview__cta" role="button"
-						data-aos="fade-up" data-aos-delay="300">Read More</a>
+						data-aos="fade-up" data-aos-delay="250">Read More</a>
 				</div>
 			</div>
 
