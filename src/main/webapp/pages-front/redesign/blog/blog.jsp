@@ -33,159 +33,120 @@
 
 <!--------------------------home------------------------------------>
 
-	<div class="articleblockbg">
-		<c:set var="pageLabel" value="" />
-		<c:if test="${fn:contains(requestURI, 'blog')}">
-			<c:set var="pageLabel" value="Blog" />
-		</c:if>
-		<c:if test="${fn:contains(requestURI, 'news')}">
-			<c:set var="pageLabel" value="News" />
-		</c:if>
+<div class="articleblockbg">
+	<c:set var="pageLabel" value="" />
+	<c:if test="${fn:contains(requestURI, 'blog')}">
+		<c:set var="pageLabel" value="Blog" />
+	</c:if>
+	<c:if test="${fn:contains(requestURI, 'news')}">
+		<c:set var="pageLabel" value="News" />
+	</c:if>
 
-		<%
-		// BlogDAO's native-SQL queries (findAllBlogsWithPageUri/findAllNewsWithPageUri)
-		// use AliasToEntityMapResultTransformer, so "newBlog" is really a
-		// java.util.Map<String,Object> at runtime, not a Blog entity - the DAO's
-		// declared List<Blog> return type doesn't reflect that. EL (${newBlog.detail})
-		// works either way since it resolves Map keys and bean getters the same way,
-		// but a Java-level cast has to match the real runtime type.
-		Object newBlogRaw = request.getAttribute("newBlog");
+	<%
+	Object newBlogRaw = request.getAttribute("newBlog");
 
-		String rawDetail = "";
-		if (newBlogRaw instanceof Map) {
-			Object detail = ((Map) newBlogRaw).get("detail");
-			rawDetail = detail != null ? detail.toString() : "";
-		}
-		// Plain-text teaser, not clean()'s rich HTML - this excerpt is clamped
-		// to 6 lines by .article-preview__excerpt's CSS, and that clamp
-		// (-webkit-line-clamp + display:-webkit-box) only behaves reliably
-		// against flowing text. Block-level children from clean() (<p>, and
-		// especially any <img> the article body happens to embed) caused a
-		// visible reflow once those async-loaded images finished - the
-		// clamped box has to recompute once content it was measured against
-		// changes size. Plain text has nothing left to load asynchronously,
-		// so there's nothing left to reflow around.
-		request.setAttribute("cleanDetail", ArticleHtmlSanitizer.toPreviewText(rawDetail, 500));
-		%>
+	String rawDetail = "";
+	if (newBlogRaw instanceof Map) {
+		Object detail = ((Map) newBlogRaw).get("detail");
+		rawDetail = detail != null ? detail.toString() : "";
+	}
+	
+	request.setAttribute("cleanDetail", ArticleHtmlSanitizer.toPreviewText(rawDetail, 500));
+	%>
 
-		<comp:pageHeader label="${pageLabel}" />
-		<article class="article-preview" id="articledetail1">
-			<div class="row article-preview__row">
+	<comp:pageHeader label="${pageLabel}" />
+	<article class="article-preview" id="articledetail1">
+		<div class="row article-preview__row">
 
-				<div class="col-12 col-lg-6 order-lg-2">
-					<%--
-						data-aos on this wrapper, not the <img> itself - the image
-						already has its own opacity transition for the loading
-						skeleton (blog.css section 8, toggled by the img-skeleton
-						script below); AOS also drives opacity/transform on
-						whatever element carries data-aos, and having both target
-						the same element would fight over it (whichever set
-						opacity last would win, could leave the image stuck
-						invisible). Animating the figure instead sidesteps that
-						- the image's own fade-in still works exactly as before,
-						independent of this.
-					--%>
-					<figure class="article-preview__media" data-aos="fade-up">
-						<a href="${newBlog.page_uri_id}" class="article-preview__link"
-							aria-label="อ่านบทความ: ${newBlog.topic}">
-							<span class="img-skeleton" aria-hidden="true"></span>
-							<img class="article-preview__image"
-							src="${constant.imgContext}/${newBlog.path}"
-							alt="${newBlog.topic}" width="805" height="475"
-							fetchpriority="high">
-						</a>
-					</figure>
-				</div>
+			<div class="col-12 col-lg-6 order-lg-2">
+				
+				<figure class="article-preview__media" data-aos="fade-up">
+					<a href="${newBlog.page_uri_id}" class="article-preview__link"
+						aria-label="อ่านบทความ: ${newBlog.topic}"> <span
+						class="img-skeleton" aria-hidden="true"></span> <img
+						class="article-preview__image"
+						src="${constant.imgContext}/${newBlog.path}"
+						alt="${newBlog.topic}" width="805" height="475"
+						fetchpriority="high">
+					</a>
+				</figure>
+			</div>
 
-				<div class="col-12 col-lg-6 order-lg-1">
-					<div class="article-preview__content">
-						<h2 class="article-preview__title" data-aos="fade-up"
-							data-aos-delay="100">${newBlog.topic}</h2>
+			<div class="col-12 col-lg-6 order-lg-1">
+				<div class="article-preview__content">
+					<h2 class="article-preview__title" data-aos="fade-up"
+						data-aos-delay="100">${newBlog.topic}</h2>
 
-						<%-- 						<div class="article-preview__excerpt">${newBlog.detail}</div> --%>
-						<%-- No itemprop="articleBody" here - this is a truncated teaser
-							 (see cleanDetail above), not the full article body. That
-							 microdata belongs only on blog_detail.jsp's real articleBody,
-							 confirmed working there via Google Rich Results Test - do not
-							 add it back here or touch blog_detail.jsp. --%>
-						<div class="article-preview__excerpt" data-aos="fade-up"
-							data-aos-delay="200">${cleanDetail}</div>
+					<div class="article-preview__excerpt" data-aos="fade-up"
+						data-aos-delay="200">${cleanDetail}</div>
 
-						<hr class="my-4 article-preview__divider" data-aos="fade-up" data-aos-delay="300">
+					<hr class="my-4 article-preview__divider" data-aos="fade-up"
+						data-aos-delay="300">
 
-						<div
-							class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small"
-							data-aos="fade-up" data-aos-delay="300">
-							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-calendar3"></i> <span><fmt:formatDate
-										pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
-							</div>
-
-							<div class="vr"></div>
-
-							<div class="d-flex align-items-center gap-2">
-								<i class="bi bi-pencil-square"></i> <span>By
-									${newBlog.name}</span>
-							</div>
+					<div
+						class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small"
+						data-aos="fade-up" data-aos-delay="300">
+						<div class="d-flex align-items-center gap-2">
+							<i class="bi bi-calendar3"></i> <span><fmt:formatDate
+									pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
 						</div>
 
-						<a href="${newBlog.page_uri_id}"
-							class="btn btn-danger btn-lg article-preview__cta" role="button"
-							data-aos="fade-up" data-aos-delay="300">Read
-							More</a>
+						<div class="vr"></div>
+
+						<div class="d-flex align-items-center gap-2">
+							<i class="bi bi-pencil-square"></i> <span>By
+								${newBlog.name}</span>
+						</div>
 					</div>
+
+					<a href="${newBlog.page_uri_id}"
+						class="btn btn-danger btn-lg article-preview__cta" role="button"
+						data-aos="fade-up" data-aos-delay="300">Read More</a>
 				</div>
-
 			</div>
-		</article>
-		<%@ include file="blog_list.jsp"%>
 
-		<script>
-			if (location.hash) {
-				var target = document.querySelector(location.hash);
-				if (target) {
-					target.scrollIntoView();
-				}
+		</div>
+	</article>
+	<%@ include file="blog_list.jsp"%>
+
+	<script>
+		if (location.hash) {
+			var target = document.querySelector(location.hash);
+			if (target) {
+				target.scrollIntoView();
 			}
-		</script>
+		}
+	</script>
 
-		<script>
-			document.querySelectorAll('.article-preview__image, .article-card__image')
-				.forEach(function(img) {
-					var skeleton = img.previousElementSibling;
-					function reveal() {
-						img.classList.add('is-loaded');
-						if (skeleton && skeleton.classList.contains('img-skeleton')) {
-							skeleton.classList.add('is-hidden');
-						}
-					}
-					if (img.complete) {
-						reveal();
-					} else {
-						img.addEventListener('load', reveal);
-						img.addEventListener('error', reveal);
-					}
-				});
-		</script>
-	</div>
+	<script>
+		document.querySelectorAll(
+				'.article-preview__image, .article-card__image')
+				.forEach(
+						function(img) {
+							var skeleton = img.previousElementSibling;
+							function reveal() {
+								img.classList.add('is-loaded');
+								if (skeleton
+										&& skeleton.classList
+												.contains('img-skeleton')) {
+									skeleton.classList.add('is-hidden');
+								}
+							}
+							if (img.complete) {
+								reveal();
+							} else {
+								img.addEventListener('load', reveal);
+								img.addEventListener('error', reveal);
+							}
+						});
+	</script>
+</div>
 
-
-<%--
-	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
-	<head> (every page shares it) - this page had its own second copy of
-	both. Safe to drop here specifically (checked first): this page has
-	zero data-aos elements anyway, and no $.ajax/.load/effects calls.
-	AOS.init() below still needs to stay - baseLayout.jsp only loads the
-	library, each page still calls .init() itself.
---%>
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
-	// once:true - AOS defaults to replaying an element's animation every
-	// time it re-enters the viewport (scrolling back up past it counts
-	// too), not just the first time. Plays once per element instead.
 	AOS.init({
 		once : true
 	});
