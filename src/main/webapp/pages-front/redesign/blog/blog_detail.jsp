@@ -609,6 +609,22 @@ hr.detailnew {
 	border-top-right-radius: 10px;
 }
 
+/* Matches blog.css's copy - see the comment there. */
+.article-card__views-badge {
+	position: absolute;
+	right: 8px;
+	bottom: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 7px;
+	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	font-size: 11px;
+	line-height: 1.4;
+}
+
 .ardetail {
 	padding-top: 5%;
 	padding-bottom: 5%;

@@ -39,7 +39,7 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<ArticleRelated> articleRelated = null;
 		try {
-			String sql = "SELECT ar.article_id, ar.related_article_id, a.topic, a.detail, a.time_post, u.name, f.path, p.page_uri_id "
+			String sql = "SELECT ar.article_id, ar.related_article_id, a.topic, a.detail, a.time_post, a.view_count, u.name, f.path, p.page_uri_id "
 					+ "FROM article_related ar "
 					+ "INNER JOIN article a ON ar.related_article_id = a.article_id "
 					+ "LEFT JOIN user u ON a.user_id = u.id "

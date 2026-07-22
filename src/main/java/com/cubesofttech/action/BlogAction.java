@@ -5,11 +5,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -40,18 +43,13 @@ public class BlogAction extends ActionSupport {
 	public static final String ARTICLEID = "articleId";
 	public static final Integer MAXLATESTBLOG = 10;
 	public static final String REDESIGN = "redesign";
-	// 12 divides evenly into the 3-per-row grid (col-lg-4) blog.jsp renders,
-	// so a page never ends on a half-empty row.
+	// Divides evenly into the 3-per-row grid (col-lg-4).
 	public static final int PAGE_SIZE = 12;
-	// The featured "latest article" card is always the single newest
-	// article, fetched separately from (and never duplicated into) the
-	// paginated grid below it - the grid's dataset starts right after it.
+	// Featured "latest article" card, fetched separately from the grid.
 	private static final int HERO_COUNT = 1;
-	// "No limit" for the old (non-redesign) blog.jsp/news pages, which have
-	// no pagination UI and always expect every article in one shot.
+	// "No limit" for the legacy (non-redesign) unpaginated pages.
 	private static final int LEGACY_UNPAGINATED_LIMIT = 10000;
-	// Sentinel in the page-number list blog.jsp's pagination component reads
-	// to know where to render "..." instead of a page link.
+	// Sentinel for "..." in the pagination component's page-number list.
 	public static final int PAGE_ELLIPSIS = -1;
 	private String metaDescription = "Cube SoftTech is an innovative, high-quality software development company. We are a professional company, focused on IT consulting, web application development &amp; integration. Our services cover every aspect of web / mobile development, from start to finish. From one off projects to a fully outsourced development team., Java Outsourcing, IT Staff Outsourcing, IT Outsource, Staff Outsourcing, IT Staffing solutions, Outsource IT Staff, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง";
 
@@ -88,10 +86,8 @@ public class BlogAction extends ActionSupport {
 	private String fileName;
 	private String fileType;
 	private String srcDelete;
-	// Bound from the "page" request param (blog.jsp?page=2) - 1-based,
-	// defaults to page 1 when absent. Only clamped against <1 here; the
-	// upper bound (page beyond how many actually exist) isn't known until
-	// init() has queried the count, so that clamp happens there instead.
+	// "page" request param, 1-based. Upper-bound clamp happens in
+	// initRedesignPagination() once totalPages is known.
 	private int page = 1;
 
 	File articleImageFile;
@@ -236,12 +232,7 @@ public class BlogAction extends ActionSupport {
 			if (redesign) {
 				initRedesignPagination(isNews);
 			} else {
-				// The un-redesigned blog.jsp/news pages have no pagination
-				// UI of their own - they render every article at once, with
-				// the hero as blogList's own index 0 (their forEach skips it
-				// via begin="1"). Left exactly as it worked before this
-				// feature existed, so the old/new toggle keeps comparing
-				// like for like.
+				// Legacy pages render every article at once, no pagination UI.
 				initLegacyUnpaginated(isNews);
 			}
 
@@ -254,12 +245,7 @@ public class BlogAction extends ActionSupport {
 		}
 	}
 
-	/**
-	 * Redesign path: hero and grid are two separate queries (grid offset
-	 * past the hero article - see fetchGridPage()), plus the totalPages/
-	 * pageNumbers/SEO attributes the new blog_list.jsp pagination and
-	 * baseLayout.jsp's rel=next/prev/title need.
-	 */
+	/** Redesign path: hero + paginated grid as separate queries. */
 	private void initRedesignPagination(boolean isNews) throws Exception {
 		List<Blog> heroFetch = isNews
 				? blogDAO.findAllNewsWithPageUri(HERO_COUNT, 0)
@@ -272,10 +258,7 @@ public class BlogAction extends ActionSupport {
 		long totalGridArticles = Math.max(totalArticles - HERO_COUNT, 0);
 		int totalPages = (int) Math.max(1, Math.ceil(totalGridArticles / (double) PAGE_SIZE));
 
-		// A page beyond what actually exists (or a value setPage() already
-		// couldn't make sense of) quietly falls back to the last valid page
-		// instead of rendering an empty grid or letting a bad request param
-		// surface as an error to the visitor.
+		// Out-of-range page falls back to the last valid one.
 		if (page > totalPages) {
 			page = totalPages;
 		}
@@ -285,28 +268,16 @@ public class BlogAction extends ActionSupport {
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("pageNumbers", buildPageNumbers(page, totalPages));
 
-		// Clean path (no query string) for baseLayout.jsp to build
-		// rel="next"/rel="prev" links from - requestURI already has
-		// ?page=N mixed in for the *current* request, which isn't reusable
-		// for constructing a link to a *different* page.
+		// Clean path (no query string) for baseLayout.jsp's rel=next/prev.
 		request.setAttribute("pageBaseUri", isNews ? "/news" : "/blog");
 
-		// RewriteFilter sets "title" to "" for every request that isn't a
-		// PageUri-forwarded CMS page (blog/news included) - safe to
-		// overwrite here. Page 1 keeps the plain tiles title ("Blog"/
-		// "News") unchanged; later pages get a suffix so their <title>
-		// isn't byte-identical to page 1's (duplicate-content signal).
+		// Distinct <title> per page beyond 1 (duplicate-content signal otherwise).
 		if (page > 1) {
 			request.setAttribute("title", " - หน้า " + page);
 		}
 	}
 
-	/**
-	 * Old path: one query, every article, exactly as it worked before
-	 * pagination existed. LEGACY_UNPAGINATED_LIMIT stands in for "no limit"
-	 * (the standard LIMIT/OFFSET idiom for it) rather than adding a second
-	 * no-arg DAO method back just for this one caller.
-	 */
+	/** Legacy path: one query, every article, no pagination. */
 	private void initLegacyUnpaginated(boolean isNews) throws Exception {
 		List<Blog> blogList = isNews
 				? blogDAO.findAllNewsWithPageUri(LEGACY_UNPAGINATED_LIMIT, 0)
@@ -318,11 +289,7 @@ public class BlogAction extends ActionSupport {
 		request.setAttribute("blogList", blogList);
 	}
 
-	/**
-	 * Fetches exactly one page's worth of grid articles, offset past the
-	 * hero article so the two never overlap regardless of which page is
-	 * requested.
-	 */
+	/** One page of grid articles, offset past the hero article. */
 	private List<Blog> fetchGridPage(boolean isNews, int pageNum) throws Exception {
 		int offset = HERO_COUNT + (pageNum - 1) * PAGE_SIZE;
 		return isNews
@@ -330,13 +297,7 @@ public class BlogAction extends ActionSupport {
 				: blogDAO.findAllBlogsWithPageUri(PAGE_SIZE, offset);
 	}
 
-	/**
-	 * Page numbers for the Bootstrap pagination component, with PAGE_ELLIPSIS
-	 * standing in for a "..." gap - always shows page 1, the current page's
-	 * immediate neighbors, and the last page, collapsing everything between
-	 * into a single ellipsis rather than listing every page when there are
-	 * many.
-	 */
+	/** Page 1, current page's neighbors, and the last page; rest collapse to PAGE_ELLIPSIS. */
 	private List<Integer> buildPageNumbers(int currentPage, int totalPages) {
 		List<Integer> pages = new ArrayList<Integer>();
 		if (totalPages <= 1) {
@@ -361,11 +322,39 @@ public class BlogAction extends ActionSupport {
 		return pages;
 	}
 
-	/**
-	 * Internal-only preview toggle: set via /redesign-preview-on (see
-	 * RedesignPreviewAction), never exposed as a URL parameter that a regular
-	 * visitor could set themselves.
-	 */
+	private static final String VIEWED_ARTICLES_SESSION_KEY = "viewedArticleIds";
+
+	/** Session-scoped view dedup - avoids double-counting baseLayout.jsp's tracking-param cleanup redirect. */
+	@SuppressWarnings("unchecked")
+	private boolean alreadyViewedThisSession(int articleId) {
+		HttpSession session = request.getSession();
+		Set<Integer> viewed = (Set<Integer>) session.getAttribute(VIEWED_ARTICLES_SESSION_KEY);
+		if (viewed == null) {
+			viewed = new HashSet<Integer>();
+			session.setAttribute(VIEWED_ARTICLES_SESSION_KEY, viewed);
+		}
+		if (viewed.contains(articleId)) {
+			return true;
+		}
+		viewed.add(articleId);
+		return false;
+	}
+
+	/** Sec-Purpose/Purpose/X-Moz all mark a prefetch/prerender request, not a real visit. */
+	private boolean isSpeculativeRequest() {
+		String secPurpose = request.getHeader("Sec-Purpose");
+		if (secPurpose != null && secPurpose.toLowerCase().contains("prefetch")) {
+			return true;
+		}
+		String purpose = request.getHeader("Purpose");
+		if (purpose != null && purpose.equalsIgnoreCase("prefetch")) {
+			return true;
+		}
+		String xMoz = request.getHeader("X-Moz");
+		return xMoz != null && xMoz.equalsIgnoreCase("prefetch");
+	}
+
+	// Internal preview toggle set via /redesign-preview-on, not a URL param.
 	private boolean isRedesignPreviewEnabled() {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {
@@ -396,6 +385,9 @@ public class BlogAction extends ActionSupport {
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
+			if (!isSpeculativeRequest() && !alreadyViewedThisSession(getArticleId())) {
+				blogDAO.incrementViewCount(getArticleId());
+			}
 			log.debug("blog.detail: " + blog.getDetail());
 			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
 			request.setAttribute("cleanDetail", cleanDetail);

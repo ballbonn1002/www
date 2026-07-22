@@ -17,4 +17,6 @@ public interface BlogDAO {
 	public long countAllBlogs() throws Exception;
 
 	public long countAllNews() throws Exception;
+
+	public void incrementViewCount(int articleId) throws Exception;
 }

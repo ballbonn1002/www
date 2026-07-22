@@ -4,23 +4,6 @@
 
 /* ==========================================================================
    0. Bootstrap 5 reboot guard
-   footer.jsp loads Bootstrap 5.3.0's CSS (needed there for its own
-   data-bs-* collapse widgets - see footer.jsp for why it can't just be
-   removed). A <link rel="stylesheet"> applies to the whole document no
-   matter where its own tag physically sits in the HTML, so Bootstrap
-   5's reboot layer (its version of normalize.css) restyles bare HTML
-   elements everywhere once it finishes loading, not just inside footer.
-   Same root cause already found and fixed for nav.navbar / .navbar
-   .dropdown-menu in header.jsp: two frameworks' reboots both targeting
-   the same bare tag selector, same specificity, whichever finishes
-   loading last wins the tie - footer's is always last since it's the
-   last tile rendered.
-   Fixed the same way every time: a selector scoped under
-   .articleblockbg (this page's own top-level wrapper) beats a bare tag
-   selector from either Bootstrap version on specificity alone,
-   regardless of load order - no !important needed. Add new entries
-   here as more turn up, instead of scattering one-off fixes through
-   the rest of the file.
    ========================================================================== */
 .articleblockbg figure {
 	margin: 0;
@@ -130,14 +113,6 @@ a {
 	padding-right: 0%;
 }
 
-/* Scoped grid override: only affects the two col-lg-6 columns inside this
-   page's featured-article row, instead of every col-lg-6 element site-wide
-   (services.jsp and contacts.jsp also define col-lg-6 markup and would
-   otherwise inherit this height unintentionally if ever rendered together).
-   Wrapped in the same lg breakpoint Bootstrap itself uses for col-lg-6 -
-   without this, the fixed height/50% width applied at every screen size,
-   fighting Bootstrap's own mobile stacking and breaking the layout below
-   992px. */
 @media ( min-width : 992px) {
 	.article-preview__row .col-lg-6 {
 		-ms-flex: 0 0 50%;
@@ -295,6 +270,21 @@ a {
 	object-fit: cover;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
+}
+
+.article-card__views-badge {
+	position: absolute;
+	right: 8px;
+	bottom: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 7px;
+	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	font-size: 15px;
+	line-height: 1.4;
 }
 
 .ardetail {

@@ -8,71 +8,28 @@
 <%@ attribute name="eager" required="false" type="java.lang.Boolean"%>
 
 <%--
-	Shared card: used by the blog/news listing page (blog.jsp) and both
-	sidebar sections on the article detail page (blog_detail.jsp - related
-	articles, latest articles). "blog" is a java.util.Map (see
-	ArticleHtmlSanitizer/BlogDAOImpl - these queries all use
-	AliasToEntityMapResultTransformer), keyed by topic/path/page_uri_id/
-	time_post/name. "excerpt" is computed by the caller (via
-	ArticleHtmlSanitizer.toPreviewText) rather than sanitized in here, so
-	this tag stays presentation-only with no business logic of its own.
-
-	Deliberately doesn't include its own grid-column wrapper (col-*) -
-	blog.jsp needs this 3-per-row in a full-width .row, while
-	blog_detail.jsp's sidebar needs it stacked full-width in an already
-	narrow column, so the grid slot is the caller's decision, not this
-	card's.
---%>
-<%--
-	The whole card is one link now - it used to be just the image wrapped in
-	<a>, with .ardetail (title/excerpt/meta) sitting outside it as a plain
-	sibling div, so clicking the text below the image did nothing even
-	though .articleblockbg2 already has cursor:pointer suggesting the whole
-	card is clickable. role="button" also dropped - this is a real
-	navigation link, not a button, so it shouldn't override how screen
-	readers announce it.
+	Shared card: blog.jsp's grid + blog_detail.jsp's related/latest
+	sidebars. "blog" is a Map (AliasToEntityMapResultTransformer), keyed
+	by topic/path/page_uri_id/time_post/name/view_count. No grid-column
+	wrapper (col-*) - that's the caller's decision, not this card's.
 --%>
 <div class="articleblockbg2">
 	<a href="${blog.page_uri_id}" class="articleblockbg2__link">
 		<div class="articleblockbg3">
-			<%--
-				.article-card__media only has an effect on blog.jsp, which
-				defines its aspect-ratio CSS. blog_detail.jsp's sidebar reuses
-				this same tag but never adds that CSS, so there this wrapper
-				renders as an inert, unstyled element and the card looks exactly
-				as it did before.
-			--%>
-			<%--
-				eager (from the caller, defaults to false/lazy when omitted -
-				blog_detail.jsp's sidebar usage never sets it) marks the first
-				row of the blog list grid so it doesn't fight the rest of the
-				page's same-origin images for Tomcat's HTTP/1.1 connection pool -
-				see blog_list.jsp for which cards get it. fetchpriority="high"
-				only makes sense paired with eager loading, so the two always go
-				together.
-			--%>
+			<%-- article-card__media/img-skeleton CSS only exists in blog.css (blog.jsp) - inert on blog_detail.jsp's sidebar, which doesn't load that file. eager marks the grid's first row for fetchpriority="high". --%>
 			<div class="article-card__media">
-				<%--
-					img-skeleton span: only has an effect on blog.jsp, same as
-					.article-card__media's own aspect-ratio CSS (see the comment
-					on that class further up) - blog_detail.jsp's sidebar doesn't
-					load blog.css, so this renders as an inert, unstyled span
-					there, same as everything else this tag already shares.
-				--%>
 				<span class="img-skeleton" aria-hidden="true"></span>
-				<%--
-					width/height are a 16:9 intrinsic-ratio hint matching
-					.article-card__media's CSS aspect-ratio (blog.css) - actual
-					rendered size is still 100% of the wrapper either way (CSS
-					below overrides these). Previously "100%"/"250px", which
-					aren't valid HTML attribute values (must be plain integers),
-					so browsers ignored them outright as an aspect-ratio hint.
-				--%>
+				<%-- width/height are a 16:9 intrinsic-ratio hint (must be plain integers, not "100%"/"250px") - actual size is 100% via CSS either way. --%>
 				<img class="article-card__image"
 					src="${constant.imgContext}${blog.path}" width="320"
 					height="180" alt="${blog.topic}"
 					<c:if test="${eager}">fetchpriority="high"</c:if>
 					<c:if test="${!eager}">loading="lazy"</c:if>>
+				<%-- Overlaid on the image, not in .ardetail__meta - kept a 3rd meta item from wrapping onto a 2nd line on some cards but not others. --%>
+				<span class="article-card__views-badge">
+					<i class="bi bi-eye"></i> <fmt:formatNumber
+						value="${blog.view_count}" pattern="#,##0" />
+				</span>
 			</div>
 		</div>
 		<div class="ardetail">
