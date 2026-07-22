@@ -244,7 +244,7 @@ html{background-color:#F5F5F5;}
 body, html {
 	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai',
 		sans-serif !important;
-	font-size: 15px;
+	font-size: 16px;
 	scroll-behavior: smooth;
 }
 

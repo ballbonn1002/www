@@ -131,7 +131,7 @@
 
 						<a href="${newBlog.page_uri_id}"
 							class="btn btn-danger btn-lg article-preview__cta" role="button"
-							data-aos="fade-up" data-aos-delay="400">Read
+							data-aos="fade-up" data-aos-delay="300">Read
 							More</a>
 					</div>
 				</div>
@@ -140,18 +140,6 @@
 		</article>
 		<%@ include file="blog_list.jsp"%>
 
-		<%--
-			#articledetail (blog_list.jsp) is already in the DOM at this point
-			in parsing - no need to wait for the 'load' event (which waits on
-			every image on the page finishing, and turned out unreliable here
-			anyway). Runs immediately instead: the hero image already has
-			explicit width/height so it doesn't reflow after this point, and
-			the grid cards reserve their box via aspect-ratio (blog.css), so
-			nothing below shifts the target's position after this runs either.
-			scrollIntoView() still respects #articledetail's scroll-margin-top
-			(blog.css, offsets the fixed navbar) and still animates smoothly
-			since that's inherited from the site-wide CSS (baseLayout.jsp).
-		--%>
 		<script>
 			if (location.hash) {
 				var target = document.querySelector(location.hash);
@@ -161,13 +149,6 @@
 			}
 		</script>
 
-		<%--
-			Minimal image-loading skeleton (blog.css section 8) - fades each
-			<img> in and hides its shimmer span once that specific image has
-			actually finished loading. img.complete already true (cache hit)
-			skips straight to the loaded state instead of waiting on a 'load'
-			event that already fired.
-		--%>
 		<script>
 			document.querySelectorAll('.article-preview__image, .article-card__image')
 				.forEach(function(img) {
