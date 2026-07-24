@@ -201,6 +201,21 @@
 	border-radius: 10px;
 }
 
+.contact-form-box .input-group .form-control {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.contact-form-box .input-group-text {
+	background-color: #fff;
+	border-right: 0;
+	color: #BD2125;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 #sendEmail {
 	border-radius: 10px;
 	width: 100%;
@@ -315,18 +330,28 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<input type="email"
-							class="form-control ${not empty emailError ? 'is-invalid' : ''}"
-							placeholder="E-Mail" name="contactEmail" id="contactEmail"
-							value="${contactEmail}">
-						<div class="invalid-feedback">${emailError}</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="bi bi-envelope"></i></span>
+							</div>
+							<input type="email"
+								class="form-control ${not empty emailError ? 'is-invalid' : ''}"
+								placeholder="E-Mail" name="contactEmail" id="contactEmail"
+								value="${contactEmail}">
+							<div class="invalid-feedback">${emailError}</div>
+						</div>
 					</div>
 					<div class="form-group">
-						<input type="tel"
-							class="form-control ${not empty phoneError ? 'is-invalid' : ''}"
-							placeholder="Telephone" name="contactTel" id="contactTel"
-							value="${contactTel}">
-						<div class="invalid-feedback">${phoneError}</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="bi bi-telephone"></i></span>
+							</div>
+							<input type="tel"
+								class="form-control ${not empty phoneError ? 'is-invalid' : ''}"
+								placeholder="Telephone" name="contactTel" id="contactTel"
+								value="${contactTel}">
+							<div class="invalid-feedback">${phoneError}</div>
+						</div>
 					</div>
 					<div class="form-group">
 						<textarea class="form-control" rows="3" placeholder="Message"
