@@ -787,16 +787,22 @@ left
 }
 
 .home-partners__marquee {
-	overflow-x: auto;
-	scrollbar-width: none;
-	-ms-overflow-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
 	-webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent
 		100%);
 	mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent
 		100%);
 }
 
-.home-partners__marquee::-webkit-scrollbar {
+.home-partners__marquee-row {
+	overflow-x: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.home-partners__marquee-row::-webkit-scrollbar {
 	display: none;
 }
 
@@ -1287,84 +1293,99 @@ left
 
 		<div class="">
 			<div class="home-partners__marquee" id="homePartnersMarquee">
-				<div class="home-partners__logos">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/1.png" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/2.jpg"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/3.png" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/4.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/5.png" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/6.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/7.jpg" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/18.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/19.jpg" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/9.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/10.jpg" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/11.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/12.jpg" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/13.jpg"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/14.jpg" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/15.jpg"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/16.gif" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/17.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/8.jpg" alt=""> <img
-						class="home-partners__logo" src="/pages-front/img/customer/20.png"
-						alt=""> <img class="home-partners__logo"
-						src="/pages-front/img/customer/21.jpg" alt="">
+				<%-- 21 logos split across 2 rows (alternating, so both come
+					 out close in width) - both rows drift the same direction
+					 at the same speed (see home-partners-marquee IIFE below),
+					 each looping on its own duplicated set. --%>
+				<div class="home-partners__marquee-row"
+					id="homePartnersMarqueeRow1">
+					<div class="home-partners__logos">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/1.png" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/3.png"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/5.png" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/7.jpg"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/19.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/10.jpg"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/12.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/14.jpg"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/16.gif" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/8.jpg"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/21.jpg" alt="">
 
-					<%-- duplicated so the auto-scroll loop wraps seamlessly (see
-						 home-partners-marquee IIFE below) - same 21 logos again --%>
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/1.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/2.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/3.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/4.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/5.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/6.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/7.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/18.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/19.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/9.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/10.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/11.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/12.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/13.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/14.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/15.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/16.gif" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/17.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/8.jpg" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/20.png" alt="" aria-hidden="true">
-					<img class="home-partners__logo"
-						src="/pages-front/img/customer/21.jpg" alt="" aria-hidden="true">
+						<%-- duplicated so the auto-scroll loop wraps seamlessly --%>
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/1.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/3.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/5.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/7.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/19.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/10.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/12.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/14.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/16.gif" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/8.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/21.jpg" alt="" aria-hidden="true">
+					</div>
+				</div>
+
+				<div class="home-partners__marquee-row"
+					id="homePartnersMarqueeRow2">
+					<div class="home-partners__logos">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/2.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/4.png"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/6.png" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/18.png"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/9.png" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/11.png"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/13.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/15.jpg"
+							alt=""> <img class="home-partners__logo"
+							src="/pages-front/img/customer/17.png" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/20.png"
+							alt="">
+
+						<%-- duplicated so the auto-scroll loop wraps seamlessly --%>
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/2.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/4.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/6.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/18.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/9.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/11.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/13.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/15.jpg" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/17.png" alt="" aria-hidden="true">
+						<img class="home-partners__logo"
+							src="/pages-front/img/customer/20.png" alt="" aria-hidden="true">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -1430,85 +1451,98 @@ left
 	})();
 
 	(function() {
-		var marquee = document.getElementById('homePartnersMarquee');
-		if (!marquee) {
-			return;
-		}
+		// Both rows run this same drift/pause/drag behavior independently -
+		// each keeps its own scroll position and loops on its own content
+		// width, but they share the same speed and direction so they read
+		// as one calm, unified stream of logos rather than two competing
+		// for attention.
+		function initMarqueeRow(marquee) {
+			var paused = false;
+			var inView = false;
+			var speed = 1; // px per frame (~120px/s at 60fps)
 
-		var paused = false;
-		var inView = false;
-		var speed = 1; // px per frame (~120px/s at 60fps)
-
-		function tick() {
-			if (!paused && inView) {
-				marquee.scrollLeft += speed;
-				var halfWidth = marquee.scrollWidth / 2;
-				if (marquee.scrollLeft >= halfWidth) {
-					marquee.scrollLeft -= halfWidth;
+			function tick() {
+				if (!paused && inView) {
+					marquee.scrollLeft += speed;
+					var halfWidth = marquee.scrollWidth / 2;
+					if (marquee.scrollLeft >= halfWidth) {
+						marquee.scrollLeft -= halfWidth;
+					}
 				}
+				requestAnimationFrame(tick);
 			}
 			requestAnimationFrame(tick);
-		}
-		requestAnimationFrame(tick);
 
-		var observer = new IntersectionObserver(function(entries) {
-			entries.forEach(function(entry) {
-				inView = entry.isIntersecting;
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					inView = entry.isIntersecting;
+				});
+			}, {
+				threshold : 0.1
 			});
-		}, {
-			threshold : 0.1
-		});
-		observer.observe(marquee);
+			observer.observe(marquee);
 
-		// Pause the auto-drift while the visitor is actively hovering/touching/
-		// dragging it themselves. Mouse resumes the instant the pointer leaves;
-		// touch waits a moment since a swipe still has momentum scrolling to
-		// finish, and resuming auto-drift mid-momentum would fight it.
-		var resumeTimer = null;
-		function pause() {
-			paused = true;
-			clearTimeout(resumeTimer);
-		}
-		function resumeNow() {
-			clearTimeout(resumeTimer);
-			paused = false;
-		}
-		function resumeSoon() {
-			clearTimeout(resumeTimer);
-			resumeTimer = setTimeout(resumeNow, 1200);
-		}
-		marquee.addEventListener('mouseenter', pause);
-		marquee.addEventListener('mouseleave', resumeNow);
-		marquee.addEventListener('touchstart', pause, {
-			passive : true
-		});
-		marquee.addEventListener('touchend', resumeSoon);
-
-		// Native drag-to-scroll with the mouse (touch/trackpad already scroll
-		// this natively since it's a real overflow-x container).
-		var isDragging = false;
-		var dragStartX = 0;
-		var dragStartScroll = 0;
-		marquee.addEventListener('mousedown', function(e) {
-			isDragging = true;
-			dragStartX = e.pageX;
-			dragStartScroll = marquee.scrollLeft;
-		});
-		window.addEventListener('mouseup', function() {
-			isDragging = false;
-		});
-		window.addEventListener('mousemove', function(e) {
-			if (!isDragging) {
-				return;
+			// Pause the auto-drift while the visitor is actively hovering/touching/
+			// dragging it themselves. Mouse resumes the instant the pointer leaves;
+			// touch waits a moment since a swipe still has momentum scrolling to
+			// finish, and resuming auto-drift mid-momentum would fight it.
+			var resumeTimer = null;
+			function pause() {
+				paused = true;
+				clearTimeout(resumeTimer);
 			}
-			marquee.scrollLeft = dragStartScroll - (e.pageX - dragStartX);
+			function resumeNow() {
+				clearTimeout(resumeTimer);
+				paused = false;
+			}
+			function resumeSoon() {
+				clearTimeout(resumeTimer);
+				resumeTimer = setTimeout(resumeNow, 1200);
+			}
+			marquee.addEventListener('mouseenter', pause);
+			marquee.addEventListener('mouseleave', resumeNow);
+			marquee.addEventListener('touchstart', pause, {
+				passive : true
+			});
+			marquee.addEventListener('touchend', resumeSoon);
+
+			// Native drag-to-scroll with the mouse (touch/trackpad already scroll
+			// this natively since it's a real overflow-x container).
+			var isDragging = false;
+			var dragStartX = 0;
+			var dragStartScroll = 0;
+			marquee.addEventListener('mousedown', function(e) {
+				isDragging = true;
+				dragStartX = e.pageX;
+				dragStartScroll = marquee.scrollLeft;
+			});
+			window.addEventListener('mouseup', function() {
+				isDragging = false;
+			});
+			window.addEventListener('mousemove', function(e) {
+				if (!isDragging) {
+					return;
+				}
+				marquee.scrollLeft = dragStartScroll - (e.pageX - dragStartX);
+			});
+		}
+
+		['homePartnersMarqueeRow1', 'homePartnersMarqueeRow2'].forEach(function(id) {
+			var row = document.getElementById(id);
+			if (row) {
+				initMarqueeRow(row);
+			}
 		});
 	})();
 
 	(function() {
 		var numEl = document.getElementById('homePartnersStatNum');
-		var statEl = document.getElementById('homePartnersStat');
-		if (!numEl || !statEl) {
+		// Watches the logo marquee, not the stat number itself - the
+		// number sits above the marquee, so triggering off the number
+		// alone meant the count-up finished before the visitor had even
+		// scrolled far enough to see the logos it's counting.
+		var marqueeEl = document.getElementById('homePartnersMarquee');
+		if (!numEl || !marqueeEl) {
 			return;
 		}
 
@@ -1537,9 +1571,9 @@ left
 				}
 			});
 		}, {
-			threshold : 0.5
+			threshold : 0.3
 		});
-		observer.observe(statEl);
+		observer.observe(marqueeEl);
 	})();
 
 	(function() {
