@@ -19,10 +19,23 @@
 <!--         <put-attribute name="title" value="CubeSoftTech - Innovative IT Solutions" /> -->
         <put-attribute name="body" value="/pages-front/home/home.jsp" />
     </definition>
-	
+
+    <!-- internal redesign preview - selected by HomeAction based on the redesignPreview cookie -->
+    <definition name="home.redesign" extends="frontBaseLayout">
+<!--         <put-attribute name="title" value="CubeSoftTech - Innovative IT Solutions" /> -->
+        <put-attribute name="body" value="/pages-front/redesign/home/home.jsp" />
+    </definition>
+
     <definition name="services" extends="frontBaseLayout">
         <put-attribute name="title" value="Our Services" />
         <put-attribute name="body" value="/pages-front/services/services.jsp" />
+        <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
+    </definition>
+
+    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <definition name="services.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="Our Services" />
+        <put-attribute name="body" value="/pages-front/redesign/services/services.jsp" />
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 

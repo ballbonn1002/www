@@ -2,6 +2,7 @@ package com.cubesofttech.action;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +19,8 @@ import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HomeAction extends ActionSupport {
+	public static final String REDESIGN = "redesign";
+
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
 	HttpServletResponse response = ServletActionContext.getResponse();
@@ -48,11 +51,29 @@ public class HomeAction extends ActionSupport {
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("constant", constant);
-			
-			return SUCCESS;
+
+			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
 			return ERROR;
 		}
+	}
+
+	/**
+	 * Internal-only preview toggle: set via /redesign-preview-on (see
+	 * RedesignPreviewAction), never exposed as a URL parameter that a regular
+	 * visitor could set themselves. Same check as ContactsAction's.
+	 */
+	private boolean isRedesignPreviewEnabled() {
+		Cookie[] cookies = request.getCookies();
+		if (cookies == null) {
+			return false;
+		}
+		for (Cookie cookie : cookies) {
+			if (RedesignPreviewAction.COOKIE_NAME.equals(cookie.getName()) && "1".equals(cookie.getValue())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
