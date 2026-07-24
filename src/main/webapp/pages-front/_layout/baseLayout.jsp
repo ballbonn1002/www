@@ -246,6 +246,12 @@ body, html {
 		sans-serif !important;
 	font-size: 16px;
 	scroll-behavior: smooth;
+	/* Full-bleed elements (width:100vw centered via left:50%+transform)
+	   overshoot the real viewport by the scrollbar's width, which
+	   otherwise adds a few px of page-wide horizontal scroll - see
+	   home-services__bg-band. Clipping that sliver here is imperceptible
+	   and standard for this pattern. */
+	overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
