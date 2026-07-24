@@ -208,7 +208,7 @@ translateY(
 	position: relative;
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 60px 80px;
+	padding: 0px 80px;
 }
 
 .home-services::before, .home-services::after {
@@ -240,18 +240,47 @@ translateY(
 .home-services__inner {
 	position: relative;
 	z-index: 1;
-	display: grid;
-	grid-template-columns: 340px 1fr;
+	display: flex;
+	align-items: flex-start;
 	gap: 48px;
-	align-items: start;
+}
+
+/* Full-bleed photo band behind the top of the section (TOC + first
+   card) - capped to one viewport tall instead of matching the full
+   stacked-cards height (which grows past 2x viewport once all 4 cards
+   are in normal flow), so it reads as a band, not a stretched-out
+   backdrop for the whole section. */
+.home-services__bg-band {
+	position: absolute;
+	top: -44px;
+	left: 50%;
+	width: 100vw;
+	height: 100vh;
+	transform: translateX(-50%);
+	z-index: 0;
+	overflow: hidden;
+	pointer-events: none;
+	background-image: url(/pages-front/img/redesign/home/service-banner.jpg);
+	background-size: cover;
+	background-position: center;
+	opacity: 0.8;
 }
 
 .home-services__toc {
 	position: sticky;
-	top: calc(50vh - 110px);
+	top: 110px;
+	z-index: 1;
+	flex: 0 0 340px;
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	padding: 20px;
+	border-radius: 24px;
+	background-color: rgba(255, 255, 255, 0.7);
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
 }
 
 .home-services__toc-title {
@@ -336,72 +365,71 @@ translateY(
 	color: #FFFFFF;
 }
 
-/*
- * All 4 cards occupy the exact same grid cell (grid-row/grid-column: 1
- * below), so there's no sequence of separate boxes to overlap or
- * accumulate shadow in the first place. Each card's data-step (set by
- * the scroll IIFE below, relative to the current active index) decides
- * its animation state - "after" (default, not reached yet) waits below
- * and enters upward into place; "active" is the one on screen;
- * "before" (already passed) continues exiting upward and out. The
- * active card position:sticky's at the same screen spot while you
- * scroll through this container.
- *
- * Height is 5 steps (2500px), not 4 (2000px), even though there are
- * only 4 cards - a sticky element can only stay stuck until its own
- * containing block's bottom edge gets within one card-height of the
- * viewport, so with an exact 4-step box the last card barely became
- * active before running out of room to actually stick, unsticking and
- * sliding away almost immediately (much shorter "on screen" time than
- * cards 1-3 got). The 5th step is pure trailing buffer so card 4 gets
- * the same amount of genuinely-stuck room as the others; the JS below
- * already clamps at index 3, so it never displays a nonexistent 5th
- * card - the extra space just sits after card 4 stays active.
- */
 .home-services__cards {
 	position: relative;
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: 1fr;
-	height: 2500px;
+	z-index: 1;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
 }
 
 .home-services__card {
-	grid-column: 1;
-	grid-row: 1;
-	align-self: start;
-	position: sticky;
-	top: calc(50vh - 210px);
-	min-height: 420px;
+	position: relative;
+	overflow: hidden;
 	padding: 30px;
 	border-radius: 28px;
 	background-color: rgba(255, 255, 255, 0.7);
 	border: 1px solid rgba(255, 255, 255, 0.6);
-	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+	box-shadow: 0 16px 44px rgba(196, 18, 22, 0.16), 0 4px 16px
+		rgba(0, 0, 0, 0.12);
 	backdrop-filter: blur(16px);
 	-webkit-backdrop-filter: blur(16px);
+}
+
+/* Brand-red accent bar along the top edge of the card. */
+.home-services__card::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+}
+
+/* Slow diagonal sheen sweeping across the card - mirrors the
+   home-techspec-sheen animation elsewhere on this page for a
+   consistent "glass catching light" language, kept subtle/slow so it
+   reads as ambient rather than a loading indicator. The diagonal
+   angle comes from the gradient itself (100deg), not an element
+   transform - no rotate() anywhere here, so there's nothing that
+   could visually tilt if overflow clipping ever hiccups. */
+.home-services__card::after {
+	content: "";
+	position: absolute;
+	top: -10%;
+	left: -60%;
+	width: 40%;
+	height: 120%;
 	pointer-events: none;
-	/* Centering is baked into `top` above, not a transform - a
-	   translateY(-50%) here would apply even before the card is
-	   actually stuck (e.g. while this section is still scrolling into
-	   view), yanking it out of its natural flow position and over
-	   whatever sits above. The transform below is only ever the
-	   before/active/after slide, nothing else. */
-	opacity: 0;
-	transform: translateY(48px) scale(0.96);
-	transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+	background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.5)
+		50%, transparent 100%);
+	animation: home-services-sheen 7s ease-in-out infinite;
 }
 
-.home-services__card[data-step="active"] {
-	opacity: 1;
-	transform: translateY(0) scale(1);
-	pointer-events: auto;
+@keyframes home-services-sheen {
+	0%, 100% {
+		left: -60%;
+	}
+	50% {
+		left: 130%;
+	}
 }
 
-.home-services__card[data-step="before"] {
-	opacity: 0;
-	transform: translateY(-48px) scale(0.96);
-	box-shadow: none;
+@media (prefers-reduced-motion: reduce) {
+	.home-services__card::after {
+		animation: none;
+	}
 }
 
 .home-services__icon-wrap {
@@ -411,7 +439,7 @@ translateY(
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(196, 18, 22, 0.07);
+	background-color: rgba(196, 18, 22, 0.12);
 	margin-bottom: 20px;
 }
 
@@ -422,7 +450,7 @@ translateY(
 
 .home-services__title {
 	margin: 0 0 12px;
-	font-size: 22px;
+	font-size: 26px;
 	font-weight: 700;
 	line-height: 1.3;
 	color: #000000;
@@ -430,24 +458,24 @@ translateY(
 
 .home-services__lead {
 	margin: 0 0 14px;
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 600;
 	line-height: 1.4;
-	color: #000000;
+	color: #C41216;
 }
 
 .home-services__list {
 	margin: 0 0 20px;
 	padding: 0;
 	list-style: none;
-	font-size: 15px;
-	line-height: 1.8;
+	font-size: 16px;
+	line-height: 1.9;
 	color: #3F3F3F;
 }
 
 .home-services__list li {
 	position: relative;
-	padding-left: 20px;
+	padding-left: 22px;
 }
 
 .home-services__list li::before {
@@ -457,17 +485,30 @@ translateY(
 	top: 0;
 	color: #C41216;
 	font-weight: 700;
-	font-size: 13px;
+	font-size: 14px;
 }
 
+/* TOC becomes a plain top block on mobile instead of a sticky side
+   rail, and its numbered item list is dropped since there's no jump
+   target for it - the photo band is dropped too since it doesn't read
+   well full-bleed at this width. */
 @media screen and (max-width: 870px) {
 	.home-services {
 		padding: 48px 5%;
 	}
 	.home-services__inner {
-		grid-template-columns: 1fr;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 24px;
+	}
+	.home-services__bg-band {
+		display: none;
 	}
 	.home-services__toc {
+		position: static;
+		flex: none;
+	}
+	.home-services__toc-item {
 		display: none;
 	}
 }
@@ -552,7 +593,7 @@ left
 	z-index: 1;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-areas: "top-left top-right" "center center"
+	grid-template-areas: "center center" "top-left top-right"
 		"bottom-left bottom-right";
 	gap: 32px;
 	align-items: stretch;
@@ -1036,11 +1077,13 @@ left
 
 		<p class="home-about__body">A software development company
 			covering every aspect of IT, from one-off projects to a fully
-			outsourced team. Here's how we can plug into your operations:</p>
+			outsourced team.</p>
 	</section>
 
 	<section class="home-services">
 		<div class="home-services__inner">
+			<div class="home-services__bg-band" aria-hidden="true"></div>
+
 			<nav class="home-services__toc" id="homeServicesToc"
 				aria-label="Service categories">
 				<span class="home-services__toc-title">Our Services</span>
@@ -1370,86 +1413,6 @@ left
 </main>
 
 <script type="text/javascript">
-	(function() {
-		var cardsBox = document.getElementById('homeServicesCards');
-		var tocItems = Array.prototype.slice.call(document
-				.querySelectorAll('#homeServicesToc .home-services__toc-item'));
-		var cards = Array.prototype.slice.call(document
-				.querySelectorAll('#homeServicesCards .home-services__card'));
-		if (!cardsBox || !tocItems.length || !cards.length) {
-			return;
-		}
-
-		// All 4 cards share one grid cell (see CSS) and only .is-active
-		// is visible, so "active" is just which 1/4 slice of the
-		// container's scroll height we're currently in - a pure function
-		// of current scroll position, computed fresh every tick. That
-		// makes it direction-agnostic (fixes the old scroll-up bug) and
-		// there's nothing left to overlap since inactive cards render
-		// nothing (opacity: 0; pointer-events: none).
-		var STEP = 500;
-		var current = -1;
-		var ticking = false;
-
-		function computeActive() {
-			var top = cardsBox.getBoundingClientRect().top;
-			var idx = Math.floor(-top / STEP);
-			if (idx < 0) {
-				idx = 0;
-			} else if (idx > cards.length - 1) {
-				idx = cards.length - 1;
-			}
-			return idx;
-		}
-
-		function applyState(activeIdx) {
-			cards.forEach(function(card, i) {
-				if (i < activeIdx) {
-					card.setAttribute('data-step', 'before');
-				} else if (i === activeIdx) {
-					card.setAttribute('data-step', 'active');
-				} else {
-					card.removeAttribute('data-step');
-				}
-			});
-			tocItems.forEach(function(item, i) {
-				item.setAttribute('aria-current',
-						i === activeIdx ? 'true' : 'false');
-			});
-		}
-
-		function onScroll() {
-			if (ticking) {
-				return;
-			}
-			ticking = true;
-			requestAnimationFrame(function() {
-				var next = computeActive();
-				if (next !== current) {
-					current = next;
-					applyState(current);
-				}
-				ticking = false;
-			});
-		}
-
-		tocItems.forEach(function(item, i) {
-			item.addEventListener('click', function() {
-				var targetY = window.scrollY
-						+ cardsBox.getBoundingClientRect().top + (i * STEP) + 1;
-				window.scrollTo({
-					top : targetY,
-					behavior : 'smooth'
-				});
-			});
-		});
-
-		applyState(computeActive());
-		window.addEventListener('scroll', onScroll, {
-			passive : true
-		});
-	})();
-
 	(function() {
 		var grid = document.getElementById('homeTechspecGrid');
 		if (!grid) {
