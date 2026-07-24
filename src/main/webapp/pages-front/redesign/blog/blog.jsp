@@ -97,6 +97,13 @@
 							<i class="bi bi-pencil-square"></i> <span>By
 								${newBlog.name}</span>
 						</div>
+
+						<div class="vr"></div>
+
+						<div class="d-flex align-items-center gap-2">
+							<i class="bi bi-eye"></i> <span><fmt:formatNumber
+									value="${newBlog.view_count}" pattern="#,##0" /> views</span>
+						</div>
 					</div>
 
 					<a href="${newBlog.page_uri_id}"
