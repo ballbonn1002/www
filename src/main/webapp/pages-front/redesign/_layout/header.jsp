@@ -46,7 +46,7 @@
 	<div class="progress-container"></div>
 	<div class="" id="myBar" sytle="padding-bottom:0px!important">
 		<!--Navbar-->
-		<nav class="navbar  navbar-expand-lg navbar-light bg-light fixed-top"
+		<nav class="navbar  navbar-expand-lg navbar-light fixed-top"
 			style="padding-bottom: 0px !important; margin-bottom: 0px !important;">
 			<!-- Navbar brand -->
 			<%-- Same fix as the legacy header - width=175px (unquoted, invalid
@@ -176,17 +176,36 @@
    regardless of load order or which Bootstrap version loads last. */
 nav.navbar.fixed-top {
 	padding: 0.5rem 1rem;
+	background-color: transparent;
+	box-shadow: none;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+nav.navbar.fixed-top.is-scrolled {
+	background-color: #FFFFFF;
+	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
 .navbar-menu-frame {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-/* 	border: 3px solid red; */
 	border-radius: 30px;
 	padding: 6px 20px;
 	margin: 8px auto;
+	background-color: rgba(255, 255, 255, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.5);
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
+	background-color: #FFFFFF;
+	border-color: rgba(0, 0, 0, 0.06);
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
 }
 
 /* .navbar uses justify-content:space-between (Bootstrap default), so the
@@ -261,6 +280,16 @@ nav.navbar.fixed-top {
 	// the time this callback runs, $ and the .collapse() plugin are both
 	// ready.
 	document.addEventListener('DOMContentLoaded', function() {
+		// Solid navbar once the visitor scrolls past the top - blended/glass
+		// at rest so it can sit over a hero background, plain white with a
+		// shadow past that so it stays readable over regular page content.
+		var navbarEl = document.querySelector('nav.navbar.fixed-top');
+		function updateNavbarScrollState() {
+			navbarEl.classList.toggle('is-scrolled', window.scrollY > 60);
+		}
+		window.addEventListener('scroll', updateNavbarScrollState);
+		updateNavbarScrollState();
+
 		$(document).ready(function() {
 			// Handle dropdown toggle on click
 			$('.dropdown-toggle').on('click', function(event) {
