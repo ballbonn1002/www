@@ -46,26 +46,11 @@ html{background-color:#F5F5F5;}
 	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s ease-out;
 }
 
-/* Cross-document View Transitions - the <meta name="view-transition"
-   content="same-origin"> tag this replaced was an early-draft syntax the
-   spec dropped before ever shipping in a browser; a browser that doesn't
-   recognize a meta tag's name just ignores it silently (no console
-   warning, no error), which is exactly why it sat here doing nothing
-   without anyone noticing. @view-transition is the actual CSS Working
-   Draft syntax (shipped in Chrome/Edge 126+) - progressive enhancement
-   only, unsupported browsers skip the whole at-rule the same silent way.
-   Both the origin and destination page of a navigation need this rule
-   present for the transition to run, which this already satisfies since
-   baseLayout.jsp is the one <head> every page shares.
-   Wrapped in prefers-reduced-motion so it's off entirely for anyone who's
-   asked their OS for less motion, rather than just visually thinning it
-   out - confirmed against Chrome's own documented pattern for this exact
-   case, since @media nesting an at-rule like this is otherwise unusual. */
-@media (prefers-reduced-motion: no-preference) {
-	@view-transition {
-		navigation: auto;
-	}
-}
+/* Cross-document @view-transition (Chrome/Edge 126+) was tried here for
+   a cross-fade between pages, but its snapshot of the outgoing page
+   bakes in that page's scrollbar, then overlaps the incoming page's own
+   live one during the transition - reads as two stacked scrollbars.
+   Not worth chasing a narrower fix for. */
 </style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
 <link rel="icon" type="image/x-icon"
