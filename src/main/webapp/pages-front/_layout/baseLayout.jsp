@@ -261,10 +261,6 @@ body, html {
 	   home-services__bg-band. Clipping that sliver here is imperceptible
 	   and standard for this pattern. */
 	overflow-x: hidden;
-	/* Reserves the scrollbar's width permanently, so it doesn't flash
-	   in/out as page height settles during a cross-document
-	   @view-transition navigation (see that rule further down). */
-	scrollbar-gutter: stable;
 }
 
 h1, h2, h3, h4, h5, h6 {
