@@ -133,20 +133,13 @@ keyframes home-hero-blink { 50% {
 	animation-delay: -3s;
 }
 
-@
-keyframes home-hero-float { 0%, 100% {
-	transform: translateY(0);
-}
-
-50
-%
-{
-transform
-:
-translateY(
--16px
-);
-}
+@keyframes home-hero-float {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-16px);
+	}
 }
 @media screen and (max-width: 870px) {
 	.home-hero__sphere {
@@ -206,139 +199,127 @@ translateY(
 
 .home-services {
 	position: relative;
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 0px 80px;
+	background-color: #262A31;
+	overflow: hidden;
 }
 
-.home-services::before, .home-services::after {
-	content: "";
-	position: absolute;
-	border-radius: 50%;
-	pointer-events: none;
-	z-index: 0;
-}
-
-.home-services::before {
-	width: 420px;
-	height: 420px;
-	top: -120px;
-	right: -140px;
-	background: radial-gradient(circle, rgba(196, 18, 22, 0.08) 0%,
-		rgba(196, 18, 22, 0) 70%);
-}
-
-.home-services::after {
-	width: 340px;
-	height: 340px;
-	bottom: -100px;
-	left: -120px;
-	background: radial-gradient(circle, rgba(196, 18, 22, 0.06) 0%,
-		rgba(196, 18, 22, 0) 70%);
-}
-
-.home-services__inner {
+/* Pinned directly (see the script at the bottom of this file) -
+   min-height rather than height so the mobile fallback below, which
+   turns this into a plain static block, isn't forced to stay
+   viewport-tall once the pin/absolute-card layout is switched off. */
+.home-services__sticky {
 	position: relative;
-	z-index: 1;
+	min-height: 100vh;
 	display: flex;
-	align-items: flex-start;
-	gap: 48px;
+	flex-direction: column;
+	justify-content: center;
+	padding: 110px 6vw 64px;
+	box-sizing: border-box;
 }
 
-/* Full-bleed photo band behind the top of the section (TOC + first
-   card) - capped to one viewport tall instead of matching the full
-   stacked-cards height (which grows past 2x viewport once all 4 cards
-   are in normal flow), so it reads as a band, not a stretched-out
-   backdrop for the whole section. */
-.home-services__bg-band {
+.home-services__bg {
 	position: absolute;
-	top: -44px;
-	left: 50%;
-	width: 100vw;
-	height: 100vh;
-	transform: translateX(-50%);
+	inset: 0;
 	z-index: 0;
 	overflow: hidden;
 	pointer-events: none;
-	background-image: url(/pages-front/img/redesign/home/service-banner.jpg);
-	background-size: cover;
-	background-position: center;
-	opacity: 0.8;
+}
+
+.home-services__bg-img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0.7;
+}
+
+/* Fades left-to-right, darker over the TOC column and lighter over
+   the card column - but both stops are dark enough on their own that
+   text contrast on the glass panels above doesn't depend on what part
+   of the photo (light desk vs. dark shadow) happens to sit behind
+   them at a given scroll position. */
+.home-services__bg-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(38, 42, 49, 0.65) 0%,
+		rgba(38, 42, 49, 0.4) 100%);
+}
+
+.home-services__eyebrow {
+	position: relative;
+	z-index: 1;
+	display: block;
+	margin: 0 0 28px;
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #ffffff;
+}
+
+.home-services__row {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	gap: 6vw;
 }
 
 .home-services__toc {
-	position: sticky;
-	top: 110px;
-	z-index: 1;
-	flex: 0 0 340px;
+	flex: 0 0 34%;
+	max-width: 400px;
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
-	padding: 20px;
+	padding: 24px;
 	border-radius: 24px;
-	background-color: rgba(255, 255, 255, 0.7);
-	border: 1px solid rgba(255, 255, 255, 0.6);
-	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-	backdrop-filter: blur(16px);
-	-webkit-backdrop-filter: blur(16px);
-}
-
-.home-services__toc-title {
-	margin: 0 0 8px;
-	padding: 0 8px;
-	font-size: 13px;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: #C41216;
-}
-
-.home-services__toc-cta {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	margin: auto 8px 0;
-	padding: 10px 20px;
-	border: 1px solid #C41216;
-	border-radius: 999px;
-	color: #C41216 !important;
-	font-size: 14px;
-	font-weight: 600;
-	text-decoration: none;
-}
-
-.home-services__toc-cta:hover, .home-services__toc-cta:focus {
-	background-color: #C41216;
-	color: #FFFFFF !important;
-	text-decoration: none;
+	/* Dark tint (not white) so the panel's own base color stays
+	   consistently dark regardless of whether a light or dark patch of
+	   the photo is behind it - a white tint at low opacity let the
+	   photo's brightness drive the panel's apparent contrast instead. */
+	background-color: rgba(14, 16, 20, 0.55);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	box-shadow: 0 16px 44px -12px rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(24px);
+	-webkit-backdrop-filter: blur(24px);
 }
 
 .home-services__toc-item {
 	display: flex;
 	align-items: center;
-	gap: 14px;
-	padding: 12px 8px;
+	gap: 16px;
+	padding: 16px 8px;
+	margin: 0 -8px;
 	border: none;
-	border-radius: 8px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 10px;
 	background-color: transparent;
-	color: #3F3F3F;
-	font-size: 15px;
-	font-weight: 600;
+	color: rgba(255, 255, 255, 0.75);
+	font-size: 16px;
+	font-weight: 500;
 	text-align: left;
 	cursor: pointer;
 	outline: none;
-	transition: color 0.2s ease, background-color 0.2s ease;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+	transition: background-color 0.2s ease, color 0.3s ease;
+}
+
+.home-services__toc-item:hover {
+	background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Bootstrap reboot's "button:focus" (element + pseudo-class) outranks
+   the plain class selector above on specificity, so it wins the native
+   outline back regardless of source order - this rule matches that
+   specificity to reliably beat it. */
+.home-services__toc-item:focus {
+	outline: none;
 }
 
 .home-services__toc-item:focus-visible {
-	background-color: #C41216;
+	background-color: rgba(255, 255, 255, 0.1);
 	color: #FFFFFF;
-}
-
-.home-services__toc-item:focus-visible .home-services__toc-num {
-	background-color: #FFFFFF;
-	color: #C41216;
+	box-shadow: inset 0 0 0 2px #C41216;
 }
 
 .home-services__toc-num {
@@ -346,18 +327,24 @@ translateY(
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
+	width: 34px;
+	height: 34px;
 	border-radius: 50%;
-	background-color: rgba(0, 0, 0, 0.06);
-	color: #3F3F3F;
+	background-color: rgba(255, 255, 255, 0.15);
+	color: rgba(255, 255, 255, 0.8);
 	font-size: 13px;
 	font-weight: 700;
-	transition: background-color 0.25s ease, color 0.25s ease;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.home-services__toc-label {
+	padding-bottom: 4px;
+	border-bottom: 2px solid transparent;
+	transition: color 0.3s ease, border-color 0.3s ease, font-weight 0.2s ease;
 }
 
 .home-services__toc-item[aria-current="true"] {
-	color: #000000;
+	color: #FFFFFF;
 }
 
 .home-services__toc-item[aria-current="true"] .home-services__toc-num {
@@ -365,36 +352,139 @@ translateY(
 	color: #FFFFFF;
 }
 
+.home-services__toc-item[aria-current="true"] .home-services__toc-label {
+	font-weight: 700;
+	border-bottom-color: #C41216;
+}
+
+.home-services__toc-cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	align-self: flex-start;
+	margin-top: 28px;
+	padding: 12px 26px;
+	border: 1.5px solid #C41216;
+	border-radius: 999px;
+	color: #FFFFFF !important;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background-color 0.2s ease;
+}
+
+.home-services__toc-cta:hover, .home-services__toc-cta:focus {
+	background-color: #C41216;
+	text-decoration: none;
+}
+
+/* Scroll cue - injected by the script below (not part of the static
+   markup), shown only while pinned on card 1. */
+.home-services__scroll-cue {
+	position: absolute;
+	left: 50%;
+	bottom: 28px;
+	transform: translateX(-50%);
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	color: rgba(255, 255, 255, 0.6);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.4s ease;
+}
+
+.home-services__scroll-cue.is-visible {
+	opacity: 1;
+}
+
+.home-services__scroll-cue-icon {
+	width: 20px;
+	height: 20px;
+	animation: home-services-scroll-cue-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes home-services-scroll-cue-bounce {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(6px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.home-services__scroll-cue-icon {
+		animation: none;
+	}
+}
+
+/* Sized to fit the tallest card's natural content, capped so a short
+   viewport still leaves room to see the card in full. All 4 cards
+   stack in this one box (position:absolute; inset:0 below) and slide
+   through it one at a time - see the script at the bottom of this
+   file. overflow:hidden clips the in-flight slide so only ever one
+   card's worth of content is visible at once. */
 .home-services__cards {
 	position: relative;
 	z-index: 1;
 	flex: 1;
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
-}
-
-.home-services__card {
-	position: relative;
+	min-height: min(440px, 70vh);
 	overflow: hidden;
-	padding: 30px;
-	border-radius: 28px;
-	background-color: rgba(255, 255, 255, 0.7);
-	border: 1px solid rgba(255, 255, 255, 0.6);
-	box-shadow: 0 16px 44px rgba(196, 18, 22, 0.16), 0 4px 16px
-		rgba(0, 0, 0, 0.12);
-	backdrop-filter: blur(16px);
-	-webkit-backdrop-filter: blur(16px);
 }
 
-/* Brand-red accent bar along the top edge of the card. */
-.home-services__card::before {
-	content: "";
+/* transform is the only thing the script ever touches on a card - a
+   plain CSS transition (rather than a per-card GSAP tween with its
+   own instant/animate branching) means the visible position always
+   matches the last `active` index the script set, with no separate
+   animation state that can fall out of sync with it. */
+.home-services__card {
 	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 4px;
+	inset: 0;
+	overflow: hidden;
+	padding: 44px;
+	border-radius: 20px;
+	/* Scrim ramps up top-to-bottom instead of one flat tint - the icon
+	   sits in the most transparent band (glass reads clearly there,
+	   nothing critical to read), then opacity climbs through where
+	   the title starts and stays high for the tagline/list. All stops
+	   are high enough that the photo behind only shows as a faint
+	   blurred texture, not enough to shift the perceived background
+	   away from near-white - text contrast needs to hold regardless of
+	   what's behind the card at a given scroll position. */
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%,
+		rgba(255, 255, 255, 0.58) 24%, rgba(255, 255, 255, 0.85) 42%,
+		rgba(255, 255, 255, 0.92) 100%);
+	border: 1px solid rgba(255, 255, 255, 0.55);
+	box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.4);
+	/* saturate() is what keeps this reading as glass rather than a
+	   grey/washed-out card - a plain blur mutes the photo's color, so
+	   boosting saturation on the way through brings that color back
+	   and makes the backdrop look like it's genuinely showing through,
+	   not just faded. A heavier blur than usual (32px) smooths the
+	   photo's own bright/dark patches into a softer gradient behind
+	   the text, instead of distinct shapes that fight the text's own
+	   contrast from underneath. */
+	backdrop-filter: blur(32px) saturate(1.5);
+	-webkit-backdrop-filter: blur(32px) saturate(1.5);
+	transform: translateY(100%);
+	pointer-events: none;
+	transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	/* Pre-promotes the layer so 4 stacked backdrop-filters don't jank
+	   on the first scroll-triggered transform change. */
+	will-change: transform;
+}
+
+.home-services__card:first-child {
+	transform: translateY(0);
+	pointer-events: auto;
 }
 
 /* Slow diagonal sheen sweeping across the card - mirrors the
@@ -433,49 +523,53 @@ translateY(
 }
 
 .home-services__icon-wrap {
-	width: 88px;
-	height: 88px;
-	border-radius: 50%;
+	width: 56px;
+	height: 56px;
+	border-radius: 14px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(196, 18, 22, 0.12);
-	margin-bottom: 20px;
+	background-color: rgba(196, 18, 22, 0.2);
+	margin-bottom: 22px;
 }
 
 .home-services__icon {
-	width: 56px;
-	height: 56px;
+	width: 32px;
+	height: 32px;
 }
 
 .home-services__title {
-	margin: 0 0 12px;
-	font-size: 26px;
+	margin: 0 0 8px;
+	font-size: 24px;
 	font-weight: 700;
 	line-height: 1.3;
-	color: #000000;
+	color: #1C1C1E;
+	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .home-services__lead {
-	margin: 0 0 14px;
-	font-size: 18px;
-	font-weight: 600;
-	line-height: 1.4;
-	color: #C41216;
+	margin: 0 0 22px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #5B5F66;
+	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .home-services__list {
-	margin: 0 0 20px;
+	margin: 0;
 	padding: 0;
 	list-style: none;
-	font-size: 16px;
-	line-height: 1.9;
-	color: #3F3F3F;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #33363B;
+	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .home-services__list li {
 	position: relative;
 	padding-left: 22px;
+	margin-bottom: 12px;
 }
 
 .home-services__list li::before {
@@ -488,27 +582,55 @@ translateY(
 	font-size: 14px;
 }
 
-/* TOC becomes a plain top block on mobile instead of a sticky side
-   rail, and its numbered item list is dropped since there's no jump
-   target for it - the photo band is dropped too since it doesn't read
-   well full-bleed at this width. */
+/* Pin/scrub (see the script below, gated to min-width:871px) is a
+   worse fit for mobile - touch scroll-jacking, less predictable
+   viewport chrome - so below this width cards go back to plain static
+   stacked flow, all always visible, and only the "Learn more" link
+   from the TOC survives (individual toc-items hidden). This CSS is
+   the fallback of record even before the script runs (or if the CDN
+   fails), matching what ScrollTrigger.matchMedia leaves in place below
+   871px. */
 @media screen and (max-width: 870px) {
-	.home-services {
-		padding: 48px 5%;
+	.home-services__sticky {
+		min-height: 0;
+		padding: 56px 6% 40px;
 	}
-	.home-services__inner {
+	.home-services__row {
 		flex-direction: column;
 		align-items: stretch;
-		gap: 24px;
-	}
-	.home-services__bg-band {
-		display: none;
+		gap: 32px;
 	}
 	.home-services__toc {
-		position: static;
 		flex: none;
+		max-width: none;
+		padding: 0;
+		border: none;
+		background: none;
+		box-shadow: none;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
 	}
 	.home-services__toc-item {
+		display: none;
+	}
+	.home-services__toc-cta {
+		align-self: center;
+		margin-top: 0;
+	}
+	.home-services__cards {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		min-height: 0;
+		overflow: visible;
+	}
+	.home-services__card {
+		position: static;
+		transform: none;
+		pointer-events: auto;
+		padding: 32px;
+	}
+	.home-services__scroll-cue {
 		display: none;
 	}
 }
@@ -686,7 +808,7 @@ left
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(196, 18, 22, 0.07);
+	background-color: rgba(196, 18, 22, 0.16);
 	flex-shrink: 0;
 }
 
@@ -1076,7 +1198,7 @@ left
 			aria-hidden="true">&rarr;</span></a>
 	</section>
 
-	<section class="home-about">
+	<section class="home-about" data-aos="fade-up" data-aos-duration="800">
 		<span class="home-about__badge">Full-Service IT Partner</span>
 
 		<h2 class="home-about__title">Welcome to CubeSoftTech</h2>
@@ -1087,103 +1209,117 @@ left
 	</section>
 
 	<section class="home-services">
-		<div class="home-services__inner">
-			<div class="home-services__bg-band" aria-hidden="true"></div>
+		<div class="home-services__sticky" id="homeServicesSticky">
+			<div class="home-services__bg" aria-hidden="true">
+				<img class="home-services__bg-img"
+					src="/pages-front/img/redesign/home/service-banner.jpg" alt="">
+				<div class="home-services__bg-overlay"></div>
+			</div>
 
-			<nav class="home-services__toc" id="homeServicesToc"
-				aria-label="Service categories">
-				<span class="home-services__toc-title">Our Services</span>
-				<button type="button" class="home-services__toc-item"
-					aria-current="true">
-					<span class="home-services__toc-num">01</span> IT Staff
-					Outsourcing Services
-				</button>
-				<button type="button" class="home-services__toc-item">
-					<span class="home-services__toc-num">02</span> Our Software
-					Specialist
-				</button>
-				<button type="button" class="home-services__toc-item">
-					<span class="home-services__toc-num">03</span> IT Advisory
-					Services
-				</button>
-				<button type="button" class="home-services__toc-item">
-					<span class="home-services__toc-num">04</span> Digital
-					Transformation Services
-				</button>
-				<a class="home-services__toc-cta" href="/services">Learn more
-					<span aria-hidden="true">&rarr;</span>
-				</a>
-			</nav>
+			<span class="home-services__eyebrow">Our Services</span>
 
-			<div class="home-services__cards" id="homeServicesCards">
-				<div class="home-services__card">
-					<div class="home-services__icon-wrap">
-						<img class="home-services__icon"
-							src="/pages-front/img/redesign/home/service-icon-outsourcing.png"
-							alt="">
+			<div class="home-services__row">
+				<nav class="home-services__toc" id="homeServicesToc"
+					aria-label="Service categories">
+					<button type="button" class="home-services__toc-item"
+						aria-current="true">
+						<span class="home-services__toc-num">01</span>
+						<span class="home-services__toc-label">IT Staff Outsourcing
+							Services</span>
+					</button>
+					<button type="button" class="home-services__toc-item">
+						<span class="home-services__toc-num">02</span>
+						<span class="home-services__toc-label">Our Software
+							Specialist</span>
+					</button>
+					<button type="button" class="home-services__toc-item">
+						<span class="home-services__toc-num">03</span>
+						<span class="home-services__toc-label">IT Advisory
+							Services</span>
+					</button>
+					<button type="button" class="home-services__toc-item">
+						<span class="home-services__toc-num">04</span>
+						<span class="home-services__toc-label">Digital
+							Transformation Services</span>
+					</button>
+					<a class="home-services__toc-cta" href="/services">Learn more
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				</nav>
+
+				<div class="home-services__cards" id="homeServicesCards">
+					<div class="home-services__card">
+						<div class="home-services__icon-wrap">
+							<img class="home-services__icon"
+								src="/pages-front/img/redesign/home/service-icon-outsourcing.png"
+								alt="">
+						</div>
+						<h3 class="home-services__title">IT Staff Outsourcing
+							Services</h3>
+						<p class="home-services__lead">Java, J2EE, ASP.NET, C#.NET
+							&amp; VB programmers, ready to deploy</p>
+
+						<ul class="home-services__list">
+							<li>Java, J2EE, ASP.NET, C#.NET, VB</li>
+							<li>COBOL, AS400, SAP, Oracle</li>
+							<li>System Analyst, BA, Tester, Project Manager</li>
+							<li>Network Engineers, DBA, IT Support</li>
+						</ul>
 					</div>
-					<h3 class="home-services__title">IT Staff Outsourcing Services</h3>
-					<p class="home-services__lead">Java, J2EE, ASP.NET, C#.NET
-						&amp; VB programmers, ready to deploy</p>
 
-					<ul class="home-services__list">
-						<li>Java, J2EE, ASP.NET, C#.NET, VB</li>
-						<li>COBOL, AS400, SAP, Oracle</li>
-						<li>System Analyst, BA, Tester, Project Manager</li>
-						<li>Network Engineers, DBA, IT Support</li>
-					</ul>
-				</div>
-
-				<div class="home-services__card">
-					<div class="home-services__icon-wrap">
-						<img class="home-services__icon"
-							src="/pages-front/img/redesign/home/service-icon-software.png"
-							alt="">
+					<div class="home-services__card">
+						<div class="home-services__icon-wrap">
+							<img class="home-services__icon"
+								src="/pages-front/img/redesign/home/service-icon-software.png"
+								alt="">
+						</div>
+						<h3 class="home-services__title">Our Software Specialist</h3>
+						<p class="home-services__lead">ERP, CRM &amp; e-commerce
+							platforms, built end-to-end</p>
+						<ul class="home-services__list">
+							<li>Enterprise Resource Planning (ERP) &amp; CRM</li>
+							<li>E-Commerce &amp; Corporate Web Platforms</li>
+							<li>Stock, Warehouse &amp; Purchase Order Systems</li>
+							<li>Banking &amp; Financial Systems</li>
+						</ul>
 					</div>
-					<h3 class="home-services__title">Our Software Specialist</h3>
-					<p class="home-services__lead">ERP, CRM &amp; e-commerce
-						platforms, built end-to-end</p>
-					<ul class="home-services__list">
-						<li>Enterprise Resource Planning (ERP) &amp; CRM</li>
-						<li>E-Commerce &amp; Corporate Web Platforms</li>
-						<li>Stock, Warehouse &amp; Purchase Order Systems</li>
-						<li>Banking &amp; Financial Systems</li>
-					</ul>
-				</div>
 
-				<div class="home-services__card">
-					<div class="home-services__icon-wrap">
-						<img class="home-services__icon"
-							src="/pages-front/img/redesign/home/service-icon-specialize.png"
-							alt="">
+					<div class="home-services__card">
+						<div class="home-services__icon-wrap">
+							<img class="home-services__icon"
+								src="/pages-front/img/redesign/home/service-icon-specialize.png"
+								alt="">
+						</div>
+						<h3 class="home-services__title">IT Advisory Services</h3>
+						<p class="home-services__lead">Strategic IT consulting for
+							small &amp; medium businesses</p>
+						<ul class="home-services__list">
+							<li>IT Staff Outsourcing &amp; Consulting</li>
+							<li>Custom Software Development &amp; Digital
+								Solutions</li>
+							<li>Cloud Deployment (AWS, Azure, GCP)</li>
+							<li>Security &amp; Compliance Consulting</li>
+						</ul>
 					</div>
-					<h3 class="home-services__title">IT Advisory Services</h3>
-					<p class="home-services__lead">Strategic IT consulting for
-						small &amp; medium businesses</p>
-					<ul class="home-services__list">
-						<li>IT Staff Outsourcing &amp; Consulting</li>
-						<li>Custom Software Development &amp; Digital Solutions</li>
-						<li>Cloud Deployment (AWS, Azure, GCP)</li>
-						<li>Security &amp; Compliance Consulting</li>
-					</ul>
-				</div>
 
-				<div class="home-services__card">
-					<div class="home-services__icon-wrap">
-						<img class="home-services__icon"
-							src="/pages-front/img/redesign/home/service-icon-digital.png"
-							alt="">
+					<div class="home-services__card">
+						<div class="home-services__icon-wrap">
+							<img class="home-services__icon"
+								src="/pages-front/img/redesign/home/service-icon-digital.png"
+								alt="">
+						</div>
+						<h3 class="home-services__title">Digital Transformation
+							Services</h3>
+						<p class="home-services__lead">Modernizing legacy systems
+							&amp; workflows</p>
+						<ul class="home-services__list">
+							<li>Legacy System Modernization &amp; Integration</li>
+							<li>Workflow Automation with RPA &amp; Low-code
+								Platforms</li>
+							<li>AI-Powered Chatbots &amp; Process Analytics</li>
+							<li>Business Process Automation</li>
+						</ul>
 					</div>
-					<h3 class="home-services__title">Digital Transformation
-						Services</h3>
-					<p class="home-services__lead">Modernizing legacy systems &amp;
-						workflows</p>
-					<ul class="home-services__list">
-						<li>Legacy System Modernization &amp; Integration</li>
-						<li>Workflow Automation with RPA &amp; Low-code Platforms</li>
-						<li>AI-Powered Chatbots &amp; Process Analytics</li>
-						<li>Business Process Automation</li>
-					</ul>
 				</div>
 			</div>
 		</div>
@@ -1280,12 +1416,15 @@ left
 	</section>
 
 	<section class="home-partners">
-		<h2 class="home-partners__title">Our Partners</h2>
-		<p class="home-partners__intro">CubeSoftTech partners with leading
-			Thai enterprises, including major banks, telecommunications
-			providers, automotive companies, and government agencies.</p>
+		<h2 class="home-partners__title" data-aos="fade-up"
+			data-aos-duration="800">Our Partners</h2>
+		<p class="home-partners__intro" data-aos="fade-up"
+			data-aos-duration="800">CubeSoftTech partners with leading Thai
+			enterprises, including major banks, telecommunications providers,
+			automotive companies, and government agencies.</p>
 
-		<div class="home-partners__stat" id="homePartnersStat">
+		<div class="home-partners__stat" id="homePartnersStat"
+			data-aos="fade-up" data-aos-duration="800">
 			<span class="home-partners__stat-num" id="homePartnersStatNum">0</span><span
 				class="home-partners__stat-suffix">+</span>
 			<p class="home-partners__stat-label">Trusted Partners</p>
@@ -1391,7 +1530,7 @@ left
 		</div>
 	</section>
 
-	<section class="home-jobs">
+	<section class="home-jobs" data-aos="fade-up" data-aos-duration="800">
 		<h2 class="home-jobs__title">Open Positions</h2>
 		<p class="home-jobs__intro">Join our team - explore current
 			openings at CubeSoftTech.</p>
@@ -1420,7 +1559,7 @@ left
 			aria-hidden="true">&rarr;</span></a>
 	</section>
 
-	<section class="home-faq">
+	<section class="home-faq" data-aos="fade-up" data-aos-duration="800">
 		<div class="home-faq__inner">
 			<div>
 				<h2 class="home-faq__title">Let's Discuss Your Requirements</h2>
@@ -1434,6 +1573,155 @@ left
 </main>
 
 <script type="text/javascript">
+	// Scroll-reveal for sections without their own (home-techspec and
+	// home-services already have theirs below).
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+
+		// The services scrubber's pin-spacer shifts everything below it
+		// after AOS has already measured - refresh AOS when that happens.
+		if (typeof ScrollTrigger !== 'undefined') {
+			ScrollTrigger.addEventListener('refresh', function() {
+				AOS.refresh();
+			});
+		}
+	});
+</script>
+
+<script type="text/javascript">
+	/*
+	 * Services card scrubber: pins .home-services__sticky (ScrollTrigger)
+	 * and derives which card is active directly from live scroll
+	 * progress every update tick - `active` is never advanced or
+	 * decremented by a gesture handler, it's just
+	 * floor(self.progress * cards.length), recomputed fresh each time.
+	 * That means there's no separate "step counter" that can fall out
+	 * of sync with the real scroll position - a fast fling just lands
+	 * on a different progress value, a stray pointer/hover event during
+	 * a scroll has nothing to desync since nothing is tracking gestures
+	 * at all. `snap` (GSAP's built-in ScrollTrigger option) settles the
+	 * scroll to the nearest card boundary once the user stops, instead
+	 * of a hand-rolled preventDefault/step-lock scheme.
+	 */
+	document.addEventListener('DOMContentLoaded', function() {
+		if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined'
+				|| typeof ScrollToPlugin === 'undefined') {
+			return; // CSS fallback (:first-child) covers this
+		}
+		gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+		var stickyEl = document.getElementById('homeServicesSticky');
+		var cards = gsap.utils.toArray('#homeServicesCards .home-services__card');
+		var tocItems = gsap.utils.toArray('#homeServicesToc .home-services__toc-item');
+		if (!stickyEl || !cards.length || !tocItems.length) {
+			return;
+		}
+
+		var cue = document.createElement('div');
+		cue.className = 'home-services__scroll-cue';
+		cue.setAttribute('aria-hidden', 'true');
+		cue.innerHTML = '<svg class="home-services__scroll-cue-icon" viewBox="0 0 24 24" '
+				+ 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+				+ 'stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'
+				+ '<span>Scroll</span>';
+		stickyEl.appendChild(cue);
+
+		var n = cards.length;
+		var active = -1;
+		var trigger;
+		var isNavigating = false; // true while a TOC click's scrollTo anim is running
+		var navClearTimer;
+
+		function applyActive(idx) {
+			active = idx;
+			cards.forEach(function(card, i) {
+				var restY = i < idx ? -110 : (i > idx ? 110 : 0);
+				card.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+				card.style.transform = 'translateY(' + restY + '%)';
+				card.style.pointerEvents = i === idx ? 'auto' : 'none';
+			});
+			tocItems.forEach(function(item, i) {
+				item.setAttribute('aria-current', i === idx ? 'true' : 'false');
+			});
+			cue.classList.toggle('is-visible', idx === 0);
+		}
+
+		tocItems.forEach(function(item, i) {
+			item.addEventListener('click', function() {
+				applyActive(i);
+				if (!trigger) {
+					return;
+				}
+				clearTimeout(navClearTimer);
+				isNavigating = true;
+				var targetProgress = i / (n - 1);
+				var targetScroll = trigger.start
+						+ (trigger.end - trigger.start) * targetProgress;
+				gsap.to(window, {
+					scrollTo : {
+						y : targetScroll,
+						autoKill : false
+					},
+					duration : 0.6,
+					ease : 'power2.inOut',
+					onComplete : function() {
+						// autoKill:false means our own scrollTo can't be
+						// interrupted by the scroll it causes, but leaves
+						// isNavigating true forever if we don't clear it
+						// - this is that clear, delayed slightly so the
+						// tail end of the animation's own onUpdate calls
+						// don't immediately recompute `active` from a
+						// still-settling progress value.
+						navClearTimer = setTimeout(function() {
+							isNavigating = false;
+						}, 250);
+					}
+				});
+			});
+		});
+
+		ScrollTrigger.matchMedia({
+			'(min-width: 871px)' : function() {
+				applyActive(0);
+				trigger = ScrollTrigger.create({
+					trigger : stickyEl,
+					start : 'top top',
+					end : '+=' + Math.round(window.innerHeight * (n - 1) * 0.5),
+					pin : true,
+					pinSpacing : true,
+					snap : 1 / (n - 1),
+					// standard GSAP fix for the 1-frame jump right as a pin
+					// engages, most visible on a large background like this
+					// one's photo/dark-overlay
+					anticipatePin : 1,
+					onUpdate : function(self) {
+						if (isNavigating) {
+							return;
+						}
+						var idx = Math.min(n - 1, Math.floor(self.progress * n));
+						if (idx !== active) {
+							applyActive(idx);
+						}
+					},
+					onLeaveBack : function() {
+						cue.classList.remove('is-visible');
+					}
+				});
+
+				return function() {
+					clearTimeout(navClearTimer);
+					trigger.kill();
+					trigger = undefined;
+					active = -1;
+					cue.classList.remove('is-visible');
+					gsap.set(cards, {
+						clearProps : 'all'
+					});
+				};
+			}
+		});
+	});
+
 	(function() {
 		var grid = document.getElementById('homeTechspecGrid');
 		if (!grid) {
@@ -1566,7 +1854,7 @@ left
 							clearInterval(interval);
 						}
 						numEl.textContent = current;
-					}, 25);
+					}, 35);
 					observer.unobserve(entry.target);
 				}
 			});
