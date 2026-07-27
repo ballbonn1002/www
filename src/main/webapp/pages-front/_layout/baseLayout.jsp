@@ -222,15 +222,6 @@ html{background-color:#F5F5F5;}
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<%-- Used by redesign/home/home.jsp's pinned services section - GSAP's
-	 ScrollTrigger (pin + scroll-linked progress + snap) drives which
-	 card is active straight off scroll position, and ScrollToPlugin
-	 powers the TOC's click-to-scroll-to-card animation. --%>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script defer
-	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script defer
-	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
