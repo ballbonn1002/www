@@ -316,17 +316,12 @@ $(document).ready(function () {
 });
 });
 
-(function() {
-
-    if (window.localStorage) {
-        if (!localStorage.getItem('reload')) {
-            localStorage.setItem('reload', 'true');
-            window.location.reload();
-        } else {
-            localStorage.removeItem('reload');
-        }
-    }
-})();
+// Forced every page to silently reload itself once per session (added
+// 2024-10-11, "Fix loading bug" - likely band-aiding the Bootstrap 4/5
+// conflict removed since). Nothing else reads/writes the 'reload' key.
+// That forced double-load is what caused a real page navigation to
+// happen twice in a row on every visit - the scrollbar flash this was
+// chased for is exactly what a second, near-instant reload looks like.
 </script>
 
 
