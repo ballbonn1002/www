@@ -6,8 +6,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -354,6 +357,101 @@ public class BlogAction extends ActionSupport {
 		return xMoz != null && xMoz.equalsIgnoreCase("prefetch");
 	}
 
+	// Honest crawlers/link-preview bots self-identify via User-Agent -
+	// this catches those for free. Does nothing against a source that
+	// deliberately fakes a normal browser's User-Agent.
+	private static final String[] KNOWN_BOT_USER_AGENT_MARKERS = { "bot", "spider", "crawl", "slurp",
+			"facebookexternalhit", "whatsapp", "telegrambot", "slackbot", "discordbot", "linkedinbot", "pinterest",
+			"embedly", "outbrain", "vkshare", "w3c_validator" };
+
+	private boolean isKnownBotUserAgent() {
+		String userAgent = request.getHeader("User-Agent");
+		if (userAgent == null || userAgent.isEmpty()) {
+			// Not auto-flagged as a bot: some corporate SSL-inspection
+			// proxies strip this header from real visitors' requests, and
+			// this blog's own likely readership (people evaluating IT
+			// outsourcing at other companies) skews toward exactly that
+			// kind of corporate network. A bot determined enough to fake
+			// a normal-looking UA already gets the same 30/hour quota
+			// below anyway, so this stricter check only ever caught the
+			// least sophisticated bots at the cost of miscounting real
+			// visitors - exceedsIpQuota() is the backstop for this case now.
+			return false;
+		}
+		String lower = userAgent.toLowerCase();
+		for (String marker : KNOWN_BOT_USER_AGENT_MARKERS) {
+			if (lower.contains(marker)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Loose per (IP, User-Agent, article) quota - a backstop against one
+	 * source hammering the counter directly, not a precise per-visitor
+	 * dedup (alreadyViewedThisSession() already handles that). Deliberately
+	 * generous: a shared office/campus IP can have many different real
+	 * readers behind it, and a hard per-IP lock-out would undercount every
+	 * one of them after the first. Fixed-window counter, not sliding - a
+	 * burst straddling the window boundary can briefly allow close to
+	 * double the limit, an accepted trade-off for how simple this stays.
+	 */
+	private static final int VIEW_QUOTA_LIMIT = 30;
+	private static final long VIEW_QUOTA_WINDOW_MS = 60L * 60 * 1000; // 1 hour
+	private static final ConcurrentHashMap<String, ViewQuotaBucket> VIEW_QUOTA_BUCKETS = new ConcurrentHashMap<String, ViewQuotaBucket>();
+
+	private static final class ViewQuotaBucket {
+		long windowStart;
+		int count;
+	}
+
+	private String clientIp() {
+		// First hop of X-Forwarded-For is the real client when this app
+		// sits behind a reverse proxy/load balancer - falls back to the
+		// direct connection otherwise.
+		String forwarded = request.getHeader("X-Forwarded-For");
+		if (forwarded != null && !forwarded.isEmpty()) {
+			return forwarded.split(",")[0].trim();
+		}
+		return request.getRemoteAddr();
+	}
+
+	private boolean exceedsIpQuota(int articleId) {
+		// Occasional sweep so buckets for IPs/articles that go quiet don't
+		// accumulate forever - not exact, just keeps the map bounded.
+		if (Math.random() < 0.002) {
+			long cutoff = System.currentTimeMillis() - VIEW_QUOTA_WINDOW_MS;
+			Iterator<Map.Entry<String, ViewQuotaBucket>> it = VIEW_QUOTA_BUCKETS.entrySet().iterator();
+			while (it.hasNext()) {
+				ViewQuotaBucket bucket = it.next().getValue();
+				synchronized (bucket) {
+					if (bucket.windowStart < cutoff) {
+						it.remove();
+					}
+				}
+			}
+		}
+
+		String userAgent = request.getHeader("User-Agent");
+		String key = clientIp() + "|" + (userAgent == null ? "" : userAgent) + "|" + articleId;
+		long now = System.currentTimeMillis();
+		ViewQuotaBucket created = new ViewQuotaBucket();
+		created.windowStart = now;
+		ViewQuotaBucket bucket = VIEW_QUOTA_BUCKETS.putIfAbsent(key, created);
+		if (bucket == null) {
+			bucket = created;
+		}
+		synchronized (bucket) {
+			if (now - bucket.windowStart > VIEW_QUOTA_WINDOW_MS) {
+				bucket.windowStart = now;
+				bucket.count = 0;
+			}
+			bucket.count++;
+			return bucket.count > VIEW_QUOTA_LIMIT;
+		}
+	}
+
 	// Internal preview toggle set via /redesign-preview-on, not a URL param.
 	private boolean isRedesignPreviewEnabled() {
 		Cookie[] cookies = request.getCookies();
@@ -382,13 +480,18 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
 			request.setAttribute("bloguri", requestURI);
 
+			// Runs before the fetch below so a genuine increment shows up in
+			// this same response, instead of only becoming visible on the
+			// visitor's next page load.
+			if (!isSpeculativeRequest() && !isKnownBotUserAgent() && !alreadyViewedThisSession(getArticleId())
+					&& !exceedsIpQuota(getArticleId())) {
+				blogDAO.incrementViewCount(getArticleId());
+			}
+
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
 			request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
-			if (!isSpeculativeRequest() && !alreadyViewedThisSession(getArticleId())) {
-				blogDAO.incrementViewCount(getArticleId());
-			}
 			log.debug("blog.detail: " + blog.getDetail());
 			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
 			request.setAttribute("cleanDetail", cleanDetail);
