@@ -32,12 +32,7 @@
 
 <style type="text/css">
 .parallax {
-	/* The image used */
-	background-image: url("pages-front/img/contact/bg2.jpg");
-	/* Set a specific height */
 	min-height: 500px;
-	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -65,7 +60,18 @@
 	color: #fff;
 }
 
-.contactbg .breadcrumb .currentPage {
+/* header.jsp's glass navbar pill assumes a light-ish hero behind it
+   (its nav links are inline style="color:black") - this page's dark
+   photo backdrop shows through the glass instead, so that dark text
+   is unreadable until the navbar goes solid-white on scroll (handled
+   by header.jsp's own .is-scrolled class). Only overrides while still
+   glassy; :not(.is-scrolled) hands it back once that happens. Excludes
+   .active - Contacts is always the active link here, and its red
+   (baseLayout.jsp's site-wide .active rule) already reads fine
+   against the dark backdrop, so it's left alone. The !important is
+   required here specifically to beat the shared navbar's inline
+   style, which no selector specificity alone can. */
+nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active) {
 	color: #fff !important;
 }
 
@@ -323,16 +329,6 @@
 	color: #8a8f98;
 }
 
-/* Color accent on required fields, not just the label's asterisk. */
-.contact-form-box .form-control.is-required {
-	box-shadow: inset 3px 0 0 rgba(189, 33, 37, 0.5);
-}
-
-.contact-form-box .form-control.is-required:focus {
-	box-shadow: inset 3px 0 0 rgba(189, 33, 37, 0.5), 0 0 0 0.2rem
-		rgba(189, 33, 37, 0.15);
-}
-
 .contact-form-divider {
 	border-top: 1px solid rgba(0, 0, 0, 0.1);
 	margin: 1.5rem 0;
@@ -391,7 +387,7 @@
 }
 </style>
 
-<div class="parallax show-on-srcoll">
+<div class="parallax">
 	<div class="contactbg">
 		<comp:pageHeader label="Contacts" />
 
@@ -437,12 +433,12 @@
 
 				<div class="col-12 col-lg-6 contact-column">
 				<div class="contact-box contact-form-box">
-					<h2 class="contact-heading">Send a Message</h2>
+					<h2 class="contact-heading">Get in touch</h2>
 
 					<div class="form-row">
 						<div class="form-group col-md-6 field-floating">
 							<input type="text"
-								class="form-control is-required ${not empty firstNameError ? 'is-invalid' : ''}"
+								class="form-control ${not empty firstNameError ? 'is-invalid' : ''}"
 								placeholder=" " name="firstName" id="firstName"
 								value="${firstName}">
 							<label for="firstName">First name <span
@@ -451,7 +447,7 @@
 						</div>
 						<div class="form-group col-md-6 field-floating">
 							<input type="text"
-								class="form-control is-required ${not empty lastNameError ? 'is-invalid' : ''}"
+								class="form-control ${not empty lastNameError ? 'is-invalid' : ''}"
 								placeholder=" " name="lastName" id="lastName"
 								value="${lastName}">
 							<label for="lastName">Last name <span
@@ -486,7 +482,7 @@
 									placeholder=" " name="contactTel" id="contactTel"
 									value="${contactTel}">
 								<label for="contactTel">Telephone <span
-									class="optional-mark">(optional)</span></label>
+									class="required-mark">*</span></label>
 								<div class="invalid-feedback">${phoneError}</div>
 							</div>
 						</div>
@@ -582,17 +578,13 @@
 		}
 		return null;
 	}
-	function applyFieldValidation($input, errorMessage, trimmedValue) {
+	function applyFieldValidation($input, errorMessage) {
 		var $feedback = $input.siblings('.invalid-feedback');
 		if (errorMessage) {
-			$input.addClass('is-invalid').removeClass('is-valid');
+			$input.addClass('is-invalid');
 			$feedback.text(errorMessage);
-		} else if (trimmedValue) {
-			$input.addClass('is-valid').removeClass('is-invalid');
-			$feedback.text('');
 		} else {
-
-			$input.removeClass('is-valid').removeClass('is-invalid');
+			$input.removeClass('is-invalid');
 			$feedback.text('');
 		}
 		return !errorMessage;
@@ -601,7 +593,6 @@
 	function validateField(fieldId) {
 		var $input = $('#' + fieldId);
 		var value = $input.val();
-		var trimmed = (value || '').trim();
 		var allowRequired = formSubmitAttempted;
 		var errorMessage;
 		if (fieldId === 'firstName') {
@@ -615,7 +606,7 @@
 		} else if (fieldId === 'contactTel') {
 			errorMessage = validatePhoneValue(value, false);
 		}
-		return applyFieldValidation($input, errorMessage, trimmed);
+		return applyFieldValidation($input, errorMessage);
 	}
 
 	document

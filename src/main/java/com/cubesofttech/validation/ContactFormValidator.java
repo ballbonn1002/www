@@ -81,7 +81,7 @@ public final class ContactFormValidator {
 	public static ValidationResult validatePhone(String value) {
 		String trimmed = value == null ? "" : value.trim();
 		if (trimmed.isEmpty()) {
-			return ValidationResult.valid("");
+			return ValidationResult.invalid("Please enter your phone number");
 		}
 		if (!PHONE_ALLOWED_CHARS.matcher(trimmed).matches()) {
 			return ValidationResult.invalid("Invalid phone number - please enter 9-10 digits only");
