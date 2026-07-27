@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="comp"%>
 
 <script type="application/ld+json">
 {
@@ -201,6 +202,26 @@ keyframes home-hero-blink { 50% {
 	position: relative;
 	background-color: #262A31;
 	overflow: hidden;
+}
+
+/* Reserves the scroll runway GSAP's pin-spacer will need, before GSAP
+   has even run - otherwise the document is ~150vh shorter until the
+   deferred script executes ScrollTrigger.create(), then jumps taller
+   the instant it does, which is what flashed the scrollbar in/out on
+   load. 150vh = (cards-1) * 0.5 * 100vh, matching the `end` calc in
+   the ScrollTrigger.create() call below for the current 4 cards -
+   update this if the card count changes. Removed by that same script
+   right after it creates the real pin-spacer, so the two can't ever
+   both be reserving space at once; hidden here for <871px since the
+   mobile fallback below doesn't pin at all. */
+.home-services__scroll-reserve {
+	height: 150vh;
+}
+
+@media screen and (max-width: 870px) {
+	.home-services__scroll-reserve {
+		display: none;
+	}
 }
 
 /* Pinned directly (see the script at the bottom of this file) -
@@ -1323,6 +1344,8 @@ left
 				</div>
 			</div>
 		</div>
+		<div class="home-services__scroll-reserve" id="homeServicesScrollReserve"
+			aria-hidden="true"></div>
 	</section>
 
 	<section class="home-techspec">
@@ -1572,6 +1595,16 @@ left
 	</section>
 </main>
 
+<%-- Only this page pins/scrubs the services section - loaded here
+	 instead of site-wide in baseLayout.jsp so every other page (old and
+	 new) isn't stuck waiting on these 3 extra deferred scripts before
+	 its own DOMContentLoaded-gated code (including AOS.init()) can run. --%>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
 <script type="text/javascript">
 	// Scroll-reveal for sections without their own (home-techspec and
 	// home-services already have theirs below).
@@ -1707,6 +1740,14 @@ left
 						cue.classList.remove('is-visible');
 					}
 				});
+
+				// The real pin-spacer above now reserves the scroll runway
+				// itself - drop the CSS placeholder in the same tick so
+				// there's never a frame where both are reserving space.
+				var reserve = document.getElementById('homeServicesScrollReserve');
+				if (reserve) {
+					reserve.remove();
+				}
 
 				return function() {
 					clearTimeout(navClearTimer);
@@ -1896,3 +1937,5 @@ left
 		tick();
 	})();
 </script>
+
+<comp:scrollToTopButton />
