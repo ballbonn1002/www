@@ -24,16 +24,16 @@ import org.springframework.stereotype.Service;
 
 @Service("emailService")
 public class EmailService {
-    
+
 	@Autowired
     private JavaMailSender mailSender;
-    
+
 	Logger log = Logger.getLogger(getClass());
-	
+
     /**
-     * This method will send compose and send the message 
+     * This method will send compose and send the message
      * */
-    public void sendMail(String user,String leaveType,String description,String halfDay,String from,String endDate,BigDecimal noDay) 
+    public void sendMail(String user,String leaveType,String description,String halfDay,String from,String endDate,BigDecimal noDay)
     {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("test@cubesofttech.com");
@@ -41,13 +41,13 @@ public class EmailService {
         message.setSubject("test1111test");
         message.setText("user = "+user+" leaveType = "+leaveType+" description = "+description+" halfDay = "+ halfDay+" from = "+from+" to ="+ endDate+" noDay = "+noDay);
         mailSender.send(message);
-        
+
         Log.debug(message);
     }
-    
+
     public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) {
     	try {
-   
+
     		MimeMessage message = mailSender.createMimeMessage();
     		MimeMessageHelper helper = new MimeMessageHelper(message, true);
     		helper.setFrom("contact@cubesofttech.com");
@@ -55,7 +55,7 @@ public class EmailService {
     		helper.setSubject("Apply : " + position);
     		helper.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel
 							+"\n Position : "+position+"\n Message : \n"+msg);
-    		
+
     		if (file != null) {
     	 		HttpServletRequest request = ServletActionContext.getRequest();
         		ServletContext context = request.getServletContext();
@@ -66,7 +66,7 @@ public class EmailService {
         		log.debug(content);
     			helper.addAttachment(fileName, new ByteArrayResource(content));
     		}
-    		
+
 			log.debug("message" + message);
 			mailSender.send(message);
 			log.debug("success");
@@ -74,7 +74,7 @@ public class EmailService {
     		e.printStackTrace();
     	}
     }
-    
+
 
     public void sendEmailContact(String firstName, String lastName, String email, String tel, String msg) {
     	try {
@@ -93,5 +93,5 @@ public class EmailService {
     	}
     }
 
-  
+
 }

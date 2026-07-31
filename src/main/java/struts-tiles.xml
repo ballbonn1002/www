@@ -36,7 +36,6 @@
     <definition name="services.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Our Services" />
         <put-attribute name="body" value="/pages-front/redesign/services/services.jsp" />
-        <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
     <definition name="software_dev" extends="frontBaseLayout">
@@ -44,17 +43,35 @@
         <put-attribute name="body" value="/pages-front/services/software_dev.jsp" />
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
-    
+
+    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <definition name="software_dev.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="Software Development" />
+        <put-attribute name="body" value="/pages-front/redesign/services/software_dev.jsp" />
+    </definition>
+
     <definition name="it_outsource" extends="frontBaseLayout">
 <!--         <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" /> -->
         <put-attribute name="body" value="/pages-front/services/it_outsource.jsp" />
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
-    
+
+    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <definition name="it_outsource.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="IT Outsource" />
+        <put-attribute name="body" value="/pages-front/redesign/services/it_outsource.jsp" />
+    </definition>
+
     <definition name="app_dev" extends="frontBaseLayout">
 <!--         <put-attribute name="title" value="Software Development บริการนักพัฒนาซอฟต์แวร์ครบวงจร" /> -->
         <put-attribute name="body" value="/pages-front/services/app_dev.jsp" />
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
+    </definition>
+
+    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <definition name="app_dev.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="Mobile App Development" />
+        <put-attribute name="body" value="/pages-front/redesign/services/app_dev.jsp" />
     </definition>
 
     <definition name="careers" extends="frontBaseLayout">
@@ -62,9 +79,21 @@
         <put-attribute name="body" value="/pages-front/careers/careers.jsp" />
     </definition>
 
+    <!-- internal redesign preview - selected by CareersAction based on the redesignPreview cookie -->
+    <definition name="careers.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="Careers at CubeSoftTech" />
+        <put-attribute name="body" value="/pages-front/redesign/careers/careers.jsp" />
+    </definition>
+
     <definition name="jobDetail" extends="frontBaseLayout">
         <put-attribute name="title" value="Job Details" />
         <put-attribute name="body" value="/pages-front/careers/detail.jsp" />
+    </definition>
+
+    <!-- internal redesign preview - selected by CareersAction based on the redesignPreview cookie -->
+    <definition name="jobDetail.redesign" extends="frontBaseLayout">
+        <put-attribute name="title" value="Job Details" />
+        <put-attribute name="body" value="/pages-front/redesign/careers/detail.jsp" />
     </definition>
 
     <definition name="blog" extends="frontBaseLayout">

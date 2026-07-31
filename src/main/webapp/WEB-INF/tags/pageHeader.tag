@@ -2,6 +2,14 @@
 
 <%@ attribute name="label" required="true" type="java.lang.String"%>
 
+<style>
+.page-title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 600;
+}
+</style>
+
 <div class="page-header">
 	<h1 class="page-title">${label}</h1>
 

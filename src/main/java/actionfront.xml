@@ -10,10 +10,7 @@
         </result-types>
         
         <!-- Actions -->
-        <!-- Internal redesign preview toggle - not linked anywhere in the UI.
-             Both methods call response.sendRedirect() directly and return NONE,
-             so no <result> mapping is needed (or safe to add - the response is
-             already committed by the time Struts would try to render one). -->
+        <!-- Internal redesign preview toggle - not linked anywhere in the UI; both methods redirect directly. -->
         <action name="redesign-preview-on" class="com.cubesofttech.action.RedesignPreviewAction" method="on" />
         <action name="redesign-preview-off" class="com.cubesofttech.action.RedesignPreviewAction" method="off" />
 
@@ -36,31 +33,37 @@
 
         <action name="software-development" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">software_dev</result>
+            <result name="redesign" type="tiles">software_dev.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
         
         <action name="it-outsource" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">it_outsource</result>
+            <result name="redesign" type="tiles">it_outsource.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
         
         <action name="mobile-app-development" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">app_dev</result>
+            <result name="redesign" type="tiles">app_dev.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
         <action name="careers" class="com.cubesofttech.action.CareersAction" method="init">
             <result name="success" type="tiles">careers</result>
+            <result name="redesign" type="tiles">careers.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
         <action name="jobDetail" class="com.cubesofttech.action.CareersAction" method="jobDetail">
             <result name="success" type="tiles">jobDetail</result>
+            <result name="redesign" type="tiles">jobDetail.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
         <action name="sendEmailJob" class="com.cubesofttech.action.CareersAction" method="sendEmailJob">
             <result name="success" type="tiles">jobDetail</result>
+            <result name="redesign" type="tiles">jobDetail.redesign</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 

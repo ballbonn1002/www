@@ -51,7 +51,11 @@ public class Job implements Serializable{
 	
 	@Column(name = "description")
 	private String description;
-	
+
+	// Nullable - rows without it still render from the raw `description` HTML.
+	@Column(name = "requirements_json")
+	private String requirementsJson;
+
 	@Column(name = "position")
 	private String position;
 
@@ -101,6 +105,14 @@ public class Job implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getRequirementsJson() {
+		return requirementsJson;
+	}
+
+	public void setRequirementsJson(String requirementsJson) {
+		this.requirementsJson = requirementsJson;
 	}
 
 	public String getPosition() {

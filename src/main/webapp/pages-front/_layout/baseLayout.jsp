@@ -8,27 +8,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="utf-8">
-<%--
-	Critical inline CSS - deliberately the very first thing in <head>,
-	before any <link>/<script>, so the very first paint already matches the
-	site's real background (#F5F5F5) instead of the browser's white
-	default. Every page's own <style> block re-declares this same color
-	further down (duplicated, not shared - see blog.jsp/contacts.jsp etc.),
-	so this doesn't replace those, it just closes the gap between "browser
-	has nothing to paint yet" and "that per-page <style> has been parsed".
---%>
+<%-- Critical inline CSS so first paint matches the site background before per-page styles load. --%>
 <style>
 html{background-color:#F5F5F5;}
-/* Top loading bar - #page-loading-bar (div right after <body>) + the
-   click listener further down toggle .is-loading on it. Sits fixed at
-   z-index above everything so a visitor sees "something is happening"
-   the instant they click an internal link, instead of nothing until the
-   new document starts painting. Never explicitly hidden again after a
-   click - the whole document gets replaced by the incoming navigation,
-   so there's nothing to reset once that happens. */
+/* Toggled via .is-loading by the click listener further down - gives instant feedback on internal link clicks. */
 #page-loading-bar {
 	position: fixed;
 	top: 0;
@@ -46,11 +32,7 @@ html{background-color:#F5F5F5;}
 	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s ease-out;
 }
 
-/* Cross-document @view-transition (Chrome/Edge 126+) was tried here for
-   a cross-fade between pages, but its snapshot of the outgoing page
-   bakes in that page's scrollbar, then overlaps the incoming page's own
-   live one during the transition - reads as two stacked scrollbars.
-   Not worth chasing a narrower fix for. */
+/* Cross-document @view-transition was tried here but caused stacked scrollbars during the transition - removed. */
 </style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
 <link rel="icon" type="image/x-icon"
@@ -67,34 +49,11 @@ html{background-color:#F5F5F5;}
 		<link rel="next"
 			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage + 1}">
 	</c:if>
-	<%--
-		blog.css itself is <link>'d from inside blog.jsp (a Tiles "body"
-		fragment - no <head> of its own to put it in), which the parser
-		doesn't reach until after everything else in <head> plus the whole
-		header tile have already been fetched/painted. Preloading it here
-		starts that fetch in parallel with every other <head> resource
-		instead, so by the time the parser reaches the real <link
-		rel="stylesheet"> down in the body, the file is very likely already
-		in cache and applies close to instantly. Same pageBaseUri guard as
-		the rel=prev/next links above - only true on the redesign blog/news
-		listing page, the one page that actually links this file.
-	--%>
+	<%-- blog.css is actually <link>'d from inside blog.jsp's body - preloading here starts the fetch earlier. --%>
 	<link rel="preload" as="style"
 		href="/pages-front/redesign/assets/css/blog.css">
 </c:if>
-<%--
-	Hero image preload for the blog/news "แนะนำล่าสุด" article-preview
-	section - newBlog is only ever set by BlogAction.init() (the blog/news
-	listing pages), same guard pattern as pageBaseUri above, so this is a
-	no-op (empty output) on every other page on the site, not just visually
-	scoped but literally absent from those pages' HTML. Struts2 runs the
-	Action to completion before Tiles renders this <head> at all, so
-	newBlog/constant are already on the request by the time this line runs
-	- no ordering problem to work around. path comes from the exact same
-	${newBlog.path} the <img> itself uses further down in blog.jsp, rather
-	than a second hardcoded copy, so the two can never drift apart if a
-	newer article becomes the featured one.
---%>
+<%-- Hero image preload for the blog "แนะนำล่าสุด" section; newBlog is only set on the blog/news listing pages. --%>
 <c:if test="${not empty newBlog}">
 	<link rel="preload" as="image"
 		href="${constant.imgContext}/${newBlog.path}" fetchpriority="high">
@@ -150,21 +109,7 @@ html{background-color:#F5F5F5;}
 </script>
 <!-- END Global site tag (gtag.js) - Google Analytics -->
 
-<%--
-	preconnect for every external origin this head fetches a stylesheet or
-	blocking/deferred script from. Without these, each CDN pays its own
-	DNS+TLS handshake only once the browser's HTML parser actually reaches
-	that <link>/<script> tag, so they land staggered instead of roughly
-	together - that staggered arrival is what shows up as "CSS trickling
-	in", each one's rules snapping on and reflowing the page a beat after
-	the last. crossorigin is only added where the real fetch below also
-	uses crossorigin (the SRI/integrity-checked ones) - adding it to a
-	plain, non-CORS fetch would open the wrong connection type and the
-	browser would just open a second one for the real request anyway.
-	Consolidated here - previously this was two separate, byte-identical
-	duplicate preconnect pairs further down for fonts.googleapis.com/
-	fonts.gstatic.com only, and no hint at all for any other origin below.
---%>
+<%-- preconnect for every external origin this head loads a stylesheet/script from, so DNS+TLS happens early instead of staggered. --%>
 <link rel="preconnect" href="https://stackpath.bootstrapcdn.com"
 	crossorigin>
 <link rel="preconnect" href="https://code.jquery.com" crossorigin>
@@ -180,20 +125,7 @@ html{background-color:#F5F5F5;}
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
-<%--
-	defer on all three - none had it before, which meant the browser had to
-	fully fetch+parse+execute jQuery, then Popper, then Bootstrap.js, all
-	before it could even start building the rest of the page, let alone
-	reach the AOS.init() call further down each page (that delay is what
-	turned a plain white-flash into "everything AOS hid at opacity:0 pops
-	in at once" - see the fade-in/scroll-reveal findings for those pages).
-	defer preserves their relative execution order (still jQuery, then
-	Popper, then Bootstrap.js, each after the previous finishes) and runs
-	them after HTML parsing completes but before DOMContentLoaded - safe
-	here because every page's own jQuery-dependent code on this site is
-	already wrapped in $(document).ready(...), which by definition doesn't
-	run until after that same point anyway.
---%>
+<%-- defer so these don't block reaching each page's own AOS.init() call further down. --%>
 <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 	crossorigin="anonymous"></script>
@@ -242,6 +174,12 @@ body, html {
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai',
 		sans-serif !important;
+}
+
+/* Thai has no spaces between words, so a narrow heading can wrap mid-word without keep-all. */
+h1, h2, h3, p {
+	word-break: keep-all;
+	overflow-wrap: break-word;
 }
 
 p {
@@ -773,12 +711,7 @@ a {
 </style>
 
 <script>
-	// Strips tracking/junk query params (fbclid, utm_*, etc.) off every
-	// page load, but keeps "page" - blog.jsp's pagination depends on
-	// ?page=N surviving this, unlike every other param this was written
-	// to clean up. Only replace()s when the URL actually needs trimming,
-	// so an already-clean "?page=2" doesn't get an extra, pointless
-	// history entry every load.
+	// Strips tracking/junk query params (fbclid, utm_*, etc.) but keeps "page" for blog.jsp's pagination.
 	if (location.search) {
 		var pageMatch = /(?:^|[?&])page=([^&]*)/.exec(location.search);
 		var cleanUrl = location.pathname
@@ -792,16 +725,7 @@ a {
 </head>
 <body>
 	<div id="page-loading-bar" aria-hidden="true"></div>
-	<%--
-		Inline and this early deliberately - needs to be registered before
-		the visitor can click anything. Only triggers for a real same-origin
-		page navigation: skips #anchors, javascript:/mailto:/tel: links,
-		target!=_self links (new tab), download links, and any link to
-		another origin (those aren't "this site loading", nothing to show a
-		bar for). No corresponding "hide" call anywhere - once a real
-		navigation starts, this whole document (bar included) is on its way
-		out, so there's nothing left to reset.
-	--%>
+	<%-- Only fires for real same-origin navigations - skips anchors, new tabs, downloads, and other origins. --%>
 	<script>
 		document.addEventListener('click', function(e) {
 			var link = e.target.closest('a[href]');
@@ -830,13 +754,7 @@ a {
 			}
 			var bar = document.getElementById('page-loading-bar');
 			bar.className = 'is-loading';
-			// Forces the browser to commit the style change (and get a
-			// paint in) before this handler returns and the actual
-			// navigation proceeds - on a fast/local response, the new
-			// page could otherwise start tearing this one down before
-			// the bar ever painted a single visible frame. Reading a
-			// layout property is what forces that commit; the value
-			// itself isn't used for anything.
+			// Forces the browser to paint the bar before navigation tears this page down.
 			void bar.offsetWidth;
 		});
 	</script>

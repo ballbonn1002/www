@@ -107,8 +107,8 @@
 					</div>
 
 					<a href="${newBlog.page_uri_id}"
-						class="btn btn-danger btn-lg article-preview__cta" role="button"
-						data-aos="fade-up" data-aos-delay="250">Read More</a>
+						class="btn btn-danger btn-lg article-preview__cta" role="button">Read
+						More</a>
 				</div>
 			</div>
 

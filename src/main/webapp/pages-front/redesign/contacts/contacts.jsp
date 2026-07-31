@@ -60,17 +60,7 @@
 	color: #fff;
 }
 
-/* header.jsp's glass navbar pill assumes a light-ish hero behind it
-   (its nav links are inline style="color:black") - this page's dark
-   photo backdrop shows through the glass instead, so that dark text
-   is unreadable until the navbar goes solid-white on scroll (handled
-   by header.jsp's own .is-scrolled class). Only overrides while still
-   glassy; :not(.is-scrolled) hands it back once that happens. Excludes
-   .active - Contacts is always the active link here, and its red
-   (baseLayout.jsp's site-wide .active rule) already reads fine
-   against the dark backdrop, so it's left alone. The !important is
-   required here specifically to beat the shared navbar's inline
-   style, which no selector specificity alone can. */
+/* header.jsp's inline nav-link color assumes a light hero; override while glassy over this page's dark photo. */
 nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active) {
 	color: #fff !important;
 }
@@ -537,8 +527,7 @@ nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active)
 	var EMAIL_PATTERN = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 	var EMAIL_MAX_LENGTH = 254;
 	var PHONE_ALLOWED_CHARS = /^\+?[0-9\s-]+$/;
-	var PHONE_LOCAL = /^0[0-9]{8,9}$/;
-	var PHONE_INTL = /^\+66[0-9]{8,9}$/;
+	var PHONE_NUMBER = /^\+?[0-9]{7,15}$/;
 
 	var formSubmitAttempted = false;
 
@@ -570,11 +559,11 @@ nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active)
 			return allowRequired ? 'Please enter your phone number' : null;
 		}
 		if (!PHONE_ALLOWED_CHARS.test(trimmed)) {
-			return 'Invalid phone number - please enter 9-10 digits only';
+			return 'Invalid phone number - please enter digits only';
 		}
 		var stripped = trimmed.replace(/[\s-]/g, '');
-		if (!PHONE_LOCAL.test(stripped) && !PHONE_INTL.test(stripped)) {
-			return 'Invalid phone number - please enter 9-10 digits only';
+		if (!PHONE_NUMBER.test(stripped)) {
+			return 'Invalid phone number - please enter digits only';
 		}
 		return null;
 	}
@@ -734,19 +723,6 @@ nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active)
 		}
 	}
 
-	window.onscroll = function() {
-		scrollFunction()
-	};
-	function scrollFunction() {
-		if (document.body.scrollTop > 20
-				|| document.documentElement.scrollTop > 20) {
-			document.getElementById("myBtn").style.display = "block";
-		} else {
-			document.getElementById("myBtn").style.display = "none";
-		}
-	}
-	function topFunction() {
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-	}
 </script>
+
+<comp:scrollToTopButton />

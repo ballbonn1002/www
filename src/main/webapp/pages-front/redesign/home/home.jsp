@@ -58,8 +58,7 @@
 
 .home-hero__title-accent {
 	font-weight: 700;
-	background: linear-gradient(60deg, #A94DFF 0%, #FF83E2 0%, #FF5154 100%, #FFF759
-		100%);
+	background: linear-gradient(60deg, #E11412 0%, #7F1610 100%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -204,16 +203,7 @@ keyframes home-hero-blink { 50% {
 	overflow: hidden;
 }
 
-/* Reserves the scroll runway GSAP's pin-spacer will need, before GSAP
-   has even run - otherwise the document is ~150vh shorter until the
-   deferred script executes ScrollTrigger.create(), then jumps taller
-   the instant it does, which is what flashed the scrollbar in/out on
-   load. 150vh = (cards-1) * 0.5 * 100vh, matching the `end` calc in
-   the ScrollTrigger.create() call below for the current 4 cards -
-   update this if the card count changes. Removed by that same script
-   right after it creates the real pin-spacer, so the two can't ever
-   both be reserving space at once; hidden here for <871px since the
-   mobile fallback below doesn't pin at all. */
+/* Reserves the scroll runway GSAP's pin-spacer will need before GSAP runs, to avoid a scrollbar flash on load. 150vh = (cards-1) * 0.5 * 100vh for the current 4 cards - update if the card count changes. */
 .home-services__scroll-reserve {
 	height: 150vh;
 }
@@ -224,10 +214,7 @@ keyframes home-hero-blink { 50% {
 	}
 }
 
-/* Pinned directly (see the script at the bottom of this file) -
-   min-height rather than height so the mobile fallback below, which
-   turns this into a plain static block, isn't forced to stay
-   viewport-tall once the pin/absolute-card layout is switched off. */
+/* min-height, not height, so the mobile fallback (plain static block) isn't forced viewport-tall. */
 .home-services__sticky {
 	position: relative;
 	min-height: 100vh;
@@ -255,11 +242,7 @@ keyframes home-hero-blink { 50% {
 	opacity: 0.7;
 }
 
-/* Fades left-to-right, darker over the TOC column and lighter over
-   the card column - but both stops are dark enough on their own that
-   text contrast on the glass panels above doesn't depend on what part
-   of the photo (light desk vs. dark shadow) happens to sit behind
-   them at a given scroll position. */
+/* Both gradient stops are dark enough that panel text contrast doesn't depend on the photo behind them. */
 .home-services__bg-overlay {
 	position: absolute;
 	inset: 0;
@@ -294,10 +277,7 @@ keyframes home-hero-blink { 50% {
 	flex-direction: column;
 	padding: 24px;
 	border-radius: 24px;
-	/* Dark tint (not white) so the panel's own base color stays
-	   consistently dark regardless of whether a light or dark patch of
-	   the photo is behind it - a white tint at low opacity let the
-	   photo's brightness drive the panel's apparent contrast instead. */
+	/* Dark tint, not white, so the panel stays consistently dark regardless of the photo behind it. */
 	background-color: rgba(14, 16, 20, 0.55);
 	border: 1px solid rgba(255, 255, 255, 0.14);
 	box-shadow: 0 16px 44px -12px rgba(0, 0, 0, 0.4);
@@ -329,10 +309,7 @@ keyframes home-hero-blink { 50% {
 	background-color: rgba(255, 255, 255, 0.06);
 }
 
-/* Bootstrap reboot's "button:focus" (element + pseudo-class) outranks
-   the plain class selector above on specificity, so it wins the native
-   outline back regardless of source order - this rule matches that
-   specificity to reliably beat it. */
+/* Matches Bootstrap reboot's "button:focus" specificity to reliably beat it regardless of source order. */
 .home-services__toc-item:focus {
 	outline: none;
 }
@@ -400,8 +377,7 @@ keyframes home-hero-blink { 50% {
 	text-decoration: none;
 }
 
-/* Scroll cue - injected by the script below (not part of the static
-   markup), shown only while pinned on card 1. */
+/* Injected by the script below, shown only while pinned on card 1. */
 .home-services__scroll-cue {
 	position: absolute;
 	left: 50%;
@@ -447,12 +423,7 @@ keyframes home-hero-blink { 50% {
 	}
 }
 
-/* Sized to fit the tallest card's natural content, capped so a short
-   viewport still leaves room to see the card in full. All 4 cards
-   stack in this one box (position:absolute; inset:0 below) and slide
-   through it one at a time - see the script at the bottom of this
-   file. overflow:hidden clips the in-flight slide so only ever one
-   card's worth of content is visible at once. */
+/* All 4 cards stack here (position:absolute) and slide through one at a time - see script at bottom of file. */
 .home-services__cards {
 	position: relative;
 	z-index: 1;
@@ -461,45 +432,26 @@ keyframes home-hero-blink { 50% {
 	overflow: hidden;
 }
 
-/* transform is the only thing the script ever touches on a card - a
-   plain CSS transition (rather than a per-card GSAP tween with its
-   own instant/animate branching) means the visible position always
-   matches the last `active` index the script set, with no separate
-   animation state that can fall out of sync with it. */
+/* A plain CSS transition, not a GSAP tween, so the visible position always matches the script's `active` index. */
 .home-services__card {
 	position: absolute;
 	inset: 0;
 	overflow: hidden;
 	padding: 44px;
 	border-radius: 20px;
-	/* Scrim ramps up top-to-bottom instead of one flat tint - the icon
-	   sits in the most transparent band (glass reads clearly there,
-	   nothing critical to read), then opacity climbs through where
-	   the title starts and stays high for the tagline/list. All stops
-	   are high enough that the photo behind only shows as a faint
-	   blurred texture, not enough to shift the perceived background
-	   away from near-white - text contrast needs to hold regardless of
-	   what's behind the card at a given scroll position. */
+	/* Scrim ramps top-to-bottom: transparent behind the icon, high opacity behind the title/tagline/list. */
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%,
 		rgba(255, 255, 255, 0.58) 24%, rgba(255, 255, 255, 0.85) 42%,
 		rgba(255, 255, 255, 0.92) 100%);
 	border: 1px solid rgba(255, 255, 255, 0.55);
 	box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.4);
-	/* saturate() is what keeps this reading as glass rather than a
-	   grey/washed-out card - a plain blur mutes the photo's color, so
-	   boosting saturation on the way through brings that color back
-	   and makes the backdrop look like it's genuinely showing through,
-	   not just faded. A heavier blur than usual (32px) smooths the
-	   photo's own bright/dark patches into a softer gradient behind
-	   the text, instead of distinct shapes that fight the text's own
-	   contrast from underneath. */
+	/* saturate() keeps this reading as glass rather than washed-out; heavier blur (32px) smooths the photo behind. */
 	backdrop-filter: blur(32px) saturate(1.5);
 	-webkit-backdrop-filter: blur(32px) saturate(1.5);
 	transform: translateY(100%);
 	pointer-events: none;
 	transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-	/* Pre-promotes the layer so 4 stacked backdrop-filters don't jank
-	   on the first scroll-triggered transform change. */
+	/* Pre-promotes the layer so 4 stacked backdrop-filters don't jank on the first transform change. */
 	will-change: transform;
 }
 
@@ -508,13 +460,7 @@ keyframes home-hero-blink { 50% {
 	pointer-events: auto;
 }
 
-/* Slow diagonal sheen sweeping across the card - mirrors the
-   home-techspec-sheen animation elsewhere on this page for a
-   consistent "glass catching light" language, kept subtle/slow so it
-   reads as ambient rather than a loading indicator. The diagonal
-   angle comes from the gradient itself (100deg), not an element
-   transform - no rotate() anywhere here, so there's nothing that
-   could visually tilt if overflow clipping ever hiccups. */
+/* Slow diagonal sheen, mirrors home-techspec-sheen elsewhere on this page for a consistent "glass" language. */
 .home-services__card::after {
 	content: "";
 	position: absolute;
@@ -603,14 +549,7 @@ keyframes home-hero-blink { 50% {
 	font-size: 14px;
 }
 
-/* Pin/scrub (see the script below, gated to min-width:871px) is a
-   worse fit for mobile - touch scroll-jacking, less predictable
-   viewport chrome - so below this width cards go back to plain static
-   stacked flow, all always visible, and only the "Learn more" link
-   from the TOC survives (individual toc-items hidden). This CSS is
-   the fallback of record even before the script runs (or if the CDN
-   fails), matching what ScrollTrigger.matchMedia leaves in place below
-   871px. */
+/* Below 871px, cards go back to plain static stacked flow - pin/scrub is a worse fit for touch scrolling. */
 @media screen and (max-width: 870px) {
 	.home-services__sticky {
 		min-height: 0;
@@ -666,9 +605,7 @@ keyframes home-hero-blink { 50% {
 	border-radius: 40px;
 }
 
-/* Faint circuit-board grid - two overlaid repeating-linear-gradients for
-   the trace lines, plus a repeating radial-gradient for the via/node dots
-   at their intersections. Pure CSS, no image asset. */
+/* Faint circuit-board grid - repeating-linear-gradients plus a radial-gradient for the node dots. Pure CSS. */
 .home-techspec::before {
 	content: "";
 	position: absolute;
@@ -684,9 +621,7 @@ keyframes home-hero-blink { 50% {
 	background-size: 56px 56px, 56px 56px, 56px 56px;
 }
 
-/* Slow, faint diagonal sheen drifting across the circuit pattern - kept
-   subtle (low opacity, ~14s) so it reads as ambient tech glow, not a
-   loading shimmer. */
+/* Slow, faint diagonal sheen - kept subtle so it reads as ambient tech glow, not a loading shimmer. */
 .home-techspec::after {
 	content: "";
 	position: absolute;
@@ -780,10 +715,7 @@ left
 		ease;
 }
 
-/* Cards start pulled in toward the center title, then release outward to
-   their resting spot while the section is in view - folds back in if
-   scrolled past either edge (home-techspec-reveal IIFE toggles
-   .is-revealed on every enter/exit, not once). */
+/* Cards start pulled toward the center title, then release outward - folds back in if scrolled past either edge. */
 .home-techspec__hub:not(.is-revealed) .home-techspec__card--top-left {
 	transform: translate(24px, 24px) scale(0.9);
 	opacity: 0.7;
@@ -1455,10 +1387,7 @@ left
 
 		<div class="">
 			<div class="home-partners__marquee" id="homePartnersMarquee">
-				<%-- 21 logos split across 2 rows (alternating, so both come
-					 out close in width) - both rows drift the same direction
-					 at the same speed (see home-partners-marquee IIFE below),
-					 each looping on its own duplicated set. --%>
+				<%-- 21 logos split across 2 rows; both drift the same direction/speed (see home-partners-marquee IIFE below). --%>
 				<div class="home-partners__marquee-row"
 					id="homePartnersMarqueeRow1">
 					<div class="home-partners__logos">
@@ -1595,10 +1524,7 @@ left
 	</section>
 </main>
 
-<%-- Only this page pins/scrubs the services section - loaded here
-	 instead of site-wide in baseLayout.jsp so every other page (old and
-	 new) isn't stuck waiting on these 3 extra deferred scripts before
-	 its own DOMContentLoaded-gated code (including AOS.init()) can run. --%>
+<%-- Loaded here, not site-wide in baseLayout.jsp, so other pages aren't stuck waiting on these 3 scripts. --%>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script defer
 	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -1622,20 +1548,7 @@ left
 </script>
 
 <script type="text/javascript">
-	/*
-	 * Services card scrubber: pins .home-services__sticky (ScrollTrigger)
-	 * and derives which card is active directly from live scroll
-	 * progress every update tick - `active` is never advanced or
-	 * decremented by a gesture handler, it's just
-	 * floor(self.progress * cards.length), recomputed fresh each time.
-	 * That means there's no separate "step counter" that can fall out
-	 * of sync with the real scroll position - a fast fling just lands
-	 * on a different progress value, a stray pointer/hover event during
-	 * a scroll has nothing to desync since nothing is tracking gestures
-	 * at all. `snap` (GSAP's built-in ScrollTrigger option) settles the
-	 * scroll to the nearest card boundary once the user stops, instead
-	 * of a hand-rolled preventDefault/step-lock scheme.
-	 */
+	// Services card scrubber: pins .home-services__sticky and derives the active card from live scroll progress each tick.
 	document.addEventListener('DOMContentLoaded', function() {
 		if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined'
 				|| typeof ScrollToPlugin === 'undefined') {
@@ -1698,13 +1611,7 @@ left
 					duration : 0.6,
 					ease : 'power2.inOut',
 					onComplete : function() {
-						// autoKill:false means our own scrollTo can't be
-						// interrupted by the scroll it causes, but leaves
-						// isNavigating true forever if we don't clear it
-						// - this is that clear, delayed slightly so the
-						// tail end of the animation's own onUpdate calls
-						// don't immediately recompute `active` from a
-						// still-settling progress value.
+						// Delayed clear of isNavigating so trailing onUpdate calls don't recompute `active` mid-settle.
 						navClearTimer = setTimeout(function() {
 							isNavigating = false;
 						}, 250);
@@ -1723,9 +1630,7 @@ left
 					pin : true,
 					pinSpacing : true,
 					snap : 1 / (n - 1),
-					// standard GSAP fix for the 1-frame jump right as a pin
-					// engages, most visible on a large background like this
-					// one's photo/dark-overlay
+					// Standard GSAP fix for the 1-frame jump as a pin engages.
 					anticipatePin : 1,
 					onUpdate : function(self) {
 						if (isNavigating) {
@@ -1741,9 +1646,7 @@ left
 					}
 				});
 
-				// The real pin-spacer above now reserves the scroll runway
-				// itself - drop the CSS placeholder in the same tick so
-				// there's never a frame where both are reserving space.
+				// The real pin-spacer now reserves the scroll runway - drop the CSS placeholder.
 				var reserve = document.getElementById('homeServicesScrollReserve');
 				if (reserve) {
 					reserve.remove();
@@ -1780,11 +1683,7 @@ left
 	})();
 
 	(function() {
-		// Both rows run this same drift/pause/drag behavior independently -
-		// each keeps its own scroll position and loops on its own content
-		// width, but they share the same speed and direction so they read
-		// as one calm, unified stream of logos rather than two competing
-		// for attention.
+		// Both rows run this independently but share speed/direction to read as one unified stream.
 		function initMarqueeRow(marquee) {
 			var paused = false;
 			var inView = false;
@@ -1811,10 +1710,7 @@ left
 			});
 			observer.observe(marquee);
 
-			// Pause the auto-drift while the visitor is actively hovering/touching/
-			// dragging it themselves. Mouse resumes the instant the pointer leaves;
-			// touch waits a moment since a swipe still has momentum scrolling to
-			// finish, and resuming auto-drift mid-momentum would fight it.
+			// Mouse resumes on pointer leave; touch waits a moment so it doesn't fight momentum scrolling.
 			var resumeTimer = null;
 			function pause() {
 				paused = true;
@@ -1835,8 +1731,7 @@ left
 			});
 			marquee.addEventListener('touchend', resumeSoon);
 
-			// Native drag-to-scroll with the mouse (touch/trackpad already scroll
-			// this natively since it's a real overflow-x container).
+			// Native drag-to-scroll with the mouse (touch/trackpad already scroll natively).
 			var isDragging = false;
 			var dragStartX = 0;
 			var dragStartScroll = 0;
@@ -1866,18 +1761,13 @@ left
 
 	(function() {
 		var numEl = document.getElementById('homePartnersStatNum');
-		// Watches the logo marquee, not the stat number itself - the
-		// number sits above the marquee, so triggering off the number
-		// alone meant the count-up finished before the visitor had even
-		// scrolled far enough to see the logos it's counting.
+		// Watches the marquee, not the number - triggering off the number alone finished the count-up too early.
 		var marqueeEl = document.getElementById('homePartnersMarquee');
 		if (!numEl || !marqueeEl) {
 			return;
 		}
 
-		// Counts the real logos, not the duplicated set used for the marquee
-		// loop (see home-partners-marquee IIFE above), so this can't drift out
-		// of sync if a logo is ever added or removed.
+		// Counts the real logos, not the duplicated marquee-loop set, so this can't drift if a logo is added/removed.
 		var target = document
 				.querySelectorAll('#homePartnersMarquee .home-partners__logo:not([aria-hidden])').length;
 

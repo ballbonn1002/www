@@ -206,26 +206,6 @@ p {
 	margin: 0 0 0;
 }
 
-#myBtn {
-	display: none;
-	position: fixed;
-	bottom: 20px;
-	right: 30px;
-	z-index: 99;
-	font-size: 18px;
-	border: none;
-	outline: none;
-	background-color: #BD2125;
-	color: white;
-	cursor: pointer;
-	padding: 15px;
-	border-radius: 4px;
-}
-
-#myBtn:hover {
-	background-color: #555;
-}
-
 .nava {
 	padding-left: 10%;
 }
@@ -755,10 +735,7 @@ hr.detailnew {
 }
 </style>
 
-<button class="btn btn-sm" onclick="topFunction()" id="myBtn"
-	title="Go to top">
-	<i class="fas fa-arrow-up" style="font-size: 26px;"></i>
-</button>
+<comp:scrollToTopButton />
 <!-- endmenu -->
 <!--------------------------home------------------------------------>
 
@@ -1029,20 +1006,4 @@ hr.detailnew {
 		}
 	}
 
-	window.onscroll = function() {
-		scrollFunction()
-	};
-	function scrollFunction() {
-		if (document.body.scrollTop > 20
-				|| document.documentElement.scrollTop > 20) {
-			document.getElementById("myBtn").style.display = "block";
-		} else {
-			document.getElementById("myBtn").style.display = "none";
-		}
-	}
-
-	function topFunction() {
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-	}
 </script>

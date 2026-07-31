@@ -1,9 +1,6 @@
 <%@ tag pageEncoding="UTF-8"%>
 
-<%-- Self-contained back-to-top control: markup + style + behavior in one
-     include, so any redesign page can add it with <comp:scrollToTopButton />
-     instead of re-wiring its own scrollFunction()/topFunction() (the pattern
-     duplicated in contacts.jsp/blog.jsp/blog_detail.jsp today). --%>
+<%-- Self-contained back-to-top control: markup + style + behavior in one <comp:scrollToTopButton /> include. --%>
 
 <button type="button" class="scroll-to-top-cube" id="scrollToTopCube" aria-label="Back to top">
 	<svg class="scroll-to-top-cube__svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -138,47 +135,41 @@
 
 	var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	function easeInOutCubic(t) {
-		return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-	}
-
-	// A fixed duration looks fine from a short scroll depth but reads as
-	// an instant warp from a tall one (e.g. 900ms across 6000px is ~6700
-	// px/s - too fast to perceive as a climb) - scale with distance
-	// instead, clamped so it's never so short it snaps nor so long it drags.
+	// Floored so a short scroll still reads as a climb, capped so a long page doesn't drag on.
 	function climbDuration(distance) {
-		return Math.min(1600, Math.max(600, distance * 0.4));
+		return Math.min(3, Math.max(1.5, distance * 0.0007));
 	}
 
-	// baseLayout.jsp sets `scroll-behavior: smooth` on html/body sitewide,
-	// which governs scrollTo()/scrollBy()/scrollIntoView() - even with an
-	// explicit behavior override, stacking dozens of those calls a second
-	// was fighting that native smooth-scroll machinery instead of
-	// following this eased curve. Direct scrollTop assignment is a
-	// different code path the CSS property was never meant to touch (the
-	// same one this codebase's old topFunction() already relied on for
-	// its own instant jump) - moving each frame that way instead.
-	function animateScrollToTop() {
-		var start = window.scrollY;
-		var duration = climbDuration(start);
-		var startTime = null;
+	var GSAP_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+	var SCROLLTO_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js';
+	var gsapReady = null;
 
-		function step(timestamp) {
-			if (startTime === null) {
-				startTime = timestamp;
-			}
-			var progress = Math.min((timestamp - startTime) / duration, 1);
-			var y = start * (1 - easeInOutCubic(progress));
-			document.documentElement.scrollTop = y;
-			document.body.scrollTop = y;
-			if (progress < 1) {
-				requestAnimationFrame(step);
-			} else {
-				btn.classList.remove('is-scrolling');
-				updateVisibility();
-			}
+	function loadScript(src) {
+		return new Promise(function(resolve, reject) {
+			var s = document.createElement('script');
+			s.src = src;
+			s.onload = resolve;
+			s.onerror = reject;
+			document.head.appendChild(s);
+		});
+	}
+
+	// Only fetches what isn't already on the page, so this works standalone on pages that never load GSAP.
+	function ensureGsap() {
+		if (gsapReady) {
+			return gsapReady;
 		}
-		requestAnimationFrame(step);
+		gsapReady = Promise.resolve()
+				.then(function() {
+					return typeof gsap === 'undefined' ? loadScript(GSAP_SRC) : null;
+				})
+				.then(function() {
+					return typeof ScrollToPlugin === 'undefined' ? loadScript(SCROLLTO_SRC) : null;
+				})
+				.then(function() {
+					gsap.registerPlugin(ScrollToPlugin);
+				});
+		return gsapReady;
 	}
 
 	btn.addEventListener('click', function() {
@@ -188,27 +179,28 @@
 			return;
 		}
 		btn.classList.add('is-scrolling');
-
-		// Pages with their own ScrollTrigger pin/snap sections (home.jsp's
-		// services scrubber) fight a plain scrollTo loop for control of
-		// window.scrollY while it climbs back through the pinned range -
-		// GSAP's own ScrollToPlugin is snap-aware and coordinates with
-		// ScrollTrigger instead of fighting it, so prefer it when the page
-		// has already loaded GSAP; otherwise fall back to the manual loop.
-		if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
-			gsap.registerPlugin(ScrollToPlugin);
+		ensureGsap().then(function() {
+			// home.jsp's pinned section fights external scroll through its trigger range - disable during the climb, then restore.
+			var triggers = (typeof ScrollTrigger !== 'undefined') ? ScrollTrigger.getAll() : [];
+			triggers.forEach(function(st) {
+				st.disable(false);
+			});
 			gsap.to(window, {
 				scrollTo : { y : 0, autoKill : false },
-				duration : climbDuration(window.scrollY) / 1000,
+				duration : climbDuration(window.scrollY),
 				ease : 'power2.inOut',
 				onComplete : function() {
+					triggers.forEach(function(st) {
+						st.enable();
+					});
+					if (typeof ScrollTrigger !== 'undefined') {
+						ScrollTrigger.refresh();
+					}
 					btn.classList.remove('is-scrolling');
 					updateVisibility();
 				}
 			});
-		} else {
-			animateScrollToTop();
-		}
+		});
 	});
 })();
 </script>
