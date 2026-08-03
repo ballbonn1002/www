@@ -476,6 +476,8 @@ public class BlogAction extends ActionSupport {
 			}
 			log.debug("Request URI: " + requestURI);
 
+			boolean redesign = isRedesignPreviewEnabled();
+
 			// Set attributes for JSP
 			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
 			request.setAttribute("bloguri", requestURI);
@@ -493,9 +495,13 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("blog", blog);
 			request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
 			log.debug("blog.detail: " + blog.getDetail());
-			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
-			request.setAttribute("cleanDetail", cleanDetail);
-			log.debug("cleanDetail: " + cleanDetail);
+			// Only the redesign JSP renders ${cleanDetail} - the legacy JSP renders
+			// ${blog.detail} raw, so sanitizing here for it would be wasted work.
+			if (redesign) {
+				String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
+				request.setAttribute("cleanDetail", cleanDetail);
+				log.debug("cleanDetail: " + cleanDetail);
+			}
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag());
 			if (blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
@@ -545,7 +551,7 @@ public class BlogAction extends ActionSupport {
 				request.setAttribute("metaDescription", pageUri.getMeta());
 			}
 
-			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;
