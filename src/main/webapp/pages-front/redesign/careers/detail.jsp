@@ -67,6 +67,10 @@
 	font-size: 40px;
 	font-weight: 700;
 	line-height: 1.25;
+	background: linear-gradient(135deg, #BD2125 0%, #55090b 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
 	color: #BD2125;
 }
 
@@ -125,41 +129,39 @@
 	color: #3F3F3F;
 }
 
+/* Black, not red - .jobdetail-title above already carries the red/gradient
+   brand accent, so section headings here (Responsibilities, Required
+   Qualifications, ...) stay neutral instead of competing with it. */
 .jobdetail-card h1, .jobdetail-card h2, .jobdetail-card h3,
 	.jobdetail-card h4 {
-	color: #000000;
-	font-size: 18px;
-	font-weight: 700;
-}
-
-.jobdetail-card ul, .jobdetail-card ol {
-	padding-left: 20px;
-}
-
-.jobdetail-card__heading {
 	margin: 32px 0 12px;
-	color: #BD2125;
+	color: #000000;
 	font-size: 20px;
 	font-weight: 700;
 }
 
-.jobdetail-card__heading:first-child {
+.jobdetail-card h1:first-child, .jobdetail-card h2:first-child,
+	.jobdetail-card h3:first-child, .jobdetail-card h4:first-child {
 	margin-top: 0;
 }
 
-.jobdetail-card__list {
+/* Same checkmark-bullet treatment as the old .jobdetail-card__list. */
+.jobdetail-card ul {
 	margin: 0 0 8px;
 	padding: 0;
 	list-style: none;
 }
 
-.jobdetail-card__list li {
+.jobdetail-card ol {
+	padding-left: 20px;
+}
+
+.jobdetail-card ul li {
 	position: relative;
-	margin-bottom: 8px;
 	padding-left: 22px;
 }
 
-.jobdetail-card__list li::before {
+.jobdetail-card ul li::before {
 	content: "\2713";
 	position: absolute;
 	left: 0;
@@ -168,35 +170,106 @@
 	font-weight: 700;
 }
 
-.jobdetail-skills {
-	margin: 0 0 40px;
+/* Nested <ul> ("Knowledge of Web Based Application with: <ul>...") is the
+   old structured skills-list shape - same pill-badge treatment as the old
+   .jobdetail-skills__tag instead of a stacked checkmark list. */
+.jobdetail-card ul>li:has(>ul) {
+	padding-left: 0;
 }
 
-.jobdetail-skills__heading {
-	margin: 0 0 16px;
-	color: #000000;
-	font-size: 20px;
-	font-weight: 700;
+.jobdetail-card ul>li:has(>ul)::before {
+	content: none;
 }
 
-.jobdetail-skills__tags {
+.jobdetail-card ul ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
+	list-style: none;
+	padding: 10px 0 0;
+	margin: 0;
 }
 
-.jobdetail-skills__tag {
+.jobdetail-card ul ul li {
+	position: static;
 	padding: 8px 18px;
 	border-radius: 999px;
 	background-color: rgba(189, 33, 37, 0.08);
 	color: #BD2125;
 	font-size: 13px;
 	font-weight: 600;
+	margin-bottom: 0;
+	height: fit-content;
 }
 
-.jobdetail-skills__tag--optional {
-	background-color: rgba(189, 33, 37, 0.04);
-	color: rgba(189, 33, 37, 0.75);
+.jobdetail-card ul ul li::before {
+	content: none;
+}
+
+/* Typography for jobDescriptionHtml (ArticleHtmlSanitizer-cleaned job.description) -
+   same idea as blog_detail.jsp's .article-body, scoped to this card instead. */
+.jobdetail-card p {
+	margin: 0 0 16px;
+}
+
+.jobdetail-card p:last-child {
+	margin-bottom: 0;
+}
+
+.jobdetail-card strong {
+	font-weight: 700;
+	color: #000000;
+}
+
+.jobdetail-card a {
+	color: #BD2125;
+	text-decoration: underline;
+}
+
+.jobdetail-card a:hover {
+	color: #8F191C;
+}
+
+.jobdetail-card li {
+	margin-bottom: 8px;
+}
+
+.jobdetail-card img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 10px;
+	display: block;
+	margin: 16px 0;
+}
+
+.jobdetail-card blockquote {
+	margin: 24px 0;
+	padding: 16px 20px;
+	border-left: 4px solid #BD2125;
+	background: rgba(189, 33, 37, 0.05);
+	border-radius: 0 10px 10px 0;
+}
+
+.jobdetail-card table {
+	display: block;
+	overflow-x: auto;
+	width: 100%;
+	border-collapse: collapse;
+	margin: 16px 0;
+	font-size: 14px;
+}
+
+.jobdetail-card th, .jobdetail-card td {
+	padding: 10px 14px;
+	border-bottom: 1px solid #E5E5E5;
+	text-align: left;
+	vertical-align: top;
+}
+
+.jobdetail-card th {
+	background: rgba(189, 33, 37, 0.05);
+	color: #000000;
+	font-weight: 700;
 }
 
 .jobdetail-cta {
@@ -291,10 +364,10 @@
 }
 
 .jobapply-modal .input-group-text {
-	background-color: rgba(189, 33, 37, 0.06);
+	background-color: rgba(0, 0, 0, 0.04);
 	border: 1px solid #E5E5E5;
 	border-right: 0;
-	color: #BD2125;
+	color: #3F3F3F;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
 	border-top-right-radius: 0;
@@ -367,8 +440,8 @@
 	color: transparent;
 }
 
-.jobapply-modal .field-floating>.form-control:focus~label,
-	.jobapply-modal .field-floating>.form-control:not(:placeholder-shown)~label
+.jobapply-modal .field-floating>.form-control:focus ~label,
+	.jobapply-modal .field-floating>.form-control:not(:placeholder-shown) ~label
 	{
 	transform: scale(0.82) translateY(-0.7rem);
 	color: #BD2125;
@@ -422,8 +495,8 @@
 	transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.jobapply-modal .jobapply-dropzone:hover,
-	.jobapply-modal .jobapply-dropzone:focus-visible {
+.jobapply-modal .jobapply-dropzone:hover, .jobapply-modal .jobapply-dropzone:focus-visible
+	{
 	border-color: #BD2125;
 	background-color: rgba(189, 33, 37, 0.04);
 }
@@ -484,8 +557,8 @@
 	color: #3F3F3F;
 }
 
-.jobapply-modal .jobapply-dropzone__prompt.is-hidden,
-	.jobapply-modal .jobapply-dropzone__file.is-hidden {
+.jobapply-modal .jobapply-dropzone__prompt.is-hidden, .jobapply-modal .jobapply-dropzone__file.is-hidden
+	{
 	display: none;
 }
 
@@ -603,90 +676,28 @@
 				<div class="jobdetail-meta">
 					<span class="jobdetail-meta__item" aria-hidden="true"><i
 						class="bi bi-building"></i> CubeSoftTech</span> <span
-						class="jobdetail-meta__sep">|</span>
-					<span class="jobdetail-meta__item" aria-hidden="true"><i
+						class="jobdetail-meta__sep">|</span> <span
+						class="jobdetail-meta__item" aria-hidden="true"><i
 						class="bi bi-geo-alt"></i> Chong Nonsi, Bangkok</span>
 				</div>
 			</div>
 			<button type="button" class="jobdetail-apply-button"
-				data-toggle="modal" data-target="#jobApplyModal">Apply
-				Now <span aria-hidden="true">&rarr;</span></button>
+				data-toggle="modal" data-target="#jobApplyModal">
+				Apply Now <span aria-hidden="true">&rarr;</span>
+			</button>
 		</div>
 
-		<c:choose>
-			<c:when test="${not empty requirements}">
-				<div class="jobdetail-card">
-					<c:if test="${not empty requirements.responsibilities}">
-						<h3 class="jobdetail-card__heading">Responsibilities</h3>
-						<ul class="jobdetail-card__list">
-							<c:forEach var="item" items="${requirements.responsibilities}">
-								<li>${item}</li>
-							</c:forEach>
-						</ul>
-					</c:if>
-					<c:if test="${not empty requirements.requiredQualifications}">
-						<h3 class="jobdetail-card__heading">Required
-							Qualifications</h3>
-						<ul class="jobdetail-card__list">
-							<c:forEach var="item"
-								items="${requirements.requiredQualifications}">
-								<li>${item}</li>
-							</c:forEach>
-						</ul>
-					</c:if>
-					<c:if test="${not empty requirements.preferredQualifications}">
-						<h3 class="jobdetail-card__heading">Preferred
-							Qualifications</h3>
-						<ul class="jobdetail-card__list">
-							<c:forEach var="item"
-								items="${requirements.preferredQualifications}">
-								<li>${item}</li>
-							</c:forEach>
-						</ul>
-					</c:if>
-				</div>
+		<div class="jobdetail-card">${jobDescriptionHtml}</div>
 
-				<c:if test="${not empty requirements.requiredSkills}">
-					<div class="jobdetail-skills">
-						<h3 class="jobdetail-skills__heading">Knowledge of Web
-							Based Application with</h3>
-						<div class="jobdetail-skills__tags">
-							<c:forEach var="item" items="${requirements.requiredSkills}">
-								<span class="jobdetail-skills__tag">${item}</span>
-							</c:forEach>
-						</div>
-					</div>
-				</c:if>
-
-				<c:if test="${not empty requirements.preferredSkills}">
-					<div class="jobdetail-skills">
-						<h3 class="jobdetail-skills__heading">Preferred
-							Qualifications / Optional</h3>
-						<div class="jobdetail-skills__tags">
-							<c:forEach var="item" items="${requirements.preferredSkills}">
-								<span
-									class="jobdetail-skills__tag jobdetail-skills__tag--optional">${item}</span>
-							</c:forEach>
-						</div>
-					</div>
-				</c:if>
-			</c:when>
-			<c:otherwise>
-				<div class="jobdetail-card">${job.description}</div>
-			</c:otherwise>
-		</c:choose>
-
-		<c:if test="${not empty requirements}">
-			<div class="jobdetail-cta">
-				<h2 class="jobdetail-cta__title">Interested in
-					${job.position}?</h2>
-				<p class="jobdetail-cta__body">Send us your resume and
-					we'll get back to you soon.</p>
-				<button type="button" class="jobdetail-apply-button"
-					data-toggle="modal" data-target="#jobApplyModal">Apply
-					Now <span aria-hidden="true">&rarr;</span></button>
-			</div>
-		</c:if>
+		<div class="jobdetail-cta">
+			<h2 class="jobdetail-cta__title">Interested in ${job.position}?</h2>
+			<p class="jobdetail-cta__body">Send us your resume and we'll get
+				back to you soon.</p>
+			<button type="button" class="jobdetail-apply-button"
+				data-toggle="modal" data-target="#jobApplyModal">
+				Apply Now <span aria-hidden="true">&rarr;</span>
+			</button>
+		</div>
 
 	</c:if>
 </div>
@@ -698,8 +709,8 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<div>
-					<h5 class="modal-title" id="jobApplyModalLabel">Send
-						Email and Resume</h5>
+					<h5 class="modal-title" id="jobApplyModalLabel">Send Email and
+						Resume</h5>
 				</div>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
@@ -707,10 +718,10 @@
 				</button>
 			</div>
 			<form id="frmJobApply" action="/sendEmailJob"
-				enctype="multipart/form-data" name="frmJobApply"
-				autocomplete="off" method="POST">
-				<input type="hidden" name="jobId" value="${jobId}">
-				<input type="hidden" name="contactPosition" value="${job.position}">
+				enctype="multipart/form-data" name="frmJobApply" autocomplete="off"
+				method="POST">
+				<input type="hidden" name="jobId" value="${jobId}"> <input
+					type="hidden" name="contactPosition" value="${job.position}">
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="input-group">
@@ -721,9 +732,9 @@
 								<input type="text"
 									class="form-control ${not empty nameError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactName" id="jobApplyName"
-									value="${contactName}">
-								<label for="jobApplyName">Full Name <span
-									class="required-mark">*</span></label>
+									value="${contactName}"> <label for="jobApplyName">Full
+									Name <span class="required-mark">*</span>
+								</label>
 							</div>
 						</div>
 						<div
@@ -739,9 +750,9 @@
 								<input type="email"
 									class="form-control ${not empty emailError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactEmail" id="jobApplyEmail"
-									value="${contactEmail}">
-								<label for="jobApplyEmail">E-mail <span
-									class="required-mark">*</span></label>
+									value="${contactEmail}"> <label for="jobApplyEmail">E-mail
+									<span class="required-mark">*</span>
+								</label>
 							</div>
 						</div>
 						<div
@@ -757,9 +768,9 @@
 								<input type="text"
 									class="form-control ${not empty telError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactTel" id="jobApplyTel"
-									value="${contactTel}">
-								<label for="jobApplyTel">Telephone <span
-									class="optional-mark">(optional)</span></label>
+									value="${contactTel}"> <label for="jobApplyTel">Telephone
+									<span class="optional-mark">(optional)</span>
+								</label>
 							</div>
 						</div>
 						<div
@@ -773,13 +784,14 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="jobapply-static-label">Attach Resume
-							<span class="optional-mark">(optional)</span></label>
+						<label class="jobapply-static-label">Attach Resume <span
+							class="optional-mark">(optional)</span></label>
 						<div
 							class="jobapply-dropzone ${empty fileError ? '' : 'is-invalid'}"
 							id="jobApplyDropzone" tabindex="0" role="button"
 							aria-label="Attach your resume - drag and drop or click to browse">
-							<div class="jobapply-dropzone__prompt" id="jobApplyDropzonePrompt">
+							<div class="jobapply-dropzone__prompt"
+								id="jobApplyDropzonePrompt">
 								<i class="bi bi-paperclip"></i>
 								<p class="jobapply-dropzone__text">
 									Drag and drop a file, or <span
@@ -799,8 +811,7 @@
 							<input type="file" name="contactFile" id="jobApplyFile"
 								class="jobapply-dropzone__input">
 						</div>
-						<p class="jobapply-dropzone__helper">Supports files up
-							to 30MB</p>
+						<p class="jobapply-dropzone__helper">Supports files up to 30MB</p>
 						<p
 							class="jobapply-dropzone__error ${empty fileError ? 'is-hidden' : ''}"
 							id="jobApplyFileError">${fileError}</p>
@@ -817,8 +828,9 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-danger">Send <span
-						aria-hidden="true">&rarr;</span></button>
+					<button type="submit" class="btn btn-danger">
+						Send <span aria-hidden="true">&rarr;</span>
+					</button>
 				</div>
 			</form>
 		</div>
@@ -834,7 +846,8 @@
 		var fileInput = document.getElementById('jobApplyFile');
 		var prompt = document.getElementById('jobApplyDropzonePrompt');
 		var fileRow = document.getElementById('jobApplyDropzoneFile');
-		var filenameDisplay = document.getElementById('jobApplyFileNameDisplay');
+		var filenameDisplay = document
+				.getElementById('jobApplyFileNameDisplay');
 		var fileNameHidden = document.getElementById('jobApplyFileName');
 		var removeBtn = document.getElementById('jobApplyFileRemove');
 		var errorEl = document.getElementById('jobApplyFileError');
@@ -950,7 +963,8 @@
 			if (!trimmed) {
 				return 'Please enter your email';
 			}
-			if (trimmed.length > EMAIL_MAX_LENGTH || !EMAIL_PATTERN.test(trimmed)) {
+			if (trimmed.length > EMAIL_MAX_LENGTH
+					|| !EMAIL_PATTERN.test(trimmed)) {
 				return 'Invalid email - please check and try again (e.g. name@example.com)';
 			}
 			return null;
@@ -990,29 +1004,39 @@
 		var telInput = document.getElementById('jobApplyTel');
 
 		nameInput.addEventListener('blur', function() {
-			setFieldError('jobApplyName', 'jobApplyNameFeedback', validateName(this.value));
+			setFieldError('jobApplyName', 'jobApplyNameFeedback',
+					validateName(this.value));
 		});
 		emailInput.addEventListener('blur', function() {
-			setFieldError('jobApplyEmail', 'jobApplyEmailFeedback', validateEmail(this.value));
+			setFieldError('jobApplyEmail', 'jobApplyEmailFeedback',
+					validateEmail(this.value));
 		});
 		telInput.addEventListener('blur', function() {
-			setFieldError('jobApplyTel', 'jobApplyTelFeedback', validateTel(this.value));
+			setFieldError('jobApplyTel', 'jobApplyTelFeedback',
+					validateTel(this.value));
 		});
 
-		document.getElementById('frmJobApply').addEventListener('submit',
-				function(e) {
-					var nameErr = validateName(nameInput.value);
-					var emailErr = validateEmail(emailInput.value);
-					var telErr = validateTel(telInput.value);
-					var fileHasError = document.getElementById('jobApplyDropzone')
-							.classList.contains('is-invalid');
-					setFieldError('jobApplyName', 'jobApplyNameFeedback', nameErr);
-					setFieldError('jobApplyEmail', 'jobApplyEmailFeedback', emailErr);
-					setFieldError('jobApplyTel', 'jobApplyTelFeedback', telErr);
-					if (nameErr || emailErr || telErr || fileHasError) {
-						e.preventDefault();
-					}
-				});
+		document
+				.getElementById('frmJobApply')
+				.addEventListener(
+						'submit',
+						function(e) {
+							var nameErr = validateName(nameInput.value);
+							var emailErr = validateEmail(emailInput.value);
+							var telErr = validateTel(telInput.value);
+							var fileHasError = document
+									.getElementById('jobApplyDropzone').classList
+									.contains('is-invalid');
+							setFieldError('jobApplyName',
+									'jobApplyNameFeedback', nameErr);
+							setFieldError('jobApplyEmail',
+									'jobApplyEmailFeedback', emailErr);
+							setFieldError('jobApplyTel', 'jobApplyTelFeedback',
+									telErr);
+							if (nameErr || emailErr || telErr || fileHasError) {
+								e.preventDefault();
+							}
+						});
 
 		<c:if
 			test="${not empty nameError or not empty emailError or not empty telError or not empty fileError}">

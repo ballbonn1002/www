@@ -1,6 +1,7 @@
 package com.cubesofttech.action;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,20 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.JobDAO;
 import com.cubesofttech.dao.PageUriDAO;
 import com.cubesofttech.model.Job;
-import com.cubesofttech.model.JobRequirements;
 import com.cubesofttech.model.PageUri;
+import com.cubesofttech.model.Testimonial;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.ArticleHtmlSanitizer;
 import com.cubesofttech.util.FileUtil;
+import com.cubesofttech.util.JobDescriptionSectionRebuilder;
 import com.cubesofttech.util.RewriteFilter;
 import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.validation.ContactFormValidator;
 import com.cubesofttech.validation.ValidationResult;
-import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CareersAction extends ActionSupport {
@@ -31,6 +35,10 @@ public class CareersAction extends ActionSupport {
 
 	// Matches struts.multipart.maxSize in actionfront.xml; no file type restriction, matching the legacy form.
 	private static final long MAX_RESUME_FILE_SIZE = 30_000_000L;
+
+	// Caps how many intern testimonial cards the careers page shows - keep this
+	// when buildMockTestimonials() is replaced by a real DAO query (e.g. LIMIT 6).
+	private static final int MAX_TESTIMONIALS = 6;
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
@@ -123,12 +131,13 @@ public class CareersAction extends ActionSupport {
 	}
 
 	public String init() {
-		try {			
+		try {
 			List<Job> jobList = jobDAO.findAllWithPageUri();
 			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
+			request.setAttribute("testimonials", buildMockTestimonials());
 			request.setAttribute("constant", constant);
-			
+
 			String requestURI = RewriteFilter.getRequestURI(request);
 			log.debug(requestURI);
 			request.setAttribute("requestURI", requestURI);
@@ -138,6 +147,69 @@ public class CareersAction extends ActionSupport {
 			e.printStackTrace();
 			return ERROR;
 		}
+	}
+
+	private List<Testimonial> buildMockTestimonials() {
+		List<Testimonial> testimonials = new ArrayList<Testimonial>();
+		testimonials.add(new Testimonial(
+				"Ram",
+				"Full Stack Developer",
+				"การฝึกงานที่ Cube SoftTech ถึงแม้ยังฝึกไม่ถึงเดือน แต่ผมได้เรียนรู้ Tool และ Framework ใหม่ๆ ได้ลองทำ Tutorial และ Exercise เพื่อต่อยอดในการทำงานจริง\r\n"
+				+ "\r\n"
+				+ "พี่เลี้ยง พี่ในทีม เป็นกันเองและใจดีมากครับ ช่วยให้คำแนะนำที่ดีเวลาติดปัญหา สามารถถามได้ตลอด\r\n"
+				+ "\r\n"
+				+ "สิ่งที่ได้รับจากการฝึกงานที่นี่ คือ ผมได้ทักษะการสื่อสารเป็นทีม การทำงานเป็นทีม เพื่อไปใช้ในการทำงานจริงในอนาคตครับ",
+				"/pages-front/img/redesign/careers/careers-intern-avatar.png"));
+		testimonials.add(new Testimonial(
+				"Boom",
+				"Full Stack Developer",
+				"การฝึกงานที่ Cube SoftTech เป็นโอกาสที่ดีที่ได้ทำงานพัฒนาระบบที่ได้ใช้งานจริงภายในองค์กร ทำให้ได้เรียนรู้การเจอปัญหาจริงในการพัฒนาระบบ ขั้นตอนการทำงาน ที่ไม่เหมือนแค่ในห้องเรียน\r\n"
+				+ "\r\n"
+				+ "พี่เลี้ยงในทีมทุกคนใส่ใจ พร้อมช่วยเหลือ ให้คำแนะนำการใช้อุปกรณ์สำหรับพัฒนาระบบ สอนใช้เทคโนโลยีที่ใช้ในงาน เพื่อให้เราเรียนรู้ได้เต็มที่จากการฝึกงาน\r\n"
+				+ "\r\n"
+				+ "สิ่งที่ได้รับจากการฝึกงานที่นี่ คือ การได้ลองจับงานจริง การได้เข้าร่วมประชุม หาไอเดียในการพัฒนาระบบ ซึ่งเป็นโอกาสดี ทำให้เข้าใจบรรยากาศการทำงานจริง และทำให้พร้อมมากขึ้นสำหรับการทำงานในสายอาชีพนักพัฒนา",
+				"/pages-front/img/redesign/careers/careers-intern-avatar.png"));
+		testimonials.add(new Testimonial(
+				"Jinny",
+				"Full Stack Developer",
+				"การฝึกงานที่ Cube SoftTech ตอนแรกยังไม่คุ้นเคยกับ Framework มีโอกาสได้เรียนรู้ผ่าน Tutorial ลองทำ Exercise ไปเรื่อยๆ ทั้งฝั่งของหน้าบ้านและหลังบ้าน ทำให้เข้าใจภาพรวมของการพัฒนาระบบที่มีผู้ใช้งานจริงๆ\r\n"
+				+ "\r\n"
+				+ "พี่เลี้ยงกับพี่ๆ ในทีมใจดีและเป็นกันเองมากค่ะ เวลาติดปัญหาก็สามารถถามได้ตลอด พี่ๆ พร้อมช่วยอธิบายแนะแนวทางให้ แถมยังเปิดโอกาสให้ได้ลองทำในสิ่งที่สนใจด้วยค่ะ\r\n"
+				+ "\r\n"
+				+ "สิ่งที่ได้รับจากการฝึกงานที่นี่ คือ ทักษะการค้นคว้าแก้ปัญหาด้วยตัวเอง และได้เห็นกระบวนการทำงานจริงในบริษัท ซึ่งเป็นประสบการณ์ที่มีค่าและช่วยให้พร้อมสำหรับการทำงานในอนาคตมากๆ ค่ะ",
+				"/pages-front/img/redesign/careers/careers-intern-avatar.png"));
+		testimonials.add(new Testimonial(
+				"Oshi",
+				"Frontend Developer",
+				"การฝึกงานที่ Cube SoftTech เป็นประสบการณ์ที่ดี ท้าทายมากครับ ได้ลุยงานจริงทั้งฝั่ง Frontend และ Backend ทำให้เห็นภาพรวมของการทำงานแบบครบวงจรเลย\r\n"
+				+ "\r\n"
+				+ "พี่เลี้ยงก็น่ารักและเก่งมากๆ คอยสอนเทคนิคต่างๆ ให้คำแนะนำแบบเป็นกันเองสุดๆ ทำให้ผมกล้าถามเวลาที่ติดปัญหาเรื่องโค้ด กล้าลองผิดลองถูก\r\n"
+				+ "\r\n"
+				+ "สิ่งที่ได้รับจากการฝึกงานที่นี่ คือ ได้อัปสกิลการเขียนโปรแกรม ได้เรียนรู้วิธีการทำงานจริงร่วมกับทีมและระบบการทำงานของบริษัทด้วยครับ",
+				"/pages-front/img/redesign/careers/careers-intern-avatar.png"));
+		testimonials.add(new Testimonial(
+				"Best",
+				"Full Stack Developer",
+				"การฝึกงานที่ Cube SoftTech เป็นประสบการณ์ที่ดีมากสำหรับผม เพราะได้มีโอกาสทำงานกับโปรเจกต์จริงและเรียนรู้เทคโนโลยีที่ใช้ในการพัฒนาซอฟต์แวร์จริงๆ\r\n"
+				+ "\r\n"
+				+ "พี่ๆ ในทีม พี่เลี้ยงให้คำแนะนำดีมาก เวลามีปัญหาหรือข้อสงสัยสามารถถามได้ตลอด\r\n"
+				+ "\r\n"
+				+ "สิ่งที่ได้รับจากการฝึกงานที่นี่ คือ แม้ว่าผมจะเพิ่งเริ่มฝึกงานได้ไม่นาน แต่ผมก็ได้รับความรู้ มุมมองเกี่ยวกับการทำงานจริงมากขึ้น ทั้งเทคโนโลยีที่ใช้ในการพัฒนาระบบ แนวทางการทำงานในองค์กร เป็นประสบการณ์ที่ดีและเป็นประโยชน์ต่อการพัฒนาตัวเองต่อไปในอนาคต",
+				"/pages-front/img/redesign/careers/careers-intern-avatar.png"));
+		testimonials.add(new Testimonial(
+				"Team",
+				"Full Stack Developer",
+				"การฝึกงานที่ Cube SoftTech ผมได้เรียนรู้การใช้งาน Tool และ Framework ใหม่ๆ ได้ลองเขียนระบบจริง ทำให้ได้เรียนรู้โครงสร้างระบบต่างๆ\r\n"
+				+ "\r\n"
+				+ "พี่เลี้ยงทุกคนเป็นกันเอง คอยให้คำแนะนำและแบ่งปันเทคนิคต่างๆ ตลอด ทำให้ผมสามารถพัฒนาทักษะของตัวเองได้อย่างต่อเนื่อง\r\n"
+				+ "\r\n"
+				+ "สิ่งที่ได้รับจากการฝึกงานที่นี่ คือ ได้เรียนรู้การวางแผนงาน การแก้ไขปัญหาที่เกิดขึ้นระหว่างการพัฒนาระบบจริง ช่วยสร้างความมั่นใจในการก้าวเข้าสู่การทำงานในอนาคตครับ",
+				"/pages-front/img/redesign/careers/careers-intern-avatar.png"));
+
+		if (testimonials.size() > MAX_TESTIMONIALS) {
+			return testimonials.subList(0, MAX_TESTIMONIALS);
+		}
+		return testimonials;
 	}
 
 	// Set via /redesign-preview-on (RedesignPreviewAction), not a URL parameter.
@@ -179,12 +251,22 @@ public class CareersAction extends ActionSupport {
 		log.debug(job.getPosition());
 		request.setAttribute("job", job);
 		request.setAttribute("jobId", job_id);
+		request.setAttribute("jobDescriptionHtml", buildJobDescriptionHtml(job.getDescription()));
+	}
 
-		// Not-yet-migrated postings fall back to job.description's raw HTML in the JSP.
-		if (job.getRequirementsJson() != null && !job.getRequirementsJson().trim().isEmpty()) {
-			JobRequirements requirements = new Gson().fromJson(job.getRequirementsJson(), JobRequirements.class);
-			request.setAttribute("requirements", requirements);
+	// Postings vary in how "sections" (Responsibilities, Required Qualifications, ...)
+	// were originally pasted in - some use real <ul>/<li>, others are a flat run of
+	// <div>/<p> lines with a heading line then "-"/"&bull;"-prefixed lines. Rebuilding
+	// runs on the raw HTML first (text-content checks aren't affected by the
+	// inline style/class cruft ArticleHtmlSanitizer strips afterward), so .jobdetail-card's
+	// CSS sees real heading/list tags either way.
+	private String buildJobDescriptionHtml(String rawHtml) {
+		if (rawHtml == null || rawHtml.trim().isEmpty()) {
+			return "";
 		}
+		Document doc = Jsoup.parseBodyFragment(rawHtml);
+		JobDescriptionSectionRebuilder.rebuild(doc);
+		return ArticleHtmlSanitizer.clean(doc.body().html());
 	}
 
 	// Resume is optional - a missing file is not an error.
