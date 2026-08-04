@@ -31,6 +31,293 @@
 
 <link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
 
+<style type="text/css">
+/* ==========================================================================
+   Blog list page (page-specific - not shared with blog_detail.jsp)
+   ========================================================================== */
+.articleblockbg figure {
+	margin: 0;
+}
+
+.articleblockbg .gap-2 {
+	gap: 0.5rem !important;
+}
+.articleblockbg .gap-4 {
+	gap: 1.5rem !important;
+}
+
+.articleblockbg .vr {
+	display: inline-block !important;
+	align-self: stretch !important;
+	width: 1px !important;
+	min-height: 1em !important;
+	background-color: currentcolor !important;
+	opacity: .25 !important;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+.articleblockbg {
+	background-color: #F5F5F5;
+	padding-top: calc(3% + var(--navbar-offset, 80px));
+	padding-bottom: 5%;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.bar {
+	width: 30px;
+	height: 3px;
+	background-color: #333;
+	margin: 6px 0;
+	transition: 0.4s;
+}
+
+/* ==========================================================================
+   Article list + pagination (rendered via blog_list.jsp include)
+   ========================================================================== */
+.article-list-row {
+	padding-top: 60px;
+	scroll-margin-top: 80px;
+}
+
+.pagination.blog-pagination {
+	position: static;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 2rem;
+}
+
+.blog-pagination .page-item {
+	margin: 0 4px;
+}
+
+.blog-pagination .page-link {
+	margin-left: 0; /* cancel Bootstrap's default -1px border-collapse between items */
+	border-radius: 8px;
+	border-color: #e9dcdc;
+	color: #BD2125;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.blog-pagination .page-link:hover {
+	background-color: #fdeceb;
+	color: #8f1a1d;
+}
+
+.blog-pagination .page-item.active .page-link {
+	background-color: #f3c9c9;
+	border-color: #f3c9c9;
+	color: #7a1215;
+	font-weight: 600;
+}
+
+.blog-pagination .page-item.disabled .page-link {
+	opacity: 0.5;
+}
+
+.page-link__icon {
+	display: none;
+}
+
+@media (max-width: 575px) {
+	.page-link__text {
+		display: none;
+	}
+	.page-link__icon {
+		display: inline;
+	}
+
+	.blog-pagination .page-item {
+		margin: 0 2px;
+	}
+	.blog-pagination .page-link {
+		padding: 0.375rem 0.6rem;
+	}
+}
+
+/* ==========================================================================
+   Featured article (hero card)
+   ========================================================================== */
+.article-preview {
+	max-width: 100%;
+}
+
+.article-preview__row {
+	padding-top: 0%;
+	padding-bottom: 0%;
+	padding-left: 0%;
+	padding-right: 0%;
+}
+
+@media ( min-width : 992px) {
+	.article-preview__row .col-lg-6 {
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+		height: 500px;
+	}
+
+}
+
+.article-preview__media {
+	position: sticky;
+	top: 20px;
+	height: 100%;
+}
+
+.article-preview__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+	display: block;
+}
+
+.article-preview__content {
+	min-height: 400px;
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	height: 100%;
+	overflow: hidden;
+}
+
+@media (max-width: 991px) {
+	.article-preview__content {
+		margin-top: 1.5rem;
+	}
+}
+
+.article-preview__title {
+	width: 100%;
+	font-weight: bold;
+	margin: 0 0 1rem 0;
+	background: linear-gradient(135deg, #BD2125 0%, #55090b 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: #BD2125;
+}
+
+@media ( min-width : 992px) {
+	.article-preview__title {
+		font-size: 36px;
+		line-height: 48px;
+	}
+}
+
+.article-preview__excerpt {
+	margin: 0 0 1rem 0;
+	line-height: 1.6;
+	height: 9.6em;
+	display: -webkit-box;
+	-webkit-line-clamp: 6;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	position: relative;
+}
+
+.article-preview__excerpt::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3em;
+	background: linear-gradient(to bottom, rgba(245, 245, 245, 0),
+		rgba(245, 245, 245, 1));
+	pointer-events: none;
+}
+
+.article-preview__cta.btn-danger {
+	color: #fff;
+	background-color: #C41216;
+	border-color: #dc3545;
+}
+
+.article-preview__cta.btn-lg {
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	border-radius: 0.3rem;
+}
+
+.article-preview__cta {
+	display: inline-block;
+	align-self: flex-start;
+	margin-top: auto;
+	border-radius: 10px !important;
+	color: #fff !important;
+}
+
+.article-preview__divider {
+	border-top: 1px solid #B2B2B2;
+	opacity: 1;
+}
+
+.article-preview__meta {
+	font-size: 15px;
+}
+
+/* ==========================================================================
+   Image loading skeleton (featured article image only)
+   ========================================================================== */
+.articleblockbg .img-skeleton {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%);
+	background-size: 200% 100%;
+	animation: img-skeleton-shimmer 1.4s ease-in-out infinite;
+	transition: opacity 0.25s ease;
+}
+
+.articleblockbg .img-skeleton.is-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+@keyframes img-skeleton-shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
+
+.articleblockbg .article-preview__image,
+.articleblockbg .article-card__image {
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.articleblockbg .article-preview__image.is-loaded,
+.articleblockbg .article-card__image.is-loaded {
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.articleblockbg .img-skeleton {
+		animation: none;
+	}
+	.articleblockbg .article-preview__image,
+	.articleblockbg .article-card__image {
+		transition: none;
+	}
+}
+</style>
+
 <!--------------------------home------------------------------------>
 
 <div class="articleblockbg">

@@ -49,6 +49,9 @@
 
 <link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
 <style>
+/* ==========================================================================
+   1. Page chrome (scroll behavior, nav hover)
+   ========================================================================== */
 body, html {
 	scroll-behavior: smooth;
 	padding-right: 0 !important;
@@ -61,8 +64,12 @@ body, html {
 	border-bottom: 4px solid;
 }
 
+/* ==========================================================================
+   2. Article hero (image + expand modal)
+   ========================================================================== */
 .article-hero {
 	position: relative;
+	z-index: 0;
 	height: 480px;
 	overflow: hidden;
 	background-color: #1A1A1A;
@@ -152,8 +159,10 @@ body, html {
 
 .article-hero-card {
 	position: relative;
+	z-index: 1;
 	margin-top: -140px;
 	border-radius: 16px;
+	background-color: #fff;
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 	padding: 30px 20px;
 }
@@ -169,29 +178,9 @@ body, html {
 	}
 }
 
-.active {
-	border-color: white white #BD2125 !important;
-	border-bottom: 4px solid;
-	color: #BD2125 !important;
-}
-
-.setpo {
-	margin-right: -20px;
-}
-
-.progress-bar {
-	height: 0px;
-	background: #BD2125;
-	width: 0%;
-	margin: 0 0 0;
-}
-
-.navbar-light .navbar-toggler-icon {
-	background-image:
-		url(https://cdn.dribbble.com/users/976841/screenshots/3452262/dribbble-upload.gif)
-		!important;
-}
-
+/* ==========================================================================
+   3. Legacy global resets (unscoped - verify before editing elsewhere)
+   ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Segoe UI", Arial, sans-serif;
 	font-weight: 400;
@@ -206,69 +195,9 @@ p {
 	margin: 0 0 0;
 }
 
-.nava {
-	padding-left: 10%;
-}
-
-.icon {
-	width: 100px;
-	height: 85px;
-}
-
-.bar {
-	width: 30px;
-	height: 3px;
-	background-color: #333;
-	margin: 6px 0;
-	transition: 0.4s;
-}
-
-.vl {
-	border-left: 2px solid rgb(233, 233, 233);
-	height: 140px;
-}
-
-@media screen and (max-width: 870px) {
-	.vl {
-		display: none;
-	}
-}
-
-.hl {
-	border-left: 2px solid rgb(233, 233, 233);
-	height: 1px;
-	text-align: center;
-}
-
-.ft {
-	border-bottom: 2px solid rgb(233, 233, 233);
-}
-
-a:link {
-	color: #000;
-}
-
-.detail {
-	background-color: white;
-}
-
-hr.detailnew {
-	border-top: 2px solid lightgray;
-	margin: 0 0 0;
-}
-
-.logojob {
-	padding-bottom: 50px;
-	padding-top: 100px;
-}
-
-.job-block {
-	background-color: #BD2125;
-	width: 200px;
-	color: white;
-	font-size: 32px;
-}
-
+/* ==========================================================================
+   4. Article content container width
+   ========================================================================== */
 .articledetail {
 	margin-right: 5%;
 }
@@ -283,6 +212,9 @@ hr.detailnew {
 	}
 }
 
+/* ==========================================================================
+   5. Related articles section
+   ========================================================================== */
 .related-articles-section {
 	margin-top: 4rem;
 	padding-top: 2rem;
@@ -360,7 +292,7 @@ hr.detailnew {
 }
 
 /* ==========================================================================
-   Card carousel - shared by "related articles" and "latest articles"
+   6. Card carousel - shared by "related articles" and "latest articles"
    below.
    ========================================================================== */
 .card-carousel {
@@ -373,7 +305,10 @@ hr.detailnew {
 	gap: 1.25rem;
 	overflow-x: auto;
 	scroll-behavior: smooth;
-	padding: 0.25rem 0.25rem 0.75rem;
+	/* overflow-x:auto forces overflow-y to auto too (CSS Overflow spec),
+	   so the hover lift + shadow on .articleblockbg2 needs real clearance
+	   here or it gets clipped at the top of the scrollport. */
+	padding: 1.25rem 0.25rem 0.75rem;
 	scrollbar-width: none;
 }
 
@@ -482,6 +417,9 @@ hr.detailnew {
 	overflow: hidden;
 }
 
+/* ==========================================================================
+   7. Article-card component tuning (extends shared blog.css card for this page)
+   ========================================================================== */
 .article-tags {
 	margin: 0.75rem 0;
 }
@@ -515,20 +453,27 @@ hr.detailnew {
 	flex: 1;
 }
 
-@container (max-width: 360px) { .ardetail__meta { flex-direction:column;
-	align-items: flex-start !important;
-	gap: 4px !important;
-}
+@container (max-width: 360px) {
+	.ardetail__meta {
+		flex-direction: column;
+		align-items: flex-start !important;
+	}
+	/* .gap-4 polyfill below (section 10) is also !important with equal
+	   specificity - compound selector needed here so this actually wins. */
+	.ardetail__meta.gap-4 {
+		gap: 4px !important;
+	}
 
-.ardetail__meta .vr {
-	display: none !important;
-}
-
+	.ardetail__meta .vr {
+		display: none !important;
+	}
 }
 @media ( max-width : 991px) {
 	.ardetail__meta {
 		flex-direction: column;
 		align-items: flex-start !important;
+	}
+	.ardetail__meta.gap-4 {
 		gap: 4px !important;
 	}
 	.ardetail__meta .vr {
@@ -536,6 +481,9 @@ hr.detailnew {
 	}
 }
 
+/* ==========================================================================
+   8. Article theme tokens
+   ========================================================================== */
 :root {
 	--article-ink: #2B2222;
 	--article-ink-muted: #7A6C6C;
@@ -547,6 +495,10 @@ hr.detailnew {
 	--article-code-ink: #8A2A2C;
 }
 
+/* ==========================================================================
+   9. Article body - styles the sanitized CMS content (headings, links,
+   lists, blockquote, code, images, tables, FAQ)
+   ========================================================================== */
 .article-body {
 	font-size: 17px;
 	line-height: 1.85;
@@ -713,6 +665,9 @@ hr.detailnew {
 	color: var(--article-accent);
 }
 
+/* ==========================================================================
+   10. Bootstrap 5 utility polyfills (gap, vr) - also duplicated in blog.css
+   ========================================================================== */
 .gap-2 {
 	gap: 0.5rem !important;
 }
@@ -771,7 +726,7 @@ hr.detailnew {
 
 <div class="container">
 	<div class="article-content">
-		<div class="detail article-hero-card">
+		<div class="article-hero-card">
 			<h1 itemprop="headline" class="article-title">${blog.topic}</h1>
 
 			<div class="article-tags">
