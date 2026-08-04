@@ -60,9 +60,15 @@
 	color: #fff;
 }
 
-/* header.jsp's inline nav-link color assumes a light hero; override while glassy over this page's dark photo. */
-nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active) {
-	color: #fff !important;
+/* header.jsp's inline nav-link color assumes a light hero; override while glassy
+   over this page's dark photo - desktop only, where .navbar-menu-frame is a
+   small transparent pill sitting directly on the photo. Below the collapse
+   breakpoint the frame is a light/frosted dropdown panel instead (same as
+   every other page), so forcing white here would read as white-on-white. */
+@media (min-width: 992px) {
+	nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active) {
+		color: #fff !important;
+	}
 }
 
 .contact-heading {
@@ -153,6 +159,17 @@ nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active)
 	padding-bottom: 5%;
 	padding-left: 10%;
 	padding-right: 10%;
+}
+
+/* background-attachment:fixed combined with a multi-layer background
+   (gradient + image) is unreliable on mobile Safari/some Android WebViews -
+   the dark scrim layer can fail to composite properly, leaving only the
+   bright photo behind the white text. Parallax is a desktop-only nicety
+   anyway, so just fall back to scroll below the breakpoint. */
+@media screen and (max-width: 870px) {
+	.contactbg {
+		background-attachment: scroll;
+	}
 }
 
 .contact-info-group .contact-heading {
