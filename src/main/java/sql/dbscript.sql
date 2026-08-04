@@ -1,8 +1,14 @@
 
 // PROD / UAT 18 Jul 2025
 
-// PROD / UAT 4 Aug 2026 - article.view_count (sql/2026-07-21_add_article_view_count.sql)
-// PROD / UAT 4 Aug 2026 - job.requirements_json (sql/2026-07-27_add_job_requirements_json.sql)
+-- 21 Jul 2026 - per-article view counter (BlogDAOImpl.incrementViewCount /
+-- BlogAction.blogDetail), shown on blogCard.tag's card meta row.
+-- Already applied to the local dev DB (ca_202312) - run against UAT/prod.
+ALTER TABLE `article` ADD COLUMN `view_count` INT NOT NULL DEFAULT 0 AFTER `time_post`;
+
+-- 27 Jul 2026 - additive; `description` stays the fallback when this is NULL.
+-- Already applied to dev DB (ca_202312) - run on UAT/prod when deploying.
+ALTER TABLE `job` ADD COLUMN `requirements_json` JSON NULL AFTER `description`;
 
 -- 4 Aug 2026 - new table for careers.jsp's testimonial carousel
 -- (CareersAction.buildMockTestimonials is a hardcoded stand-in until this
