@@ -61,7 +61,7 @@
 				aria-controls="navbarSupportedContent23" aria-expanded="false"
 				aria-label="Toggle navigation">
 				<div class="animated-icon2">
-					<div class="container">
+					<div class="animated-icon2__bars">
 						<div class="bar"></div>
 						<div class="bar"></div>
 						<div class="bar"></div>
@@ -186,6 +186,77 @@ nav.navbar.fixed-top.is-scrolled {
 	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
+/* Mobile hamburger - was 3 static gray bars inherited from baseLayout.jsp's
+   generic .bar (no hover feedback, no open/close animation despite the
+   "animated-icon2" name). Bootstrap's collapse plugin already flips
+   aria-expanded on this exact button on click, so that attribute alone
+   is enough to drive the X-morph below, no extra JS/class needed. */
+.navbar-toggler.second-button {
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: none;
+	border-radius: 8px;
+	transition: background-color 0.2s ease;
+}
+
+/* Bootstrap's own .navbar-expand-lg .navbar-toggler {display:none} hides
+   this above 992px - matching that breakpoint here so this rule only
+   ever sets display when the button is actually meant to be visible,
+   instead of fighting Bootstrap's responsive hide with an unconditional
+   display:flex. */
+@media (max-width: 991px) {
+	.navbar-toggler.second-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+.navbar-toggler.second-button:hover {
+	background-color: rgba(0, 0, 0, 0.06);
+}
+
+.navbar-toggler.second-button:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(189, 33, 37, 0.25);
+}
+
+.animated-icon2 {
+	width: 26px;
+	height: 20px;
+	position: relative;
+}
+
+.animated-icon2__bars {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.animated-icon2__bars .bar {
+	width: 100%;
+	height: 3px;
+	margin: 0;
+	border-radius: 2px;
+	background-color: #BD2125;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar-toggler[aria-expanded="true"] .animated-icon2__bars .bar:nth-child(1) {
+	transform: translateY(8.5px) rotate(45deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .animated-icon2__bars .bar:nth-child(2) {
+	opacity: 0;
+}
+
+.navbar-toggler[aria-expanded="true"] .animated-icon2__bars .bar:nth-child(3) {
+	transform: translateY(-8.5px) rotate(-45deg);
+}
+
 .navbar-menu-frame {
 	display: flex;
 	align-items: center;
@@ -206,6 +277,19 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	border-color: rgba(0, 0, 0, 0.06);
 	backdrop-filter: none;
 	-webkit-backdrop-filter: none;
+}
+
+/* Same glass trick as desktop, just less see-through - below the collapse
+   breakpoint the frame expands into a full dropdown panel sitting over
+   whatever page content is underneath (not just a small pill over a
+   hero), so desktop's 0.35 alpha reads as illegible here even though the
+   blur/frost look is still wanted. Higher opacity keeps the frosted vibe
+   while staying readable; is-scrolled above still wins over this and
+   goes fully solid, same as desktop. */
+@media (max-width: 991px) {
+	.navbar-menu-frame {
+		background-color: rgba(255, 255, 255, 0.85);
+	}
 }
 
 /* .navbar uses justify-content:space-between (Bootstrap default), so the
