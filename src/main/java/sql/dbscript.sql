@@ -6,10 +6,6 @@
 -- Already applied to the local dev DB (ca_202312) - run against UAT/prod.
 ALTER TABLE `article` ADD COLUMN `view_count` INT NOT NULL DEFAULT 0 AFTER `time_post`;
 
--- 27 Jul 2026 - additive; `description` stays the fallback when this is NULL.
--- Already applied to dev DB (ca_202312) - run on UAT/prod when deploying.
-ALTER TABLE `job` ADD COLUMN `requirements_json` JSON NULL AFTER `description`;
-
 -- 4 Aug 2026 - new table for careers.jsp's testimonial carousel
 -- (CareersAction.buildMockTestimonials is a hardcoded stand-in until this
 -- exists - see Testimonial.java for the field shape). Not applied anywhere
