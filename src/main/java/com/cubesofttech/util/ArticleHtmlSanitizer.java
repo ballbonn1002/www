@@ -63,9 +63,26 @@ public final class ArticleHtmlSanitizer {
 
 	private static void stripClassAndStyleAttributes(Document doc) {
 		for (Element el : doc.body().getAllElements()) {
+			// Legacy editor content marks emphasis with inline style="font-weight:
+			// bold" on a <span>/<font> instead of a real <strong> tag - converting
+			// before the style attribute is stripped below is the only way that
+			// emphasis survives at all (there's nothing left afterward to hook a
+			// CSS rule onto).
+			if (("span".equals(el.tagName()) || "font".equals(el.tagName())) && isBoldStyle(el.attr("style"))) {
+				el.tagName("strong");
+			}
 			el.removeAttr("class");
 			el.removeAttr("style");
 		}
+	}
+
+	private static boolean isBoldStyle(String style) {
+		if (style == null || style.isEmpty()) {
+			return false;
+		}
+		String normalized = style.toLowerCase().replace(" ", "");
+		return normalized.contains("font-weight:bold") || normalized.contains("font-weight:700")
+				|| normalized.contains("font-weight:800") || normalized.contains("font-weight:900");
 	}
 
 	private static void removeDisallowedIframes(Document doc) {
