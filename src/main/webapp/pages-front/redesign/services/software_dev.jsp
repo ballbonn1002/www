@@ -46,8 +46,8 @@
 
 .softdev-hero {
 	position: relative;
-	height: 100vh;
-	min-height: 560px;
+	height: 75vh;
+	min-height: 420px;
 	display: flex;
 	align-items: center;
 	background-image: url("/pages-front/img/redesign/services/software-dev-intro.png");
@@ -86,17 +86,22 @@
 	color: rgba(255, 255, 255, 0.9);
 }
 
+/* Grid, not flex - fixed 480px image column + flexible text column is much
+   more predictable than flex-basis auto-sizing, which let a long Thai
+   paragraph's max-content width squeeze the image down on wider screens
+   (Thai wraps less predictably than English at the same basis). */
 .softdev-definition {
 	max-width: 1360px;
 	margin: 0 auto;
 	padding: 96px 80px;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 480px;
 	align-items: center;
 	gap: 72px;
 }
 
 .softdev-definition__text {
-	flex: 1 1 480px;
+	min-width: 0;
 }
 
 .softdev-definition__title {
@@ -115,8 +120,6 @@
 }
 
 .softdev-definition__image {
-	flex: 1 1 400px;
-	max-width: 480px;
 	width: 100%;
 	height: 320px;
 	border-radius: 16px;
@@ -308,6 +311,19 @@
 	color: #3F3F3F;
 }
 
+/* Image column is a fixed 480px track that never shrinks, so the text
+   column (1fr) absorbs the entire squeeze as the viewport narrows - stack
+   to column at 1040px (where text would drop below ~320px, the minimum for
+   comfortable reading) instead of waiting for the 870px breakpoint below,
+   or text gets squeezed thin in the 871-1040px gap first. */
+@media screen and (max-width: 1040px) {
+	.softdev-definition {
+		grid-template-columns: 1fr;
+		padding: 56px 5%;
+		gap: 32px;
+	}
+}
+
 @media screen and (max-width: 870px) {
 	.softdev-hero {
 		height: auto;
@@ -320,11 +336,6 @@
 	}
 	.softdev-hero__title {
 		font-size: 32px;
-	}
-	.softdev-definition {
-		flex-direction: column;
-		padding: 56px 5%;
-		gap: 32px;
 	}
 	.softdev-definition__title {
 		font-size: 28px;
@@ -377,7 +388,7 @@
 			Solution ที่ล้ำสมัย ด้วยบริการ Software Development
 			ที่จะช่วยเพิ่มประสิทธิภาพในการทำงานให้กับทุกองค์กร
 			เรามีทีมงานมืออาชีพที่พร้อมให้คำแนะนำระบบซอฟต์แวร์ที่ตอบสนองต่อการทำงานสำหรับองค์กร
-			ด้วยประสบการณ์กว่า 10 ปี
+			ด้วยประสบการณ์กว่า<span style="white-space: nowrap;">&nbsp;10 ปี</span>
 			เราสามารถวิเคราะห์ความต้องการของลูกค้าได้อย่างตรงจุด
 			และออกแบบหรือจัดหา IT Outsource
 			ให้ตรงกับความต้องการสำหรับลูกค้าแต่ละรายโดยเฉพาะ

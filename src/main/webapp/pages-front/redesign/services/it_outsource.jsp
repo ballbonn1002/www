@@ -46,8 +46,8 @@
 
 .itout-hero {
 	position: relative;
-	height: 100vh;
-	min-height: 560px;
+	height: 75vh;
+	min-height: 420px;
 	display: flex;
 	align-items: center;
 	background-image: url("/pages-front/img/redesign/services/it-outsource-intro.png");
@@ -85,17 +85,21 @@
 	color: rgba(255, 255, 255, 0.9);
 }
 
+/* Grid, not flex - fixed 480px image column + flexible text column, same
+   fix as software_dev.jsp (flex-basis auto-sizing let long Thai text
+   squeeze the image down on wider screens). */
 .itout-definition {
 	max-width: 1360px;
 	margin: 0 auto;
 	padding: 96px 80px;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 480px;
 	align-items: center;
 	gap: 72px;
 }
 
 .itout-definition__text {
-	flex: 1 1 480px;
+	min-width: 0;
 }
 
 .itout-definition__title {
@@ -114,8 +118,6 @@
 }
 
 .itout-definition__image {
-	flex: 1 1 400px;
-	max-width: 480px;
 	width: 100%;
 	height: 320px;
 	border-radius: 16px;
@@ -307,6 +309,16 @@
 	opacity: 0.9;
 }
 
+/* Same fix as software_dev.jsp - stack to column at 1040px so the text
+   column doesn't get squeezed below ~30% in the 871-1040px gap. */
+@media screen and (max-width: 1040px) {
+	.itout-definition {
+		grid-template-columns: 1fr;
+		padding: 56px 5%;
+		gap: 32px;
+	}
+}
+
 @media screen and (max-width: 870px) {
 	.itout-hero {
 		height: auto;
@@ -319,11 +331,6 @@
 	}
 	.itout-hero__title {
 		font-size: 32px;
-	}
-	.itout-definition {
-		flex-direction: column;
-		padding: 56px 5%;
-		gap: 32px;
 	}
 	.itout-definition__title {
 		font-size: 28px;

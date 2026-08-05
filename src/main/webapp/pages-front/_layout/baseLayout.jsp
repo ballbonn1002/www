@@ -176,11 +176,15 @@ h1, h2, h3, h4, h5, h6 {
 		sans-serif !important;
 }
 
-/* Thai has no spaces between words, so a narrow heading can wrap mid-word without keep-all. */
+/* Thai has no spaces between words, so a narrow heading can wrap mid-word without keep-all.
+   text-wrap:pretty additionally avoids orphan last-line words where supported (Chromium only
+   so far) - harmless no-op elsewhere, not a replacement for the .no-orphan hint below. */
 h1, h2, h3, p {
 	word-break: keep-all;
 	overflow-wrap: break-word;
+	text-wrap: pretty;
 }
+
 
 p {
 	color: black;
@@ -769,5 +773,16 @@ a {
 	<tiles:insertAttribute name="body" ignore="true" />
 	<tiles:insertAttribute name="partner" ignore="true" />
 	<tiles:insertAttribute name="footer" ignore="true" />
+
+	<script>
+		// Glues the last space in .no-orphan elements with &nbsp; so a short
+		// trailing token (e.g. "10 ปี") can't wrap onto its own line by itself.
+		// Only works where a real space character exists in the text - Thai's
+		// dictionary-based word breaks (no literal space) aren't touched by
+		// this at all; those still need a manual nowrap span at that spot.
+		document.querySelectorAll('.no-orphan').forEach(function(el) {
+			el.innerHTML = el.innerHTML.replace(/\s+(\S+)\s*$/, '&nbsp;$1');
+		});
+	</script>
 </body>
 </html>

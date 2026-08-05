@@ -46,8 +46,8 @@
 
 .appdev-hero {
 	position: relative;
-	height: 100vh;
-	min-height: 560px;
+	height: 75vh;
+	min-height: 420px;
 	display: flex;
 	align-items: center;
 	background-image: url("/pages-front/img/redesign/services/app-dev-intro.png");
@@ -85,17 +85,21 @@
 	color: rgba(255, 255, 255, 0.9);
 }
 
+/* Grid, not flex - fixed 480px image column + flexible text column, same
+   fix as software_dev.jsp (flex-basis auto-sizing let long Thai text
+   squeeze the image down on wider screens). */
 .appdev-definition {
 	max-width: 1360px;
 	margin: 0 auto;
 	padding: 96px 80px;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 480px;
 	align-items: center;
 	gap: 72px;
 }
 
 .appdev-definition__text {
-	flex: 1 1 480px;
+	min-width: 0;
 }
 
 .appdev-definition__title {
@@ -114,8 +118,6 @@
 }
 
 .appdev-definition__image {
-	flex: 1 1 400px;
-	max-width: 480px;
 	width: 100%;
 	height: 320px;
 	border-radius: 16px;
@@ -268,6 +270,16 @@
 	gap: 24px;
 }
 
+/* Same fix as software_dev.jsp - stack to column at 1040px so the text
+   column doesn't get squeezed below ~30% in the 871-1040px gap. */
+@media screen and (max-width: 1040px) {
+	.appdev-definition {
+		grid-template-columns: 1fr;
+		padding: 56px 5%;
+		gap: 32px;
+	}
+}
+
 @media screen and (max-width: 870px) {
 	.appdev-hero {
 		height: auto;
@@ -280,11 +292,6 @@
 	}
 	.appdev-hero__title {
 		font-size: 28px;
-	}
-	.appdev-definition {
-		flex-direction: column;
-		padding: 56px 5%;
-		gap: 32px;
 	}
 	.appdev-definition__title {
 		font-size: 26px;
@@ -366,7 +373,7 @@
 	<div class="appdev-section-heading" data-aos="fade-up">
 		<h2 class="appdev-section-heading__title">4
 			รูปแบบการทำ Mobile App Development</h2>
-		<p class="appdev-section-heading__body">เรามีทีมงานมืออาชีพที่พร้อมให้คำแนะนำระบบซอฟต์แวร์ที่ตอบสนองต่อการทำงานสำหรับองค์กร
+		<p class="appdev-section-heading__body no-orphan">เรามีทีมงานมืออาชีพที่พร้อมให้คำแนะนำระบบซอฟต์แวร์ที่ตอบสนองต่อการทำงานสำหรับองค์กร
 			ด้วยประสบการณ์กว่า 10 ปี</p>
 	</div>
 	<div class="appdev-types__grid">
@@ -504,7 +511,7 @@
 		<h2 class="appdev-section-heading__title">เหตุผลที่ควรทำ
 			Mobile App Development กับ CubeSoftTech</h2>
 		<p class="appdev-section-heading__body">เราคือพาร์ทเนอร์ที่เหมาะสมสำหรับการพัฒนาแอปพลิเคชันมือถือของคุณ
-			ด้วยประสบการณ์และความเชี่ยวชาญที่สั่งสมมา</p>
+			ด้วยประสบการณ์และความเชี่ยวชาญที่<span style="white-space: nowrap;">สั่งสมมา</span></p>
 	</div>
 	<div class="appdev-reasons__grid">
 		<div class="appdev-card" data-aos="fade-up">
