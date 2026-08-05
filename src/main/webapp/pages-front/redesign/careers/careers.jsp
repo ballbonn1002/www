@@ -66,7 +66,8 @@
 	min-height: 420px;
 	display: flex;
 	align-items: center;
-	background-image: url("/pages-front/img/redesign/careers/careers-hero-team-event.jpg");
+	background-image:
+		url("/pages-front/img/redesign/careers/careers-hero-team-event.jpg");
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
@@ -75,7 +76,8 @@
 .careers-hero__overlay {
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(90deg, rgba(15, 14, 18, 0.9) 0%, rgba(15, 14, 18, 0.8) 52%, rgba(15, 14, 18, 0.5) 100%);
+	background: linear-gradient(90deg, rgba(15, 14, 18, 0.9) 0%,
+		rgba(15, 14, 18, 0.8) 52%, rgba(15, 14, 18, 0.5) 100%);
 }
 
 .careers-hero__content {
@@ -120,7 +122,6 @@
 }
 
 .careers-culture__body {
-	flex: 1 1 480px;
 	margin: 0;
 	font-size: 17px;
 	line-height: 1.7;
@@ -282,6 +283,19 @@
 	color: #3F3F3F;
 }
 
+/* .careers-culture stays a row down to 870px elsewhere in this file, but
+   .careers-culture__body has no flex-basis of its own (just flex:0 1 auto),
+   so once the image's 400px basis + this gap eat into the container below
+   ~1100px, the text column gets squeezed down to near-unreadable widths
+   well before 870px - stack to column earlier instead. */
+@media screen and (max-width: 1100px) {
+	.careers-culture {
+		flex-direction: column;
+		padding: 56px 5%;
+		gap: 32px;
+	}
+}
+
 @media screen and (max-width: 870px) {
 	.careers-section-heading {
 		padding: 0 5%;
@@ -300,11 +314,6 @@
 	}
 	.careers-hero__title {
 		font-size: 28px;
-	}
-	.careers-culture {
-		flex-direction: column;
-		padding: 56px 5%;
-		gap: 32px;
 	}
 	.careers-perks {
 		padding: 56px 0;
@@ -333,12 +342,20 @@
 		padding: 0 5%;
 	}
 	.careers-position {
-		flex-direction: column;
-		align-items: flex-start;
+		padding: 20px 24px;
+	}
+}
+
+/* Tablet width (above) keeps the "Description" label - only phone width
+   drops it down to just the arrow, matching blog.css's .page-link__text/
+   __icon pattern at the same breakpoint. Stays a row the whole way down
+   instead of stacking to a column. */
+@media screen and (max-width: 575px) {
+	.careers-position__button-text {
+		display: none;
 	}
 	.careers-position__button {
-		align-self: stretch;
-		justify-content: center;
+		padding: 12px 16px;
 	}
 }
 </style>
@@ -351,13 +368,11 @@
 	<div class="careers-hero__overlay"></div>
 	<div class="careers-hero__content">
 		<h2 class="careers-hero__title">Why Work With Us</h2>
-		<p class="careers-hero__body">As a company that is
-			experiencing rapid growth, Cube SoftTech is always open
-			to adding bright and motivated individuals to our
-			strong talent pool. We are committed to providing our
-			employees with the tools and growth necessary for a
-			challenging and rewarding career as an IT
-			professional.</p>
+		<p class="careers-hero__body">As a company that is experiencing
+			rapid growth, Cube SoftTech is always open to adding bright and
+			motivated individuals to our strong talent pool. We are committed to
+			providing our employees with the tools and growth necessary for a
+			challenging and rewarding career as an IT professional.</p>
 	</div>
 </section>
 
@@ -365,50 +380,60 @@
 	<img class="careers-culture__image" data-aos="fade-up"
 		src="/pages-front/img/redesign/careers/careers-why-work-with-us.png"
 		alt="Life at Cube SoftTech">
-	<p class="careers-culture__body" data-aos="fade-up" data-aos-delay="150">Once you are a part of Cube
-		SoftTech, you will be working with renowned clients and your
-		individual performance will be appropriately rewarded with
-		competitive compensation, benefits and bonuses. Currently,
-		there are permanent as well as contract opportunities
-		available in the following roles:</p>
+	<p class="careers-culture__body" data-aos="fade-up"
+		data-aos-delay="150">Once you are a part of Cube SoftTech, you
+		will be working with renowned clients and your individual performance
+		will be appropriately rewarded with competitive compensation, benefits
+		and bonuses. Currently, there are permanent as well as contract
+		opportunities available in the following roles:</p>
 </section>
 
 <section class="careers-perks">
 	<div class="careers-section-heading" data-aos="fade-up">
-		<h2 class="careers-section-heading__title">Perks and
-			Benefits</h2>
-		<p class="careers-section-heading__body">We invest in our
-			people with comprehensive benefits and perks designed
-			to support your personal and professional growth.</p>
+		<h2 class="careers-section-heading__title">Perks and Benefits</h2>
+		<p class="careers-section-heading__body">We invest in our people
+			with comprehensive benefits and perks designed to support your
+			personal and professional growth.</p>
 	</div>
 	<div class="careers-perks__grid">
 		<comp:benefitCard title="Performance Bonus"
 			desc="Bonuses for performance, overtime pay, and rewards for recognition are important.">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<rect x="2" y="6" width="20" height="13" rx="2" stroke="currentColor" stroke-width="1.8" />
-				<circle cx="12" cy="12.5" r="3" stroke="currentColor" stroke-width="1.8" />
-				<path d="M6 6V5a2 2 0 012-2h8a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" />
+				<rect x="2" y="6" width="20" height="13" rx="2"
+					stroke="currentColor" stroke-width="1.8" />
+				<circle cx="12" cy="12.5" r="3" stroke="currentColor"
+					stroke-width="1.8" />
+				<path d="M6 6V5a2 2 0 012-2h8a2 2 0 012 2v1" stroke="currentColor"
+					stroke-width="1.8" />
 			</svg>
 		</comp:benefitCard>
 		<comp:benefitCard title="Flexible Time Off" delay="100"
 			desc="Annual leave, Maternity Leave, Sick leave, Take leave in order to enter priesthood">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="1.8" />
-				<path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-				<path d="M8.5 14l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+				<rect x="3" y="4" width="18" height="17" rx="2"
+					stroke="currentColor" stroke-width="1.8" />
+				<path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor"
+					stroke-width="1.8" stroke-linecap="round" />
+				<path d="M8.5 14l2 2 4-4" stroke="currentColor" stroke-width="1.8"
+					stroke-linecap="round" stroke-linejoin="round" />
 			</svg>
 		</comp:benefitCard>
 		<comp:benefitCard title="Health Coverage" delay="200"
 			desc="OPD, IPD Insurance, Life and accident insurance, Health insurance for spouse and children">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<path d="M12 20s-7-4.4-9.5-9C.7 7.4 2.6 4 6 4c2 0 3.4 1 4 2 0.6-1 2-2 4-2 3.4 0 5.3 3.4 3.5 7-2.5 4.6-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.8" />
-				<path d="M6 11h2.5l1.5-2.5 2 5 1.5-2.5H16" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+				<path
+					d="M12 20s-7-4.4-9.5-9C.7 7.4 2.6 4 6 4c2 0 3.4 1 4 2 0.6-1 2-2 4-2 3.4 0 5.3 3.4 3.5 7-2.5 4.6-9.5 9-9.5 9z"
+					stroke="currentColor" stroke-width="1.8" />
+				<path d="M6 11h2.5l1.5-2.5 2 5 1.5-2.5H16" stroke="currentColor"
+					stroke-width="1.6" stroke-linejoin="round" />
 			</svg>
 		</comp:benefitCard>
 		<comp:benefitCard title="Provident Fund" delay="300"
 			desc="Joining our company offers a Provident Fund, ensuring your financial security and future.">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<path d="M4 12c0-3.3 3.1-6 7-6 3 0 5.5 1.5 6.5 3.7l2.5.3-1 2-1.5.2c-.2 2.4-1.7 4.4-3.5 5.3V20h-2v-1.2a8.6 8.6 0 01-1 .05c-.7 0-1.4-.07-2-.2V20H7v-2.3c-1.8-1-3-2.9-3-5.1z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+				<path
+					d="M4 12c0-3.3 3.1-6 7-6 3 0 5.5 1.5 6.5 3.7l2.5.3-1 2-1.5.2c-.2 2.4-1.7 4.4-3.5 5.3V20h-2v-1.2a8.6 8.6 0 01-1 .05c-.7 0-1.4-.07-2-.2V20H7v-2.3c-1.8-1-3-2.9-3-5.1z"
+					stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
 				<circle cx="15" cy="11" r="0.9" fill="currentColor" />
 				<path d="M7 12L5 10.5" stroke="currentColor" stroke-width="1.6" />
 			</svg>
@@ -416,30 +441,40 @@
 		<comp:benefitCard title="Learning Support"
 			desc="Support through online courses, certifications, and practical hands-on training opportunities.">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<path d="M2 8l10-4 10 4-10 4-10-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-				<path d="M6 10.5V16c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5.5" stroke="currentColor" stroke-width="1.8" />
-				<path d="M22 8v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+				<path d="M2 8l10-4 10 4-10 4-10-4z" stroke="currentColor"
+					stroke-width="1.8" stroke-linejoin="round" />
+				<path d="M6 10.5V16c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5.5"
+					stroke="currentColor" stroke-width="1.8" />
+				<path d="M22 8v6" stroke="currentColor" stroke-width="1.8"
+					stroke-linecap="round" />
 			</svg>
 		</comp:benefitCard>
 		<comp:benefitCard title="Company Outings" delay="100"
 			desc="Celebrate the New Year with us on a fun team-building trip for everyone!">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2.5 1.5V22l4-1 4 1v-1.5L13 19v-5.5l8 2.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" />
+				<path
+					d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2.5 1.5V22l4-1 4 1v-1.5L13 19v-5.5l8 2.5z"
+					stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"
+					stroke-linecap="round" />
 			</svg>
 		</comp:benefitCard>
 		<comp:benefitCard title="Notebook" delay="200"
 			desc="We offer complimentary notebooks to our team for jotting down ideas and keeping things organized.">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<rect x="4" y="4" width="16" height="11" rx="1.5" stroke="currentColor" stroke-width="1.8" />
-				<path d="M2 19h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+				<rect x="4" y="4" width="16" height="11" rx="1.5"
+					stroke="currentColor" stroke-width="1.8" />
+				<path d="M2 19h20" stroke="currentColor" stroke-width="1.8"
+					stroke-linecap="round" />
 			</svg>
 		</comp:benefitCard>
 		<comp:benefitCard title="Birthday Gifts" delay="300"
 			desc="A delightful surprise awaits you on your special birthday every year!">
 			<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-				<rect x="3" y="9" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.8" />
+				<rect x="3" y="9" width="18" height="12" rx="1.5"
+					stroke="currentColor" stroke-width="1.8" />
 				<path d="M3 9h18M12 9v12" stroke="currentColor" stroke-width="1.8" />
-				<path d="M12 9c-1.5 0-4-1-4-3s2-3.2 4 0c2-3.2 4-2 4 0s-2.5 3-4 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+				<path d="M12 9c-1.5 0-4-1-4-3s2-3.2 4 0c2-3.2 4-2 4 0s-2.5 3-4 3z"
+					stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
 			</svg>
 		</comp:benefitCard>
 	</div>
@@ -447,14 +482,13 @@
 
 <section class="careers-testimonial">
 	<div class="careers-section-heading" data-aos="fade-up">
-		<h2 class="careers-section-heading__title">What Our
-			Interns Say</h2>
-		<p class="careers-section-heading__body">Hear from our
-			talented interns about their experience growing with
-			our team.</p>
+		<h2 class="careers-section-heading__title">What Our Interns Say</h2>
+		<p class="careers-section-heading__body">Hear from our talented
+			interns about their experience growing with our team.</p>
 	</div>
 	<div class="card-carousel">
-		<button type="button" class="card-carousel__nav card-carousel__nav--prev"
+		<button type="button"
+			class="card-carousel__nav card-carousel__nav--prev"
 			aria-label="เลื่อนดูก่อนหน้า">
 			<i class="bi bi-chevron-left"></i>
 		</button>
@@ -465,7 +499,8 @@
 					avatarSrc="${t.avatarSrc}" avatarAlt="${t.name} - ${t.position}" />
 			</c:forEach>
 		</div>
-		<button type="button" class="card-carousel__nav card-carousel__nav--next"
+		<button type="button"
+			class="card-carousel__nav card-carousel__nav--next"
 			aria-label="เลื่อนดูถัดไป">
 			<i class="bi bi-chevron-right"></i>
 		</button>
@@ -474,29 +509,28 @@
 
 <section class="careers-positions">
 	<div class="careers-section-heading" data-aos="fade-up">
-		<h2 class="careers-section-heading__title">Open
-			Positions</h2>
-		<p class="careers-section-heading__body">Ready to make an
-			impact? Explore our current openings and find your
-			perfect role.</p>
+		<h2 class="careers-section-heading__title">Open Positions</h2>
+		<p class="careers-section-heading__body">Ready to make an impact?
+			Explore our current openings and find your perfect role.</p>
 	</div>
 	<div class="careers-positions__list">
 		<c:forEach var="job" items="${jobList}">
 			<div class="careers-position" data-aos="fade-up">
 				<div>
 					<h3 class="careers-position__title">${job.position}</h3>
-					<p class="careers-position__location"><i
-							class="bi bi-geo-alt-fill"></i> BTS Chong
-						Nonsi</p>
+					<p class="careers-position__location">
+						<i class="bi bi-geo-alt-fill"></i> BTS Chong Nonsi
+					</p>
 				</div>
-				<a class="careers-position__button"
-					href="${job.page_uri_id}">Description <span
-					aria-hidden="true">&rarr;</span></a>
+				<a class="careers-position__button" href="${job.page_uri_id}"><span
+						class="careers-position__button-text">Description</span>
+					<span aria-hidden="true">&rarr;</span>
+				</a>
 			</div>
 		</c:forEach>
 		<c:if test="${empty jobList}">
-			<p class="careers-positions__empty">There are no open
-				positions right now - please check back soon.</p>
+			<p class="careers-positions__empty">There are no open positions
+				right now - please check back soon.</p>
 		</c:if>
 	</div>
 </section>
@@ -529,86 +563,94 @@
 		requestAnimationFrame(step);
 	}
 
-	document.querySelectorAll('.card-carousel').forEach(function(carousel) {
-		var track = carousel.querySelector('.card-carousel__track');
-		var prevBtn = carousel.querySelector('.card-carousel__nav--prev');
-		var nextBtn = carousel.querySelector('.card-carousel__nav--next');
-		if (!track) {
-			return;
-		}
-		function scrollByOneCard(direction) {
-			// Not firstElementChild: comp:testimonialCard emits its own <style>
-			// block right before each card, so the track's first *element*
-			// child is a <style> tag (zero width), not the card itself.
-			var firstCard = track.querySelector('.testimonial-card');
-			var cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
-			var gap = 24;
-			var maxScrollLeft = track.scrollWidth - track.clientWidth;
-			var target = track.scrollLeft + (cardWidth + gap) * direction;
-			target = Math.max(0, Math.min(target, maxScrollLeft));
-			animateScrollLeft(track, target, 420);
-		}
+	document.querySelectorAll('.card-carousel').forEach(
+			function(carousel) {
+				var track = carousel.querySelector('.card-carousel__track');
+				var prevBtn = carousel
+						.querySelector('.card-carousel__nav--prev');
+				var nextBtn = carousel
+						.querySelector('.card-carousel__nav--next');
+				if (!track) {
+					return;
+				}
+				function scrollByOneCard(direction) {
+					// Not firstElementChild: comp:testimonialCard emits its own <style>
+					// block right before each card, so the track's first *element*
+					// child is a <style> tag (zero width), not the card itself.
+					var firstCard = track.querySelector('.testimonial-card');
+					var cardWidth = firstCard ? firstCard
+							.getBoundingClientRect().width : 300;
+					var gap = 24;
+					var maxScrollLeft = track.scrollWidth - track.clientWidth;
+					var target = track.scrollLeft + (cardWidth + gap)
+							* direction;
+					target = Math.max(0, Math.min(target, maxScrollLeft));
+					animateScrollLeft(track, target, 420);
+				}
 
-		function updateNavState() {
-			var maxScrollLeft = track.scrollWidth - track.clientWidth;
-			var canScroll = maxScrollLeft > 1;
-			if (prevBtn) {
-				prevBtn.disabled = !canScroll || track.scrollLeft <= 1;
-			}
-			if (nextBtn) {
-				nextBtn.disabled = !canScroll || track.scrollLeft >= maxScrollLeft - 1;
-			}
-		}
-		if (prevBtn) {
-			prevBtn.addEventListener('click', function() {
-				scrollByOneCard(-1);
+				function updateNavState() {
+					var maxScrollLeft = track.scrollWidth - track.clientWidth;
+					var canScroll = maxScrollLeft > 1;
+					if (prevBtn) {
+						prevBtn.disabled = !canScroll || track.scrollLeft <= 1;
+					}
+					if (nextBtn) {
+						nextBtn.disabled = !canScroll
+								|| track.scrollLeft >= maxScrollLeft - 1;
+					}
+				}
+				if (prevBtn) {
+					prevBtn.addEventListener('click', function() {
+						scrollByOneCard(-1);
+					});
+				}
+				if (nextBtn) {
+					nextBtn.addEventListener('click', function() {
+						scrollByOneCard(1);
+					});
+				}
+				track.addEventListener('scroll', updateNavState, {
+					passive : true
+				});
+				window.addEventListener('resize', updateNavState);
+				updateNavState();
+
+				// Auto-advance one card every 3s, looping back to the first card at
+				// the end. Paused on hover/focus so it doesn't scroll away while
+				// someone's reading. Deliberately ignores prefers-reduced-motion
+				// (per explicit request) - manual prev/next still always works.
+				var autoAdvanceId = null;
+
+				function autoAdvance() {
+					var maxScrollLeft = track.scrollWidth - track.clientWidth;
+					if (maxScrollLeft <= 1) {
+						return;
+					}
+					if (track.scrollLeft >= maxScrollLeft - 1) {
+						animateScrollLeft(track, 0, 420);
+					} else {
+						scrollByOneCard(1);
+					}
+				}
+
+				function startAutoAdvance() {
+					if (autoAdvanceId) {
+						return;
+					}
+					autoAdvanceId = setInterval(autoAdvance, 5000);
+				}
+
+				function stopAutoAdvance() {
+					if (autoAdvanceId) {
+						clearInterval(autoAdvanceId);
+						autoAdvanceId = null;
+					}
+				}
+
+				carousel.addEventListener('mouseenter', stopAutoAdvance);
+				carousel.addEventListener('mouseleave', startAutoAdvance);
+				carousel.addEventListener('focusin', stopAutoAdvance);
+				carousel.addEventListener('focusout', startAutoAdvance);
+				startAutoAdvance();
 			});
-		}
-		if (nextBtn) {
-			nextBtn.addEventListener('click', function() {
-				scrollByOneCard(1);
-			});
-		}
-		track.addEventListener('scroll', updateNavState, { passive : true });
-		window.addEventListener('resize', updateNavState);
-		updateNavState();
-
-		// Auto-advance one card every 3s, looping back to the first card at
-		// the end. Paused on hover/focus so it doesn't scroll away while
-		// someone's reading. Deliberately ignores prefers-reduced-motion
-		// (per explicit request) - manual prev/next still always works.
-		var autoAdvanceId = null;
-
-		function autoAdvance() {
-			var maxScrollLeft = track.scrollWidth - track.clientWidth;
-			if (maxScrollLeft <= 1) {
-				return;
-			}
-			if (track.scrollLeft >= maxScrollLeft - 1) {
-				animateScrollLeft(track, 0, 420);
-			} else {
-				scrollByOneCard(1);
-			}
-		}
-
-		function startAutoAdvance() {
-			if (autoAdvanceId) {
-				return;
-			}
-			autoAdvanceId = setInterval(autoAdvance, 5000);
-		}
-
-		function stopAutoAdvance() {
-			if (autoAdvanceId) {
-				clearInterval(autoAdvanceId);
-				autoAdvanceId = null;
-			}
-		}
-
-		carousel.addEventListener('mouseenter', stopAutoAdvance);
-		carousel.addEventListener('mouseleave', startAutoAdvance);
-		carousel.addEventListener('focusin', stopAutoAdvance);
-		carousel.addEventListener('focusout', startAutoAdvance);
-		startAutoAdvance();
-	});
 </script>

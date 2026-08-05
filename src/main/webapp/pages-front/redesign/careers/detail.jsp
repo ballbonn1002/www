@@ -98,13 +98,16 @@
 	color: #D0D0D0;
 }
 
+/* Solid, not outline - this page's primary CTA needs to stand out. Plain
+   color fade on hover reads better at this size than a directional sweep. */
 .jobdetail-apply-button {
 	display: inline-flex;
 	align-items: center;
 	flex-shrink: 0;
 	gap: 8px;
-	padding: 12px 28px;
-	border: 0;
+	padding: 0.6rem 1.75rem;
+	padding-right: max(4px, calc(1.75rem - 8px - 18px));
+	border: 3px solid #BD2125;
 	border-radius: 10px;
 	background-color: #BD2125;
 	color: #FFFFFF !important;
@@ -112,10 +115,28 @@
 	font-weight: 600;
 	text-decoration: none;
 	cursor: pointer;
+	transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .jobdetail-apply-button:hover {
-	opacity: 0.9;
+	background-color: #8F191C;
+	border-color: #8F191C;
+	color: #FFFFFF !important;
+	text-decoration: none;
+}
+
+.jobdetail-apply-button-icon {
+	color: currentColor;
+	width: 18px;
+	opacity: 0;
+	transform: translateX(-8px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	font-size: 18px;
+}
+
+.jobdetail-apply-button:hover .jobdetail-apply-button-icon {
+	opacity: 1;
+	transform: translateX(0);
 }
 
 .jobdetail-card {
@@ -130,8 +151,7 @@
 }
 
 /* Black, not red - .jobdetail-title above already carries the red/gradient
-   brand accent, so section headings here (Responsibilities, Required
-   Qualifications, ...) stay neutral instead of competing with it. */
+   brand accent, so section headings here stay neutral instead of competing. */
 .jobdetail-card h1, .jobdetail-card h2, .jobdetail-card h3,
 	.jobdetail-card h4 {
 	margin: 32px 0 12px;
@@ -145,7 +165,6 @@
 	margin-top: 0;
 }
 
-/* Same checkmark-bullet treatment as the old .jobdetail-card__list. */
 .jobdetail-card ul {
 	margin: 0 0 8px;
 	padding: 0;
@@ -170,9 +189,8 @@
 	font-weight: 700;
 }
 
-/* Nested <ul> ("Knowledge of Web Based Application with: <ul>...") is the
-   old structured skills-list shape - same pill-badge treatment as the old
-   .jobdetail-skills__tag instead of a stacked checkmark list. */
+/* Nested <ul> ("Knowledge of Web Based Application with: <ul>...") renders
+   as pill-badge tags instead of a stacked checkmark list. */
 .jobdetail-card ul>li:has(>ul) {
 	padding-left: 0;
 }
@@ -293,9 +311,20 @@
 	color: #FFFFFF;
 }
 
+/* Inverted from the header button - white/red here since this sits on the
+   dark red gradient banner, not a white background. Fades to transparent/
+   outline on hover instead of a darker shade, since white has nowhere
+   lighter to go. */
 .jobdetail-cta .jobdetail-apply-button {
+	border-color: #FFFFFF;
 	background-color: #FFFFFF;
 	color: #BD2125 !important;
+}
+
+.jobdetail-cta .jobdetail-apply-button:hover {
+	background-color: transparent;
+	border-color: #FFFFFF;
+	color: #FFFFFF !important;
 }
 
 .jobdetail-success {
@@ -638,14 +667,6 @@
 	.jobdetail-main {
 		padding: 24px 5% 56px;
 	}
-	.jobdetail-header-row {
-		flex-direction: column;
-		align-items: stretch;
-		gap: 16px;
-	}
-	.jobdetail-apply-button {
-		justify-content: center;
-	}
 	.jobdetail-title {
 		font-size: 28px;
 	}
@@ -657,6 +678,20 @@
 	}
 	.jobdetail-cta__title {
 		font-size: 24px;
+	}
+}
+
+/* Tablet width (above) keeps the title and Apply Now button side by side -
+   only phone width stacks them, same breakpoint as careers.jsp's Open
+   Positions list/home.jsp's Open Positions row. */
+@media screen and (max-width: 575px) {
+	.jobdetail-header-row {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 16px;
+	}
+	.jobdetail-apply-button {
+		justify-content: center;
 	}
 }
 </style>
@@ -683,7 +718,8 @@
 			</div>
 			<button type="button" class="jobdetail-apply-button"
 				data-toggle="modal" data-target="#jobApplyModal">
-				Apply Now <span aria-hidden="true">&rarr;</span>
+				<span class="jobdetail-apply-button-text">Apply Now</span>
+				<i class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
 			</button>
 		</div>
 
@@ -695,7 +731,8 @@
 				back to you soon.</p>
 			<button type="button" class="jobdetail-apply-button"
 				data-toggle="modal" data-target="#jobApplyModal">
-				Apply Now <span aria-hidden="true">&rarr;</span>
+				<span class="jobdetail-apply-button-text">Apply Now</span>
+				<i class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
 			</button>
 		</div>
 
