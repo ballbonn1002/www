@@ -162,8 +162,10 @@ html, body {
 	padding-right: 0%;
 }
 
-@media ( min-width : 992px) {
-	.article-preview__row .col-lg-6 {
+/* Tablet and up sit side by side - was lg-only (992px), stacking on tablet
+   too even though there's room for two 50% columns there already. */
+@media ( min-width : 768px) {
+	.article-preview__row .col-md-6 {
 		-ms-flex: 0 0 50%;
 		flex: 0 0 50%;
 		max-width: 50%;
@@ -195,7 +197,7 @@ html, body {
 	overflow: hidden;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
 	.article-preview__content {
 		margin-top: 1.5rem;
 	}
@@ -270,7 +272,46 @@ html, body {
 }
 
 .article-preview__meta {
-	font-size: 15px;
+	font-size: clamp(11px, 8.14px + 0.89vw, 15px);
+}
+
+.article-preview__meta-date-full,
+.article-preview__meta-date-short,
+.article-preview__meta-views {
+	white-space: nowrap;
+}
+
+.article-preview__meta-date-short {
+	display: none;
+}
+
+@media (max-width: 1200px) {
+	.article-preview__meta {
+		flex-wrap: nowrap !important;
+	}
+	/* .articleblockbg .gap-4 has 2-class + !important specificity (blog.css's BS4 gap polyfill) */
+	.articleblockbg .article-preview__meta.gap-4 {
+		gap: 0.5rem !important;
+	}
+	.article-preview__meta-date-full {
+		display: none;
+	}
+	.article-preview__meta-date-short {
+		display: inline;
+	}
+	.article-preview__meta-author {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 140px;
+	}
+}
+
+/* 768-1200px squeeze (col-md-6 50% split) needs a smaller clamp than the base one above */
+@media (min-width: 768px) and (max-width: 1200px) {
+	.article-preview__meta {
+		font-size: clamp(11.5px, 8.8px + 0.35vw, 13px);
+	}
 }
 
 /* ==========================================================================
@@ -345,7 +386,7 @@ html, body {
 	<article class="article-preview" id="articledetail1">
 		<div class="row article-preview__row">
 
-			<div class="col-12 col-lg-6 order-lg-2">
+			<div class="col-12 col-md-6 order-md-2">
 				
 				<figure class="article-preview__media" data-aos="fade-up">
 					<a href="${newBlog.page_uri_id}" class="article-preview__link"
@@ -359,7 +400,7 @@ html, body {
 				</figure>
 			</div>
 
-			<div class="col-12 col-lg-6 order-lg-1">
+			<div class="col-12 col-md-6 order-md-1">
 				<div class="article-preview__content">
 					<h2 class="article-preview__title" data-aos="fade-up"
 						data-aos-delay="100">${newBlog.topic}</h2>
@@ -374,22 +415,38 @@ html, body {
 						class="article-preview__meta d-flex align-items-center flex-wrap gap-4 text-secondary mb-4 small"
 						data-aos="fade-up" data-aos-delay="250">
 						<div class="d-flex align-items-center gap-2">
-							<i class="bi bi-calendar3"></i> <span><fmt:formatDate
+							<i class="bi bi-calendar3"></i>
+							<span class="article-preview__meta-date-full"><fmt:formatDate
 									pattern="d MMMM yyyy" value="${newBlog.time_post}" /></span>
+							<span class="article-preview__meta-date-short"><fmt:formatDate
+									pattern="d MMM yy" value="${newBlog.time_post}" /></span>
 						</div>
 
 						<div class="vr"></div>
 
 						<div class="d-flex align-items-center gap-2">
-							<i class="bi bi-pencil-square"></i> <span>By
+							<i class="bi bi-pencil-square"></i> <span
+								class="article-preview__meta-author">By
 								${newBlog.name}</span>
 						</div>
 
 						<div class="vr"></div>
 
 						<div class="d-flex align-items-center gap-2">
-							<i class="bi bi-eye"></i> <span><fmt:formatNumber
-									value="${newBlog.view_count}" pattern="#,##0" /> views</span>
+							<i class="bi bi-eye"></i>
+							<span class="article-preview__meta-views">
+								<c:choose>
+									<c:when test="${newBlog.view_count >= 1000000}">
+										<fmt:formatNumber value="${newBlog.view_count / 1000000}" maxFractionDigits="1" />M
+									</c:when>
+									<c:when test="${newBlog.view_count >= 1000}">
+										<fmt:formatNumber value="${newBlog.view_count / 1000}" maxFractionDigits="1" />K
+									</c:when>
+									<c:otherwise>
+										<fmt:formatNumber value="${newBlog.view_count}" pattern="#,##0" />
+									</c:otherwise>
+								</c:choose> views
+							</span>
 						</div>
 					</div>
 

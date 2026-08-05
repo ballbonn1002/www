@@ -172,9 +172,26 @@ body, html {
 	font-weight: 700;
 }
 
+/* blog.css stacks .ardetail__meta to a column below 991px for blogCard.tag's
+   carousel; same class name leaks that rule into this unrelated hero bar. */
+.article-meta-bar__info .ardetail__meta {
+	flex-direction: row !important;
+	align-items: center !important;
+}
+
 @media ( max-width : 767px) {
 	.article-hero-card {
 		margin-top: -80px;
+	}
+	/* !important needed - both elements carry Bootstrap's .align-items-center
+	   utility class in the markup, which is itself !important. */
+	.article-meta-bar {
+		flex-direction: column;
+		align-items: flex-start !important;
+	}
+	.article-meta-bar__info {
+		flex-direction: column;
+		align-items: flex-start !important;
 	}
 }
 
@@ -739,7 +756,8 @@ p {
 
 			<div
 				class="article-meta-bar d-flex flex-wrap align-items-center justify-content-between gap-3">
-				<div class="d-flex flex-wrap align-items-center gap-3">
+				<div
+					class="article-meta-bar__info d-flex flex-wrap align-items-center gap-3">
 					<c:if test="${not empty authorName}">
 						<div
 							class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
