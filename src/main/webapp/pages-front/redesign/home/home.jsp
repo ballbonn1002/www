@@ -561,6 +561,11 @@ keyframes home-hero-blink { 50% {
 		gap: 32px;
 	}
 	.home-services__toc {
+		/* The 01-04 nav items are hidden below, so this panel is just the
+		   "Learn more" button now - order it after the cards instead of
+		   before (its position in the source markup), so it reads as a
+		   closing CTA once someone's actually seen the services. */
+		order: 2;
 		flex: none;
 		max-width: none;
 		padding: 0;
@@ -578,6 +583,7 @@ keyframes home-hero-blink { 50% {
 		margin-top: 0;
 	}
 	.home-services__cards {
+		order: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
@@ -981,6 +987,9 @@ left
 }
 
 .home-jobs__view {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 	flex-shrink: 0;
 	padding: 8px 20px;
 	border-radius: 999px;
@@ -1034,10 +1043,21 @@ left
 	.home-jobs__panel {
 		padding: 8px 20px;
 	}
-	.home-jobs__row {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 10px;
+}
+
+/* Tablet width (above) keeps the "View Details" label - only phone width
+   drops it down to just the arrow, same pattern as careers.jsp's Open
+   Positions list. Stays a row the whole way down instead of stacking to
+   a column. */
+@media screen and (max-width: 575px) {
+	.home-jobs__view-text {
+		display: none;
+	}
+	.home-jobs__view {
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		justify-content: center;
 	}
 }
 
@@ -1498,8 +1518,9 @@ left
 						<li>
 							<div class="home-jobs__row">
 								<a class="home-jobs__position" href="${job.page_uri_id}">${job.position}</a>
-								<a class="home-jobs__view" href="${job.page_uri_id}">View
-									Details</a>
+								<a class="home-jobs__view" href="${job.page_uri_id}"><span
+										class="home-jobs__view-text">View Details</span> <span
+									aria-hidden="true">&rarr;</span></a>
 							</div>
 						</li>
 					</c:forEach>
