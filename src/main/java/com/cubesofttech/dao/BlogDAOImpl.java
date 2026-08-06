@@ -18,7 +18,7 @@ public class BlogDAOImpl implements BlogDAO {
 	/**
 	 * findAllBlogsWithPageUri/findAllNewsWithPageUri
 	 */
-	private static final int DETAIL_PREVIEW_RAW_LENGTH = 8000;
+	private static final int DETAIL_PREVIEW_RAW_LENGTH = 20000;
 
 	@Autowired
 	private SessionFactory sessionFactory;
