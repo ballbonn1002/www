@@ -306,6 +306,17 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	}
 }
 
+/* Centering on the full navbar width means the frame's own width decides how
+   close it comes to the logo - each link's inline 30px/30px padding makes it
+   wide enough to overlap the logo from 992px up to ~1120px. Inline styles
+   need !important to override. */
+@media (min-width: 992px) and (max-width: 1150px) {
+	.navbar-menu-frame .nav-link {
+		padding-left: 14px !important;
+		padding-right: 14px !important;
+	}
+}
+
 #myBtn {
 	padding: 10px;
 }
