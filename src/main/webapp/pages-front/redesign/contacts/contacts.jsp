@@ -169,6 +169,13 @@
 @media screen and (max-width: 870px) {
 	.contactbg {
 		background-attachment: scroll;
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+	/* 10% page padding + 40px box padding left icon+input fields only ~220px
+	   wide on phones - too tight for the 46px icon plus a floating label. */
+	.contact-box {
+		padding: 24px;
 	}
 }
 
