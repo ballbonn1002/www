@@ -66,6 +66,8 @@
 
 /* No hover-lift (unlike blog's cards): this card has its own "Read More" link, so it isn't itself clickable. */
 .services-card {
+	display: flex;
+	flex-direction: column;
 	border-radius: 10px;
 	overflow: hidden;
 	background-color: #FFFFFF;
@@ -80,6 +82,9 @@
 }
 
 .services-card__body {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 	padding: 32px;
 }
 
@@ -124,6 +129,8 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	align-self: flex-start;
+	margin-top: auto;
 	gap: 6px;
 	padding: 12px 26px;
 	border: 1.5px solid #C41216;
