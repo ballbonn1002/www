@@ -1577,6 +1577,15 @@ left
 		}
 		gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+		// baseLayout.jsp sets scroll-behavior:smooth globally for hash-anchor
+		// links; the browser's own smooth-scroll interpolation keeps coasting
+		// toward the last wheel delta's target well after the user stops
+		// scrolling, which fights ScrollTrigger's live progress tracking and
+		// was auto-advancing card 01 to 02 right after entering the pin. This
+		// page has no hash-anchor links depending on native smooth-scroll -
+		// its own nav (TOC clicks, scroll-to-top) already animates via GSAP.
+		document.documentElement.style.scrollBehavior = 'auto';
+
 		var stickyEl = document.getElementById('homeServicesSticky');
 		var cards = gsap.utils.toArray('#homeServicesCards .home-services__card');
 		var tocItems = gsap.utils.toArray('#homeServicesToc .home-services__toc-item');
@@ -1650,7 +1659,12 @@ left
 					end : '+=' + Math.round(window.innerHeight * (n - 1) * 0.5),
 					pin : true,
 					pinSpacing : true,
-					snap : 1 / (n - 1),
+					// inertia:false stops snap from projecting forward using scroll
+					// velocity - with it on (GSAP's default), a fast scroll into the
+					// pin snapped straight past card 01 to wherever that velocity
+					// projected to (card 02), even though the user had barely
+					// scrolled into the section at all.
+					snap : { snapTo : 1 / (n - 1), inertia : false, delay : 0.15, duration : 0.5 },
 					// Standard GSAP fix for the 1-frame jump as a pin engages.
 					anticipatePin : 1,
 					onUpdate : function(self) {
