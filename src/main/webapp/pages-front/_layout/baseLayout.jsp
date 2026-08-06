@@ -185,6 +185,19 @@ h1, h2, h3, p {
 	text-wrap: pretty;
 }
 
+/* Bootstrap defaults these to a blue box-shadow (and explicitly disables
+   the outline it would otherwise replace); brand buttons without a .btn-*
+   color variant fall back to the browser's native blue outline instead. */
+.form-control:focus,
+.page-link:focus,
+.btn:focus, .btn.focus {
+	border-color: #BD2125;
+	box-shadow: 0 0 0 0.2rem rgba(189, 33, 37, 0.25);
+}
+
+a:focus, button:focus, input:focus, textarea:focus, select:focus {
+	outline-color: #BD2125;
+}
 
 p {
 	color: black;

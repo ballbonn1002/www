@@ -39,6 +39,11 @@
 	pointer-events: auto;
 }
 
+.scroll-to-top-cube:focus {
+	outline: none;
+	box-shadow: none;
+}
+
 .scroll-to-top-cube__svg {
 	width: 100%;
 	height: 100%;
@@ -133,8 +138,6 @@
 	window.addEventListener('scroll', updateVisibility, { passive: true });
 	updateVisibility();
 
-	var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 	// Floored so a short scroll still reads as a climb, capped so a long page doesn't drag on.
 	function climbDuration(distance) {
 		return Math.min(3, Math.max(1.5, distance * 0.0007));
@@ -173,17 +176,14 @@
 	}
 
 	btn.addEventListener('click', function() {
-		if (reduceMotion) {
-			document.documentElement.scrollTop = 0;
-			document.body.scrollTop = 0;
-			return;
-		}
 		btn.classList.add('is-scrolling');
 		ensureGsap().then(function() {
-			// home.jsp's pinned section fights external scroll through its trigger range - disable during the climb, then restore.
+			// home.jsp's pinned section fights external scroll through its trigger range - revert
+			// the pin (not just disable) before the climb, or its frozen fixed-position state
+			// leaves a dark overlay floating over unrelated sections while the page scrolls under it.
 			var triggers = (typeof ScrollTrigger !== 'undefined') ? ScrollTrigger.getAll() : [];
 			triggers.forEach(function(st) {
-				st.disable(false);
+				st.disable(true);
 			});
 			gsap.to(window, {
 				scrollTo : { y : 0, autoKill : false },
