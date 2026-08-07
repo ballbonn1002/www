@@ -28,14 +28,14 @@
 	align-items: center;
 	justify-content: center;
 	opacity: 0;
-	transform: translateY(14px) rotate(-8deg) scale(0.85);
+	transform: translateY(14px) scale(0.85);
 	pointer-events: none;
 	transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .scroll-to-top-cube.is-visible {
 	opacity: 1;
-	transform: translateY(0) rotate(0deg) scale(1);
+	transform: translateY(0) scale(1);
 	pointer-events: auto;
 }
 
@@ -52,9 +52,11 @@
 	transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.scroll-to-top-cube:hover .scroll-to-top-cube__svg {
-	transform: translateY(-4px) rotate(8deg);
-	filter: drop-shadow(0 12px 18px rgba(189, 33, 37, 0.45));
+@media (hover: hover) {
+	.scroll-to-top-cube:hover .scroll-to-top-cube__svg {
+		transform: translateY(-4px) rotate(8deg);
+		filter: drop-shadow(0 12px 18px rgba(189, 33, 37, 0.45));
+	}
 }
 
 .scroll-to-top-cube__face--top {
