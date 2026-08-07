@@ -37,17 +37,10 @@
 	padding-right: 10%;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .jobdetail-main {
 	max-width: 900px;
 	margin: 0 auto;
-	padding: 32px 80px 96px;
+	padding: 8px 80px 96px;
 }
 
 .jobdetail-header-row {
@@ -311,10 +304,6 @@
 	color: #FFFFFF;
 }
 
-/* Inverted from the header button - white/red here since this sits on the
-   dark red gradient banner, not a white background. Fades to transparent/
-   outline on hover instead of a darker shade, since white has nowhere
-   lighter to go. */
 .jobdetail-cta .jobdetail-apply-button {
 	border-color: #FFFFFF;
 	background-color: #FFFFFF;
@@ -470,8 +459,8 @@
 }
 
 .jobapply-modal .field-floating>.form-control:focus ~label,
-	.jobapply-modal .field-floating>.form-control:not(:placeholder-shown) ~label
-	{
+	.jobapply-modal .field-floating>.form-control:not(:placeholder-shown) 
+	 ~label {
 	transform: scale(0.82) translateY(-0.7rem);
 	color: #BD2125;
 }
@@ -665,7 +654,7 @@
 
 @media screen and (max-width: 870px) {
 	.jobdetail-main {
-		padding: 24px 5% 56px;
+		padding: 0 5% 56px;
 	}
 	.jobdetail-title {
 		font-size: 28px;
@@ -681,9 +670,6 @@
 	}
 }
 
-/* Tablet width (above) keeps the title and Apply Now button side by side -
-   only phone width stacks them, same breakpoint as careers.jsp's Open
-   Positions list/home.jsp's Open Positions row. */
 @media screen and (max-width: 575px) {
 	.jobdetail-header-row {
 		flex-direction: column;
@@ -697,7 +683,8 @@
 </style>
 
 <div class="jobdetail-header">
-	<comp:pageHeader label="${job.position}" />
+	<comp:pageHeader label="Job Details" breadcrumbLabel="${job.position}"
+		parentLabel="Careers" parentHref="/careers" />
 </div>
 
 <div class="jobdetail-main" id="jobDetailContent">
@@ -718,8 +705,8 @@
 			</div>
 			<button type="button" class="jobdetail-apply-button"
 				data-toggle="modal" data-target="#jobApplyModal">
-				<span class="jobdetail-apply-button-text">Apply Now</span>
-				<i class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
+				<span class="jobdetail-apply-button-text">Apply Now</span> <i
+					class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
 			</button>
 		</div>
 
@@ -731,8 +718,8 @@
 				back to you soon.</p>
 			<button type="button" class="jobdetail-apply-button"
 				data-toggle="modal" data-target="#jobApplyModal">
-				<span class="jobdetail-apply-button-text">Apply Now</span>
-				<i class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
+				<span class="jobdetail-apply-button-text">Apply Now</span> <i
+					class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
 			</button>
 		</div>
 
@@ -861,6 +848,13 @@
 						<label for="jobApplyMessage">Message <span
 							class="optional-mark">(optional)</span></label>
 					</div>
+					<div class="form-group">
+						<div class="g-recaptcha"
+							data-sitekey="${constant.recaptchaSiteKey}"></div>
+						<c:if test="${not empty captchaError}">
+							<div class="text-danger small mt-2">${captchaError}</div>
+						</c:if>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -873,6 +867,8 @@
 		</div>
 	</div>
 </div>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 	(function() {

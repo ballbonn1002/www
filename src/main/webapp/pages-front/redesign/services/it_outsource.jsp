@@ -37,13 +37,6 @@
 	padding-right: 10%;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .itout-hero {
 	position: relative;
 	height: 75vh;
@@ -75,7 +68,6 @@
 	font-weight: 700;
 	line-height: 1.25;
 	color: #FFFFFF;
-	overflow-wrap: normal;
 }
 
 .itout-hero__body {
@@ -161,12 +153,17 @@
 	gap: 24px;
 }
 
-.itout-card {
+.itout-card,
+.itout-feature-card {
+	min-width: 0;
 	flex: 0 1 calc((100% - 48px) / 3);
-	padding: 32px;
 	border-radius: 10px;
 	background-color: #FFFFFF;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.itout-card {
+	padding: 32px;
 }
 
 .itout-card__icon {
@@ -197,11 +194,7 @@
 }
 
 .itout-feature-card {
-	flex: 0 1 calc((100% - 48px) / 3);
 	padding: 32px 24px;
-	border-radius: 10px;
-	background-color: #FFFFFF;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 	text-align: center;
 }
 
@@ -379,14 +372,13 @@
 </style>
 
 <div class="itout-header">
-	<comp:pageHeader label="IT Outsource" />
+	<comp:pageHeader label="IT Outsource" parentLabel="Services" parentHref="/services" />
 </div>
 
 <section class="itout-hero">
 	<div class="itout-hero__overlay"></div>
 	<div class="itout-hero__content">
-		<h2 class="itout-hero__title">IT Outsource<br>งานคุณภาพที่
-			Cube SoftTech</h2>
+		<h2 class="itout-hero__title">IT Outsource งานคุณภาพที่ Cube SoftTech</h2>
 		<p class="itout-hero__body">Cube SoftTech นำเสนอบริการ
 			IT Outsource
 			ที่ตอบโจทย์ความต้องการขององค์กรยุคใหม่

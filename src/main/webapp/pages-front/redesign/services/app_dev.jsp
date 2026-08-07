@@ -37,13 +37,6 @@
 	padding-right: 10%;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .appdev-hero {
 	position: relative;
 	height: 75vh;
@@ -75,7 +68,6 @@
 	font-weight: 700;
 	line-height: 1.3;
 	color: #FFFFFF;
-	overflow-wrap: normal;
 }
 
 .appdev-hero__body {
@@ -160,11 +152,16 @@
 	gap: 24px;
 }
 
-.appdev-card {
-	padding: 32px;
+.appdev-card,
+.appdev-feature-card {
+	min-width: 0;
 	border-radius: 10px;
 	background-color: #FFFFFF;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.appdev-card {
+	padding: 32px;
 }
 
 .appdev-card__icon {
@@ -210,9 +207,6 @@
 
 .appdev-feature-card {
 	padding: 32px 24px;
-	border-radius: 10px;
-	background-color: #FFFFFF;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 	text-align: center;
 }
 
@@ -334,13 +328,13 @@
 </style>
 
 <div class="appdev-header">
-	<comp:pageHeader label="Mobile App Development" />
+	<comp:pageHeader label="Mobile App Development" parentLabel="Services" parentHref="/services" />
 </div>
 
 <section class="appdev-hero">
 	<div class="appdev-hero__overlay"></div>
 	<div class="appdev-hero__content">
-		<h2 class="appdev-hero__title">บริการพัฒนาแอปพลิเคชัน<br>บนสมาร์ตโฟนสำหรับองค์กร<br>โดยผู้เชี่ยวชาญมากประสบการณ์</h2>
+		<h2 class="appdev-hero__title">บริการพัฒนาแอปพลิเคชันบนสมาร์ตโฟนสำหรับองค์กรโดยผู้เชี่ยวชาญมากประสบการณ์</h2>
 		<p class="appdev-hero__body">เพิ่มขีดจำกัดในการแข่งขันทางธุรกิจ
 			พร้อมก้าวสู่ความสำเร็จ ด้วยการพัฒนา Mobile App
 			Development กับทีมพัฒนาซอฟต์แวร์มืออาชีพ

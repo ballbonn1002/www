@@ -37,13 +37,6 @@
 	padding-right: 10%;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .softdev-hero {
 	position: relative;
 	height: 75vh;
@@ -75,8 +68,6 @@
 	font-weight: 700;
 	line-height: 1.25;
 	color: #FFFFFF;
-	/* Without this, the sitewide overflow-wrap:break-word fallback overrides the explicit <br> placement below. */
-	overflow-wrap: normal;
 }
 
 .softdev-hero__body {
@@ -169,11 +160,16 @@
 	gap: 24px;
 }
 
-.softdev-card {
-	padding: 32px;
+.softdev-card,
+.softdev-step {
+	min-width: 0;
 	border-radius: 10px;
 	background-color: #FFFFFF;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.softdev-card {
+	padding: 32px;
 }
 
 .softdev-card__icon {
@@ -242,9 +238,6 @@
 
 .softdev-step {
 	padding: 32px 24px;
-	border-radius: 10px;
-	background-color: #FFFFFF;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 	text-align: center;
 }
 
@@ -370,13 +363,13 @@
 </style>
 
 <div class="softdev-header">
-	<comp:pageHeader label="Software Development" />
+	<comp:pageHeader label="Software Development" parentLabel="Services" parentHref="/services" />
 </div>
 
 <section class="softdev-hero">
 	<div class="softdev-hero__overlay"></div>
 	<div class="softdev-hero__content">
-		<h2 class="softdev-hero__title">Cube SoftTech<br>บริษัทพัฒนาซอฟต์แวร์<br>ครบวงจร</h2>
+		<h2 class="softdev-hero__title">Cube SoftTech บริษัทพัฒนาซอฟต์แวร์ครบวงจร</h2>
 		<p class="softdev-hero__body">Cube SoftTech
 			เราคือผู้ให้บริการด้าน IT Solution
 			เน้นการสรรหาผู้เชี่ยวชาญด้านไอที

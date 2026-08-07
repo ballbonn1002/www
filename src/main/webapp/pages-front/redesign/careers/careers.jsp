@@ -31,13 +31,6 @@
 	padding-right: 10%;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .careers-section-heading {
 	max-width: 900px;
 	margin: 0 auto 40px;

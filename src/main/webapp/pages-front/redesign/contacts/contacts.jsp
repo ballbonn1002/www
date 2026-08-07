@@ -38,13 +38,6 @@
 	background-size: cover;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .page-title {
 	margin: 0;
 	font-size: 16px;
@@ -225,6 +218,7 @@
 .contact-info-row__icon i {
 	font-size: 20px;
 	color: #fff;
+	margin-right: 0 !important;
 }
 
 .contact-social-group {
@@ -254,6 +248,47 @@
 	color: #fff;
 }
 
+.contact-toast {
+	position: fixed;
+	top: 24px;
+	left: 50%;
+	z-index: 2000;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	max-width: min(90vw, 420px);
+	padding: 14px 20px;
+	border-radius: 12px;
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+	color: #1C1B1A;
+	font-size: 14.5px;
+	font-weight: 500;
+	opacity: 0;
+	pointer-events: none;
+	transform: translate(-50%, -12px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.contact-toast.is-visible {
+	opacity: 1;
+	transform: translate(-50%, 0);
+}
+
+.contact-toast i {
+	color: #2F6F5E;
+	font-size: 20px;
+	flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.contact-toast {
+		transition: opacity 0.15s linear;
+		transform: translate(-50%, 0);
+	}
+}
+
 /* Light glass card, mirrors .home-services__card's ramp. */
 .contact-form-box {
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%,
@@ -277,7 +312,12 @@
 	border-bottom-left-radius: 0;
 }
 
+.contact-form-box .input-group-prepend {
+	align-self: flex-start;
+}
+
 .contact-form-box .input-group-text {
+	height: calc(3.1rem + 2px);
 	background-color: rgba(255, 255, 255, 0.55);
 	border-right: 0;
 	color: #BD2125;
@@ -348,62 +388,20 @@
 	margin: 1.5rem 0;
 }
 
-/* Ties this to the captcha display's color instead of the fields above. */
-#captchaInput {
-	font-family: monospace;
-	letter-spacing: 2px;
-	background-color: rgba(238, 242, 247, 0.6);
-}
-
 #sendEmail {
 	border-radius: 10px;
 	width: 100%;
-}
-
-.btn-info {
-	background-color: #000;
-	border-color: transparent;
-	color: #fff;
-}
-
-.btn-info:hover, .btn-info:focus, .btn-info:active {
-	background-color: #222;
-	border-color: transparent;
-	color: #fff;
-}
-
-.captcha {
-	background-color: #eef2f7;
-	font-size: 20px;
-	font-weight: bold;
-	letter-spacing: 3px;
-	padding: 10px 20px;
-	flex-grow: 1;
-	text-align: center;
-	user-select: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-}
-
-.message {
-	margin-top: 15px;
-	/*font-size: 16px;*/
-	font-weight: bold;
-}
-
-.message.green {
-	color: #28a745;
-}
-
-.message.red {
-	color: #dc3545;
 }
 </style>
 
 <div class="parallax">
 	<div class="contactbg">
 		<comp:pageHeader label="Contacts" />
+
+		<div class="contact-toast" id="contactSuccessToast" role="status" aria-live="polite">
+			<i class="bi bi-check-circle-fill"></i>
+			<span>Your message has been sent - we'll get back to you soon.</span>
+		</div>
 
 		<form id="contactForm" action="sendEmailContact" method="post">
 			<div class="row contact-columns-row" data-aos="fade-up"
@@ -509,19 +507,8 @@
 					</div>
 
 					<div class="form-group">
-						<div class="input-group">
-							<div class="col-lg-10 col-md-11 captcha" id="captcha"></div>
-							<button class="col-lg-2 col-md-1 input-group btn btn-info"
-								type="button" id="refreshCaptcha"
-								style="font-size: 22px; align-items: center; justify-content: center;">
-								<i class="fa">&#xf021;</i>
-							</button>
-						</div>
-					</div>
-					<div class="form-group">
-						<input name="captchaInput" class="form-control" id="captchaInput"
-							placeholder="Type the characters above: " />
-						<div class="message" id="message"></div>
+						<div class="g-recaptcha" data-sitekey="${constant.recaptchaSiteKey}"></div>
+						<div class="text-danger small mt-2" id="captchaError">${captchaError}</div>
 					</div>
 					<div class="form-group text-right">
 						<button type="button" class="btn btn-danger" id="sendEmail">Send</button>
@@ -544,6 +531,7 @@
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script type="text/javascript">
 	var NAME_PATTERN = /^[ก-๏a-zA-Z\s-]+$/;
@@ -617,7 +605,7 @@
 		} else if (fieldId === 'contactEmail') {
 			errorMessage = validateEmailValue(value, allowRequired);
 		} else if (fieldId === 'contactTel') {
-			errorMessage = validatePhoneValue(value, false);
+			errorMessage = validatePhoneValue(value, allowRequired);
 		}
 		return applyFieldValidation($input, errorMessage);
 	}
@@ -627,6 +615,15 @@
 					'DOMContentLoaded',
 					function() {
 						AOS.init();
+
+						if (${not empty contactSuccess}) {
+							var toast = document.getElementById('contactSuccessToast');
+							toast.classList.add('is-visible');
+							setTimeout(function() {
+								toast.classList.remove('is-visible');
+							}, 5000);
+						}
+
 						$(document)
 								.ready(
 										function() {
@@ -669,72 +666,19 @@
 																	return;
 																}
 
-																const captcha = $(
-																		'#captcha')
-																		.text(); // ดึงค่า CAPTCHA
-																const userInput = $(
-																		'#captchaInput')
-																		.val(); // ดึงค่าที่ผู้ใช้กรอก
-																// ตรวจสอบว่า CAPTCHA ตรงกับค่าที่กรอกหรือไม่
-																if (captcha === userInput) {
-																	$(
-																			'#message')
+																// Final correctness is still checked server-side
+																// (ContactsAction) regardless - this just avoids a
+																// wasted round-trip when it's obviously unchecked.
+																if (typeof grecaptcha !== 'undefined'
+																		&& !grecaptcha.getResponse()) {
+																	$('#captchaError')
 																			.text(
-																					'CAPTCHA correct')
-																			.css(
-																					'color',
-																					'green');
-
-																	$(
-																			'#contactForm')
-																			.submit();
-																} else {
-																	const newCaptcha = generateRandomCaptcha();
-																	$(
-																			'#captcha')
-																			.text(
-																					newCaptcha);
-																	$(
-																			'#message')
-																			.text(
-																					'Verification failed - please try again')
-																			.css(
-																					'color',
-																					'red');
+																					"Please confirm you're not a robot.");
+																	return;
 																}
+
+																$('#contactForm').submit();
 															});
-
-											$('#refreshCaptcha')
-													.click(
-															function() {
-																$('#captcha')
-																		.text(
-																				generateRandomCaptcha()); // สร้าง CAPTCHA ใหม่
-																$('#message')
-																		.text(
-																				'');
-																$(
-																		'#captchaInput')
-																		.val('');
-															});
-
-											function generateRandomCaptcha() {
-												const CAPTCHA_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-												let captcha = '';
-												for (let i = 0; i < 6; i++) {
-													const randomIndex = Math
-															.floor(Math
-																	.random()
-																	* CAPTCHA_CHARACTERS.length);
-													captcha += CAPTCHA_CHARACTERS
-															.charAt(randomIndex);
-												}
-												return captcha;
-											}
-
-											// สร้าง CAPTCHA เริ่มต้น
-											$('#captcha').text(
-													generateRandomCaptcha());
 										});
 					});
 

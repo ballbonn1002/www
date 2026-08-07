@@ -32,7 +32,8 @@
 	text-align: center;
 }
 
-.services-intro__title {
+.services-intro__title,
+.services-cta__title {
 	margin: 0 0 24px;
 	font-size: 48px;
 	font-weight: 700;
@@ -40,19 +41,16 @@
 	color: #C41216;
 }
 
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+.services-intro__body,
+.services-cta__body {
+	font-size: 16px;
+	line-height: 1.5;
+	color: #000000;
 }
 
 .services-intro__body {
 	max-width: 900px;
 	margin: 0 auto;
-	font-size: 16px;
-	line-height: 1.5;
-	color: #000000;
 }
 
 .services-grid {
@@ -64,14 +62,18 @@
 	gap: 24px;
 }
 
+.services-card,
+.services-capability {
+	border-radius: 10px;
+	background-color: #FFFFFF;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
 /* No hover-lift (unlike blog's cards): this card has its own "Read More" link, so it isn't itself clickable. */
 .services-card {
 	display: flex;
 	flex-direction: column;
-	border-radius: 10px;
 	overflow: hidden;
-	background-color: #FFFFFF;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .services-card__image {
@@ -139,7 +141,7 @@
 	font-size: 14px;
 	font-weight: 600;
 	text-decoration: none;
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition: background-color 0.2s ease;
 }
 
 .services-card__link:hover, .services-card__link:focus {
@@ -180,9 +182,6 @@
 	align-items: flex-start;
 	gap: 20px;
 	padding: 24px 28px;
-	border-radius: 10px;
-	background-color: #FFFFFF;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .services-capability__icon {
@@ -227,19 +226,12 @@
 }
 
 .services-cta__title {
-	margin: 0 0 16px;
-	font-size: 48px;
-	font-weight: 700;
-	line-height: 1.25;
-	color: #C41216;
+	margin-bottom: 16px;
 }
 
 .services-cta__body {
 	max-width: 690px;
 	margin: 0 auto 32px;
-	font-size: 16px;
-	line-height: 1.5;
-	color: #000000;
 }
 
 .services-cta__button {
@@ -265,7 +257,8 @@
 	.services-intro {
 		padding: 0 5% 20px;
 	}
-	.services-intro__title {
+	.services-intro__title,
+	.services-cta__title {
 		font-size: 32px;
 	}
 	.services-cta {
@@ -273,9 +266,6 @@
 	}
 	.services-cta__card {
 		padding: 32px 24px;
-	}
-	.services-cta__title {
-		font-size: 32px;
 	}
 	.services-grid {
 		grid-template-columns: 1fr;
@@ -305,7 +295,7 @@
 		project, delivered on time and on budget.</p>
 </section>
 
-<span class="services-eyebrow">Core Services</span>
+<h2 class="services-eyebrow">Core Services</h2>
 <section class="services-grid">
 	<div class="services-card" data-aos="fade-up">
 		<img class="services-card__image"
@@ -372,7 +362,7 @@
 
 </section>
 
-<span class="services-eyebrow">Additional Capabilities</span>
+<h2 class="services-eyebrow">Additional Capabilities</h2>
 <section class="services-capabilities">
 	<div class="services-capability" data-aos="fade-up">
 		<span class="services-capability__icon" aria-hidden="true"><i

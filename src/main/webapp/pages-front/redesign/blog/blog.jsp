@@ -69,13 +69,6 @@ html, body {
 	padding-right: 10%;
 }
 
-.page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
 .bar {
 	width: 30px;
 	height: 3px;
