@@ -176,12 +176,16 @@ h1, h2, h3, h4, h5, h6 {
 		sans-serif !important;
 }
 
-/* Thai has no spaces between words, so a narrow heading can wrap mid-word without keep-all.
-   text-wrap:pretty additionally avoids orphan last-line words where supported (Chromium only
-   so far) - harmless no-op elsewhere, not a replacement for the .no-orphan hint below. */
+/* word-break:keep-all used to be set here to stop narrow headings from wrapping
+   mid-word, but on Safari it also blocks overflow-wrap's emergency break for a
+   fully unspaced Thai run - the line just overflows the viewport instead of
+   wrapping at all. overflow-wrap:anywhere is the more reliable fallback across
+   engines. text-wrap:pretty additionally avoids orphan last-line words where
+   supported (Chromium only so far) - harmless no-op elsewhere, not a
+   replacement for the .no-orphan hint below. */
 h1, h2, h3, p {
-	word-break: keep-all;
-	overflow-wrap: break-word;
+	word-break: normal;
+	overflow-wrap: anywhere;
 	text-wrap: pretty;
 }
 
