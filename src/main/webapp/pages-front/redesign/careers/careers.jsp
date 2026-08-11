@@ -96,6 +96,27 @@
 	color: rgba(255, 255, 255, 0.9);
 }
 
+.careers-hero__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 8px;
+	padding: 14px 28px;
+	border-radius: 10px;
+	background-color: #BD2125;
+	color: #FFFFFF !important;
+	font-size: 15px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background-color 0.2s ease;
+}
+
+.careers-hero__cta:hover {
+	background-color: #8F191C;
+	color: #FFFFFF !important;
+	text-decoration: none;
+}
+
 .careers-culture {
 	max-width: 1360px;
 	margin: 0 auto;
@@ -209,6 +230,7 @@
 .careers-positions {
 	background-color: #F1F1F1;
 	padding: 96px 0;
+	scroll-margin-top: var(--navbar-offset, 80px);
 }
 
 .careers-positions__list {
@@ -366,6 +388,9 @@
 			motivated individuals to our strong talent pool. We are committed to
 			providing our employees with the tools and growth necessary for a
 			challenging and rewarding career as an IT professional.</p>
+		<a class="careers-hero__cta" id="jumpToPositions"
+			href="#open-positions">View Open Positions <i
+				class="bi bi-arrow-down" aria-hidden="true"></i></a>
 	</div>
 </section>
 
@@ -500,7 +525,7 @@
 	</div>
 </section>
 
-<section class="careers-positions">
+<section class="careers-positions" id="open-positions">
 	<div class="careers-section-heading" data-aos="fade-up">
 		<h2 class="careers-section-heading__title">Open Positions</h2>
 		<p class="careers-section-heading__body">Ready to make an impact?
@@ -534,6 +559,71 @@
 	AOS.init({
 		once : true
 	});
+
+	(function() {
+		var link = document.getElementById('jumpToPositions');
+		var target = document.getElementById('open-positions');
+		if (!link || !target) {
+			return;
+		}
+		var prefersReducedMotion = window.matchMedia
+				&& window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		function easeInOutCubic(t) {
+			return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+		}
+
+		function targetScrollY() {
+			var navbarOffset = parseFloat(getComputedStyle(document.documentElement)
+					.getPropertyValue('--navbar-offset')) || 80;
+			return target.getBoundingClientRect().top + window.scrollY - navbarOffset;
+		}
+
+		link.addEventListener('click', function(e) {
+			e.preventDefault();
+
+			if (prefersReducedMotion) {
+				window.scrollTo({ top : targetScrollY(), left : 0, behavior : 'auto' });
+				return;
+			}
+
+			var startY = window.scrollY;
+			var targetY = targetScrollY();
+			var distance = targetY - startY;
+			var duration = Math.min(2500, Math.max(1200, Math.abs(distance) * 0.5));
+			var startTime = null;
+			var cancelled = false;
+
+			function cancel() {
+				cancelled = true;
+				window.removeEventListener('wheel', cancel);
+				window.removeEventListener('touchstart', cancel);
+			}
+			window.addEventListener('wheel', cancel, { passive : true });
+			window.addEventListener('touchstart', cancel, { passive : true });
+
+			function step(timestamp) {
+				if (cancelled) {
+					return;
+				}
+				if (startTime === null) {
+					startTime = timestamp;
+				}
+				var progress = Math.min((timestamp - startTime) / duration, 1);
+				window.scrollTo({
+					top : startY + distance * easeInOutCubic(progress),
+					left : 0,
+					behavior : 'auto'
+				});
+				if (progress < 1) {
+					requestAnimationFrame(step);
+				} else {
+					cancel();
+				}
+			}
+			requestAnimationFrame(step);
+		});
+	})();
 
 	// Same manual prev/next scroll pattern as blog_detail.jsp's card-carousel.
 	function animateScrollLeft(el, toLeft, duration) {
