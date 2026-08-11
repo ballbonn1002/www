@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +21,6 @@ import com.cubesofttech.model.PageUri;
 import com.cubesofttech.model.Testimonial;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.ArticleHtmlSanitizer;
-import com.cubesofttech.util.FileUtil;
 import com.cubesofttech.util.JobDescriptionSectionRebuilder;
 import com.cubesofttech.util.RewriteFilter;
 import com.cubesofttech.mail.EmailService;
@@ -32,9 +30,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CareersAction extends ActionSupport {
 	public static final String REDESIGN = "redesign";
+	public static final String INVALID_JOB = "invalidJob";
 
-	// Matches struts.multipart.maxSize in actionfront.xml; no file type restriction, matching the legacy form.
+	// Matches struts.multipart.maxSize in actionfront.xml.
 	private static final long MAX_RESUME_FILE_SIZE = 30_000_000L;
+	private static final String[] ALLOWED_RESUME_EXTENSIONS = { "pdf", "doc", "docx" };
 
 	// Caps how many intern testimonial cards the careers page shows - keep this
 	// when buildMockTestimonials() is replaced by a real DAO query (e.g. LIMIT 6).
@@ -230,6 +230,7 @@ public class CareersAction extends ActionSupport {
 		try {
 			String job_id = request.getParameter("id");
 			loadJobContext(job_id);
+			request.setAttribute("constant", constant);
 
 			String requestURI = (String) request.getAttribute("rewrittenRequestURI");
 			if (requestURI == null) {
@@ -269,20 +270,54 @@ public class CareersAction extends ActionSupport {
 		return ArticleHtmlSanitizer.clean(doc.body().html());
 	}
 
-	// Resume is optional - a missing file is not an error.
-	private String validateResumeFile(File file, String fileName) {
+	// strict is only true on the redesign path - legacy careers/detail.jsp never
+	// required a resume or restricted its type, so it keeps that original,
+	// looser behavior (still size-checked either way - that check predates
+	// both the "required" and "type" rules added for redesign).
+	private String validateResumeFile(File file, String fileName, boolean strict) {
 		if (file == null) {
-			return null;
+			return strict ? "Please attach your resume" : null;
 		}
 		if (file.length() > MAX_RESUME_FILE_SIZE) {
 			return "File is too large - please upload a file under 30MB";
 		}
+		if (strict && !hasAllowedExtension(fileName)) {
+			return "Please upload a PDF, DOC, or DOCX file";
+		}
 		return null;
 	}
 
+	private boolean hasAllowedExtension(String fileName) {
+		if (fileName == null) {
+			return false;
+		}
+		int dotIndex = fileName.lastIndexOf('.');
+		if (dotIndex < 0) {
+			return false;
+		}
+		String extension = fileName.substring(dotIndex + 1).toLowerCase();
+		for (String allowed : ALLOWED_RESUME_EXTENSIONS) {
+			if (allowed.equals(extension)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public String sendEmailJob() {
+		boolean redesign = isRedesignPreviewEnabled();
 		try {
 			loadJobContext(jobId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("response", "0");
+			if (redesign) {
+				return INVALID_JOB;
+			}
+			return ERROR;
+		}
+
+		try {
 			request.setAttribute("constant", constant);
 
 			ValidationResult nameResult = ContactFormValidator.validateName(contactName);
@@ -291,9 +326,12 @@ public class CareersAction extends ActionSupport {
 			boolean telProvided = contactTel != null && !contactTel.trim().isEmpty();
 			ValidationResult telResult = telProvided ? ContactFormValidator.validatePhone(contactTel)
 					: ValidationResult.valid(contactTel);
-			String fileError = validateResumeFile(contactFile, contactFileName);
+			String fileError = validateResumeFile(contactFile, contactFileName, redesign);
+			// Set by BotProtectionInterceptor (actionfront.xml), which also covers
+			// the honeypot field and per-IP rate limit alongside the captcha check.
+			boolean captchaValid = !redesign || Boolean.TRUE.equals(request.getAttribute("botCheckPassed"));
 			boolean allValid = nameResult.isValid() && emailResult.isValid() && telResult.isValid()
-					&& fileError == null;
+					&& fileError == null && captchaValid;
 
 			// Repopulate what was typed so a validation failure doesn't clear the form.
 			request.setAttribute("contactName", contactName);
@@ -306,15 +344,15 @@ public class CareersAction extends ActionSupport {
 				request.setAttribute("emailError", emailResult.getErrorMessage());
 				request.setAttribute("telError", telResult.getErrorMessage());
 				request.setAttribute("fileError", fileError);
-				return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+				if (!captchaValid) {
+					String failReason = (String) request.getAttribute("botCheckFailReason");
+					request.setAttribute("captchaError", "rateLimit".equals(failReason)
+							? "Too many attempts - please try again later."
+							: "Please complete the verification above.");
+				}
+				return redesign ? REDESIGN : SUCCESS;
 			}
 
-			ServletContext context = request.getServletContext();
-			String fileServerPath = context.getRealPath("/");
-			log.debug(fileServerPath);
-			if (contactFile != null) {
-				FileUtil.upload(contactFile, fileServerPath, "upload/email/" + contactFileName);
-			}
 			log.debug("email service is initiated : " +  emailService);
 	    	log.debug("name : " + contactName);
 	    	log.debug("email : " + contactEmail);
@@ -326,10 +364,18 @@ public class CareersAction extends ActionSupport {
 	    	emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
 	    			contactPosition, contactMessage, contactFile, contactFileName);
 	    	request.setAttribute("response", "1");
-	    	return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+	    	return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("response", "0");
+			if (redesign) {
+				request.setAttribute("contactName", contactName);
+				request.setAttribute("contactEmail", contactEmail);
+				request.setAttribute("contactTel", contactTel);
+				request.setAttribute("contactMessage", contactMessage);
+				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+				return REDESIGN;
+			}
 			return ERROR;
 		}
 	}

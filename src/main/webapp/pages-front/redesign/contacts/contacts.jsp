@@ -71,6 +71,17 @@
 	margin-bottom: 1.25rem;
 }
 
+/* Honeypot - off-screen, not display:none, since some bots skip fields
+   that are literally hidden but still fill ones that are merely positioned
+   off-screen. Real users never tab into or see this. */
+.contact-hp {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+	height: 0;
+	overflow: hidden;
+}
+
 /* Separate from pageHeader.tag's small .page-title label. */
 .contact-page-title {
 	margin: 0 0 2rem;
@@ -282,6 +293,10 @@
 	flex-shrink: 0;
 }
 
+.contact-toast--error i {
+	color: #BD2125;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.contact-toast {
 		transition: opacity 0.15s linear;
@@ -403,7 +418,17 @@
 			<span>Your message has been sent - we'll get back to you soon.</span>
 		</div>
 
+		<div class="contact-toast contact-toast--error" id="contactErrorToast" role="alert" aria-live="assertive">
+			<i class="bi bi-exclamation-circle-fill"></i>
+			<span>${not empty captchaError ? captchaError : formError}</span>
+		</div>
+
 		<form id="contactForm" action="sendEmailContact" method="post">
+			<div class="contact-hp" aria-hidden="true">
+				<label for="contactHp">Leave this field empty</label>
+				<input type="text" name="hpToken" id="contactHp" tabindex="-1"
+					autocomplete="off">
+			</div>
 			<div class="row contact-columns-row" data-aos="fade-up"
 				data-aos-duration="800">
 				<div class="col-12 col-lg-6 contact-column">
@@ -507,7 +532,8 @@
 					</div>
 
 					<div class="form-group">
-						<div class="g-recaptcha" data-sitekey="${constant.recaptchaSiteKey}"></div>
+						<div class="g-recaptcha" data-sitekey="${constant.recaptchaSiteKey}"
+							data-callback="clearContactCaptchaError"></div>
 						<div class="text-danger small mt-2" id="captchaError">${captchaError}</div>
 					</div>
 					<div class="form-group text-right">
@@ -542,6 +568,13 @@
 	var PHONE_NUMBER = /^\+?[0-9]{7,15}$/;
 
 	var formSubmitAttempted = false;
+
+	// reCAPTCHA's data-callback - fires the instant the checkbox is solved,
+	// so the leftover "Please confirm..." text doesn't sit there looking
+	// unresolved until the next full-page submit/reload clears it.
+	function clearContactCaptchaError() {
+		$('#captchaError').text('');
+	}
 
 	function validateNameValue(value, requiredMessage, allowRequired) {
 		var trimmed = (value || '').trim();
@@ -624,6 +657,14 @@
 							}, 5000);
 						}
 
+						if (${not empty captchaError or not empty formError}) {
+							var errorToast = document.getElementById('contactErrorToast');
+							errorToast.classList.add('is-visible');
+							setTimeout(function() {
+								errorToast.classList.remove('is-visible');
+							}, 5000);
+						}
+
 						$(document)
 								.ready(
 										function() {
@@ -673,7 +714,7 @@
 																		&& !grecaptcha.getResponse()) {
 																	$('#captchaError')
 																			.text(
-																					"Please confirm you're not a robot.");
+																					"Please complete the verification above.");
 																	return;
 																}
 

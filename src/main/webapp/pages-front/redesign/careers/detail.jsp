@@ -316,14 +316,50 @@
 	color: #FFFFFF !important;
 }
 
-.jobdetail-success {
-	padding: 64px 40px;
-	border-radius: 14px;
+/* Mirrors the redesigned Contacts page's success toast, for consistency. */
+.jobdetail-toast {
+	position: fixed;
+	top: 24px;
+	left: 50%;
+	z-index: 2000;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	max-width: min(90vw, 420px);
+	padding: 14px 20px;
+	border-radius: 12px;
 	background-color: #FFFFFF;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
-	text-align: center;
-	font-size: 18px;
-	color: #000000;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+	color: #1C1B1A;
+	font-size: 14.5px;
+	font-weight: 500;
+	opacity: 0;
+	pointer-events: none;
+	transform: translate(-50%, -12px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.jobdetail-toast.is-visible {
+	opacity: 1;
+	transform: translate(-50%, 0);
+}
+
+.jobdetail-toast i {
+	color: #2F6F5E;
+	font-size: 20px;
+	flex-shrink: 0;
+}
+
+.jobdetail-toast--error i {
+	color: #BD2125;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.jobdetail-toast {
+		transition: opacity 0.15s linear;
+		transform: translate(-50%, 0);
+	}
 }
 
 /* Mirrors the redesigned Contacts page's glass/floating-label theme. */
@@ -631,6 +667,17 @@
 	gap: 12px;
 }
 
+/* Honeypot - off-screen, not display:none, since some bots skip fields
+   that are literally hidden but still fill ones that are merely positioned
+   off-screen. Real users never tab into or see this. */
+.jobapply-hp {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+	height: 0;
+	overflow: hidden;
+}
+
 .jobapply-modal .modal-footer .btn-secondary {
 	flex: 1;
 	border-radius: 10px;
@@ -687,43 +734,47 @@
 		parentLabel="Careers" parentHref="/careers" />
 </div>
 
+<div class="jobdetail-toast" id="jobdetailSuccessToast" role="status" aria-live="polite">
+	<i class="bi bi-check-circle-fill"></i>
+	<span>Your application has been sent - we'll get back to you soon.</span>
+</div>
+
+<div class="jobdetail-toast jobdetail-toast--error" id="jobdetailErrorToast" role="alert" aria-live="assertive">
+	<i class="bi bi-exclamation-circle-fill"></i>
+	<span>${not empty captchaError ? captchaError : formError}</span>
+</div>
+
 <div class="jobdetail-main" id="jobDetailContent">
-	<c:if test="${response == '1'}">
-		<div class="jobdetail-success">Sending email complete.</div>
-	</c:if>
-	<c:if test="${response != '1'}">
-		<div class="jobdetail-header-row">
-			<div class="jobdetail-header-row__info">
-				<h1 class="jobdetail-title">${job.position}</h1>
-				<div class="jobdetail-meta">
-					<span class="jobdetail-meta__item" aria-hidden="true"><i
-						class="bi bi-building"></i> CubeSoftTech</span> <span
-						class="jobdetail-meta__sep">|</span> <span
-						class="jobdetail-meta__item" aria-hidden="true"><i
-						class="bi bi-geo-alt"></i> Chong Nonsi, Bangkok</span>
-				</div>
+	<div class="jobdetail-header-row">
+		<div class="jobdetail-header-row__info">
+			<h1 class="jobdetail-title">${job.position}</h1>
+			<div class="jobdetail-meta">
+				<span class="jobdetail-meta__item" aria-hidden="true"><i
+					class="bi bi-building"></i> CubeSoftTech</span> <span
+					class="jobdetail-meta__sep">|</span> <span
+					class="jobdetail-meta__item" aria-hidden="true"><i
+					class="bi bi-geo-alt"></i> Chong Nonsi, Bangkok</span>
 			</div>
-			<button type="button" class="jobdetail-apply-button"
-				data-toggle="modal" data-target="#jobApplyModal">
-				<span class="jobdetail-apply-button-text">Apply Now</span> <i
-					class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
-			</button>
 		</div>
+		<button type="button" class="jobdetail-apply-button"
+			data-toggle="modal" data-target="#jobApplyModal">
+			<span class="jobdetail-apply-button-text">Apply Now</span> <i
+				class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
+		</button>
+	</div>
 
-		<div class="jobdetail-card">${jobDescriptionHtml}</div>
+	<div class="jobdetail-card">${jobDescriptionHtml}</div>
 
-		<div class="jobdetail-cta">
-			<h2 class="jobdetail-cta__title">Interested in ${job.position}?</h2>
-			<p class="jobdetail-cta__body">Send us your resume and we'll get
-				back to you soon.</p>
-			<button type="button" class="jobdetail-apply-button"
-				data-toggle="modal" data-target="#jobApplyModal">
-				<span class="jobdetail-apply-button-text">Apply Now</span> <i
-					class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
-			</button>
-		</div>
-
-	</c:if>
+	<div class="jobdetail-cta">
+		<h2 class="jobdetail-cta__title">Interested in ${job.position}?</h2>
+		<p class="jobdetail-cta__body">Send us your resume and we'll get
+			back to you soon.</p>
+		<button type="button" class="jobdetail-apply-button"
+			data-toggle="modal" data-target="#jobApplyModal">
+			<span class="jobdetail-apply-button-text">Apply Now</span> <i
+				class="bi bi-arrow-right jobdetail-apply-button-icon"></i>
+		</button>
+	</div>
 </div>
 
 <div class="modal fade jobapply-modal" id="jobApplyModal" tabindex="-1"
@@ -746,6 +797,11 @@
 				method="POST">
 				<input type="hidden" name="jobId" value="${jobId}"> <input
 					type="hidden" name="contactPosition" value="${job.position}">
+				<div class="jobapply-hp" aria-hidden="true">
+					<label for="jobApplyHp">Leave this field empty</label>
+					<input type="text" name="hpToken" id="jobApplyHp" tabindex="-1"
+						autocomplete="off">
+				</div>
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="input-group">
@@ -809,7 +865,7 @@
 					</div>
 					<div class="form-group">
 						<label class="jobapply-static-label">Attach Resume <span
-							class="optional-mark">(optional)</span></label>
+							class="required-mark">*</span></label>
 						<div
 							class="jobapply-dropzone ${empty fileError ? '' : 'is-invalid'}"
 							id="jobApplyDropzone" tabindex="0" role="button"
@@ -833,9 +889,10 @@
 								</button>
 							</div>
 							<input type="file" name="contactFile" id="jobApplyFile"
-								class="jobapply-dropzone__input">
+								class="jobapply-dropzone__input"
+								accept=".pdf,.doc,.docx">
 						</div>
-						<p class="jobapply-dropzone__helper">Supports files up to 30MB</p>
+						<p class="jobapply-dropzone__helper">PDF, DOC, or DOCX - up to 30MB</p>
 						<p
 							class="jobapply-dropzone__error ${empty fileError ? 'is-hidden' : ''}"
 							id="jobApplyFileError">${fileError}</p>
@@ -849,11 +906,8 @@
 							class="optional-mark">(optional)</span></label>
 					</div>
 					<div class="form-group">
-						<div class="g-recaptcha"
-							data-sitekey="${constant.recaptchaSiteKey}"></div>
-						<c:if test="${not empty captchaError}">
-							<div class="text-danger small mt-2">${captchaError}</div>
-						</c:if>
+						<div id="jobApplyRecaptcha" class="g-recaptcha"></div>
+						<div class="text-danger small mt-2" id="jobApplyCaptchaError">${captchaError}</div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -868,12 +922,14 @@
 	</div>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onJobApplyRecaptchaLoad&render=explicit"
+	async defer></script>
 
 <script>
 	(function() {
-		// Matches struts.multipart.maxSize in actionfront.xml; no file-type restriction, matching the legacy form.
+		// Matches struts.multipart.maxSize in actionfront.xml.
 		var MAX_FILE_SIZE = 30000000;
+		var ALLOWED_EXTENSIONS = [ 'pdf', 'doc', 'docx' ];
 
 		var dropzone = document.getElementById('jobApplyDropzone');
 		var fileInput = document.getElementById('jobApplyFile');
@@ -885,9 +941,17 @@
 		var removeBtn = document.getElementById('jobApplyFileRemove');
 		var errorEl = document.getElementById('jobApplyFileError');
 
+		function getExtension(fileName) {
+			var dotIndex = fileName.lastIndexOf('.');
+			return dotIndex < 0 ? '' : fileName.substring(dotIndex + 1).toLowerCase();
+		}
+
 		function validateFile(file) {
 			if (file.size > MAX_FILE_SIZE) {
 				return 'File is too large - please upload a file under 30MB';
+			}
+			if (ALLOWED_EXTENSIONS.indexOf(getExtension(file.name)) === -1) {
+				return 'Please upload a PDF, DOC, or DOCX file';
 			}
 			return null;
 		}
@@ -970,6 +1034,13 @@
 			e.stopPropagation();
 			clearFile();
 		});
+		document.getElementById('frmJobApply').addEventListener('submit',
+				function(e) {
+					if (!fileInput.files || fileInput.files.length === 0) {
+						setFileError('Please attach your resume');
+						e.preventDefault();
+					}
+				});
 	})();
 
 	(function() {
@@ -1066,16 +1137,96 @@
 									'jobApplyEmailFeedback', emailErr);
 							setFieldError('jobApplyTel', 'jobApplyTelFeedback',
 									telErr);
+							// Final correctness is still checked server-side (CareersAction)
+							// regardless - this just avoids a wasted round-trip when it's
+							// obviously unchecked.
+							if (typeof grecaptcha !== 'undefined'
+									&& !grecaptcha.getResponse()) {
+								document.getElementById('jobApplyCaptchaError').textContent =
+										"Please complete the verification above.";
+								e.preventDefault();
+								return;
+							}
 							if (nameErr || emailErr || telErr || fileHasError) {
 								e.preventDefault();
 							}
 						});
 
 		<c:if
-			test="${not empty nameError or not empty emailError or not empty telError or not empty fileError}">
-		$('#jobApplyModal').modal('show');
+			test="${not empty nameError or not empty emailError or not empty telError or not empty fileError or not empty captchaError or not empty formError}">
+		// jQuery loads with "defer", which runs after the whole document
+		// parses - this inline script runs immediately as the parser
+		// reaches it, before that, so $ isn't defined yet here.
+		document.addEventListener('DOMContentLoaded', function() {
+			$('#jobApplyModal').modal('show');
+		});
 		</c:if>
 	})();
+
+	// The modal is display:none at page load, so the widget's implicit
+	// auto-render (bare .g-recaptcha + data-sitekey) either doesn't fire or
+	// renders at zero size - Google's script only sizes it correctly against
+	// a visible container. Rendering explicitly once the modal is actually
+	// shown (whichever of the two async events - script onload vs modal
+	// open - happens second) avoids that.
+	(function() {
+		var widgetId = null;
+		var recaptchaReady = false;
+		var modalShown = false;
+
+		function tryRender() {
+			if (!recaptchaReady || !modalShown) {
+				return;
+			}
+			if (widgetId === null) {
+				widgetId = grecaptcha.render('jobApplyRecaptcha', {
+					sitekey : '${constant.recaptchaSiteKey}',
+					// Fires the instant the checkbox is solved, so the
+					// leftover "Please confirm..." text doesn't sit there
+					// looking unresolved until the next submit/reload clears it.
+					callback : function() {
+						document.getElementById('jobApplyCaptchaError').textContent = '';
+					}
+				});
+			} else {
+				grecaptcha.reset(widgetId);
+			}
+		}
+
+		window.onJobApplyRecaptchaLoad = function() {
+			recaptchaReady = true;
+			tryRender();
+		};
+
+		// Same defer-timing issue as above - $ isn't ready yet at this
+		// point in parsing, so wait for DOMContentLoaded before touching it.
+		document.addEventListener('DOMContentLoaded', function() {
+			$('#jobApplyModal').on('shown.bs.modal', function() {
+				modalShown = true;
+				tryRender();
+			});
+		});
+	})();
+
+	<c:if test="${response == '1'}">
+	document.addEventListener('DOMContentLoaded', function() {
+		var toast = document.getElementById('jobdetailSuccessToast');
+		toast.classList.add('is-visible');
+		setTimeout(function() {
+			toast.classList.remove('is-visible');
+		}, 5000);
+	});
+	</c:if>
+
+	<c:if test="${not empty captchaError or not empty formError}">
+	document.addEventListener('DOMContentLoaded', function() {
+		var errorToast = document.getElementById('jobdetailErrorToast');
+		errorToast.classList.add('is-visible');
+		setTimeout(function() {
+			errorToast.classList.remove('is-visible');
+		}, 5000);
+	});
+	</c:if>
 </script>
 
 <comp:scrollToTopButton />

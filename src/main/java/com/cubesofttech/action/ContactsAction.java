@@ -127,8 +127,14 @@ public class ContactsAction extends ActionSupport {
 			ValidationResult lastNameResult = ContactFormValidator.validateLastName(lastName);
 			ValidationResult emailResult = ContactFormValidator.validateEmail(contactEmail);
 			ValidationResult phoneResult = ContactFormValidator.validatePhone(contactTel);
+			// Legacy contacts.jsp has no reCAPTCHA widget at all - never enforce
+			// the captcha check there, so it keeps working exactly as it always
+			// has. Set by BotProtectionInterceptor (actionfront.xml), which also
+			// covers the honeypot field and per-IP rate limit for the redesign path.
+			boolean redesign = isRedesignPreviewEnabled();
+			boolean captchaValid = !redesign || Boolean.TRUE.equals(request.getAttribute("botCheckPassed"));
 			boolean allValid = firstNameResult.isValid() && lastNameResult.isValid() && emailResult.isValid()
-					&& phoneResult.isValid();
+					&& phoneResult.isValid() && captchaValid;
 
 			// Both results re-render the same contacts JSP (there's no
 			// separate "thank you" view) - it needs the same request
@@ -156,7 +162,13 @@ public class ContactsAction extends ActionSupport {
 				request.setAttribute("lastNameError", lastNameResult.getErrorMessage());
 				request.setAttribute("emailError", emailResult.getErrorMessage());
 				request.setAttribute("phoneError", phoneResult.getErrorMessage());
-				return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+				if (!captchaValid) {
+					String failReason = (String) request.getAttribute("botCheckFailReason");
+					request.setAttribute("captchaError", "rateLimit".equals(failReason)
+							? "Too many attempts - please try again later."
+							: "Please complete the verification above.");
+				}
+				return redesign ? REDESIGN : SUCCESS;
 			}
 
 			log.debug(firstNameResult.getValue()+" "+lastNameResult.getValue()+"/"+emailResult.getValue());
@@ -165,8 +177,21 @@ public class ContactsAction extends ActionSupport {
 					emailResult.getValue(), phoneResult.getValue(), contactMessage);
 			log.debug("end sending email");
 
-			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
+			request.setAttribute("contactSuccess", "1");
+			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
+			log.error(e);
+			if (isRedesignPreviewEnabled()) {
+				request.setAttribute("constant", constant);
+				request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
+				request.setAttribute("firstName", firstName);
+				request.setAttribute("lastName", lastName);
+				request.setAttribute("contactEmail", contactEmail);
+				request.setAttribute("contactTel", contactTel);
+				request.setAttribute("contactMessage", contactMessage);
+				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+				return REDESIGN;
+			}
 			return ERROR;
 		}
 	}

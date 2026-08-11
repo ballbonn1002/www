@@ -8,7 +8,11 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
         </result-types>
-        
+
+        <interceptors>
+            <interceptor name="botProtection" class="com.cubesofttech.interceptor.BotProtectionInterceptor" />
+        </interceptors>
+
         <!-- Actions -->
         <!-- Internal redesign preview toggle - not linked anywhere in the UI; both methods redirect directly. -->
         <action name="redesign-preview-on" class="com.cubesofttech.action.RedesignPreviewAction" method="on" />
@@ -62,8 +66,11 @@
         </action>
 
         <action name="sendEmailJob" class="com.cubesofttech.action.CareersAction" method="sendEmailJob">
+            <interceptor-ref name="botProtection" />
+            <interceptor-ref name="defaultStack" />
             <result name="success" type="tiles">jobDetail</result>
             <result name="redesign" type="tiles">jobDetail.redesign</result>
+            <result name="invalidJob" type="redirect">/careers</result>
             <result name="error">/pages-front/index.jsp</result>
         </action>
 
@@ -92,6 +99,8 @@
         </action>
 
         <action name="sendEmailContact" class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
+            <interceptor-ref name="botProtection" />
+            <interceptor-ref name="defaultStack" />
             <result name="success" type="tiles">contacts</result>
             <result name="redesign" type="tiles">contacts.redesign</result>
             <result name="error">/pages-front/index.jsp</result>

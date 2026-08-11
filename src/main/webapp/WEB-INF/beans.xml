@@ -26,7 +26,9 @@
         <property name="googleApiKey" value="${google.api.key}" />
         <property name="webPath" value="${web.path}" />
         <property name="webContext" value="${web.context}" />
-        <property name="imgContext" value="${web.img.context}" />        
+        <property name="imgContext" value="${web.img.context}" />
+        <property name="recaptchaSiteKey" value="${recaptcha.site.key}" />
+        <property name="recaptchaSecretKey" value="${recaptcha.secret.key}" />
     </bean>
     
     <!-- DEV-FSC : ROOT DATA SOURCE [BEGIN]-->
@@ -74,7 +76,7 @@
 	            <prop key="mail.smtp.auth">true</prop>
 	            <!-- Use TLS to encrypt communication with SMTP server -->
 	            <prop key="mail.smtp.starttls.enable">false</prop>
-	             
+
 	        </props>
 	    </property>
 	</bean>
