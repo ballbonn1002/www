@@ -460,33 +460,20 @@ keyframes home-hero-blink { 50% {
 	pointer-events: auto;
 }
 
-/* Slow diagonal sheen, mirrors home-techspec-sheen elsewhere on this page for a consistent "glass" language. */
-.home-services__card::after {
-	content: "";
+/* Same glass pill language as .navbar-menu-frame, just smaller - a step counter, not a nav element. */
+.home-services__card-step {
 	position: absolute;
-	top: -10%;
-	left: -60%;
-	width: 40%;
-	height: 120%;
-	pointer-events: none;
-	background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.5)
-		50%, transparent 100%);
-	animation: home-services-sheen 7s ease-in-out infinite;
-}
-
-@keyframes home-services-sheen {
-	0%, 100% {
-		left: -60%;
-	}
-	50% {
-		left: 130%;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.home-services__card::after {
-		animation: none;
-	}
+	top: 24px;
+	right: 24px;
+	padding: 6px 14px;
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	font-size: 13px;
+	font-weight: 600;
+	color: #3F3F3F;
 }
 
 .home-services__icon-wrap {
@@ -1220,8 +1207,10 @@ left
 					</a>
 				</nav>
 
-				<div class="home-services__cards" id="homeServicesCards">
+				<div class="home-services__cards" id="homeServicesCards"
+					data-aos="fade-up" data-aos-duration="800">
 					<div class="home-services__card">
+						<span class="home-services__card-step" aria-hidden="true">1/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon"
 								src="/pages-front/img/redesign/home/service-icon-outsourcing.png"
@@ -1241,6 +1230,7 @@ left
 					</div>
 
 					<div class="home-services__card">
+						<span class="home-services__card-step" aria-hidden="true">2/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon"
 								src="/pages-front/img/redesign/home/service-icon-software.png"
@@ -1258,6 +1248,7 @@ left
 					</div>
 
 					<div class="home-services__card">
+						<span class="home-services__card-step" aria-hidden="true">3/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon"
 								src="/pages-front/img/redesign/home/service-icon-specialize.png"
@@ -1276,6 +1267,7 @@ left
 					</div>
 
 					<div class="home-services__card">
+						<span class="home-services__card-step" aria-hidden="true">4/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon"
 								src="/pages-front/img/redesign/home/service-icon-digital.png"
@@ -1553,13 +1545,9 @@ left
 	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
 <script type="text/javascript">
-	// Scroll-reveal for sections without their own (home-techspec and
-	// home-services already have theirs below).
 	document.addEventListener('DOMContentLoaded', function() {
 		AOS.init();
 
-		// The services scrubber's pin-spacer shifts everything below it
-		// after AOS has already measured - refresh AOS when that happens.
 		if (typeof ScrollTrigger !== 'undefined') {
 			ScrollTrigger.addEventListener('refresh', function() {
 				AOS.refresh();
@@ -1569,21 +1557,13 @@ left
 </script>
 
 <script type="text/javascript">
-	// Services card scrubber: pins .home-services__sticky and derives the active card from live scroll progress each tick.
 	document.addEventListener('DOMContentLoaded', function() {
 		if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined'
 				|| typeof ScrollToPlugin === 'undefined') {
-			return; // CSS fallback (:first-child) covers this
+			return;
 		}
 		gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-		// baseLayout.jsp sets scroll-behavior:smooth globally for hash-anchor
-		// links; the browser's own smooth-scroll interpolation keeps coasting
-		// toward the last wheel delta's target well after the user stops
-		// scrolling, which fights ScrollTrigger's live progress tracking and
-		// was auto-advancing card 01 to 02 right after entering the pin. This
-		// page has no hash-anchor links depending on native smooth-scroll -
-		// its own nav (TOC clicks, scroll-to-top) already animates via GSAP.
 		document.documentElement.style.scrollBehavior = 'auto';
 
 		var stickyEl = document.getElementById('homeServicesSticky');
@@ -1605,7 +1585,7 @@ left
 		var n = cards.length;
 		var active = -1;
 		var trigger;
-		var isNavigating = false; // true while a TOC click's scrollTo anim is running
+		var isNavigating = false;
 		var navClearTimer;
 
 		function applyActive(idx) {
@@ -1641,7 +1621,6 @@ left
 					duration : 0.6,
 					ease : 'power2.inOut',
 					onComplete : function() {
-						// Delayed clear of isNavigating so trailing onUpdate calls don't recompute `active` mid-settle.
 						navClearTimer = setTimeout(function() {
 							isNavigating = false;
 						}, 250);
@@ -1656,17 +1635,9 @@ left
 				trigger = ScrollTrigger.create({
 					trigger : stickyEl,
 					start : 'top top',
-					end : '+=' + Math.round(window.innerHeight * (n - 1) * 0.5),
+					end : '+=' + Math.round(window.innerHeight * (n - 1) * 0.4),
 					pin : true,
 					pinSpacing : true,
-					// inertia:false stops snap from projecting forward using scroll
-					// velocity - with it on (GSAP's default), a fast scroll into the
-					// pin snapped straight past card 01 to wherever that velocity
-					// projected to (card 02), even though the user had barely
-					// scrolled into the section at all.
-					snap : { snapTo : 1 / (n - 1), inertia : false, delay : 0.15, duration : 0.5 },
-					// Standard GSAP fix for the 1-frame jump as a pin engages.
-					anticipatePin : 1,
 					onUpdate : function(self) {
 						if (isNavigating) {
 							return;
@@ -1681,7 +1652,6 @@ left
 					}
 				});
 
-				// The real pin-spacer now reserves the scroll runway - drop the CSS placeholder.
 				var reserve = document.getElementById('homeServicesScrollReserve');
 				if (reserve) {
 					reserve.remove();
