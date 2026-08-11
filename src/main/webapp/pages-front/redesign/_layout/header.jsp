@@ -341,8 +341,14 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	position: absolute; /* Position below the button */
 	top: 100%; /* Position below the button */
 	left: 0; /* Align to the left of the button */
-	min-width: 160px; /* Set a minimum width */
+	min-width: 230px; /* Set a minimum width */
 	z-index: 1000; /* Ensure it appears above other content */
+	margin-top: 8px;
+	padding: 8px;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: 14px;
+	background-color: #FFFFFF;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
 /* Show dropdown on click */
