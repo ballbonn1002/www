@@ -20,7 +20,7 @@
         <put-attribute name="body" value="/pages-front/home/home.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by HomeAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by HomeAction -->
     <definition name="home.redesign" extends="frontBaseLayout">
 <!--         <put-attribute name="title" value="CubeSoftTech - Innovative IT Solutions" /> -->
         <put-attribute name="body" value="/pages-front/redesign/home/home.jsp" />
@@ -32,7 +32,7 @@
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by ServicesAction -->
     <definition name="services.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Our Services" />
         <put-attribute name="body" value="/pages-front/redesign/services/services.jsp" />
@@ -44,7 +44,7 @@
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by ServicesAction -->
     <definition name="software_dev.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Software Development" />
         <put-attribute name="body" value="/pages-front/redesign/services/software_dev.jsp" />
@@ -56,7 +56,7 @@
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by ServicesAction -->
     <definition name="it_outsource.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="IT Outsource" />
         <put-attribute name="body" value="/pages-front/redesign/services/it_outsource.jsp" />
@@ -68,7 +68,7 @@
         <put-attribute name="partner" value="/pages-front/_layout/partner.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by ServicesAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by ServicesAction -->
     <definition name="app_dev.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Mobile App Development" />
         <put-attribute name="body" value="/pages-front/redesign/services/app_dev.jsp" />
@@ -79,7 +79,7 @@
         <put-attribute name="body" value="/pages-front/careers/careers.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by CareersAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by CareersAction -->
     <definition name="careers.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Careers at CubeSoftTech" />
         <put-attribute name="body" value="/pages-front/redesign/careers/careers.jsp" />
@@ -90,7 +90,7 @@
         <put-attribute name="body" value="/pages-front/careers/detail.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by CareersAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by CareersAction -->
     <definition name="jobDetail.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Job Details" />
         <put-attribute name="body" value="/pages-front/redesign/careers/detail.jsp" />
@@ -111,7 +111,7 @@
         <put-attribute name="body" value="/pages-front/blog/blog.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by BlogAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by BlogAction -->
     <definition name="blog.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Blog" />
         <put-attribute name="body" value="/pages-front/redesign/blog/blog.jsp" />
@@ -131,7 +131,7 @@
         <put-attribute name="body" value="/pages-front/contacts/contacts.jsp" />
     </definition>
 
-    <!-- internal redesign preview - selected by ContactsAction based on the redesignPreview cookie -->
+    <!-- internal redesign preview - selected by ContactsAction -->
     <definition name="contacts.redesign" extends="frontBaseLayout">
         <put-attribute name="title" value="Contact Us" />
         <put-attribute name="body" value="/pages-front/redesign/contacts/contacts.jsp" />

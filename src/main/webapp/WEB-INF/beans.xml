@@ -29,6 +29,7 @@
         <property name="imgContext" value="${web.img.context}" />
         <property name="recaptchaSiteKey" value="${recaptcha.site.key}" />
         <property name="recaptchaSecretKey" value="${recaptcha.secret.key}" />
+        <property name="redesignEnabled" value="${redesign.enabled}" />
     </bean>
     
     <!-- DEV-FSC : ROOT DATA SOURCE [BEGIN]-->

@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -443,18 +442,8 @@ public class BlogAction extends ActionSupport {
 		}
 	}
 
-	// Internal preview toggle set via /redesign-preview-on, not a URL param.
 	private boolean isRedesignPreviewEnabled() {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			return false;
-		}
-		for (Cookie cookie : cookies) {
-			if (RedesignPreviewAction.COOKIE_NAME.equals(cookie.getName()) && "1".equals(cookie.getValue())) {
-				return true;
-			}
-		}
-		return false;
+		return constant.isRedesignEnabled();
 	}
 
 	public String blogDetail() {

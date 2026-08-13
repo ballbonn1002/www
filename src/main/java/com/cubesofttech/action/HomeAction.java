@@ -2,7 +2,6 @@ package com.cubesofttech.action;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,18 +55,7 @@ public class HomeAction extends ActionSupport {
 		}
 	}
 
-	// Internal-only toggle, set via /redesign-preview-on - never exposed
-	// as a URL parameter. Same check as ContactsAction's.
 	private boolean isRedesignPreviewEnabled() {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			return false;
-		}
-		for (Cookie cookie : cookies) {
-			if (RedesignPreviewAction.COOKIE_NAME.equals(cookie.getName()) && "1".equals(cookie.getValue())) {
-				return true;
-			}
-		}
-		return false;
+		return constant.isRedesignEnabled();
 	}
 }

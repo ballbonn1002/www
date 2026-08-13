@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -211,18 +210,8 @@ public class CareersAction extends ActionSupport {
 		return testimonials;
 	}
 
-	// Set via /redesign-preview-on (RedesignPreviewAction), not a URL parameter.
 	private boolean isRedesignPreviewEnabled() {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			return false;
-		}
-		for (Cookie cookie : cookies) {
-			if (RedesignPreviewAction.COOKIE_NAME.equals(cookie.getName()) && "1".equals(cookie.getValue())) {
-				return true;
-			}
-		}
-		return false;
+		return constant.isRedesignEnabled();
 	}
 
 	public String jobDetail() {

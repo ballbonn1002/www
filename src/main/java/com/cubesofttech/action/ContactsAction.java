@@ -2,7 +2,6 @@ package com.cubesofttech.action;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -182,18 +181,7 @@ public class ContactsAction extends ActionSupport {
 		}
 	}
 
-	// Internal-only toggle, set via /redesign-preview-on (RedesignPreviewAction) -
-	// never exposed as a URL parameter a regular visitor could set.
 	private boolean isRedesignPreviewEnabled() {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			return false;
-		}
-		for (Cookie cookie : cookies) {
-			if (RedesignPreviewAction.COOKIE_NAME.equals(cookie.getName()) && "1".equals(cookie.getValue())) {
-				return true;
-			}
-		}
-		return false;
+		return constant.isRedesignEnabled();
 	}
 }

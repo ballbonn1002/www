@@ -22,6 +22,15 @@ public class Constant {
     private String imgContext;
     private String recaptchaSiteKey;
     private String recaptchaSecretKey;
+    private boolean redesignEnabled;
+
+	public boolean isRedesignEnabled() {
+		return redesignEnabled;
+	}
+
+	public void setRedesignEnabled(boolean redesignEnabled) {
+		this.redesignEnabled = redesignEnabled;
+	}
 
 	public String getGoogleApiKey() {
 		return googleApiKey;

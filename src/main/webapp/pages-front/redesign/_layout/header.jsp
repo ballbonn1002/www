@@ -114,8 +114,6 @@
 	title="Go to top">
 	<i class="fas fa-arrow-up" style="font-size: 26px; text-align: center;"></i>
 </button>
-<!-- redesignToggleBtn is rendered unconditionally by the original
-     pages-front/_layout/header.jsp, not duplicated here -->
 
 <style>
 /* --navbar-offset: total space the fixed navbar occupies (min-height +

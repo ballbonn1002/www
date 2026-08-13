@@ -5,8 +5,8 @@
 
 <%-- Same server-side active-state logic as redesign/_layout/header.jsp - see
      that file's comment for why requestURI is read here instead of relying
-     on JS in each content page. Kept in both files since the redesign
-     preview toggle below can render either one. --%>
+     on JS in each content page. Kept in both files since the redesign.enabled
+     switch below can render either one. --%>
 <c:set var="isHomeActive" value="${requestURI == '/'}" />
 <c:set var="isServicesActive"
 	value="${fn:contains(requestURI, '/services') or fn:contains(requestURI, '/software-development') or fn:contains(requestURI, '/it-outsource') or fn:contains(requestURI, '/mobile-app-development')}" />
@@ -17,12 +17,13 @@
 <c:set var="isContactsActive"
 	value="${fn:contains(requestURI, '/contacts')}" />
 
-<%-- whole-site redesign toggle: swap the entire navbar markup based on the
-     redesignPreview cookie (see RedesignPreviewAction). jsp:include is used
-     instead of jsp:forward because this file is itself included by Tiles -
-     forwarding from inside an included fragment is invalid per servlet spec. --%>
+<%-- whole-site redesign switch: swap the entire navbar markup based on the
+     redesign.enabled config flag (see Constant.isRedesignEnabled()). jsp:include
+     is used instead of jsp:forward because this file is itself included by
+     Tiles - forwarding from inside an included fragment is invalid per
+     servlet spec. --%>
 <c:choose>
-	<c:when test="${cookie.redesignPreview.value == '1'}">
+	<c:when test="${constant.redesignEnabled}">
 		<jsp:include page="/pages-front/redesign/_layout/header.jsp" />
 	</c:when>
 	<c:otherwise>
@@ -220,41 +221,41 @@
 
 	</c:otherwise>
 </c:choose>
-
-<%-- toggle button itself: always rendered regardless of which header markup
-     was chosen above, so you can always switch back --%>
-<c:choose>
-	<c:when test="${cookie.redesignPreview.value == '1'}">
-		<a id="redesignToggleBtn" class="btn btn-sm"
-			href="/redesign-preview-off"
-			title="Switch back to the original pages">Preview: NEW</a>
-	</c:when>
-	<c:otherwise>
-		<a id="redesignToggleBtn" class="btn btn-sm"
-			href="/redesign-preview-on" title="Preview the redesigned pages">Preview:
-			OLD</a>
-	</c:otherwise>
-</c:choose>
 <!-- endmenu -->
 
+<%-- TEMPORARY for SA testing - remove before this branch reaches prod. Flips
+     the redesign.enabled flag in memory for every visitor on this server;
+     does not touch application.properties, so a Tomcat restart reverts it. --%>
+<form action="/redesign-toggle" method="post" id="redesignToggleForm">
+	<button type="submit" id="redesignStatusBadge">
+		Redesign:
+		<c:choose>
+			<c:when test="${constant.redesignEnabled}">ON</c:when>
+			<c:otherwise>OFF</c:otherwise>
+		</c:choose>
+	</button>
+</form>
+
 <style>
-#redesignToggleBtn {
+#redesignToggleForm {
 	position: fixed;
 	bottom: 20px;
 	left: 20px;
 	z-index: 99;
-	padding: 8px 14px;
-	background-color: rgb(255, 255, 255);
-	color: rgb(255, 0, 128);
-	border-radius: 4px;
-	font-size: 13px;
-	text-decoration: none;
-	opacity: 0.55;
 }
 
-#redesignToggleBtn:hover {
+#redesignStatusBadge {
+	border: none;
+	padding: 8px 14px;
+	background-color: rgb(255, 255, 255);
+	color: #888;
+	border-radius: 4px;
+	font-size: 13px;
+	opacity: 0.55;
+	cursor: pointer;
+}
+
+#redesignStatusBadge:hover {
 	opacity: 1;
-	color: #fff;
-	text-decoration: none;
 }
 </style>
