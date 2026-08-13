@@ -488,22 +488,11 @@ html, body {
 
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
 	AOS.init({
 		once : true
 	});
-
-	function showNav() {
-		var x = document.getElementById("navDemo");
-		if (x.className.indexOf("w3-show") == -1) {
-			x.className += " w3-show";
-		} else {
-			x.className = x.className.replace(" w3-show", "");
-		}
-	}
-
 </script>
 
 <comp:scrollToTopButton />

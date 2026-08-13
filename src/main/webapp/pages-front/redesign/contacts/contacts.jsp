@@ -155,7 +155,7 @@
 .contactbg {
 	background: linear-gradient(180deg, rgba(20, 22, 26, 0.72) 0%,
 		rgba(20, 22, 26, 0.55) 100%),
-		url("pages-front/img/contact/team-desk-bg.jpg") center/cover fixed
+		url("/pages-front/img/contact/team-desk-bg.jpg") center/cover fixed
 		no-repeat;
 	padding-top: calc(3% + var(--navbar-offset, 80px));
 	padding-bottom: 5%;
@@ -552,7 +552,6 @@
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script type="text/javascript">
@@ -718,16 +717,6 @@
 															});
 										});
 					});
-
-	function showNav() {
-		var x = document.getElementById("navDemo");
-		if (x.className.indexOf("w3-show") == -1) {
-			x.className += " w3-show";
-		} else {
-			x.className = x.className.replace(" w3-show", "");
-		}
-	}
-
 </script>
 
 <comp:scrollToTopButton />

@@ -755,11 +755,11 @@ p {
 			<h1 itemprop="headline" class="article-title">${blog.topic}</h1>
 
 			<div class="article-tags">
-				Tags : <font color="#BD2125"><span id="articletag"> <c:forEach
+				Tags : <span id="articletag" style="color: var(--article-accent);"> <c:forEach
 							var="tag" items="${tags}" varStatus="Count">
 							<c:if test="${tag.article_id eq blog.articleId}">${tag.name} </c:if>
 						</c:forEach>
-				</span></font>
+				</span>
 			</div>
 
 			<div
@@ -882,8 +882,8 @@ p {
 
 	<c:if test="${not empty relatedBlogs}">
 		<section class="related-articles-section">
-			<h2 class="related-articles-section__heading">
-				<font color="gray">บทความที่เกี่ยวข้อง</font>
+			<h2 class="related-articles-section__heading" style="color: var(--article-ink-muted);">
+				บทความที่เกี่ยวข้อง
 			</h2>
 
 			<div class="card-carousel">
@@ -921,8 +921,8 @@ p {
 
 	<c:if test="${not empty latestBlogs}">
 		<section class="related-articles-section">
-			<h2 class="related-articles-section__heading">
-				<font color="gray">บทความล่าสุด</font>
+			<h2 class="related-articles-section__heading" style="color: var(--article-ink-muted);">
+				บทความล่าสุด
 			</h2>
 
 			<div class="card-carousel">
@@ -965,7 +965,6 @@ p {
 
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
 	AOS.init();
@@ -1044,14 +1043,4 @@ p {
 		$('body').css('padding-right', '');
 		$('.modal-backdrop').remove();
 	});
-
-	function showNav() {
-		var x = document.getElementById("navDemo");
-		if (x.className.indexOf("w3-show") == -1) {
-			x.className += " w3-show";
-		} else {
-			x.className = x.className.replace(" w3-show", "");
-		}
-	}
-
 </script>
