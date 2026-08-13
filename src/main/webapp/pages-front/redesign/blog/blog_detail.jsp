@@ -11,6 +11,8 @@
 <meta property="og:title" content="${blog.topic}">
 <meta property="og:description" content="${metaDescription}">
 <meta property="og:image" content="${constant.imgContext}${path}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://www.cubesofttech.com${bloguri}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Cube SoftTech">
