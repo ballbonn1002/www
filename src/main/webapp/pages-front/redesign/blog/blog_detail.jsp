@@ -11,11 +11,17 @@
 <meta property="og:title" content="${blog.topic}">
 <meta property="og:description" content="${metaDescription}">
 <meta property="og:image" content="${constant.imgContext}${path}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<c:if test="${not empty ogImageWidth and not empty ogImageHeight}">
+<meta property="og:image:width" content="${ogImageWidth}">
+<meta property="og:image:height" content="${ogImageHeight}">
+</c:if>
 <meta property="og:url" content="https://www.cubesofttech.com${bloguri}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Cube SoftTech">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${blog.topic}">
+<meta name="twitter:description" content="${metaDescription}">
+<meta name="twitter:image" content="${constant.imgContext}${path}">
 
 <script type="application/ld+json">
 {

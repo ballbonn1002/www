@@ -1,6 +1,9 @@
 package com.cubesofttech.action;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -497,6 +501,12 @@ public class BlogAction extends ActionSupport {
 				request.setAttribute("name", file.getName());
 				request.setAttribute("path", file.getPath());
 				request.setAttribute("alt_name", file.getAltName());
+
+				int[] dimensions = resolveImageDimensions(constant.getImgContext() + file.getPath());
+				if (dimensions != null) {
+					request.setAttribute("ogImageWidth", dimensions[0]);
+					request.setAttribute("ogImageHeight", dimensions[1]);
+				}
 			}
 
 			if (blog.getArticleTypeId().equals(1)) {
@@ -542,6 +552,33 @@ public class BlogAction extends ActionSupport {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;
+		}
+	}
+
+	// og:image/twitter:image need real pixel dimensions, but the file table
+	// (and the external image host at imgContext) has nowhere to store them -
+	// fetched once per URL and cached here rather than re-fetching on every
+	// page view. Returns null (tags omitted) rather than a guessed size on
+	// any failure, since a wrong size confuses share-preview scrapers more
+	// than a missing one.
+	private static final Map<String, int[]> IMAGE_DIMENSION_CACHE = new ConcurrentHashMap<String, int[]>();
+
+	private int[] resolveImageDimensions(String imageUrl) {
+		int[] cached = IMAGE_DIMENSION_CACHE.get(imageUrl);
+		if (cached != null) {
+			return cached;
+		}
+		try {
+			BufferedImage image = ImageIO.read(new URL(imageUrl));
+			if (image == null) {
+				return null;
+			}
+			int[] dimensions = { image.getWidth(), image.getHeight() };
+			IMAGE_DIMENSION_CACHE.put(imageUrl, dimensions);
+			return dimensions;
+		} catch (IOException e) {
+			log.error("Could not read image dimensions from " + imageUrl, e);
+			return null;
 		}
 	}
 
