@@ -259,17 +259,20 @@
 }
 
 .itout-cta__card {
-	max-width: 1200px;
-	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
 	padding: 56px;
 	border-radius: 14px;
 	text-align: center;
-	background: linear-gradient(90deg, #3510AF 0%, #FF7C7C 100%);
+	background: linear-gradient(90deg, #8F191C 0%, #C41216 100%);
 }
 
 .itout-cta__title {
 	margin: 0 0 16px;
-	font-size: 48px;
+	font-size: 32px;
 	font-weight: 700;
 	line-height: 1.25;
 	color: #FFFFFF;
@@ -287,17 +290,17 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	padding: 9px 18px;
+	padding: 16px 40px;
 	border-radius: 10px;
-	background-color: #C41216;
-	color: #F4F0FF !important;
-	font-size: 14px;
-	font-weight: 500;
+	background-color: #FFFFFF;
+	color: #C41216 !important;
+	font-size: 16px;
+	font-weight: 600;
 	text-decoration: none;
 }
 
 .itout-cta__button:hover {
-	color: #F4F0FF !important;
+	color: #C41216 !important;
 	text-decoration: none;
 	opacity: 0.9;
 }
@@ -364,9 +367,6 @@
 	}
 	.itout-cta__card {
 		padding: 32px 24px;
-	}
-	.itout-cta__title {
-		font-size: 32px;
 	}
 }
 </style>
@@ -604,6 +604,17 @@
 				ช่วยให้องค์กรควบคุมและคาดการณ์ค่าใช้จ่ายด้านไอทีได้ดีขึ้น
 				เนื่องจากผู้ให้บริการจะเป็นผู้ดูแลค่าจ้างและสวัสดิการของทีมงานทั้งหมด
 				ทำให้องค์กรไม่ต้องกังวลเรื่องค่าใช้จ่ายแฝงหรือค่าใช้จ่ายที่ไม่คาดคิด</p>
+		</div>
+	</div>
+</section>
+
+<section class="itout-cta">
+	<div class="itout-cta__card">
+		<div>
+			<h2 class="itout-cta__title">Need Reliable IT Staff?</h2>
+			<p class="itout-cta__body">Let us help you find the right talent to
+				strengthen your team.</p>
+			<a class="itout-cta__button" href="/contacts">Contact Us</a>
 		</div>
 	</div>
 </section>

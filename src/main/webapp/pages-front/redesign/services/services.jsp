@@ -226,12 +226,19 @@
 }
 
 .services-cta__title {
-	margin-bottom: 16px;
+	margin: 0 0 16px;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 1.25;
+	color: #000000;
 }
 
 .services-cta__body {
 	max-width: 690px;
 	margin: 0 auto 32px;
+	font-size: 16px;
+	line-height: 1.5;
+	color: #3F3F3F;
 }
 
 .services-cta__button {
@@ -389,6 +396,17 @@
 				<li>Maintenance Service</li>
 				<li>GIS Website</li>
 			</ul>
+		</div>
+	</div>
+</section>
+
+<section class="services-cta">
+	<div class="services-cta__card">
+		<div>
+			<h2 class="services-cta__title">Let's Build Something Great Together</h2>
+			<p class="services-cta__body">Tell us about your project and we'll help you
+				find the right service for your business.</p>
+			<a class="services-cta__button" href="/contacts">Contact Us</a>
 		</div>
 	</div>
 </section>

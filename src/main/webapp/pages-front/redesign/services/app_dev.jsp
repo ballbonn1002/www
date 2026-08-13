@@ -324,6 +324,63 @@
 		grid-template-columns: 1fr;
 		padding: 0 5%;
 	}
+	.appdev-cta {
+		padding: 56px 5%;
+	}
+	.appdev-cta__card {
+		padding: 32px 24px;
+	}
+}
+
+.appdev-cta {
+	padding: 96px 80px;
+}
+
+.appdev-cta__card {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	padding: 56px;
+	border-radius: 14px;
+	text-align: center;
+	background: linear-gradient(90deg, #8F191C 0%, #C41216 100%);
+}
+
+.appdev-cta__title {
+	margin: 0 0 16px;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 1.25;
+	color: #FFFFFF;
+}
+
+.appdev-cta__body {
+	max-width: 690px;
+	margin: 0 auto 32px;
+	font-size: 16px;
+	line-height: 1.5;
+	color: #FFFFFF;
+}
+
+.appdev-cta__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 16px 40px;
+	border-radius: 10px;
+	background-color: #FFFFFF;
+	color: #C41216 !important;
+	font-size: 16px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.appdev-cta__button:hover {
+	color: #C41216 !important;
+	text-decoration: none;
+	opacity: 0.9;
 }
 </style>
 
@@ -612,6 +669,17 @@
 			<h3 class="appdev-feature-card__title">Healthcare</h3>
 			<p class="appdev-feature-card__desc">ช่วยให้เข้าถึงการให้บริการด้านสุขภาพง่ายยิ่งขึ้น
 				ไม่ว่าจะเป็นการให้คำปรึกษาทางการแพทย์หรือติดตามอาการผู้ป่วยแบบเรียลไทม์</p>
+		</div>
+	</div>
+</section>
+
+<section class="appdev-cta">
+	<div class="appdev-cta__card">
+		<div>
+			<h2 class="appdev-cta__title">Have a Mobile App Idea?</h2>
+			<p class="appdev-cta__body">Let's talk about how we can turn it into a
+				working product.</p>
+			<a class="appdev-cta__button" href="/contacts">Contact Us</a>
 		</div>
 	</div>
 </section>

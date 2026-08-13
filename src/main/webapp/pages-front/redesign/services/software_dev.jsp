@@ -356,6 +356,63 @@
 	.softdev-checklist__items {
 		padding: 0 5%;
 	}
+	.softdev-cta {
+		padding: 56px 5%;
+	}
+	.softdev-cta__card {
+		padding: 32px 24px;
+	}
+}
+
+.softdev-cta {
+	padding: 96px 80px;
+}
+
+.softdev-cta__card {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	padding: 56px;
+	border-radius: 14px;
+	text-align: center;
+	background: linear-gradient(90deg, #8F191C 0%, #C41216 100%);
+}
+
+.softdev-cta__title {
+	margin: 0 0 16px;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 1.25;
+	color: #FFFFFF;
+}
+
+.softdev-cta__body {
+	max-width: 690px;
+	margin: 0 auto 32px;
+	font-size: 16px;
+	line-height: 1.5;
+	color: #FFFFFF;
+}
+
+.softdev-cta__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 16px 40px;
+	border-radius: 10px;
+	background-color: #FFFFFF;
+	color: #C41216 !important;
+	font-size: 16px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.softdev-cta__button:hover {
+	color: #C41216 !important;
+	text-decoration: none;
+	opacity: 0.9;
 }
 </style>
 
@@ -649,6 +706,17 @@
 				Agile ใช้วิธีการ Agile เพื่อความยืดหยุ่น
 				การส่งมอบที่รวดเร็ว
 				และการปรับปรุงอย่างต่อเนื่อง</p>
+		</div>
+	</div>
+</section>
+
+<section class="softdev-cta">
+	<div class="softdev-cta__card">
+		<div>
+			<h2 class="softdev-cta__title">Ready to Start Your Software Project?</h2>
+			<p class="softdev-cta__body">From analysis to deployment, our team is
+				ready to help bring your idea to life.</p>
+			<a class="softdev-cta__button" href="/contacts">Contact Us</a>
 		</div>
 	</div>
 </section>
