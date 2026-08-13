@@ -68,8 +68,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
 	    <property name="host" value="mail.cubesofttech.com"/>
 	    <property name="port" value="587"/>
-	    <property name="username" value="chatchai.k@cubesofttech.com"/>
-	    <property name="password" value="Cubeteam2022#"/>
+	    <property name="username" value="tharita.w@cubesofttech.com"/> <!-- chatchai.k's login is dead (departed) - using this until contact@cubesofttech.com's password is available -->
+	    <property name="password" value="Cube#%2025"/>
 	    <property name="javaMailProperties">
 	        <props>
 	            <!-- Use SMTP-AUTH to authenticate to SMTP server -->
