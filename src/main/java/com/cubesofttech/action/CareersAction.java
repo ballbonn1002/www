@@ -345,10 +345,7 @@ public class CareersAction extends ActionSupport {
 				request.setAttribute("telError", telResult.getErrorMessage());
 				request.setAttribute("fileError", fileError);
 				if (!captchaValid) {
-					String failReason = (String) request.getAttribute("botCheckFailReason");
-					request.setAttribute("captchaError", "rateLimit".equals(failReason)
-							? "Too many attempts - please try again later."
-							: "Please complete the verification above.");
+					request.setAttribute("captchaError", "Please complete the verification above.");
 				}
 				return redesign ? REDESIGN : SUCCESS;
 			}

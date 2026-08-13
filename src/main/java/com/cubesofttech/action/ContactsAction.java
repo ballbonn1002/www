@@ -163,10 +163,7 @@ public class ContactsAction extends ActionSupport {
 				request.setAttribute("emailError", emailResult.getErrorMessage());
 				request.setAttribute("phoneError", phoneResult.getErrorMessage());
 				if (!captchaValid) {
-					String failReason = (String) request.getAttribute("botCheckFailReason");
-					request.setAttribute("captchaError", "rateLimit".equals(failReason)
-							? "Too many attempts - please try again later."
-							: "Please complete the verification above.");
+					request.setAttribute("captchaError", "Please complete the verification above.");
 				}
 				return redesign ? REDESIGN : SUCCESS;
 			}
