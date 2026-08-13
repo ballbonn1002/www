@@ -63,7 +63,7 @@
 }
 
 .contact-heading {
-	color: #BD2125;
+	color: var(--brand-red);
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 1.25rem;
@@ -245,13 +245,13 @@
 	height: 44px;
 	border-radius: 50%;
 	background-color: #fff;
-	color: #BD2125;
+	color: var(--brand-red);
 	font-size: 18px;
 	transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .contact-social-links__item:hover {
-	background-color: #BD2125;
+	background-color: var(--brand-red);
 	color: #fff;
 }
 
@@ -290,7 +290,7 @@
 }
 
 .contact-toast--error i {
-	color: #BD2125;
+	color: var(--brand-red);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -331,7 +331,7 @@
 	height: calc(3.1rem + 2px);
 	background-color: rgba(255, 255, 255, 0.55);
 	border-right: 0;
-	color: #BD2125;
+	color: var(--brand-red);
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
 	border-top-right-radius: 0;
@@ -373,7 +373,7 @@
 .contact-form-box .field-floating > .form-control:not(:placeholder-shown) ~ label
 	{
 	transform: scale(0.82) translateY(-0.7rem);
-	color: #BD2125;
+	color: var(--brand-red);
 }
 
 .contact-form-box .input-group .field-floating {
@@ -385,7 +385,7 @@
 }
 
 .required-mark {
-	color: #BD2125;
+	color: var(--brand-red);
 }
 
 .optional-mark {
@@ -402,6 +402,13 @@
 #sendEmail {
 	border-radius: 10px;
 	width: 100%;
+	border: 0;
+	background-color: var(--brand-red);
+	font-weight: 600;
+}
+
+#sendEmail:hover {
+	background-color: var(--brand-red-dark);
 }
 </style>
 

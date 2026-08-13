@@ -76,12 +76,12 @@
 
 .home-hero__typewriter {
 	font-weight: 600;
-	color: #BD2125;
+	color: var(--brand-red);
 }
 
 .home-hero__cursor {
 	display: inline-block;
-	color: #BD2125;
+	color: var(--brand-red);
 	animation: home-hero-blink 1s step-end infinite;
 }
 
@@ -166,7 +166,7 @@ keyframes home-hero-blink { 50% {
 	padding: 8px 20px;
 	border-radius: 9999px;
 	background-color: rgba(255, 0, 0, 0.05);
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	font-size: 14px;
 	letter-spacing: 0.214em;
 	text-transform: uppercase;
@@ -317,7 +317,7 @@ keyframes home-hero-blink { 50% {
 .home-services__toc-item:focus-visible {
 	background-color: rgba(255, 255, 255, 0.1);
 	color: #FFFFFF;
-	box-shadow: inset 0 0 0 2px #C41216;
+	box-shadow: inset 0 0 0 2px var(--brand-red);
 }
 
 .home-services__toc-num {
@@ -346,13 +346,13 @@ keyframes home-hero-blink { 50% {
 }
 
 .home-services__toc-item[aria-current="true"] .home-services__toc-num {
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	color: #FFFFFF;
 }
 
 .home-services__toc-item[aria-current="true"] .home-services__toc-label {
 	font-weight: 700;
-	border-bottom-color: #C41216;
+	border-bottom-color: var(--brand-red);
 }
 
 .home-services__toc-cta {
@@ -363,7 +363,7 @@ keyframes home-hero-blink { 50% {
 	align-self: flex-start;
 	margin-top: 28px;
 	padding: 12px 26px;
-	border: 1.5px solid #C41216;
+	border: 1.5px solid var(--brand-red);
 	border-radius: 999px;
 	color: #FFFFFF !important;
 	font-size: 14px;
@@ -373,7 +373,7 @@ keyframes home-hero-blink { 50% {
 }
 
 .home-services__toc-cta:hover, .home-services__toc-cta:focus {
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	text-decoration: none;
 }
 
@@ -483,7 +483,7 @@ keyframes home-hero-blink { 50% {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(196, 18, 22, 0.2);
+	background-color: rgba(var(--brand-red-rgb), 0.2);
 	margin-bottom: 22px;
 }
 
@@ -531,7 +531,7 @@ keyframes home-hero-blink { 50% {
 	position: absolute;
 	left: 0;
 	top: 0;
-	color: #C41216;
+	color: var(--brand-red);
 	font-weight: 700;
 	font-size: 14px;
 }
@@ -605,11 +605,11 @@ keyframes home-hero-blink { 50% {
 	inset: 0;
 	z-index: 0;
 	pointer-events: none;
-	background-image: repeating-linear-gradient(90deg, rgba(196, 18, 22, 0.06)
-		0px, rgba(196, 18, 22, 0.06) 1px, transparent 1px, transparent 56px),
-		repeating-linear-gradient(0deg, rgba(196, 18, 22, 0.06) 0px,
-		rgba(196, 18, 22, 0.06) 1px, transparent 1px, transparent 56px),
-		radial-gradient(circle, rgba(196, 18, 22, 0.14) 1.5px, transparent
+	background-image: repeating-linear-gradient(90deg, rgba(var(--brand-red-rgb), 0.06)
+		0px, rgba(var(--brand-red-rgb), 0.06) 1px, transparent 1px, transparent 56px),
+		repeating-linear-gradient(0deg, rgba(var(--brand-red-rgb), 0.06) 0px,
+		rgba(var(--brand-red-rgb), 0.06) 1px, transparent 1px, transparent 56px),
+		radial-gradient(circle, rgba(var(--brand-red-rgb), 0.14) 1.5px, transparent
 		1.5px);
 	background-size: 56px 56px, 56px 56px, 56px 56px;
 }
@@ -754,7 +754,7 @@ left
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(196, 18, 22, 0.16);
+	background-color: rgba(var(--brand-red-rgb), 0.16);
 	flex-shrink: 0;
 }
 
@@ -832,7 +832,7 @@ left
 .home-partners__stat-num, .home-partners__stat-suffix {
 	font-size: 40px;
 	font-weight: 700;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .home-partners__stat-label {
@@ -969,7 +969,7 @@ left
 }
 
 .home-jobs__position:hover, .home-jobs__position:focus {
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	text-decoration: none;
 }
 
@@ -980,8 +980,8 @@ left
 	flex-shrink: 0;
 	padding: 8px 20px;
 	border-radius: 999px;
-	border: 1px solid #C41216;
-	color: #C41216 !important;
+	border: 1px solid var(--brand-red);
+	color: var(--brand-red) !important;
 	font-size: 13px;
 	font-weight: 600;
 	text-decoration: none;
@@ -989,7 +989,7 @@ left
 }
 
 .home-jobs__view:hover, .home-jobs__view:focus {
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	color: #FFFFFF !important;
 	text-decoration: none;
 }
@@ -1103,7 +1103,7 @@ left
 	padding: 12px 28px;
 	border-radius: 10px;
 	background-color: #FFFFFF;
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	font-size: 15px;
 	font-weight: 600;
 	text-decoration: none;
@@ -1112,7 +1112,7 @@ left
 }
 
 .home-faq__cta:hover, .home-faq__cta:focus {
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	text-decoration: none;
 	opacity: 0.9;
 }

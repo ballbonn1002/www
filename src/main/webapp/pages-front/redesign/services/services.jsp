@@ -38,7 +38,7 @@
 	font-size: 48px;
 	font-weight: 700;
 	line-height: 1.25;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .services-intro__body,
@@ -123,7 +123,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	color: #C41216;
+	color: var(--brand-red);
 	font-weight: 700;
 }
 
@@ -135,9 +135,9 @@
 	margin-top: auto;
 	gap: 6px;
 	padding: 12px 26px;
-	border: 1.5px solid #C41216;
+	border: 1.5px solid var(--brand-red);
 	border-radius: 999px;
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	font-size: 14px;
 	font-weight: 600;
 	text-decoration: none;
@@ -145,7 +145,7 @@
 }
 
 .services-card__link:hover, .services-card__link:focus {
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	color: #FFFFFF !important;
 	text-decoration: none;
 }
@@ -165,7 +165,7 @@
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .services-capabilities {
@@ -189,12 +189,12 @@
 	width: 46px;
 	height: 46px;
 	border-radius: 12px;
-	background-color: rgba(196, 18, 22, 0.08);
+	background-color: rgba(var(--brand-red-rgb), 0.08);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-size: 20px;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .services-capability__title {
@@ -247,7 +247,7 @@
 	gap: 8px;
 	padding: 16px 40px;
 	border-radius: 10px;
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	color: #FFFFFF !important;
 	font-size: 16px;
 	font-weight: 600;

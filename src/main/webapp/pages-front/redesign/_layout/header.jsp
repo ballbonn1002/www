@@ -124,6 +124,9 @@
    changes, instead of the fixed-pixel guesses pages used before. */
 :root {
 	--navbar-offset: 50px;
+	--brand-red: #BD2125;
+	--brand-red-dark: #8F191C;
+	--brand-red-rgb: 189, 33, 37;
 }
 
 .navbar {
@@ -173,7 +176,7 @@ nav.navbar.fixed-top.is-scrolled {
 
 .navbar-toggler.second-button:focus {
 	outline: none;
-	box-shadow: 0 0 0 3px rgba(189, 33, 37, 0.25);
+	box-shadow: 0 0 0 3px rgba(var(--brand-red-rgb), 0.25);
 }
 
 .animated-icon2 {
@@ -195,7 +198,7 @@ nav.navbar.fixed-top.is-scrolled {
 	height: 3px;
 	margin: 0;
 	border-radius: 2px;
-	background-color: #BD2125;
+	background-color: var(--brand-red);
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
 

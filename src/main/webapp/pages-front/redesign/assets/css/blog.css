@@ -20,7 +20,7 @@
 }
 
 .articleblockbg2:hover .aum {
-	color: #BD2125;
+	color: var(--brand-red);
 }
 
 .articleblockbg2__link,

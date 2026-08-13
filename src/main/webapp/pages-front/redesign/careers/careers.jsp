@@ -43,7 +43,7 @@
 	font-size: 40px;
 	font-weight: 700;
 	line-height: 1.25;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .careers-section-heading__body {
@@ -103,7 +103,7 @@
 	margin-top: 8px;
 	padding: 14px 28px;
 	border-radius: 10px;
-	background-color: #BD2125;
+	background-color: var(--brand-red);
 	color: #FFFFFF !important;
 	font-size: 15px;
 	font-weight: 600;
@@ -112,7 +112,7 @@
 }
 
 .careers-hero__cta:hover {
-	background-color: #8F191C;
+	background-color: var(--brand-red-dark);
 	color: #FFFFFF !important;
 	text-decoration: none;
 }
@@ -202,7 +202,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: #C41216;
+	color: var(--brand-red);
 	font-size: 18px;
 	cursor: pointer;
 	z-index: 2;
@@ -210,7 +210,7 @@
 }
 
 .card-carousel__nav:hover {
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	color: #FFFFFF;
 }
 
@@ -257,7 +257,7 @@
 	margin: 0 0 4px;
 	font-size: 22px;
 	font-weight: 700;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .careers-position__location {
@@ -268,7 +268,7 @@
 
 .careers-position__location .bi-geo-alt-fill {
 	margin-right: 4px;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .careers-position__button {
@@ -278,7 +278,7 @@
 	gap: 8px;
 	padding: 12px 26px;
 	border-radius: 10px;
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	color: #F4F0FF !important;
 	font-size: 14px;
 	font-weight: 500;

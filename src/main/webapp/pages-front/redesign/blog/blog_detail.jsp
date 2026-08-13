@@ -66,9 +66,9 @@ body, html {
 }
 
 #navbar-hover:hover {
-	color: #BD2125 !important;
+	color: var(--brand-red) !important;
 	text-decoration: none;
-	border-color: white white #BD2125 !important;
+	border-color: white white var(--brand-red) !important;
 	border-bottom: 4px solid;
 }
 
@@ -265,9 +265,9 @@ p {
 	z-index: 1;
 	padding: 0.6rem 1.75rem;
 	padding-right: max(4px, calc(1.75rem - 8px - 18px));
-	border: 3px solid #BD2125;
+	border: 3px solid var(--brand-red);
 	border-radius: 10px;
-	color: #BD2125 !important;
+	color: var(--brand-red) !important;
 	background-color: transparent;
 	font-weight: 600;
 	text-decoration: none;
@@ -277,7 +277,7 @@ p {
 .related-articles-section__cta-btn::before {
 	content: "";
 	position: absolute;
-	background-color: #BD2125;
+	background-color: var(--brand-red);
 	transform: scaleX(0);
 	transform-origin: left;
 	z-index: -1;
@@ -358,7 +358,7 @@ p {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: #BD2125;
+	color: var(--brand-red);
 	font-size: 18px;
 	cursor: pointer;
 	z-index: 2;
@@ -366,7 +366,7 @@ p {
 }
 
 .card-carousel__nav:hover {
-	background-color: #BD2125;
+	background-color: var(--brand-red);
 	color: #fff;
 }
 
@@ -512,8 +512,8 @@ p {
 :root {
 	--article-ink: #2B2222;
 	--article-ink-muted: #7A6C6C;
-	--article-accent: #BD2125;
-	--article-accent-strong: #8F191C;
+	--article-accent: var(--brand-red);
+	--article-accent-strong: var(--brand-red-dark);
 	--article-accent-soft: #F7E6E6;
 	--article-border: #E7DEDE;
 	--article-surface-soft: #FAF6F6;

@@ -125,7 +125,7 @@
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .softdev-section-heading {
@@ -140,7 +140,7 @@
 	font-size: 48px;
 	font-weight: 700;
 	line-height: 1.25;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .softdev-section-heading__body {
@@ -179,9 +179,9 @@
 	height: 46px;
 	margin-bottom: 20px;
 	border-radius: 12px;
-	background-color: rgba(196, 18, 22, 0.08);
+	background-color: rgba(var(--brand-red-rgb), 0.08);
 	font-size: 20px;
-	color: #C41216;
+	color: var(--brand-red);
 }
 
 .softdev-card__title {
@@ -217,7 +217,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	color: #C41216;
+	color: var(--brand-red);
 	font-weight: 700;
 }
 
@@ -292,7 +292,7 @@
 }
 
 .softdev-checklist__item-title i {
-	color: #C41216;
+	color: var(--brand-red);
 	font-size: 20px;
 }
 
@@ -377,7 +377,7 @@
 	padding: 56px;
 	border-radius: 14px;
 	text-align: center;
-	background: linear-gradient(90deg, #8F191C 0%, #C41216 100%);
+	background: linear-gradient(90deg, var(--brand-red-dark) 0%, var(--brand-red) 100%);
 }
 
 .softdev-cta__title {
@@ -403,14 +403,14 @@
 	padding: 16px 40px;
 	border-radius: 10px;
 	background-color: #FFFFFF;
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	font-size: 16px;
 	font-weight: 600;
 	text-decoration: none;
 }
 
 .softdev-cta__button:hover {
-	color: #C41216 !important;
+	color: var(--brand-red) !important;
 	text-decoration: none;
 	opacity: 0.9;
 }

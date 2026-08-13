@@ -101,7 +101,7 @@ html, body {
 	margin-left: 0; /* cancel Bootstrap's default -1px border-collapse between items */
 	border-radius: 8px;
 	border-color: #e9dcdc;
-	color: #BD2125;
+	color: var(--brand-red);
 	transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -200,11 +200,11 @@ html, body {
 	width: 100%;
 	font-weight: bold;
 	margin: 0 0 1rem 0;
-	background: linear-gradient(135deg, #BD2125 0%, #55090b 100%);
+	background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
-	color: #BD2125;
+	color: var(--brand-red);
 }
 
 @media ( min-width : 992px) {
@@ -239,7 +239,7 @@ html, body {
 
 .article-preview__cta.btn-danger {
 	color: #fff;
-	background-color: #C41216;
+	background-color: var(--brand-red);
 	border-color: #dc3545;
 }
 
