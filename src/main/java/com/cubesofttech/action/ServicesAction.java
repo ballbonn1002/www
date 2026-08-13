@@ -43,11 +43,8 @@ public class ServicesAction extends ActionSupport {
 		}
 	}
 
-	/**
-	 * Internal-only preview toggle: set via /redesign-preview-on (see
-	 * RedesignPreviewAction), never exposed as a URL parameter that a regular
-	 * visitor could set themselves. Same check as HomeAction's.
-	 */
+	// Internal-only toggle, set via /redesign-preview-on - never exposed
+	// as a URL parameter. Same check as HomeAction's.
 	private boolean isRedesignPreviewEnabled() {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {

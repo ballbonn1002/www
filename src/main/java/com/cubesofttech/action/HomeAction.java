@@ -35,10 +35,8 @@ public class HomeAction extends ActionSupport {
 	public String init() {
 		List<Blog> blogList = null;
 		try {
-			// header.jsp's navbar needs this to render the "Home" nav-link
-			// as active server-side - every other action already sets this
-			// same attribute (see BlogAction, ServicesAction, CareersAction,
-			// ContactsAction), this one just never did.
+			// header.jsp's navbar needs this to render "Home" active - every
+			// other action already sets it, this one just never did.
 			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
 
 			blogList = blogDAO.findAllWithPageUri();
@@ -48,7 +46,6 @@ public class HomeAction extends ActionSupport {
 			}
 			
 			List<Job> jobList = jobDAO.findAllWithPageUri();
-			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("constant", constant);
 
@@ -59,11 +56,8 @@ public class HomeAction extends ActionSupport {
 		}
 	}
 
-	/**
-	 * Internal-only preview toggle: set via /redesign-preview-on (see
-	 * RedesignPreviewAction), never exposed as a URL parameter that a regular
-	 * visitor could set themselves. Same check as ContactsAction's.
-	 */
+	// Internal-only toggle, set via /redesign-preview-on - never exposed
+	// as a URL parameter. Same check as ContactsAction's.
 	private boolean isRedesignPreviewEnabled() {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {

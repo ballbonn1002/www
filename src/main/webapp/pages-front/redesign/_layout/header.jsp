@@ -4,17 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%--
-	Nav active-state is decided here, server-side, at render time - not by
-	JS in every content page after the fact. requestURI is a request
-	attribute every Action already sets (BlogAction, ServicesAction,
-	CareersAction, ContactsAction, HomeAction - see RewriteFilter.getRequestURI),
-	so this reads it rather than creating a new source of truth or reaching
-	into pageContext.request directly.
-
-	Each condition is computed once here and reused below, instead of
-	inlining the same fn:contains(...) expression at every nav-link - the
-	Services dropdown in particular needs the same "is any of my 4 paths
-	current" check on both its parent link and (implicitly) its children.
+	Nav active-state computed once here from requestURI (set by every
+	Action - see RewriteFilter.getRequestURI) and reused below, rather
+	than repeating fn:contains(...) at each nav-link.
 --%>
 <c:set var="isHomeActive" value="${requestURI == '/'}" />
 <c:set var="isServicesActive"
@@ -24,22 +16,7 @@
 <c:set var="isNewsActive" value="${fn:contains(requestURI, '/news')}" />
 <c:set var="isContactsActive" value="${fn:contains(requestURI, '/contacts')}" />
 
-<%--
-	jQuery/Bootstrap Icons/Bootstrap CSS+JS were all being loaded a second
-	time right here - baseLayout.jsp's <head> (shared by every page,
-	rendered before this "header" tile) already provides all four: same
-	Bootstrap 4.3.1 CSS/JS (byte-identical CDN URL + integrity hash), a
-	newer Bootstrap Icons (1.11.3 vs this copy's 1.10.5), and jQuery
-	(3.3.1 slim vs this copy's 2.2.0 - two different versions of jQuery
-	on the same page). None had defer/async, so all four were blocking
-	the parser for a completely redundant download on every single page
-	load. Removed - the script below now relies on baseLayout's copies,
-	wrapped in DOMContentLoaded since those load with defer (deferred
-	scripts finish before DOMContentLoaded fires, so $ and .collapse()
-	are guaranteed ready by then; they're not necessarily ready yet at
-	the point this tile is parsed, since defer runs after parsing, not
-	inline where the tag sits).
---%>
+<%-- baseLayout.jsp already loads jQuery/Bootstrap deferred; don't re-load them here. --%>
 
 <!-- Main Header -->
 <div class="header" style="margin-bottom: 10px !important">
@@ -141,21 +118,12 @@
      pages-front/_layout/header.jsp, not duplicated here -->
 
 <style>
-/* --navbar-offset: total space the fixed navbar actually occupies
-   (min-height below + this .header div's own margin-bottom:10px,
-   set inline further up this file) - the one number every redesign
-   page's own top-level wrapper should clear so the navbar (fixed,
-   z-index above content) never covers it. Defined once here since
-   header.jsp is the file that actually owns the navbar's height -
-   CSS custom properties resolve at paint time, not file-load-order
-   time, so any other stylesheet on the page (blog.css, contacts.jsp's
-   own <style>, future pages) can reference var(--navbar-offset)
-   safely regardless of whether this file's <style> block happens to
-   load before or after theirs.
-   Previously every page guessed its own fixed pixel value instead
-   (blog.jsp/contacts.jsp both independently landed on the same
-   under-shooting 32px) - change this one value here if the navbar's
-   real height ever changes, instead of hunting through every page. */
+/* --navbar-offset: total space the fixed navbar occupies (min-height +
+   this .header div's margin-bottom) - the amount every redesign page's
+   top-level wrapper should clear. Defined once here (header.jsp owns the
+   navbar height) since other stylesheets can reference var(--navbar-offset)
+   regardless of load order. Change this one value if the navbar height
+   changes, instead of the fixed-pixel guesses pages used before. */
 :root {
 	--navbar-offset: 50px;
 }
@@ -164,16 +132,10 @@
 	min-height: 70px;
 }
 
-/* footer.jsp loads Bootstrap 5.3.0's CSS (needed there for its own
-   data-bs-* collapse widgets - can't remove it, see the comment further
-   down near that <link>). A stylesheet applies to the whole document
-   regardless of where in the page its own <link> physically sits, so
-   Bootstrap 5's own ".navbar { padding: var(--bs-navbar-padding-x) }"
-   rule was overriding Bootstrap 4's ".navbar { padding: .5rem 1rem }"
-   here too, the moment footer's CSS finished loading - same specificity
-   (single class), later one in the cascade wins. Fixed with a more
-   specific selector instead of !important, so it wins on specificity
-   regardless of load order or which Bootstrap version loads last. */
+/* footer.jsp also loads Bootstrap 5 CSS (for its collapse widgets), whose
+   .navbar padding rule was overriding Bootstrap 4's here once it loaded -
+   same specificity, later wins. Fixed with a more specific selector
+   instead of !important, so this wins regardless of load order. */
 nav.navbar.fixed-top {
 	padding: 0.5rem 1rem;
 	background-color: transparent;
@@ -186,11 +148,8 @@ nav.navbar.fixed-top.is-scrolled {
 	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* Mobile hamburger - was 3 static gray bars inherited from baseLayout.jsp's
-   generic .bar (no hover feedback, no open/close animation despite the
-   "animated-icon2" name). Bootstrap's collapse plugin already flips
-   aria-expanded on this exact button on click, so that attribute alone
-   is enough to drive the X-morph below, no extra JS/class needed. */
+/* aria-expanded (already toggled by Bootstrap's collapse plugin on click)
+   alone drives the X-morph below - no extra JS/class needed. */
 .navbar-toggler.second-button {
 	width: 44px;
 	height: 44px;
@@ -200,11 +159,8 @@ nav.navbar.fixed-top.is-scrolled {
 	transition: background-color 0.2s ease;
 }
 
-/* Bootstrap's own .navbar-expand-lg .navbar-toggler {display:none} hides
-   this above 992px - matching that breakpoint here so this rule only
-   ever sets display when the button is actually meant to be visible,
-   instead of fighting Bootstrap's responsive hide with an unconditional
-   display:flex. */
+/* Matches Bootstrap's .navbar-expand-lg .navbar-toggler {display:none}
+   breakpoint, so this only sets display when actually visible. */
 @media (max-width: 991px) {
 	.navbar-toggler.second-button {
 		display: flex;
@@ -279,23 +235,18 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	-webkit-backdrop-filter: none;
 }
 
-/* Same glass trick as desktop, just less see-through - below the collapse
-   breakpoint the frame expands into a full dropdown panel sitting over
-   whatever page content is underneath (not just a small pill over a
-   hero), so desktop's 0.35 alpha reads as illegible here even though the
-   blur/frost look is still wanted. Higher opacity keeps the frosted vibe
-   while staying readable; is-scrolled above still wins over this and
-   goes fully solid, same as desktop. */
+/* Same glass trick as desktop, but less see-through - below the collapse
+   breakpoint this expands into a full panel over page content, where
+   desktop's lower alpha would be illegible. */
 @media (max-width: 991px) {
 	.navbar-menu-frame {
 		background-color: rgba(255, 255, 255, 0.85);
 	}
 }
 
-/* .navbar uses justify-content:space-between (Bootstrap default), so the
-   frame only centers in the leftover space next to the logo, not the true
-   middle of the bar. Pull it out of flow and center on the whole navbar
-   width instead - desktop only, so mobile's collapse/stack behavior is untouched. */
+/* justify-content:space-between only centers the frame in the leftover
+   space next to the logo, not the bar's true middle - pull out of flow
+   and center on the full width instead (desktop only). */
 @media (min-width: 992px) {
 	.navbar-menu-frame {
 		position: absolute;
@@ -331,11 +282,9 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	}
 }
 
-/* Dropdown Menu - .navbar prefix on every rule here (not bare
-   .dropdown-menu) for the same reason as nav.navbar.fixed-top above:
-   footer.jsp's Bootstrap 5 CSS defines its own bare ".dropdown-menu"
-   too, same specificity, and would win once it loads since it comes
-   later in the document. */
+/* .navbar prefix (not bare .dropdown-menu) for the same reason as
+   nav.navbar.fixed-top above - footer.jsp's Bootstrap 5 CSS defines
+   its own bare .dropdown-menu, same specificity, later wins. */
 .navbar .dropdown-menu {
 	display: none; /* Hide by default */
 	position: absolute; /* Position below the button */
@@ -374,12 +323,8 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 </style>
 
 <script type="text/javascript">
-	// DOMContentLoaded, not $(document).ready() directly - $ isn't
-	// guaranteed to exist yet at this point (jQuery now only loads once,
-	// deferred, from baseLayout.jsp - see the removed duplicate above).
-	// Deferred scripts always finish before DOMContentLoaded fires, so by
-	// the time this callback runs, $ and the .collapse() plugin are both
-	// ready.
+	// DOMContentLoaded, not $(document).ready() - jQuery loads deferred
+	// from baseLayout.jsp, so $ isn't guaranteed to exist any earlier.
 	document.addEventListener('DOMContentLoaded', function() {
 		// Solid navbar once the visitor scrolls past the top - blended/glass
 		// at rest so it can sit over a hero background, plain white with a

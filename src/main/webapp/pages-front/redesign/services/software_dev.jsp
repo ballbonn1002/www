@@ -77,10 +77,9 @@
 	color: rgba(255, 255, 255, 0.9);
 }
 
-/* Grid, not flex - fixed 480px image column + flexible text column is much
-   more predictable than flex-basis auto-sizing, which let a long Thai
-   paragraph's max-content width squeeze the image down on wider screens
-   (Thai wraps less predictably than English at the same basis). */
+/* Grid, not flex - fixed 480px image column is more predictable than
+   flex-basis auto-sizing, which let a long Thai paragraph's max-content
+   width squeeze the image on wider screens. */
 .softdev-definition {
 	max-width: 1360px;
 	margin: 0 auto;
@@ -304,11 +303,9 @@
 	color: #3F3F3F;
 }
 
-/* Image column is a fixed 480px track that never shrinks, so the text
-   column (1fr) absorbs the entire squeeze as the viewport narrows - stack
-   to column at 1040px (where text would drop below ~320px, the minimum for
-   comfortable reading) instead of waiting for the 870px breakpoint below,
-   or text gets squeezed thin in the 871-1040px gap first. */
+/* Text column absorbs the whole squeeze as the viewport narrows - stack to
+   column at 1040px (where it'd drop below ~320px, the comfortable-reading
+   minimum) instead of waiting for the 870px breakpoint below. */
 @media screen and (max-width: 1040px) {
 	.softdev-definition {
 		grid-template-columns: 1fr;

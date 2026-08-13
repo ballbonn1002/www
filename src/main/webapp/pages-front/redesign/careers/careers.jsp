@@ -298,11 +298,9 @@
 	color: #3F3F3F;
 }
 
-/* .careers-culture stays a row down to 870px elsewhere in this file, but
-   .careers-culture__body has no flex-basis of its own (just flex:0 1 auto),
-   so once the image's 400px basis + this gap eat into the container below
-   ~1100px, the text column gets squeezed down to near-unreadable widths
-   well before 870px - stack to column earlier instead. */
+/* .careers-culture__body has no flex-basis of its own, so the text column
+   gets squeezed unreadable well before the 870px stack breakpoint used
+   elsewhere - stack to column earlier here instead. */
 @media screen and (max-width: 1100px) {
 	.careers-culture {
 		flex-direction: column;
@@ -361,10 +359,9 @@
 	}
 }
 
-/* Tablet width (above) keeps the "Description" label - only phone width
-   drops it down to just the arrow, matching blog.css's .page-link__text/
-   __icon pattern at the same breakpoint. Stays a row the whole way down
-   instead of stacking to a column. */
+/* Only phone width drops the "Description" label to just the arrow
+   (matches blog.css's .page-link__text/__icon pattern) - stays a row
+   the whole way down instead of stacking. */
 @media screen and (max-width: 575px) {
 	.careers-position__button-text {
 		display: none;

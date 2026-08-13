@@ -367,15 +367,9 @@ public class BlogAction extends ActionSupport {
 	private boolean isKnownBotUserAgent() {
 		String userAgent = request.getHeader("User-Agent");
 		if (userAgent == null || userAgent.isEmpty()) {
-			// Not auto-flagged as a bot: some corporate SSL-inspection
-			// proxies strip this header from real visitors' requests, and
-			// this blog's own likely readership (people evaluating IT
-			// outsourcing at other companies) skews toward exactly that
-			// kind of corporate network. A bot determined enough to fake
-			// a normal-looking UA already gets the same 30/hour quota
-			// below anyway, so this stricter check only ever caught the
-			// least sophisticated bots at the cost of miscounting real
-			// visitors - exceedsIpQuota() is the backstop for this case now.
+			// Not auto-flagged: corporate proxies strip this header from
+			// real visitors too, and exceedsIpQuota() below already
+			// backstops any bot that would otherwise slip through here.
 			return false;
 		}
 		String lower = userAgent.toLowerCase();
@@ -387,16 +381,9 @@ public class BlogAction extends ActionSupport {
 		return false;
 	}
 
-	/**
-	 * Loose per (IP, User-Agent, article) quota - a backstop against one
-	 * source hammering the counter directly, not a precise per-visitor
-	 * dedup (alreadyViewedThisSession() already handles that). Deliberately
-	 * generous: a shared office/campus IP can have many different real
-	 * readers behind it, and a hard per-IP lock-out would undercount every
-	 * one of them after the first. Fixed-window counter, not sliding - a
-	 * burst straddling the window boundary can briefly allow close to
-	 * double the limit, an accepted trade-off for how simple this stays.
-	 */
+	// Loose per (IP, User-Agent, article) quota - a backstop against one
+	// source hammering the counter, not precise dedup. Deliberately generous
+	// since a shared office/campus IP has many real readers behind it.
 	private static final int VIEW_QUOTA_LIMIT = 30;
 	private static final long VIEW_QUOTA_WINDOW_MS = 60L * 60 * 1000; // 1 hour
 	private static final ConcurrentHashMap<String, ViewQuotaBucket> VIEW_QUOTA_BUCKETS = new ConcurrentHashMap<String, ViewQuotaBucket>();

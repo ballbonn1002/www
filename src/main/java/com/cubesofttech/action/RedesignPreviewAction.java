@@ -8,12 +8,8 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-/**
- * Lets internal reviewers opt into the redesigned version of pages via a
- * cookie, without affecting regular visitors. Once set, every page that has
- * a redesign duplicate under pages-front/redesign/... will forward there
- * instead of the original, for as long as the cookie lasts.
- */
+// Lets internal reviewers opt into redesigned pages via a cookie, without
+// affecting regular visitors, for as long as the cookie lasts.
 public class RedesignPreviewAction extends ActionSupport {
 
 	public static final String COOKIE_NAME = "redesignPreview";

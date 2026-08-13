@@ -1163,12 +1163,9 @@
 		</c:if>
 	})();
 
-	// The modal is display:none at page load, so the widget's implicit
-	// auto-render (bare .g-recaptcha + data-sitekey) either doesn't fire or
-	// renders at zero size - Google's script only sizes it correctly against
-	// a visible container. Rendering explicitly once the modal is actually
-	// shown (whichever of the two async events - script onload vs modal
-	// open - happens second) avoids that.
+	// Modal is display:none at load, so the widget's implicit auto-render
+	// (bare .g-recaptcha) renders at zero size - render explicitly once
+	// the modal is actually shown instead.
 	(function() {
 		var widgetId = null;
 		var recaptchaReady = false;
