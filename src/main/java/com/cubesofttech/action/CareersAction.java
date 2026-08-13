@@ -133,7 +133,6 @@ public class CareersAction extends ActionSupport {
 	public String init() {
 		try {
 			List<Job> jobList = jobDAO.findAllWithPageUri();
-			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("testimonials", buildMockTestimonials());
 			request.setAttribute("constant", constant);
@@ -255,12 +254,8 @@ public class CareersAction extends ActionSupport {
 		request.setAttribute("jobDescriptionHtml", buildJobDescriptionHtml(job.getDescription()));
 	}
 
-	// Postings vary in how "sections" (Responsibilities, Required Qualifications, ...)
-	// were originally pasted in - some use real <ul>/<li>, others are a flat run of
-	// <div>/<p> lines with a heading line then "-"/"&bull;"-prefixed lines. Rebuilding
-	// runs on the raw HTML first (text-content checks aren't affected by the
-	// inline style/class cruft ArticleHtmlSanitizer strips afterward), so .jobdetail-card's
-	// CSS sees real heading/list tags either way.
+	// Normalizes postings pasted as flat <div>/<p> runs into real <ul>/<li>
+	// sections before sanitizing, so .jobdetail-card's CSS always sees real tags.
 	private String buildJobDescriptionHtml(String rawHtml) {
 		if (rawHtml == null || rawHtml.trim().isEmpty()) {
 			return "";
@@ -270,10 +265,8 @@ public class CareersAction extends ActionSupport {
 		return ArticleHtmlSanitizer.clean(doc.body().html());
 	}
 
-	// strict is only true on the redesign path - legacy careers/detail.jsp never
-	// required a resume or restricted its type, so it keeps that original,
-	// looser behavior (still size-checked either way - that check predates
-	// both the "required" and "type" rules added for redesign).
+	// strict is only true on the redesign path - legacy never required a resume
+	// or restricted its type (size is still checked either way).
 	private String validateResumeFile(File file, String fileName, boolean strict) {
 		if (file == null) {
 			return strict ? "Please attach your resume" : null;

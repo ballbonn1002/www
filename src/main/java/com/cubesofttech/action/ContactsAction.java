@@ -127,27 +127,18 @@ public class ContactsAction extends ActionSupport {
 			ValidationResult lastNameResult = ContactFormValidator.validateLastName(lastName);
 			ValidationResult emailResult = ContactFormValidator.validateEmail(contactEmail);
 			ValidationResult phoneResult = ContactFormValidator.validatePhone(contactTel);
-			// Legacy contacts.jsp has no reCAPTCHA widget at all - never enforce
-			// the captcha check there, so it keeps working exactly as it always
-			// has. Set by BotProtectionInterceptor (actionfront.xml), which also
-			// covers the honeypot field and per-IP rate limit for the redesign path.
+			// Legacy contacts.jsp has no reCAPTCHA widget, so never enforce it there.
 			boolean redesign = isRedesignPreviewEnabled();
 			boolean captchaValid = !redesign || Boolean.TRUE.equals(request.getAttribute("botCheckPassed"));
 			boolean allValid = firstNameResult.isValid() && lastNameResult.isValid() && emailResult.isValid()
 					&& phoneResult.isValid() && captchaValid;
 
-			// Both results re-render the same contacts JSP (there's no
-			// separate "thank you" view) - it needs the same request
-			// attributes init() would have set, or things like the
-			// header's active-nav state and ${constant...} image paths
-			// come out blank on the page shown right after a submit.
+			// Re-renders the same JSP (no separate "thank you" view), so it
+			// still needs the attributes init() would normally set.
 			request.setAttribute("constant", constant);
 			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
 
-			// Repopulate whatever was typed either way (invalid submission
-			// or not) so a validation failure never wipes the form - the
-			// one exception is the captcha, which always has to be
-			// re-solved regardless of why the page is re-rendering.
+			// Repopulate what was typed so a failed validation doesn't wipe the form.
 			request.setAttribute("firstName", firstName);
 			request.setAttribute("lastName", lastName);
 			request.setAttribute("contactEmail", contactEmail);
@@ -155,9 +146,7 @@ public class ContactsAction extends ActionSupport {
 			request.setAttribute("contactMessage", contactMessage);
 
 			if (!allValid) {
-				// Null (valid field) just means "no error" to the JSTL
-				// ${not empty ...} checks driving the error markup - no
-				// need to conditionally omit these.
+				// null just reads as "no error" to the JSTL ${not empty} checks below.
 				request.setAttribute("firstNameError", firstNameResult.getErrorMessage());
 				request.setAttribute("lastNameError", lastNameResult.getErrorMessage());
 				request.setAttribute("emailError", emailResult.getErrorMessage());
@@ -193,12 +182,8 @@ public class ContactsAction extends ActionSupport {
 		}
 	}
 
-	/**
-	 * Internal-only preview toggle: set via /redesign-preview-on (see
-	 * RedesignPreviewAction), never exposed as a URL parameter that a regular
-	 * visitor could set themselves. Same check as BlogAction's - not shared
-	 * via a common base method since BlogAction's copy predates this one.
-	 */
+	// Internal-only toggle, set via /redesign-preview-on (RedesignPreviewAction) -
+	// never exposed as a URL parameter a regular visitor could set.
 	private boolean isRedesignPreviewEnabled() {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {
