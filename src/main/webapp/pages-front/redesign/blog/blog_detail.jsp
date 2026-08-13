@@ -798,9 +798,76 @@ p {
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 						height="25px"></a>
+					<span style="position: relative; display: inline-flex;">
+						<button type="button" id="copyLinkBtn" class="copy-link-btn"
+							data-share-url="https://www.cubesofttech.com${bloguri}"
+							aria-label="Copy link">
+							<i class="bi bi-link-45deg" style="font-size: 28px;"></i>
+						</button>
+						<span id="copyLinkTooltip" class="copy-link-tooltip">Copied
+							link!</span>
+					</span>
 				</div>
 			</div>
 		</div>
+
+		<style>
+		.copy-link-btn, .copy-link-btn:focus, .copy-link-btn:hover {
+			border: none;
+			background: none;
+			padding: 0;
+			line-height: 0;
+			cursor: pointer;
+			outline: none;
+			box-shadow: none;
+		}
+
+		.copy-link-tooltip {
+			position: absolute;
+			bottom: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			margin-bottom: 8px;
+			background: #212529;
+			color: #fff;
+			font-size: 12px;
+			font-weight: 600;
+			white-space: nowrap;
+			padding: 4px 10px;
+			border-radius: 6px;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.2s ease;
+		}
+
+		.copy-link-tooltip.is-visible {
+			opacity: 1;
+		}
+		</style>
+
+		<script type="text/javascript">
+			(function() {
+				var btn = document.getElementById('copyLinkBtn');
+				var tooltip = document.getElementById('copyLinkTooltip');
+				if (!btn) {
+					return;
+				}
+				btn.addEventListener('click', function() {
+					var url = btn.getAttribute('data-share-url');
+					navigator.clipboard.writeText(url).then(function() {
+						var icon = btn.querySelector('i');
+						icon.classList.remove('bi-link-45deg');
+						icon.classList.add('bi-check-lg');
+						tooltip.classList.add('is-visible');
+						setTimeout(function() {
+							icon.classList.remove('bi-check-lg');
+							icon.classList.add('bi-link-45deg');
+							tooltip.classList.remove('is-visible');
+						}, 1500);
+					});
+				});
+			})();
+		</script>
 
 		<article itemscope itemtype="https://schema.org/Article">
 			<section itemprop="articleBody" class="article-body">${cleanDetail}</section>
