@@ -18,12 +18,8 @@
 
 <%-- baseLayout.jsp already loads jQuery/Bootstrap deferred; don't re-load them here. --%>
 
-<!-- Main Header -->
 <div class="header" style="margin-bottom: 10px !important">
-	<div class="progress-container"></div>
-	<div class="" id="myBar" sytle="padding-bottom:0px!important">
-		<!--Navbar-->
-		<nav class="navbar  navbar-expand-lg navbar-light fixed-top"
+	<nav class="navbar  navbar-expand-lg navbar-light fixed-top"
 			style="padding-bottom: 0px !important; margin-bottom: 0px !important;">
 			<!-- Navbar brand -->
 			<%-- Same fix as the legacy header - width=175px (unquoted, invalid
@@ -106,10 +102,8 @@
 			</div>
 			<!-- Collapsible content -->
 		</nav>
-	</div>
 
 </div>
-<!--/.Navbar-->
 <button class="btn btn-sm" onclick="topFunction()" id="myBtn"
 	title="Go to top">
 	<i class="fas fa-arrow-up" style="font-size: 26px; text-align: center;"></i>
