@@ -6,6 +6,11 @@
 	<div id="footer" style="display: none;">
     	<s:action name="footer" />
 	</div>
+<c:choose>
+	<c:when test="${constant.redesignEnabled}">
+		<jsp:include page="/pages-front/redesign/_layout/footer.jsp" />
+	</c:when>
+	<c:otherwise>
 <footer>
     <div class="footerbg">
         <div class="container" style="padding-top:20px;">
@@ -532,3 +537,5 @@ footer .active {
 	.collapse's display:none/block CSS is copied into this file's own
 	<style> block above - see the comment there.
 --%>
+	</c:otherwise>
+</c:choose>
