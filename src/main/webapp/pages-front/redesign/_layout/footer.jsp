@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%-- Same data sources as the legacy footer (session-scoped, set by
 	 FooterAction.list()) - only the markup/styling changes here. --%>
@@ -45,8 +46,9 @@
 					Palace Building, Silom Rd., Suriyawong, Bangrak, Bangkok
 					10500</div>
 				<a href="https://maps.app.goo.gl/a1N8Xi2qvhbVKFsW8"
-					class="rfooter-address__map rfooter-link" target="_blank">View
-					on map<svg class="rfooter-link__arrow" width="13" height="13"
+					class="rfooter-address__map rfooter-link" target="_blank"><span
+						class="rfooter-link__text">View on map</span><svg
+						class="rfooter-link__arrow" width="13" height="13"
 						viewBox="0 0 16 16" fill="none" aria-hidden="true">
 						<path d="M4.5 11.5L11.5 4.5" stroke="currentColor"
 							stroke-width="2.6" stroke-linecap="round" />
@@ -60,9 +62,9 @@
 				<div class="rfooter-contact__row"><span
 					class="rfooter-contact__label">Phone</span>
 					<span class="rfooter-contact__value rfooter-contact__value--stacked">
-						<a href="tel:026798855" class="rfooter-link">02 679 8855<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-						<a href="tel:026344449" class="rfooter-link">02 634 4449<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-						<a href="tel:0880229400" class="rfooter-link">088 022 9400<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="tel:026798855" class="rfooter-link"><span class="rfooter-link__text">02 679 8855</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="tel:026344449" class="rfooter-link"><span class="rfooter-link__text">02 634 4449</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="tel:0880229400" class="rfooter-link"><span class="rfooter-link__text">088 022 9400</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					</span>
 				</div>
 				<div class="rfooter-contact__row"><span
@@ -85,7 +87,7 @@
 						</div>
 						<c:forEach var="cft" items="${ChildFooter}">
 							<c:if test="${cft.parent_footer_id == ft.footer_id}">
-								<a href="${cft.footer_url}" class="rfooter-link">${cft.footer_name}<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+								<a href="${fn:replace(fn:replace(cft.footer_url, 'https://www.cubesofttech.com', ''), 'http://www.cubesofttech.com', '')}" class="rfooter-link"><span class="rfooter-link__text">${cft.footer_name}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 							</c:if>
 						</c:forEach>
 					</div>
@@ -102,7 +104,7 @@
 						</div>
 						<c:forEach var="cft" items="${ChildFooter}">
 							<c:if test="${cft.parent_footer_id == ft.footer_id}">
-								<a href="${cft.footer_url}" class="rfooter-link">${cft.footer_name}<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+								<a href="${fn:replace(fn:replace(cft.footer_url, 'https://www.cubesofttech.com', ''), 'http://www.cubesofttech.com', '')}" class="rfooter-link"><span class="rfooter-link__text">${cft.footer_name}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 							</c:if>
 						</c:forEach>
 					</div>
@@ -112,7 +114,6 @@
 
 		<div class="rfooter-col">
 			<c:set var="blogHeadingShown" value="0" />
-			<c:set var="blogHeadingUrl" value="" />
 			<c:forEach var="article" items="${Article}">
 				<c:if test="${article.article_type_id == 2 and blogHeadingShown < 1}">
 					<div class="rfooter-section__heading">
@@ -120,57 +121,35 @@
 							class="rfooter-section__title">${article.header_name}</a>
 					</div>
 					<c:set var="blogHeadingShown" value="1" />
-					<c:set var="blogHeadingUrl" value="/${article.header_name}" />
 				</c:if>
 			</c:forEach>
 			<c:set var="blogCount" value="0" />
 			<c:forEach var="a" items="${Article}">
-				<c:if test="${a.article_type_id == 2 and blogCount < 5}">
-					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp">${a.topic}</a>
+				<c:if test="${a.article_type_id == 2 and blogCount < 10}">
+					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp"><span class="rfooter-link__text">${a.topic}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					<c:set var="blogCount" value="${blogCount + 1}" />
 				</c:if>
 			</c:forEach>
-			<c:if test="${blogCount > 0}">
-				<a href="${blogHeadingUrl}" class="rfooter-link rfooter-link--viewall">ดูบทความทั้งหมด<svg class="rfooter-link__arrow" width="13"
-						height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-						<path d="M4.5 11.5L11.5 4.5" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round" />
-						<path d="M5.6 4.5H11.5V10.4" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round"
-							stroke-linejoin="round" />
-					</svg>
-				</a>
-			</c:if>
+		</div>
+
+		<div class="rfooter-col">
 			<c:set var="newsHeadingShown" value="0" />
-			<c:set var="newsHeadingUrl" value="" />
 			<c:forEach var="article" items="${Article}">
 				<c:if test="${article.article_type_id == 1 and newsHeadingShown < 1}">
-					<div class="rfooter-section__heading rfooter-section__heading--spaced">
+					<div class="rfooter-section__heading">
 						<a href="/${article.header_name}"
 							class="rfooter-section__title">${article.header_name}</a>
 					</div>
 					<c:set var="newsHeadingShown" value="1" />
-					<c:set var="newsHeadingUrl" value="/${article.header_name}" />
 				</c:if>
 			</c:forEach>
 			<c:set var="newsCount" value="0" />
 			<c:forEach var="a" items="${Article}">
-				<c:if test="${a.article_type_id == 1 and newsCount < 5}">
-					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp">${a.topic}</a>
+				<c:if test="${a.article_type_id == 1 and newsCount < 10}">
+					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp"><span class="rfooter-link__text">${a.topic}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					<c:set var="newsCount" value="${newsCount + 1}" />
 				</c:if>
 			</c:forEach>
-			<c:if test="${newsCount > 0}">
-				<a href="${newsHeadingUrl}" class="rfooter-link rfooter-link--viewall">ดูข่าวทั้งหมด<svg class="rfooter-link__arrow" width="13" height="13"
-						viewBox="0 0 16 16" fill="none" aria-hidden="true">
-						<path d="M4.5 11.5L11.5 4.5" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round" />
-						<path d="M5.6 4.5H11.5V10.4" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round"
-							stroke-linejoin="round" />
-					</svg>
-				</a>
-			</c:if>
 		</div>
 
 	</div>
@@ -189,9 +168,9 @@
 				<div class="rfooter-contact__row"><span
 					class="rfooter-contact__label">Phone</span>
 					<span class="rfooter-contact__value rfooter-contact__value--stacked">
-						<a href="tel:026798855" class="rfooter-link">02 679 8855<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-						<a href="tel:026344449" class="rfooter-link">02 634 4449<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-						<a href="tel:0880229400" class="rfooter-link">088 022 9400<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="tel:026798855" class="rfooter-link"><span class="rfooter-link__text">02 679 8855</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="tel:026344449" class="rfooter-link"><span class="rfooter-link__text">02 634 4449</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="tel:0880229400" class="rfooter-link"><span class="rfooter-link__text">088 022 9400</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					</span>
 				</div>
 				<div class="rfooter-contact__row"><span
@@ -215,7 +194,7 @@
 				id="rfooterAccFooter${ft.footer_id}">
 				<c:forEach var="cft" items="${ChildFooter}">
 					<c:if test="${cft.parent_footer_id == ft.footer_id}">
-						<a href="${cft.footer_url}" class="rfooter-link">${cft.footer_name}<svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="${fn:replace(fn:replace(cft.footer_url, 'https://www.cubesofttech.com', ''), 'http://www.cubesofttech.com', '')}" class="rfooter-link"><span class="rfooter-link__text">${cft.footer_name}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					</c:if>
 				</c:forEach>
 			</div>
@@ -228,22 +207,11 @@
 		<div class="rfooter-accordion__panel" id="rfooterAccBlog">
 			<c:set var="blogCountM" value="0" />
 			<c:forEach var="a" items="${Article}">
-				<c:if test="${a.article_type_id == 2 and blogCountM < 5}">
-					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp">${a.topic}</a>
+				<c:if test="${a.article_type_id == 2 and blogCountM < 10}">
+					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp"><span class="rfooter-link__text">${a.topic}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					<c:set var="blogCountM" value="${blogCountM + 1}" />
 				</c:if>
 			</c:forEach>
-			<c:if test="${blogCountM > 0}">
-				<a href="${blogHeadingUrl}" class="rfooter-link rfooter-link--viewall">ดูบทความทั้งหมด<svg class="rfooter-link__arrow" width="13"
-						height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-						<path d="M4.5 11.5L11.5 4.5" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round" />
-						<path d="M5.6 4.5H11.5V10.4" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round"
-							stroke-linejoin="round" />
-					</svg>
-				</a>
-			</c:if>
 		</div>
 
 		<button type="button" class="rfooter-accordion__toggle"
@@ -253,22 +221,11 @@
 		<div class="rfooter-accordion__panel" id="rfooterAccNews">
 			<c:set var="newsCountM" value="0" />
 			<c:forEach var="a" items="${Article}">
-				<c:if test="${a.article_type_id == 1 and newsCountM < 5}">
-					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp">${a.topic}</a>
+				<c:if test="${a.article_type_id == 1 and newsCountM < 10}">
+					<a href="${a.page_uri_id}" class="rfooter-link rfooter-link--clamp"><span class="rfooter-link__text">${a.topic}</span><svg class="rfooter-link__arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M5.6 4.5H11.5V10.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 					<c:set var="newsCountM" value="${newsCountM + 1}" />
 				</c:if>
 			</c:forEach>
-			<c:if test="${newsCountM > 0}">
-				<a href="${newsHeadingUrl}" class="rfooter-link rfooter-link--viewall">ดูข่าวทั้งหมด<svg class="rfooter-link__arrow" width="13" height="13"
-						viewBox="0 0 16 16" fill="none" aria-hidden="true">
-						<path d="M4.5 11.5L11.5 4.5" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round" />
-						<path d="M5.6 4.5H11.5V10.4" stroke="currentColor"
-							stroke-width="2.6" stroke-linecap="round"
-							stroke-linejoin="round" />
-					</svg>
-				</a>
-			</c:if>
 		</div>
 	</div>
 
@@ -326,7 +283,7 @@
 	margin: 0 auto;
 	padding: 32px 40px 40px;
 	display: grid;
-	grid-template-columns: 1.1fr 0.85fr 0.9fr 1.15fr;
+	grid-template-columns: 1.1fr 0.95fr 0.85fr 1fr 1fr;
 	align-items: start;
 	gap: 40px;
 }
@@ -436,9 +393,6 @@
 	align-items: center;
 }
 
-.rfooter-section__heading--spaced {
-	margin-top: 26px;
-}
 
 .rfooter-section__title {
 	font-size: 16px;
@@ -454,9 +408,8 @@
 }
 
 .rfooter-link {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
+	display: inline;
+	line-height: 1.5;
 	font-size: 14px;
 	color: #C4C2BA !important;
 	text-decoration: none !important;
@@ -468,7 +421,11 @@
 }
 
 .rfooter-link__arrow {
-	flex-shrink: 0;
+	display: inline-block;
+	width: 11px;
+	height: 11px;
+	margin-left: 3px;
+	vertical-align: middle;
 	color: currentColor;
 	opacity: 0;
 	transform: translate(-3px, 3px);
@@ -481,8 +438,17 @@
 }
 
 .rfooter-link--clamp {
+	display: flex;
+	align-items: flex-start;
+	align-self: stretch;
+	width: 100%;
 	font-size: 13.5px;
 	line-height: 1.45;
+}
+
+.rfooter-link--clamp .rfooter-link__text {
+	flex: 1;
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
@@ -490,10 +456,10 @@
 	-webkit-box-orient: vertical;
 }
 
-.rfooter-link--viewall {
-	gap: 4px;
-	font-weight: 500;
-	color: #e25053 !important;
+.rfooter-link--clamp .rfooter-link__arrow {
+	flex-shrink: 0;
+	margin-left: 4px;
+	margin-top: 2px;
 }
 
 .rfooter-accordion {
