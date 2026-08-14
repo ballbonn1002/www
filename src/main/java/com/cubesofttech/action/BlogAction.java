@@ -3,6 +3,8 @@ package com.cubesofttech.action;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -544,21 +546,23 @@ public class BlogAction extends ActionSupport {
 		}
 	}
 
-	// og:image/twitter:image need real pixel dimensions, but the file table
-	// (and the external image host at imgContext) has nowhere to store them -
-	// fetched once per URL and cached here rather than re-fetching on every
-	// page view. Returns null (tags omitted) rather than a guessed size on
-	// any failure, since a wrong size confuses share-preview scrapers more
-	// than a missing one.
 	private static final Map<String, int[]> IMAGE_DIMENSION_CACHE = new ConcurrentHashMap<String, int[]>();
+	private static final String IMAGE_FETCH_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+			+ "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 	private int[] resolveImageDimensions(String imageUrl) {
 		int[] cached = IMAGE_DIMENSION_CACHE.get(imageUrl);
 		if (cached != null) {
 			return cached;
 		}
+		HttpURLConnection connection = null;
 		try {
-			BufferedImage image = ImageIO.read(new URL(imageUrl));
+			connection = (HttpURLConnection) new URL(imageUrl).openConnection();
+			connection.setRequestProperty("User-Agent", IMAGE_FETCH_USER_AGENT);
+			BufferedImage image;
+			try (InputStream in = connection.getInputStream()) {
+				image = ImageIO.read(in);
+			}
 			if (image == null) {
 				return null;
 			}
@@ -568,6 +572,10 @@ public class BlogAction extends ActionSupport {
 		} catch (IOException e) {
 			log.error("Could not read image dimensions from " + imageUrl, e);
 			return null;
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
 		}
 	}
 
