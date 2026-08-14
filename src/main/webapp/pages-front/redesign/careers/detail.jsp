@@ -387,12 +387,6 @@
 	font-weight: 700;
 }
 
-.jobapply-modal__subtitle {
-	margin: 6px 0 0;
-	font-size: 13px;
-	color: #8A8F98;
-}
-
 .jobapply-modal .modal-header .close {
 	display: flex;
 	align-items: center;
@@ -443,11 +437,6 @@
 .jobapply-modal .input-group .form-control {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
-}
-
-.jobapply-modal .form-control[readonly] {
-	background-color: #F1F1F1;
-	color: #3F3F3F;
 }
 
 /* Sits below the whole .input-group, not inside .field-floating, so the icon wrapper doesn't stretch to fit error text. */

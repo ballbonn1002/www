@@ -111,7 +111,7 @@ body, html {
 
 .article-hero__expand-btn {
 	position: absolute;
-	top: calc(var(--navbar-offset, 80px)+ 28px);
+	top: calc(var(--navbar-offset, 80px) + 28px);
 	right: 16px;
 	z-index: 3;
 	width: 40px;
@@ -223,10 +223,6 @@ p {
 /* ==========================================================================
    4. Article content container width
    ========================================================================== */
-.articledetail {
-	margin-right: 5%;
-}
-
 .article-content {
 	margin: 0 auto;
 }
@@ -248,6 +244,7 @@ p {
 
 .related-articles-section__heading {
 	margin-bottom: 1.5rem;
+	color: var(--article-ink-muted);
 }
 
 .related-articles-section__cta {
@@ -716,8 +713,6 @@ p {
 </style>
 
 <comp:scrollToTopButton />
-<!-- endmenu -->
-<!--------------------------home------------------------------------>
 
 <div class="article-hero"
 	<c:if test="${!empty path}">style="--hero-image: url('${constant.imgContext}${path}');"</c:if>>
@@ -882,7 +877,7 @@ p {
 
 	<c:if test="${not empty relatedBlogs}">
 		<section class="related-articles-section">
-			<h2 class="related-articles-section__heading" style="color: var(--article-ink-muted);">
+			<h2 class="related-articles-section__heading">
 				บทความที่เกี่ยวข้อง
 			</h2>
 
@@ -921,7 +916,7 @@ p {
 
 	<c:if test="${not empty latestBlogs}">
 		<section class="related-articles-section">
-			<h2 class="related-articles-section__heading" style="color: var(--article-ink-muted);">
+			<h2 class="related-articles-section__heading">
 				บทความล่าสุด
 			</h2>
 
@@ -1003,7 +998,7 @@ p {
 					var firstCard = track.firstElementChild;
 					var cardWidth = firstCard ? firstCard
 							.getBoundingClientRect().width : 300;
-					var gap = 20;
+					var gap = parseFloat(getComputedStyle(track).columnGap) || 20;
 					var maxScrollLeft = track.scrollWidth - track.clientWidth;
 					var target = track.scrollLeft + (cardWidth + gap)
 							* direction;

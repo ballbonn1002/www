@@ -38,12 +38,6 @@
 	background-size: cover;
 }
 
-.page-title {
-	margin: 0;
-	font-size: 16px;
-	font-weight: 600;
-}
-
 /* Scoped to .contactbg - pageHeader.tag is shared with blog.jsp. */
 .contactbg .page-title {
 	color: #fff;
@@ -78,22 +72,6 @@
 	top: -9999px;
 	height: 0;
 	overflow: hidden;
-}
-
-/* Separate from pageHeader.tag's small .page-title label. */
-.contact-page-title {
-	margin: 0 0 2rem;
-	font-size: 40px;
-	font-weight: 400;
-	line-height: 1.25;
-	color: #fff;
-}
-
-@media screen and (max-width: 870px) {
-	.contact-page-title {
-		font-size: 28px;
-		margin-bottom: 1.5rem;
-	}
 }
 
 .contact-column {
@@ -226,33 +204,6 @@
 	font-size: 20px;
 	color: #fff;
 	margin-right: 0 !important;
-}
-
-.contact-social-group {
-	margin-top: 1.5rem;
-}
-
-.contact-social-links {
-	display: flex;
-	gap: 0.75rem;
-}
-
-.contact-social-links__item {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-	background-color: #fff;
-	color: var(--brand-red);
-	font-size: 18px;
-	transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.contact-social-links__item:hover {
-	background-color: var(--brand-red);
-	color: #fff;
 }
 
 .contact-toast {
@@ -392,11 +343,6 @@
 	font-size: 12px;
 	font-weight: 400;
 	color: #8a8f98;
-}
-
-.contact-form-divider {
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
-	margin: 1.5rem 0;
 }
 
 #sendEmail {
@@ -556,7 +502,6 @@
 		allowfullscreen=""></iframe>
 </div>
 
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>

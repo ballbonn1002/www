@@ -69,14 +69,6 @@ html, body {
 	padding-right: 10%;
 }
 
-.bar {
-	width: 30px;
-	height: 3px;
-	background-color: #333;
-	margin: 6px 0;
-	transition: 0.4s;
-}
-
 /* ==========================================================================
    Article list + pagination (rendered via blog_list.jsp include)
    ========================================================================== */
@@ -351,8 +343,6 @@ html, body {
 	}
 }
 </style>
-
-<!--------------------------home------------------------------------>
 
 <div class="articleblockbg">
 	<c:set var="pageLabel" value="" />

@@ -695,7 +695,7 @@
 				window.addEventListener('resize', updateNavState);
 				updateNavState();
 
-				// Auto-advance one card every 3s, looping back to the first card at
+				// Auto-advance one card every 5s, looping back to the first card at
 				// the end. Paused on hover/focus so it doesn't scroll away while
 				// someone's reading. Deliberately ignores prefers-reduced-motion
 				// (per explicit request) - manual prev/next still always works.

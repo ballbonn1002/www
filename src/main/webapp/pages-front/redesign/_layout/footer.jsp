@@ -372,10 +372,6 @@
 	flex-shrink: 0;
 }
 
-.rfooter-contact__value {
-	color: #E4E4E7;
-}
-
 .rfooter-contact__value--stacked {
 	display: flex;
 	flex-direction: column;

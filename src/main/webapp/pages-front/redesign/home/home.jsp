@@ -85,12 +85,12 @@
 	animation: home-hero-blink 1s step-end infinite;
 }
 
-@
-keyframes home-hero-blink { 50% {
-	opacity: 0;
+@keyframes home-hero-blink {
+	50% {
+		opacity: 0;
+	}
 }
 
-}
 .home-hero__cta {
 	position: relative;
 	z-index: 1;
@@ -630,19 +630,15 @@ keyframes home-hero-blink { 50% {
 	animation: home-techspec-sheen 14s linear infinite;
 }
 
-@
-keyframes home-techspec-sheen { 0% {
-	left: -60%;
+@keyframes home-techspec-sheen {
+	0% {
+		left: -60%;
+	}
+	100% {
+		left: 130%;
+	}
 }
 
-100
-%
-{
-left
-:
-130%;
-}
-}
 .home-techspec__title {
 	margin: 0 0 6px;
 	font-size: 32px;
@@ -1390,14 +1386,14 @@ left
 			enterprises, including major banks, telecommunications providers,
 			automotive companies, and government agencies.</p>
 
-		<div class="home-partners__stat" id="homePartnersStat"
+		<div class="home-partners__stat"
 			data-aos="fade-up" data-aos-duration="800">
 			<span class="home-partners__stat-num" id="homePartnersStatNum">0</span><span
 				class="home-partners__stat-suffix">+</span>
 			<p class="home-partners__stat-label">Trusted Partners</p>
 		</div>
 
-		<div class="">
+		<div class="home-partners__panel">
 			<div class="home-partners__marquee" id="homePartnersMarquee">
 				<%-- 21 logos split across 2 rows; both drift the same direction/speed (see home-partners-marquee IIFE below). --%>
 				<div class="home-partners__marquee-row"
