@@ -840,16 +840,6 @@
 	color: #3F3F3F;
 }
 
-.home-partners__panel {
-	position: relative;
-	padding: 48px 0;
-	border-radius: 40px;
-	background-color: #F7F7F7;
-	border: 1px solid rgba(255, 255, 255, 0.4);
-	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-	overflow: hidden;
-}
-
 .home-partners__marquee {
 	display: flex;
 	flex-direction: column;
@@ -897,9 +887,6 @@
 	}
 	.home-partners__title {
 		font-size: 32px;
-	}
-	.home-partners__panel {
-		padding: 32px 0;
 	}
 	.home-partners__logos {
 		padding: 0 20px;
@@ -1393,7 +1380,7 @@
 			<p class="home-partners__stat-label">Trusted Partners</p>
 		</div>
 
-		<div class="home-partners__panel">
+		<div>
 			<div class="home-partners__marquee" id="homePartnersMarquee">
 				<%-- 21 logos split across 2 rows; both drift the same direction/speed (see home-partners-marquee IIFE below). --%>
 				<div class="home-partners__marquee-row"
