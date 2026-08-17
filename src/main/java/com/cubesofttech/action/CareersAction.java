@@ -327,7 +327,7 @@ public class CareersAction extends ActionSupport {
 				request.setAttribute("telError", telResult.getErrorMessage());
 				request.setAttribute("fileError", fileError);
 				if (!captchaValid) {
-					request.setAttribute("captchaError", "Please complete the verification above.");
+					request.setAttribute("captchaError", "Please complete the verification above and try again.");
 				}
 				return redesign ? REDESIGN : SUCCESS;
 			}

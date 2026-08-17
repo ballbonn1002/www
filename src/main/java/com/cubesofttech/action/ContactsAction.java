@@ -151,7 +151,7 @@ public class ContactsAction extends ActionSupport {
 				request.setAttribute("emailError", emailResult.getErrorMessage());
 				request.setAttribute("phoneError", phoneResult.getErrorMessage());
 				if (!captchaValid) {
-					request.setAttribute("captchaError", "Please complete the verification above.");
+					request.setAttribute("captchaError", "Please complete the verification above and try again.");
 				}
 				return redesign ? REDESIGN : SUCCESS;
 			}
