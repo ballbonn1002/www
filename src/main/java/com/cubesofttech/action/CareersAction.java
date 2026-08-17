@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -41,8 +40,7 @@ public class CareersAction extends ActionSupport {
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
-	
+
 	@Autowired
 	private JobDAO jobDAO;
 	
@@ -142,7 +140,7 @@ public class CareersAction extends ActionSupport {
 
 			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 			return ERROR;
 		}
 	}
@@ -229,7 +227,7 @@ public class CareersAction extends ActionSupport {
 
 			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 			return ERROR;
 		}
 	}
@@ -291,7 +289,7 @@ public class CareersAction extends ActionSupport {
 		try {
 			loadJobContext(jobId);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 			request.setAttribute("response", "0");
 			if (redesign) {
 				return INVALID_JOB;
@@ -332,20 +330,15 @@ public class CareersAction extends ActionSupport {
 				return redesign ? REDESIGN : SUCCESS;
 			}
 
-			log.debug("email service is initiated : " +  emailService);
-	    	log.debug("name : " + contactName);
-	    	log.debug("email : " + contactEmail);
-	    	log.debug("tel : " + contactTel);
-	    	log.debug("position : " + contactPosition);
-	    	log.debug("message : " + contactMessage);
-	    	log.debug("file : " + contactFile);
+			log.debug("Sending job application: name=" + contactName + " email=" + contactEmail + " tel=" + contactTel
+					+ " position=" + contactPosition + " resume=" + contactFileName);
 
-	    	emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
-	    			contactPosition, contactMessage, contactFile, contactFileName);
-	    	request.setAttribute("response", "1");
-	    	return redesign ? REDESIGN : SUCCESS;
+			emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
+					contactPosition, contactMessage, contactFile, contactFileName);
+			request.setAttribute("response", "1");
+			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 			request.setAttribute("response", "0");
 			if (redesign) {
 				request.setAttribute("contactName", contactName);
