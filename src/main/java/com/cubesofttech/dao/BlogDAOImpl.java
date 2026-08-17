@@ -31,8 +31,6 @@ public class BlogDAOImpl implements BlogDAO {
 			article = (Blog) session.get(Blog.class, articleId);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// session.close();
 		}
 		return article;
 	}

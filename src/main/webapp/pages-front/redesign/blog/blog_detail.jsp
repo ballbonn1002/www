@@ -58,18 +58,12 @@
 <link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
 <style>
 /* ==========================================================================
-   1. Page chrome (scroll behavior, nav hover)
+   1. Page chrome - resets body's scrollbar-compensation padding after the
+   hero image modal closes (baseLayout.jsp already covers scroll-behavior
+   and #navbar-hover:hover sitewide)
    ========================================================================== */
 body, html {
-	scroll-behavior: smooth;
 	padding-right: 0 !important;
-}
-
-#navbar-hover:hover {
-	color: var(--brand-red) !important;
-	text-decoration: none;
-	border-color: white white var(--brand-red) !important;
-	border-bottom: 4px solid;
 }
 
 /* ==========================================================================
@@ -207,7 +201,8 @@ body, html {
    3. Legacy global resets (unscoped - verify before editing elsewhere)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
-	font-family: "Segoe UI", Arial, sans-serif;
+	/* font-family not set here - baseLayout.jsp's h1-h6 rule is !important
+	   and always wins regardless of source order */
 	font-weight: 400;
 	margin: 10px 0;
 }
@@ -688,7 +683,9 @@ p {
 }
 
 /* ==========================================================================
-   10. Bootstrap 5 utility polyfills (gap, vr) - also duplicated in blog.css
+   10. Bootstrap 5 utility polyfills (gap, vr) - blog.css has its own copy
+   scoped to .articleblockbg/.articleblockbg2, these are unscoped for the
+   other components on this page (article-meta-bar, article-shares, ardetail__meta)
    ========================================================================== */
 .gap-2 {
 	gap: 0.5rem !important;
