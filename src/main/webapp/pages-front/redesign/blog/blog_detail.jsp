@@ -748,9 +748,7 @@ p {
 
 			<div class="article-tags">
 				Tags : <span id="articletag" style="color: var(--article-accent);"> <c:forEach
-							var="tag" items="${tags}" varStatus="Count">
-							<c:if test="${tag.article_id eq blog.articleId}">${tag.name} </c:if>
-						</c:forEach>
+							var="tag" items="${tags}" varStatus="Count">${tag.name} </c:forEach>
 				</span>
 			</div>
 

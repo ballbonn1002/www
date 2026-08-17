@@ -18,12 +18,14 @@ public class TagArDAOimpl implements TagArDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public List<TagAr> findArticleInTag() throws Exception {
+	public List<TagAr> findArticleInTag(int articleId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<TagAr> tagAr = null;
 		try {
-			String sql = " SELECT tag.name,article.article_id FROM tag LEFT JOIN article_tag ON article_tag.tag_id = tag.tag_id LEFT JOIN article ON article.article_id = article_tag.article_id ";
+			String sql = " SELECT tag.name,article.article_id FROM tag LEFT JOIN article_tag ON article_tag.tag_id = tag.tag_id LEFT JOIN article ON article.article_id = article_tag.article_id "
+					+ " WHERE article.article_id = :articleId ";
 			SQLQuery query = session.createSQLQuery(sql);
+			query.setInteger("articleId", articleId);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			tagAr = query.list();
 		} catch (Exception e) {

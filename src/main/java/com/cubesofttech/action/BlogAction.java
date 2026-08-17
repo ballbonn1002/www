@@ -485,7 +485,7 @@ public class BlogAction extends ActionSupport {
 				log.debug("cleanDetail: " + cleanDetail);
 			}
 			log.debug(blog);
-			request.setAttribute("tags", tagArDAO.findArticleInTag());
+			request.setAttribute("tags", tagArDAO.findArticleInTag(getArticleId()));
 			if (blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
 				log.debug(blog.getFileId());

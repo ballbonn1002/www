@@ -6,5 +6,5 @@ import com.cubesofttech.model.TagAr;
 
 public interface TagArDAO {
 
-	List<TagAr> findArticleInTag() throws Exception;
+	List<TagAr> findArticleInTag(int articleId) throws Exception;
 }
