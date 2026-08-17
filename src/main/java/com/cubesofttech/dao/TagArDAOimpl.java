@@ -2,12 +2,9 @@ package com.cubesofttech.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,21 +16,6 @@ public class TagArDAOimpl implements TagArDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-
-	@Override
-	public List<TagAr> findAll() throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		List<TagAr> tagArList = null;
-		try {
-			String sql = " SELECT * FROM tag ORDER BY tag_id ASC ";
-			SQLQuery query = session.createSQLQuery(sql);
-			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-			tagArList = query.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return tagArList;
-	}
 
 	@Override
 	public List<TagAr> findArticleInTag() throws Exception {
@@ -48,44 +30,6 @@ public class TagArDAOimpl implements TagArDAO {
 			e.printStackTrace();
 		}
 		return tagAr;
-	}
-
-	@Override
-	public TagAr findBytagId(int tagArId) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		TagAr tagAr = null;
-		try {
-			tagAr = (TagAr) session.get(TagAr.class, tagArId);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// session.close();
-		}
-		return tagAr;
-	}
-
-
-
-	@Override
-	public /* String */List<Integer> findByTagArId(String tagArName) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		List<Integer> list = null;
-		// String list;
-		try {
-
-			Criteria cr = session.createCriteria(TagAr.class);
-			cr.add(Restrictions.eq("tagArName", tagArName))
-					.setProjection(Projections.property("tagArId"));/* It will return only tag_id */
-			list = cr.list();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-
-		} finally {
-
-		}
-		return list;
 	}
 
 }
