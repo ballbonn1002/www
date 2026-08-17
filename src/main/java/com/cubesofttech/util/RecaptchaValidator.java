@@ -40,12 +40,13 @@ public final class RecaptchaValidator {
 		if (responseToken == null || responseToken.trim().isEmpty()) {
 			return false;
 		}
+		HttpURLConnection conn = null;
 		try {
 			String params = "secret=" + URLEncoder.encode(secretKey, "UTF-8")
 					+ "&response=" + URLEncoder.encode(responseToken, "UTF-8")
 					+ "&remoteip=" + URLEncoder.encode(remoteIp == null ? "" : remoteIp, "UTF-8");
 
-			HttpURLConnection conn = (HttpURLConnection) new URL(VERIFY_URL).openConnection();
+			conn = (HttpURLConnection) new URL(VERIFY_URL).openConnection();
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
 			conn.setConnectTimeout(5000);
@@ -68,6 +69,10 @@ public final class RecaptchaValidator {
 		} catch (IOException | RuntimeException e) {
 			LOG.error("reCAPTCHA verification failed", e);
 			return false;
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
 		}
 	}
 }
