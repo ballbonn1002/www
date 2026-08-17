@@ -16,28 +16,6 @@ public class JobDAOImpl implements JobDAO{
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	
-	@Override
-	public void save(Job job) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		session.save(job);
-		session.flush();
-	}
-
-	@Override
-	public void update(Job job) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		session.clear();
-		session.update(job);
-		session.flush();
-	}
-
-	@Override
-	public void delete(Job job) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		session.delete(job);
-		session.flush();
-	}
 
 	@Override
 	public Job findById(int jobId) throws Exception {
@@ -47,25 +25,8 @@ public class JobDAOImpl implements JobDAO{
 			job = (Job) session.get(Job.class, jobId);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			
 		}
 		return job;
-	}
-
-	@Override
-	public List<Job> findAll() throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		List<Job> jobList = null;
-		try {
-			String sql = "SELECT * FROM job ORDER BY name ASC ";
-			SQLQuery query = session.createSQLQuery(sql);
-			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-			jobList = query.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jobList;
 	}
 
 	@Override
