@@ -1,9 +1,6 @@
 package com.cubesofttech.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -21,50 +18,17 @@ public class ContactsAction extends ActionSupport {
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
 
 	@Autowired
 	private EmailService emailService;
 	@Autowired
 	private Constant constant;
-	
+
 	private String firstName;
 	private String lastName;
 	private String contactEmail;
 	private String contactTel;
 	private String contactMessage;
-	
-	public Logger getLog() {
-		return log;
-	}
-
-	public void setLog(Logger log) {
-		this.log = log;
-	}
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	public HttpServletResponse getResponse() {
-		return response;
-	}
-
-	public void setResponse(HttpServletResponse response) {
-		this.response = response;
-	}
-
-	public EmailService getEmailService() {
-		return emailService;
-	}
-
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -156,11 +120,10 @@ public class ContactsAction extends ActionSupport {
 				return redesign ? REDESIGN : SUCCESS;
 			}
 
-			log.debug(firstNameResult.getValue()+" "+lastNameResult.getValue()+"/"+emailResult.getValue());
-			log.debug(phoneResult.getValue()+"/"+contactMessage);
+			log.debug("Sending contact message: name=" + firstNameResult.getValue() + " " + lastNameResult.getValue()
+					+ " email=" + emailResult.getValue() + " tel=" + phoneResult.getValue());
 			emailService.sendEmailContact(firstNameResult.getValue(), lastNameResult.getValue(),
 					emailResult.getValue(), phoneResult.getValue(), contactMessage);
-			log.debug("end sending email");
 
 			request.setAttribute("contactSuccess", "1");
 			return redesign ? REDESIGN : SUCCESS;
