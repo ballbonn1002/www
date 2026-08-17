@@ -3,7 +3,6 @@ package com.cubesofttech.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -22,8 +21,7 @@ public class HomeAction extends ActionSupport {
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
-	
+
 	@Autowired
 	private Constant constant;
 	@Autowired
