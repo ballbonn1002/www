@@ -84,7 +84,7 @@
 				<c:if test="${ft.footer_name == 'Services'}">
 					<div class="rfooter-section">
 						<div class="rfooter-section__heading">
-							<a href="${ft.footer_url}" class="rfooter-section__title">${ft.footer_name}</a>
+							<a href="${fn:replace(fn:replace(ft.footer_url, 'https://www.cubesofttech.com', ''), 'http://www.cubesofttech.com', '')}" class="rfooter-section__title">${ft.footer_name}</a>
 						</div>
 						<c:forEach var="cft" items="${ChildFooter}">
 							<c:if test="${cft.parent_footer_id == ft.footer_id}">
@@ -101,7 +101,7 @@
 				<c:if test="${ft.footer_name == 'Careers'}">
 					<div class="rfooter-section">
 						<div class="rfooter-section__heading">
-							<a href="${ft.footer_url}" class="rfooter-section__title">${ft.footer_name}</a>
+							<a href="${fn:replace(fn:replace(ft.footer_url, 'https://www.cubesofttech.com', ''), 'http://www.cubesofttech.com', '')}" class="rfooter-section__title">${ft.footer_name}</a>
 						</div>
 						<c:forEach var="cft" items="${ChildFooter}">
 							<c:if test="${cft.parent_footer_id == ft.footer_id}">

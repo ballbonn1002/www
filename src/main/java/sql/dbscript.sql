@@ -19,3 +19,11 @@ CREATE TABLE `testimonial` (
 	PRIMARY KEY (`testimonial_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 17 Aug 2026 - fix footer's "Software Development" link (footer_id 28,
+-- parent_footer_id 27 "Services"): footer_url was pointing at a blog post
+-- (/blog/what-is-software-development) instead of the actual service page.
+-- Bad data, not code - found while smoke-testing the redesign footer.
+-- Not applied anywhere yet - run against dev/UAT/prod.
+UPDATE `footer` SET `footer_url` = 'https://www.cubesofttech.com/software-development'
+WHERE `footer_id` = 28 AND `footer_name` = 'Software Development';
+
