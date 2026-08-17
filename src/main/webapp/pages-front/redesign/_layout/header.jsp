@@ -26,7 +26,8 @@
 				 unit) never reserved layout space; width/height below are the
 				 image's real 376x91 ratio scaled to the same 175px display width. --%>
 			<a href="/"> <img width="175" height="42"
-				src="/pages-front/img/logo/cubesofttech.png" alt="Responsive image">
+				src="/pages-front/img/logo/cubesofttech.png" alt="Responsive image"
+				draggable="false">
 			</a>
 			<!-- Collapse button -->
 			<button class="navbar-toggler second-button" type="button"

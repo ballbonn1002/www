@@ -1124,7 +1124,7 @@
 			src="/pages-front/img/redesign/home/hero-sphere-2.png" alt=""
 			aria-hidden="true"> <img class="home-hero__wordmark"
 			src="/pages-front/img/redesign/home/hero-wordmark.png"
-			alt="CubeSoftTech">
+			alt="CubeSoftTech" draggable="false">
 
 		<h1 class="home-hero__title">
 			<span class="home-hero__title-accent">Professional</span> IT People<br>Innovative

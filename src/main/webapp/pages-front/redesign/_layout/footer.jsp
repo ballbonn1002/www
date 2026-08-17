@@ -9,7 +9,8 @@
 
 	<div class="rfooter-top">
 		<img src="/pages-front/img/logo/logo2-w.png" width="200" height="74"
-			alt="Cube SoftTech Co., Ltd." class="rfooter-brand__logo">
+			alt="Cube SoftTech Co., Ltd." class="rfooter-brand__logo"
+			draggable="false">
 		<p class="rfooter-tagline">Professional IT People, Innovative IT
 			Solution</p>
 		<div class="rfooter-social">
