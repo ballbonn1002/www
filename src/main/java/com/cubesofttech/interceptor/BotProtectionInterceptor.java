@@ -18,9 +18,9 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
  * Shared bot check for sendEmailContact/sendEmailJob (wired in actionfront.xml):
  * honeypot field, then per-IP-per-action rate limit, then reCAPTCHA verify.
  *
- * The rate limit counts failures only, never successful submissions - the
- * browser already refuses to submit without a solved captcha, so a shared IP
- * full of real people never trips it; only repeated bot/direct-POST failures do.
+ * The rate limit counts failures only - a solved captcha is required to
+ * submit, so real traffic never trips it, only bots/direct-POST attempts.
+ * Skipped outside redesign mode, since legacy forms have no widget to check.
  *
  * Verdict goes on the request as "botCheckPassed" - the action still runs
  * either way, since it needs to re-populate the same fields it would on any
@@ -37,7 +37,12 @@ public class BotProtectionInterceptor extends AbstractInterceptor {
 
 	// Keyed "ip:actionName" (see class javadoc). In-memory and per-instance
 	// only - a multi-instance deployment would need a shared store instead.
-	private static final Map<String, long[]> HITS = new ConcurrentHashMap<String, long[]>();
+	private static final Map<String, FailureWindow> HITS = new ConcurrentHashMap<String, FailureWindow>();
+
+	private static final class FailureWindow {
+		long windowStart;
+		int count;
+	}
 
 	@Autowired
 	private Constant constant;
@@ -45,6 +50,13 @@ public class BotProtectionInterceptor extends AbstractInterceptor {
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
+
+		// Legacy has no widget to check - skip, so it doesn't pollute the
+		// shared ip:actionName failure budget below.
+		if (!constant.isRedesignEnabled()) {
+			request.setAttribute("botCheckPassed", true);
+			return invocation.invoke();
+		}
 
 		String ip = request.getRemoteAddr();
 		String actionName = invocation.getProxy().getActionName();
@@ -74,31 +86,33 @@ public class BotProtectionInterceptor extends AbstractInterceptor {
 	// Read-only check - does not itself count as a failure, so checking never
 	// consumes budget on its own.
 	private boolean isRateLimited(String key) {
-		long[] window = HITS.get(key);
+		FailureWindow window = HITS.get(key);
 		if (window == null) {
 			return false;
 		}
 		synchronized (window) {
-			if (System.currentTimeMillis() - window[0] > WINDOW_MILLIS) {
+			if (System.currentTimeMillis() - window.windowStart > WINDOW_MILLIS) {
 				return false;
 			}
-			return window[1] >= MAX_FAILURES_PER_WINDOW;
+			return window.count >= MAX_FAILURES_PER_WINDOW;
 		}
 	}
 
-	// Fixed-window counter: each ip:actionName pair gets MAX_FAILURES_PER_WINDOW
-	// failures per WINDOW_MILLIS, then the window resets. Not exact (a burst
-	// spanning a window boundary can let slightly more than the cap through),
-	// but that imprecision doesn't matter for what this defends against.
+	// Fixed-window counter: MAX_FAILURES_PER_WINDOW per WINDOW_MILLIS, then
+	// resets. Imprecise at window boundaries, fine for what this defends against.
 	private void recordFailure(String key) {
 		long now = System.currentTimeMillis();
-		long[] window = HITS.computeIfAbsent(key, k -> new long[] { now, 0 });
+		FailureWindow window = HITS.computeIfAbsent(key, k -> {
+			FailureWindow w = new FailureWindow();
+			w.windowStart = now;
+			return w;
+		});
 		synchronized (window) {
-			if (now - window[0] > WINDOW_MILLIS) {
-				window[0] = now;
-				window[1] = 0;
+			if (now - window.windowStart > WINDOW_MILLIS) {
+				window.windowStart = now;
+				window.count = 0;
 			}
-			window[1]++;
+			window.count++;
 		}
 	}
 }
