@@ -24,10 +24,13 @@ public class EmailService {
     public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) throws Exception {
     	MimeMessage message = mailSender.createMimeMessage();
     	MimeMessageHelper helper = new MimeMessageHelper(message, true);
-    	// Must match mailSender's login (beans.xml) - the server rejects a From/To
-    	// that doesn't match the authenticated account (anti-spoofing).
-    	helper.setFrom("tharita.w@cubesofttech.com");
-    	helper.setTo("tharita.w@cubesofttech.com");
+    	// CEO's instruction 2026-08-18: revert to contact@ per original setup.
+    	// From must match mailSender's login (beans.xml, now chatchai.k) - the
+    	// server rejects a From/To that doesn't match the authenticated account
+    	// (anti-spoofing), and chatchai.k's password is confirmed dead - so this
+    	// is expected to fail until CEO's decision changes.
+    	helper.setFrom("contact@cubesofttech.com");
+    	helper.setTo("contact@cubesofttech.com");
     	helper.setSubject("Apply : " + position);
     	helper.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel
 						+"\n Position : "+position+"\n Message : \n"+msg);
@@ -45,9 +48,9 @@ public class EmailService {
     public void sendEmailContact(String firstName, String lastName, String email, String tel, String msg) throws Exception {
     	String name = firstName + " " + lastName;
     	SimpleMailMessage message = new SimpleMailMessage();
-    	// Must match mailSender's login (beans.xml) - see sendEmailJob().
-    	message.setFrom("tharita.w@cubesofttech.com");
-    	message.setTo("tharita.w@cubesofttech.com");
+    	// CEO's instruction 2026-08-18: revert to contact@ - see sendEmailJob().
+    	message.setFrom("contact@cubesofttech.com");
+    	message.setTo("contact@cubesofttech.com");
     	message.setSubject("Contact message from Website.");
     	message.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel+"\n Message : \n"+msg);
     	log.debug(message);
