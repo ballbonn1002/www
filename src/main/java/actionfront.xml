@@ -14,10 +14,7 @@
         </interceptors>
 
         <!-- Actions -->
-        <!-- Temporary SA-testing switch - see RedesignToggleAction. Remove before this branch reaches prod. -->
-        <action name="redesign-toggle" class="com.cubesofttech.action.RedesignToggleAction" method="toggle" />
-
-        <action name="home" class="com.cubesofttech.action.HomeAction" method="init">
+<action name="home" class="com.cubesofttech.action.HomeAction" method="init">
             <result name="success" type="tiles">home</result>
             <result name="redesign" type="tiles">home.redesign</result>
             <result name="error">/pages-front/index.jsp</result>

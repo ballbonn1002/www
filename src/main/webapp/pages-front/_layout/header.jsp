@@ -223,39 +223,3 @@
 </c:choose>
 <!-- endmenu -->
 
-<%-- TEMPORARY for SA testing - remove before this branch reaches prod. Flips
-     the redesign.enabled flag in memory for every visitor on this server;
-     does not touch application.properties, so a Tomcat restart reverts it. --%>
-<form action="/redesign-toggle" method="post" id="redesignToggleForm">
-	<button type="submit" id="redesignStatusBadge">
-		Redesign:
-		<c:choose>
-			<c:when test="${constant.redesignEnabled}">ON</c:when>
-			<c:otherwise>OFF</c:otherwise>
-		</c:choose>
-	</button>
-</form>
-
-<style>
-#redesignToggleForm {
-	position: fixed;
-	bottom: 20px;
-	left: 20px;
-	z-index: 99;
-}
-
-#redesignStatusBadge {
-	border: none;
-	padding: 8px 14px;
-	background-color: rgb(255, 255, 255);
-	color: #888;
-	border-radius: 4px;
-	font-size: 13px;
-	opacity: 0.55;
-	cursor: pointer;
-}
-
-#redesignStatusBadge:hover {
-	opacity: 1;
-}
-</style>
