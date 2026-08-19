@@ -341,7 +341,6 @@
 
 .rfooter-address__map {
 	font-size: 13px;
-	color: #C4C2BA !important;
 	margin-top: 4px;
 }
 
@@ -349,11 +348,6 @@
 	text-decoration: underline !important;
 	text-decoration-color: rgba(196, 194, 186, 0.4);
 	text-underline-offset: 2px;
-}
-
-.rfooter-address__map:hover {
-	color: #FFFFFF !important;
-	text-decoration: none;
 }
 
 .rfooter-contact {
@@ -391,7 +385,6 @@
 	display: flex;
 	align-items: center;
 }
-
 
 .rfooter-section__title {
 	font-size: 16px;
