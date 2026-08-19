@@ -47,9 +47,7 @@
 	color: #fff;
 }
 
-/* header.jsp's inline nav-link color assumes a light hero; override while
-   glassy over this dark photo (desktop only - below the collapse breakpoint
-   the frame is a light dropdown panel, same as every other page). */
+/* Override header.jsp's light-hero nav-link color for this dark photo. */
 @media (min-width: 992px) {
 	nav.navbar.fixed-top:not(.is-scrolled) .navbar-menu-frame .nav-link:not(.active) {
 		color: #fff !important;
@@ -63,9 +61,7 @@
 	margin-bottom: 1.25rem;
 }
 
-/* Honeypot - off-screen, not display:none, since some bots skip fields
-   that are literally hidden but still fill ones that are merely positioned
-   off-screen. Real users never tab into or see this. */
+/* Honeypot - off-screen, not display:none, Real users never tab into or see this. */
 .contact-hp {
 	position: absolute;
 	left: -9999px;
@@ -83,8 +79,7 @@
 	transform: none;
 }
 
-/* A blurred panel is nearly invisible at low opacity, which read as
-   the glass "popping in" late during the fade - so skip the fade. */
+/* A blurred panel is nearly invisible at low opacity */
 .contact-columns-row[data-aos] {
 	opacity: 1;
 }
@@ -121,8 +116,7 @@
 	justify-content: flex-start;
 }
 
-/* Flex items default to min-width:auto - without this, the reCAPTCHA
-   iframe forces this box wider than its .row parent. */
+/* Flex default min-width:auto lets the reCAPTCHA iframe force this wider. */
 .contact-column,
 .contact-box {
 	min-width: 0;
@@ -148,17 +142,14 @@
 	padding-right: 10%;
 }
 
-/* background-attachment:fixed with this multi-layer background is unreliable
-   on mobile Safari/some Android WebViews (scrim can fail to composite) -
-   parallax is a desktop nicety anyway, fall back to scroll below. */
+/* background-attachment:fixed is unreliable on mobile Safari/Android. */
 @media screen and (max-width: 870px) {
 	.contactbg {
 		background-attachment: scroll;
 		padding-left: 5%;
 		padding-right: 5%;
 	}
-	/* 10% page padding + 40px box padding left icon+input fields only ~220px
-	   wide on phones - too tight for the 46px icon plus a floating label. */
+	/* Original padding left fields too tight for phones. */
 	.contact-box {
 		padding: 24px;
 	}
