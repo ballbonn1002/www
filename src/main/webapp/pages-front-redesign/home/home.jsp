@@ -1381,46 +1381,46 @@
 					id="homePartnersMarqueeRow1">
 					<div class="home-partners__logos">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/1.png" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/3.png"
+							src="/pages-front/img/customer/small/01.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/03.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/5.png" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/7.jpg"
+							src="/pages-front/img/customer/small/05.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/07.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/19.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/10.jpg"
+							src="/pages-front/img/customer/small/19.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/10.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/12.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/14.jpg"
+							src="/pages-front/img/customer/small/12.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/14.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/16.gif" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/8.jpg"
+							src="/pages-front/img/customer/small/16.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/08.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/21.jpg" alt="">
+							src="/pages-front/img/customer/small/21.jpg" alt="">
 
 						<%-- duplicated so the auto-scroll loop wraps seamlessly --%>
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/1.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/01.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/3.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/03.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/5.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/05.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/7.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/07.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/19.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/19.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/10.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/10.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/12.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/12.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/14.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/14.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/16.gif" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/16.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/8.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/08.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/21.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/21.jpg" alt="" aria-hidden="true">
 					</div>
 				</div>
 
@@ -1428,43 +1428,43 @@
 					id="homePartnersMarqueeRow2">
 					<div class="home-partners__logos">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/2.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/4.png"
+							src="/pages-front/img/customer/small/02.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/04.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/6.png" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/18.png"
+							src="/pages-front/img/customer/small/06.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/18.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/9.png" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/11.png"
+							src="/pages-front/img/customer/small/09.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/11.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/13.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/15.jpg"
+							src="/pages-front/img/customer/small/13.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/15.jpg"
 							alt=""> <img class="home-partners__logo"
-							src="/pages-front/img/customer/17.png" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/20.png"
+							src="/pages-front/img/customer/small/17.jpg" alt=""> <img
+							class="home-partners__logo" src="/pages-front/img/customer/small/20.jpg"
 							alt="">
 
 						<%-- duplicated so the auto-scroll loop wraps seamlessly --%>
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/2.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/02.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/4.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/04.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/6.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/06.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/18.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/18.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/9.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/09.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/11.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/11.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/13.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/13.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/15.jpg" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/15.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/17.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/17.jpg" alt="" aria-hidden="true">
 						<img class="home-partners__logo"
-							src="/pages-front/img/customer/20.png" alt="" aria-hidden="true">
+							src="/pages-front/img/customer/small/20.jpg" alt="" aria-hidden="true">
 					</div>
 				</div>
 			</div>
