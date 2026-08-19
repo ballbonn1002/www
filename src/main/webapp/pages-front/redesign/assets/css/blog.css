@@ -8,10 +8,7 @@
 	text-align: left;
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
-	/* .ardetail__meta below reacts to this card's own rendered width via
-	   @container, not a viewport @media breakpoint - a 3-column lg grid
-	   and a 2-column sm one both produce "narrow card" at different
-	   viewport widths, so no single viewport number covers every case. */
+	/* Enables @container below - card width varies by grid columns, not viewport. */
 	container-type: inline-size;
 }
 

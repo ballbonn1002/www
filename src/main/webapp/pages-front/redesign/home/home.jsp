@@ -548,10 +548,7 @@
 		gap: 32px;
 	}
 	.home-services__toc {
-		/* The 01-04 nav items are hidden below, so this panel is just the
-		   "Learn more" button now - order it after the cards instead of
-		   before (its position in the source markup), so it reads as a
-		   closing CTA once someone's actually seen the services. */
+		/* Just the "Learn more" button now - order after cards as a closing CTA. */
 		order: 2;
 		flex: none;
 		max-width: none;
@@ -1015,10 +1012,7 @@
 	}
 }
 
-/* Tablet width (above) keeps the "View Details" label - only phone width
-   drops it down to just the arrow, same pattern as careers.jsp's Open
-   Positions list. Stays a row the whole way down instead of stacking to
-   a column. */
+/* Phone width drops to just the arrow, same pattern as careers.jsp's job list. */
 @media screen and (max-width: 575px) {
 	.home-jobs__view-text {
 		display: none;

@@ -77,9 +77,7 @@
 	color: rgba(255, 255, 255, 0.9);
 }
 
-/* Grid, not flex - fixed 480px image column + flexible text column, same
-   fix as software_dev.jsp (flex-basis auto-sizing let long Thai text
-   squeeze the image down on wider screens). */
+/* Grid, not flex - same fix as software_dev.jsp (flex let text squeeze the image). */
 .itout-definition {
 	max-width: 1360px;
 	margin: 0 auto;
@@ -305,8 +303,7 @@
 	opacity: 0.9;
 }
 
-/* Same fix as software_dev.jsp - stack to column at 1040px so the text
-   column doesn't get squeezed below ~30% in the 871-1040px gap. */
+/* Same fix as software_dev.jsp - stack earlier so text doesn't get squeezed. */
 @media screen and (max-width: 1040px) {
 	.itout-definition {
 		grid-template-columns: 1fr;

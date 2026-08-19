@@ -147,8 +147,7 @@ html, body {
 	padding-right: 0%;
 }
 
-/* Tablet and up sit side by side - was lg-only (992px), stacking on tablet
-   too even though there's room for two 50% columns there already. */
+/* Side by side from tablet up - was lg-only, stacking when there was room. */
 @media ( min-width : 768px) {
 	.article-preview__row .col-md-6 {
 		-ms-flex: 0 0 50%;

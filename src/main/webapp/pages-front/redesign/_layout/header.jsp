@@ -111,12 +111,7 @@
 </button>
 
 <style>
-/* --navbar-offset: total space the fixed navbar occupies (min-height +
-   this .header div's margin-bottom) - the amount every redesign page's
-   top-level wrapper should clear. Defined once here (header.jsp owns the
-   navbar height) since other stylesheets can reference var(--navbar-offset)
-   regardless of load order. Change this one value if the navbar height
-   changes, instead of the fixed-pixel guesses pages used before. */
+/* Total fixed-navbar height - other pages clear it via var(--navbar-offset). */
 :root {
 	--navbar-offset: 50px;
 	--brand-red: #BD2125;
@@ -128,10 +123,7 @@
 	min-height: 70px;
 }
 
-/* footer.jsp also loads Bootstrap 5 CSS (for its collapse widgets), whose
-   .navbar padding rule was overriding Bootstrap 4's here once it loaded -
-   same specificity, later wins. Fixed with a more specific selector
-   instead of !important, so this wins regardless of load order. */
+/* More specific selector beats footer.jsp's Bootstrap 5 .navbar rule (same specificity, loads later). */
 nav.navbar.fixed-top {
 	padding: 0.5rem 1rem;
 	background-color: transparent;
@@ -144,8 +136,7 @@ nav.navbar.fixed-top.is-scrolled {
 	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* aria-expanded (already toggled by Bootstrap's collapse plugin on click)
-   alone drives the X-morph below - no extra JS/class needed. */
+/* aria-expanded (toggled by Bootstrap's collapse plugin) drives the X-morph. */
 .navbar-toggler.second-button {
 	width: 44px;
 	height: 44px;
@@ -155,8 +146,7 @@ nav.navbar.fixed-top.is-scrolled {
 	transition: background-color 0.2s ease;
 }
 
-/* Matches Bootstrap's .navbar-expand-lg .navbar-toggler {display:none}
-   breakpoint, so this only sets display when actually visible. */
+/* Matches Bootstrap's .navbar-toggler display:none breakpoint. */
 @media (max-width: 991px) {
 	.navbar-toggler.second-button {
 		display: flex;
@@ -231,18 +221,14 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	-webkit-backdrop-filter: none;
 }
 
-/* Same glass trick as desktop, but less see-through - below the collapse
-   breakpoint this expands into a full panel over page content, where
-   desktop's lower alpha would be illegible. */
+/* Less see-through than desktop - this expands into a full panel here. */
 @media (max-width: 991px) {
 	.navbar-menu-frame {
 		background-color: rgba(255, 255, 255, 0.85);
 	}
 }
 
-/* justify-content:space-between only centers the frame in the leftover
-   space next to the logo, not the bar's true middle - pull out of flow
-   and center on the full width instead (desktop only). */
+/* Pulled out of flow to center on the full width, not the leftover space. */
 @media (min-width: 992px) {
 	.navbar-menu-frame {
 		position: absolute;
@@ -253,10 +239,7 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	}
 }
 
-/* Centering on the full navbar width means the frame's own width decides how
-   close it comes to the logo - each link's inline 30px/30px padding makes it
-   wide enough to overlap the logo from 992px up to ~1120px. Inline styles
-   need !important to override. */
+/* Frame overlaps the logo in this range - !important needed to beat inline padding. */
 @media (min-width: 992px) and (max-width: 1150px) {
 	.navbar-menu-frame .nav-link {
 		padding-left: 14px !important;
@@ -278,16 +261,14 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	}
 }
 
-/* .navbar prefix (not bare .dropdown-menu) for the same reason as
-   nav.navbar.fixed-top above - footer.jsp's Bootstrap 5 CSS defines
-   its own bare .dropdown-menu, same specificity, later wins. */
+/* .navbar prefix needed - same footer.jsp Bootstrap 5 override reason as above. */
 .navbar .dropdown-menu {
 	display: none; /* Hide by default */
 	position: absolute; /* Position below the button */
-	top: 100%; /* Position below the button */
-	left: 0; /* Align to the left of the button */
-	min-width: 230px; /* Set a minimum width */
-	z-index: 1000; /* Ensure it appears above other content */
+	top: 100%;
+	left: 0;
+	min-width: 230px;
+	z-index: 1000;
 	margin-top: 8px;
 	padding: 8px;
 	border: 1px solid rgba(0, 0, 0, 0.06);
@@ -296,35 +277,28 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* Show dropdown on click */
 .nav-item.show .dropdown-menu {
 	display: block;
 }
 
-/* Ensure dropdown menu is properly positioned on smaller screens */
 @media ( max-width : 767px) {
 	.navbar .dropdown-menu {
 		position: static;
-		/* Make dropdown menu appear in normal flow on small screens */
-		margin-top: 0; /* Adjust margin for small screens */
+		margin-top: 0;
 	}
 }
 
-/* Optional: Adjust for larger screens if needed */
 @media ( min-width : 768px) {
 	.navbar .dropdown-menu {
-		top: 100%; /* Adjust position if necessary */
+		top: 100%;
 	}
 }
 </style>
 
 <script type="text/javascript">
-	// DOMContentLoaded, not $(document).ready() - jQuery loads deferred
-	// from baseLayout.jsp, so $ isn't guaranteed to exist any earlier.
+	// jQuery loads deferred from baseLayout.jsp, so use DOMContentLoaded instead.
 	document.addEventListener('DOMContentLoaded', function() {
-		// Solid navbar once the visitor scrolls past the top - blended/glass
-		// at rest so it can sit over a hero background, plain white with a
-		// shadow past that so it stays readable over regular page content.
+		// Solid past the top of scroll, glass/blended over the hero at rest.
 		var navbarEl = document.querySelector('nav.navbar.fixed-top');
 		function updateNavbarScrollState() {
 			navbarEl.classList.toggle('is-scrolled', window.scrollY > 60);
@@ -333,7 +307,6 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 		updateNavbarScrollState();
 
 		$(document).ready(function() {
-			// Handle dropdown toggle on click
 			$('.dropdown-toggle').on('click', function(event) {
 				event.preventDefault();
 				$(this).next('.dropdown-menu').toggle();

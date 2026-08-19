@@ -91,8 +91,7 @@
 	color: #D0D0D0;
 }
 
-/* Solid, not outline - this page's primary CTA needs to stand out. Plain
-   color fade on hover reads better at this size than a directional sweep. */
+/* Solid, not outline - this page's primary CTA needs to stand out. */
 .jobdetail-apply-button {
 	display: inline-flex;
 	align-items: center;
@@ -143,8 +142,7 @@
 	color: #3F3F3F;
 }
 
-/* Black, not red - .jobdetail-title above already carries the red/gradient
-   brand accent, so section headings here stay neutral instead of competing. */
+/* Black, not red - .jobdetail-title already carries the brand accent. */
 .jobdetail-card h1, .jobdetail-card h2, .jobdetail-card h3,
 	.jobdetail-card h4 {
 	margin: 32px 0 12px;
@@ -182,8 +180,7 @@
 	font-weight: 700;
 }
 
-/* Nested <ul> ("Knowledge of Web Based Application with: <ul>...") renders
-   as pill-badge tags instead of a stacked checkmark list. */
+/* Nested <ul> renders as pill-badge tags instead of a checkmark list. */
 .jobdetail-card ul>li:has(>ul) {
 	padding-left: 0;
 }
@@ -217,8 +214,7 @@
 	content: none;
 }
 
-/* Typography for jobDescriptionHtml (ArticleHtmlSanitizer-cleaned job.description) -
-   same idea as blog_detail.jsp's .article-body, scoped to this card instead. */
+/* Typography for jobDescriptionHtml - same idea as blog_detail.jsp's .article-body. */
 .jobdetail-card p {
 	margin: 0 0 16px;
 }
@@ -656,9 +652,7 @@
 	gap: 12px;
 }
 
-/* Honeypot - off-screen, not display:none, since some bots skip fields
-   that are literally hidden but still fill ones that are merely positioned
-   off-screen. Real users never tab into or see this. */
+/* Honeypot - off-screen, not display:none, real users never tab into it. */
 .jobapply-hp {
 	position: absolute;
 	left: -9999px;
@@ -1126,9 +1120,7 @@
 									'jobApplyEmailFeedback', emailErr);
 							setFieldError('jobApplyTel', 'jobApplyTelFeedback',
 									telErr);
-							// Final correctness is still checked server-side (CareersAction)
-							// regardless - this just avoids a wasted round-trip when it's
-							// obviously unchecked.
+							// Avoids a wasted round-trip - CareersAction still checks server-side.
 							if (typeof grecaptcha !== 'undefined'
 									&& !grecaptcha.getResponse()) {
 								document.getElementById('jobApplyCaptchaError').textContent =
@@ -1143,18 +1135,14 @@
 
 		<c:if
 			test="${not empty nameError or not empty emailError or not empty telError or not empty fileError or not empty captchaError or not empty formError}">
-		// jQuery loads with "defer", which runs after the whole document
-		// parses - this inline script runs immediately as the parser
-		// reaches it, before that, so $ isn't defined yet here.
+		// $ isn't defined yet here - jQuery's "defer" load runs after this.
 		document.addEventListener('DOMContentLoaded', function() {
 			$('#jobApplyModal').modal('show');
 		});
 		</c:if>
 	})();
 
-	// Modal is display:none at load, so the widget's implicit auto-render
-	// (bare .g-recaptcha) renders at zero size - render explicitly once
-	// the modal is actually shown instead.
+	// Renders explicitly once shown - auto-render at load would size to 0 (modal is display:none).
 	(function() {
 		var widgetId = null;
 		var recaptchaReady = false;
@@ -1167,9 +1155,7 @@
 			if (widgetId === null) {
 				widgetId = grecaptcha.render('jobApplyRecaptcha', {
 					sitekey : '${constant.recaptchaSiteKey}',
-					// Fires the instant the checkbox is solved, so the
-					// leftover "Please confirm..." text doesn't sit there
-					// looking unresolved until the next submit/reload clears it.
+					// Clears the leftover error text once checked.
 					callback : function() {
 						document.getElementById('jobApplyCaptchaError').textContent = '';
 					}

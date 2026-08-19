@@ -271,10 +271,7 @@
 </script>
 
 <style>
-/* Deliberately not using the design mockup's Archivo/IBM Plex Mono
-   fonts - the rest of the redesign uses the Sarabun/Noto Sans Thai
-   stack from baseLayout.jsp, and blog/news titles here are often
-   Thai, which those fonts don't cover. */
+/* Not the mockup's Archivo/IBM Plex Mono - sitewide Sarabun stack covers Thai titles. */
 .rfooter {
 	background: #18181B;
 }

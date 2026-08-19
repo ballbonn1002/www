@@ -179,8 +179,7 @@ body, html {
 	font-weight: 700;
 }
 
-/* blog.css stacks .ardetail__meta to a column below 991px for blogCard.tag's
-   carousel; same class name leaks that rule into this unrelated hero bar. */
+/* Undoes blog.css's .ardetail__meta column stacking, leaked in from the carousel. */
 .article-meta-bar__info .ardetail__meta {
 	flex-direction: row !important;
 	align-items: center !important;
@@ -190,8 +189,7 @@ body, html {
 	.article-hero-card {
 		margin-top: -80px;
 	}
-	/* !important needed - both elements carry Bootstrap's .align-items-center
-	   utility class in the markup, which is itself !important. */
+	/* Overrides Bootstrap's !important .align-items-center utility class. */
 	.article-meta-bar {
 		flex-direction: column;
 		align-items: flex-start !important;
@@ -206,8 +204,7 @@ body, html {
    3. Legacy global resets (unscoped - verify before editing elsewhere)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
-	/* font-family not set here - baseLayout.jsp's h1-h6 rule is !important
-	   and always wins regardless of source order */
+	/* No font-family - baseLayout.jsp's !important h1-h6 rule always wins. */
 	font-weight: 400;
 	margin: 10px 0;
 }
@@ -327,9 +324,7 @@ p {
 	gap: 1.25rem;
 	overflow-x: auto;
 	scroll-behavior: smooth;
-	/* overflow-x:auto forces overflow-y to auto too (CSS Overflow spec),
-	   so the hover lift + shadow on .articleblockbg2 needs real clearance
-	   here or it gets clipped at the top of the scrollport. */
+	/* overflow-x:auto forces overflow-y:auto too - clearance for the hover-lift shadow. */
 	padding: 1.25rem 0.25rem 0.75rem;
 	scrollbar-width: none;
 }
@@ -480,8 +475,7 @@ p {
 		flex-direction: column;
 		align-items: flex-start !important;
 	}
-	/* .gap-4 polyfill below (section 10) is also !important with equal
-	   specificity - compound selector needed here so this actually wins. */
+	/* Compound selector needed to beat section 10's equal-specificity polyfill. */
 	.ardetail__meta.gap-4 {
 		gap: 4px !important;
 	}

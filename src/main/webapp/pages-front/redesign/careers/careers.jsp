@@ -161,8 +161,7 @@
 	padding: 96px 0;
 }
 
-/* Same card-carousel pattern as blog_detail.jsp's "related/latest articles"
-   (manual prev/next + native scroll, no auto-play) - same theme, own red. */
+/* Same card-carousel pattern as blog_detail.jsp, own theme color. */
 .card-carousel {
 	position: relative;
 	max-width: 1360px;
@@ -298,9 +297,7 @@
 	color: #3F3F3F;
 }
 
-/* .careers-culture__body has no flex-basis of its own, so the text column
-   gets squeezed unreadable well before the 870px stack breakpoint used
-   elsewhere - stack to column earlier here instead. */
+/* Text column gets squeezed unreadable before the usual 870px breakpoint. */
 @media screen and (max-width: 1100px) {
 	.careers-culture {
 		flex-direction: column;
@@ -359,9 +356,7 @@
 	}
 }
 
-/* Only phone width drops the "Description" label to just the arrow
-   (matches blog.css's .page-link__text/__icon pattern) - stays a row
-   the whole way down instead of stacking. */
+/* Phone width drops the label to just the arrow, matches blog.css's pattern. */
 @media screen and (max-width: 575px) {
 	.careers-position__button-text {
 		display: none;
