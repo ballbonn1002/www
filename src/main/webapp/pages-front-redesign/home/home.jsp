@@ -1149,7 +1149,7 @@
 		<div class="home-services__sticky" id="homeServicesSticky">
 			<div class="home-services__bg" aria-hidden="true">
 				<img class="home-services__bg-img" loading="lazy"
-					src="/pages-front/img/redesign/home/service-banner.jpg" alt="">
+					src="/pages-front/img/redesign/home/service-banner.jpg" width="2000" height="762" alt="">
 				<div class="home-services__bg-overlay"></div>
 			</div>
 
@@ -1190,7 +1190,7 @@
 						<span class="home-services__card-step" aria-hidden="true">1/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon" loading="lazy"
-								src="/pages-front/img/redesign/home/service-icon-outsourcing.png"
+								src="/pages-front/img/redesign/home/service-icon-outsourcing.png" width="328" height="328"
 								alt="">
 						</div>
 						<h3 class="home-services__title">IT Staff Outsourcing
@@ -1210,7 +1210,7 @@
 						<span class="home-services__card-step" aria-hidden="true">2/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon" loading="lazy"
-								src="/pages-front/img/redesign/home/service-icon-software.png"
+								src="/pages-front/img/redesign/home/service-icon-software.png" width="328" height="328"
 								alt="">
 						</div>
 						<h3 class="home-services__title">Our Software Specialist</h3>
@@ -1228,7 +1228,7 @@
 						<span class="home-services__card-step" aria-hidden="true">3/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon" loading="lazy"
-								src="/pages-front/img/redesign/home/service-icon-specialize.png"
+								src="/pages-front/img/redesign/home/service-icon-specialize.png" width="328" height="328"
 								alt="">
 						</div>
 						<h3 class="home-services__title">IT Advisory Services</h3>
@@ -1247,7 +1247,7 @@
 						<span class="home-services__card-step" aria-hidden="true">4/4</span>
 						<div class="home-services__icon-wrap">
 							<img class="home-services__icon" loading="lazy"
-								src="/pages-front/img/redesign/home/service-icon-digital.png"
+								src="/pages-front/img/redesign/home/service-icon-digital.png" width="328" height="328"
 								alt="">
 						</div>
 						<h3 class="home-services__title">Digital Transformation
@@ -1280,7 +1280,7 @@
 			<div class="home-techspec__card home-techspec__card--top-left">
 				<div class="home-techspec__icon-wrap">
 					<img class="home-techspec__icon" loading="lazy"
-						src="/pages-front/img/redesign/home/techspec-icon-website.png"
+						src="/pages-front/img/redesign/home/techspec-icon-website.png" width="328" height="328"
 						alt="">
 				</div>
 				<div>
@@ -1304,7 +1304,7 @@
 			<div class="home-techspec__card home-techspec__card--top-right">
 				<div class="home-techspec__icon-wrap">
 					<img class="home-techspec__icon" loading="lazy"
-						src="/pages-front/img/redesign/home/techspec-icon-enterprise.png"
+						src="/pages-front/img/redesign/home/techspec-icon-enterprise.png" width="328" height="328"
 						alt="">
 				</div>
 				<div>
@@ -1323,7 +1323,7 @@
 			<div class="home-techspec__card home-techspec__card--bottom-left">
 				<div class="home-techspec__icon-wrap">
 					<img class="home-techspec__icon" loading="lazy"
-						src="/pages-front/img/redesign/home/techspec-icon-database.png"
+						src="/pages-front/img/redesign/home/techspec-icon-database.png" width="328" height="328"
 						alt="">
 				</div>
 				<div>
@@ -1342,7 +1342,7 @@
 			<div class="home-techspec__card home-techspec__card--bottom-right">
 				<div class="home-techspec__icon-wrap">
 					<img class="home-techspec__icon" loading="lazy"
-						src="/pages-front/img/redesign/home/techspec-icon-mobile.png"
+						src="/pages-front/img/redesign/home/techspec-icon-mobile.png" width="328" height="328"
 						alt="">
 				</div>
 				<div>
