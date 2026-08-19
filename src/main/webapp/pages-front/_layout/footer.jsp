@@ -8,7 +8,7 @@
 	</div>
 <c:choose>
 	<c:when test="${constant.redesignEnabled}">
-		<jsp:include page="/pages-front/redesign/_layout/footer.jsp" />
+		<jsp:include page="/pages-front-redesign/_layout/footer.jsp" />
 	</c:when>
 	<c:otherwise>
 <footer>
@@ -264,7 +264,7 @@
 <script>
 // DOMContentLoaded, not $(document).ready() directly - jQuery only loads
 // once now, deferred, from baseLayout.jsp (a duplicate synchronous copy
-// that used to load earlier in redesign/_layout/header.jsp was removed -
+// that used to load earlier in pages-front-redesign/_layout/header.jsp was removed -
 // this script was unknowingly depending on that copy's timing, not
 // baseLayout's deferred one, which hadn't necessarily run yet at this
 // point in parsing). Deferred scripts always finish before

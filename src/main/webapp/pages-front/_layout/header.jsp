@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<%-- Same server-side active-state logic as redesign/_layout/header.jsp - see
+<%-- Same server-side active-state logic as pages-front-redesign/_layout/header.jsp - see
      that file's comment for why requestURI is read here instead of relying
      on JS in each content page. Kept in both files since the redesign.enabled
      switch below can render either one. --%>
@@ -24,7 +24,7 @@
      servlet spec. --%>
 <c:choose>
 	<c:when test="${constant.redesignEnabled}">
-		<jsp:include page="/pages-front/redesign/_layout/header.jsp" />
+		<jsp:include page="/pages-front-redesign/_layout/header.jsp" />
 	</c:when>
 	<c:otherwise>
 

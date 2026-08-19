@@ -55,7 +55,7 @@
 }
 </script>
 
-<link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
+<link rel="stylesheet" href="/pages-front-redesign/assets/css/blog.css">
 <style>
 /* ==========================================================================
    1. Page chrome - resets body's scrollbar-compensation padding after the

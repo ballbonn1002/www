@@ -51,7 +51,7 @@ html{background-color:#F5F5F5;}
 	</c:if>
 	<%-- blog.css is actually <link>'d from inside blog.jsp's body - preloading here starts the fetch earlier. --%>
 	<link rel="preload" as="style"
-		href="/pages-front/redesign/assets/css/blog.css">
+		href="/pages-front-redesign/assets/css/blog.css">
 </c:if>
 <%-- Hero image preload for the blog "แนะนำล่าสุด" section; newBlog is only set on the blog/news listing pages. --%>
 <c:if test="${not empty newBlog}">

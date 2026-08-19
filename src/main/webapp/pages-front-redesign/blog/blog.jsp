@@ -29,7 +29,7 @@
 }
 </script>
 
-<link rel="stylesheet" href="/pages-front/redesign/assets/css/blog.css">
+<link rel="stylesheet" href="/pages-front-redesign/assets/css/blog.css">
 
 <style type="text/css">
 /* ==========================================================================
