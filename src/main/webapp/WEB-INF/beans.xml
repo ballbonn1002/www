@@ -69,7 +69,7 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
 	    <property name="host" value="mail.cubesofttech.com"/>
 	    <property name="port" value="587"/>
-	    <property name="username" value="chatchai.k@cubesofttech.com"/> <!-- CEO's instruction 2026-08-18: revert to chatchai.k per original setup, despite this password being confirmed dead via real SMTP auth test (535 Incorrect authentication data) -->
+	    <property name="username" value="chatchai.k@cubesofttech.com"/> <!-- auth fails - password is dead -->
 	    <property name="password" value="Cubeteam2022#"/>
 	    <property name="javaMailProperties">
 	        <props>

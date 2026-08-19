@@ -24,11 +24,7 @@ public class EmailService {
     public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) throws Exception {
     	MimeMessage message = mailSender.createMimeMessage();
     	MimeMessageHelper helper = new MimeMessageHelper(message, true);
-    	// CEO's instruction 2026-08-18: revert to contact@ per original setup.
-    	// From must match mailSender's login (beans.xml, now chatchai.k) - the
-    	// server rejects a From/To that doesn't match the authenticated account
-    	// (anti-spoofing), and chatchai.k's password is confirmed dead - so this
-    	// is expected to fail until CEO's decision changes.
+    	// chatchai.k's login (beans.xml) fails auth - password is dead.
     	helper.setFrom("contact@cubesofttech.com");
     	helper.setTo("contact@cubesofttech.com");
     	helper.setSubject("Apply : " + position);
@@ -48,7 +44,7 @@ public class EmailService {
     public void sendEmailContact(String firstName, String lastName, String email, String tel, String msg) throws Exception {
     	String name = firstName + " " + lastName;
     	SimpleMailMessage message = new SimpleMailMessage();
-    	// CEO's instruction 2026-08-18: revert to contact@ - see sendEmailJob().
+    	// See sendEmailJob().
     	message.setFrom("contact@cubesofttech.com");
     	message.setTo("contact@cubesofttech.com");
     	message.setSubject("Contact message from Website.");
