@@ -214,7 +214,6 @@
 	}
 }
 
-/* min-height, not height, so the mobile fallback (plain static block) isn't forced viewport-tall. */
 .home-services__sticky {
 	position: relative;
 	min-height: 100vh;
@@ -242,7 +241,6 @@
 	opacity: 0.7;
 }
 
-/* Both gradient stops are dark enough that panel text contrast doesn't depend on the photo behind them. */
 .home-services__bg-overlay {
 	position: absolute;
 	inset: 0;
@@ -277,7 +275,6 @@
 	flex-direction: column;
 	padding: 24px;
 	border-radius: 24px;
-	/* Dark tint, not white, so the panel stays consistently dark regardless of the photo behind it. */
 	background-color: rgba(14, 16, 20, 0.55);
 	border: 1px solid rgba(255, 255, 255, 0.14);
 	box-shadow: 0 16px 44px -12px rgba(0, 0, 0, 0.4);
@@ -423,7 +420,6 @@
 	}
 }
 
-/* All 4 cards stack here (position:absolute) and slide through one at a time - see script at bottom of file. */
 .home-services__cards {
 	position: relative;
 	z-index: 1;
@@ -439,13 +435,11 @@
 	overflow: hidden;
 	padding: 44px;
 	border-radius: 20px;
-	/* Scrim ramps top-to-bottom: transparent behind the icon, high opacity behind the title/tagline/list. */
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%,
 		rgba(255, 255, 255, 0.58) 24%, rgba(255, 255, 255, 0.85) 42%,
 		rgba(255, 255, 255, 0.92) 100%);
 	border: 1px solid rgba(255, 255, 255, 0.55);
 	box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.4);
-	/* saturate() keeps this reading as glass rather than washed-out; heavier blur (32px) smooths the photo behind. */
 	backdrop-filter: blur(32px) saturate(1.5);
 	-webkit-backdrop-filter: blur(32px) saturate(1.5);
 	transform: translateY(100%);
@@ -460,7 +454,6 @@
 	pointer-events: auto;
 }
 
-/* Same glass pill language as .navbar-menu-frame, just smaller - a step counter, not a nav element. */
 .home-services__card-step {
 	position: absolute;
 	top: 24px;
@@ -548,7 +541,6 @@
 		gap: 32px;
 	}
 	.home-services__toc {
-		/* Just the "Learn more" button now - order after cards as a closing CTA. */
 		order: 2;
 		flex: none;
 		max-width: none;
@@ -595,7 +587,6 @@
 	border-radius: 40px;
 }
 
-/* Faint circuit-board grid - repeating-linear-gradients plus a radial-gradient for the node dots. Pure CSS. */
 .home-techspec::before {
 	content: "";
 	position: absolute;
@@ -611,7 +602,6 @@
 	background-size: 56px 56px, 56px 56px, 56px 56px;
 }
 
-/* Slow, faint diagonal sheen - kept subtle so it reads as ambient tech glow, not a loading shimmer. */
 .home-techspec::after {
 	content: "";
 	position: absolute;
@@ -701,7 +691,6 @@
 		ease;
 }
 
-/* Cards start pulled toward the center title, then release outward - folds back in if scrolled past either edge. */
 .home-techspec__hub:not(.is-revealed) .home-techspec__card--top-left {
 	transform: translate(24px, 24px) scale(0.9);
 	opacity: 0.7;

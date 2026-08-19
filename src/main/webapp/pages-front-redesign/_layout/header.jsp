@@ -221,7 +221,6 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	-webkit-backdrop-filter: none;
 }
 
-/* Less see-through than desktop - this expands into a full panel here. */
 @media (max-width: 991px) {
 	.navbar-menu-frame {
 		background-color: rgba(255, 255, 255, 0.85);
@@ -263,8 +262,8 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 
 /* .navbar prefix needed - same footer.jsp Bootstrap 5 override reason as above. */
 .navbar .dropdown-menu {
-	display: none; /* Hide by default */
-	position: absolute; /* Position below the button */
+	display: none;
+	position: absolute;
 	top: 100%;
 	left: 0;
 	min-width: 230px;

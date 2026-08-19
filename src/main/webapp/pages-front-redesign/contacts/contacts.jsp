@@ -79,12 +79,10 @@
 	transform: none;
 }
 
-/* A blurred panel is nearly invisible at low opacity */
 .contact-columns-row[data-aos] {
 	opacity: 1;
 }
 
-/* Flush halves, rounded/clipped as one shape, not two cards. */
 .contact-columns-row {
 	margin-left: 0;
 	margin-right: 0;
@@ -106,7 +104,6 @@
 	}
 }
 
-/* Top-aligned so both halves' headings land on the same line. */
 .contact-box {
 	flex: 1;
 	position: relative;
@@ -122,7 +119,6 @@
 	min-width: 0;
 }
 
-/* Translucent tint over .contactbg's shared photo, not its own image. */
 .contact-info-group {
 	background-color: rgba(14, 16, 20, 0.45);
 	backdrop-filter: blur(20px);
@@ -130,7 +126,6 @@
 	color: #fff;
 }
 
-/* Same photo+scrim language as the home services section. */
 .contactbg {
 	background: linear-gradient(180deg, rgba(20, 22, 26, 0.72) 0%,
 		rgba(20, 22, 26, 0.55) 100%),
@@ -149,7 +144,6 @@
 		padding-left: 5%;
 		padding-right: 5%;
 	}
-	/* Original padding left fields too tight for phones. */
 	.contact-box {
 		padding: 24px;
 	}
@@ -157,7 +151,6 @@
 
 .contact-info-group .contact-heading {
 	color: #fff;
-	/* Subheading below carries the 1.25rem gap down to the rows instead. */
 	margin-bottom: 0.35rem;
 }
 
@@ -185,7 +178,6 @@
 	font-size: 17px;
 }
 
-/* Glassy chip, matching the panel, instead of a solid white sticker. */
 .contact-info-row__icon {
 	display: flex;
 	align-items: center;
@@ -249,7 +241,6 @@
 	}
 }
 
-/* Light glass card, mirrors .home-services__card's ramp. */
 .contact-form-box {
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%,
 		rgba(255, 255, 255, 0.92) 100%);
@@ -257,7 +248,6 @@
 	-webkit-backdrop-filter: blur(28px) saturate(1.4);
 }
 
-/* Translucent enough to read as glass, dense enough to stay legible. */
 .contact-form-box .form-control {
 	border-radius: 10px;
 	background-color: rgba(255, 255, 255, 0.55);

@@ -91,7 +91,6 @@
 	color: #D0D0D0;
 }
 
-/* Solid, not outline - this page's primary CTA needs to stand out. */
 .jobdetail-apply-button {
 	display: inline-flex;
 	align-items: center;
@@ -142,7 +141,6 @@
 	color: #3F3F3F;
 }
 
-/* Black, not red - .jobdetail-title already carries the brand accent. */
 .jobdetail-card h1, .jobdetail-card h2, .jobdetail-card h3,
 	.jobdetail-card h4 {
 	margin: 32px 0 12px;
