@@ -121,6 +121,13 @@
 	justify-content: flex-start;
 }
 
+/* Flex items default to min-width:auto - without this, the reCAPTCHA
+   iframe forces this box wider than its .row parent. */
+.contact-column,
+.contact-box {
+	min-width: 0;
+}
+
 /* Translucent tint over .contactbg's shared photo, not its own image. */
 .contact-info-group {
 	background-color: rgba(14, 16, 20, 0.45);
@@ -329,6 +336,11 @@
 
 .contact-form-box .input-group .field-floating {
 	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.contact-form-box .input-group {
+	flex-wrap: nowrap;
 }
 
 .contact-form-box .input-group .field-floating>.form-control {
@@ -481,8 +493,7 @@
 					</div>
 
 					<div class="form-group">
-						<div class="g-recaptcha" data-sitekey="${constant.recaptchaSiteKey}"
-							data-callback="clearContactCaptchaError"></div>
+						<div id="contactRecaptcha"></div>
 						<div class="text-danger small mt-2" id="captchaError">${captchaError}</div>
 					</div>
 					<div class="form-group text-right">
@@ -504,7 +515,8 @@
 
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onContactRecaptchaLoad&render=explicit"
+	async defer></script>
 
 <script type="text/javascript">
 	var NAME_PATTERN = /^[ก-๏a-zA-Z\s-]+$/;
@@ -516,12 +528,31 @@
 
 	var formSubmitAttempted = false;
 
-	// reCAPTCHA's data-callback - fires the instant the checkbox is solved,
-	// so the leftover "Please confirm..." text doesn't sit there looking
-	// unresolved until the next full-page submit/reload clears it.
-	function clearContactCaptchaError() {
-		$('#captchaError').text('');
-	}
+	// Explicit render so size can switch to "compact" on narrow screens
+	// instead of CSS-scaling the iframe (that broke click hit-testing).
+	(function() {
+		var container = document.getElementById('contactRecaptcha');
+
+		function renderRecaptcha() {
+			var availableWidth = container.parentElement.clientWidth;
+			grecaptcha.render('contactRecaptcha', {
+				sitekey : '${constant.recaptchaSiteKey}',
+				size : availableWidth < 320 ? 'compact' : 'normal',
+				// Clears the leftover error text once checked.
+				callback : function() {
+					$('#captchaError').text('');
+				}
+			});
+		}
+
+		window.onContactRecaptchaLoad = function() {
+			document.addEventListener('DOMContentLoaded', renderRecaptcha);
+			// DOMContentLoaded may have already fired by now.
+			if (document.readyState !== 'loading') {
+				renderRecaptcha();
+			}
+		};
+	})();
 
 	function validateNameValue(value, requiredMessage, allowRequired) {
 		var trimmed = (value || '').trim();
