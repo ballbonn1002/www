@@ -127,6 +127,11 @@ body, html {
 	color: #fff;
 }
 
+.article-hero__expand-btn:focus:not(:focus-visible),
+.article-hero-modal__close:focus:not(:focus-visible) {
+	outline: none;
+}
+
 .article-hero-modal__content {
 	background: transparent;
 	border: none;
