@@ -153,7 +153,7 @@ html{background-color:#F5F5F5;}
 
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 

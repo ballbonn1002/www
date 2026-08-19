@@ -321,7 +321,9 @@
 	crossorigin="anonymous"></script>
 	
 <script>
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 	window.onscroll = function () { scrollFunction() };
 	
 	function scrollFunction() {

@@ -206,7 +206,9 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
 <script>
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 	window.onscroll = function () { scrollFunction() };
 	
 	function scrollFunction() {

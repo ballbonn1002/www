@@ -311,7 +311,9 @@
 		return applyFieldValidation($input, errorMessage);
 	}
 
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 	$(document).ready(function() {
 
 		// Real-time feedback as each field loses focus, rather than only

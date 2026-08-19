@@ -956,7 +956,9 @@ p {
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
 <script type="text/javascript">
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 
 	function animateScrollLeft(el, toLeft, duration) {
 		var fromLeft = el.scrollLeft;

@@ -105,7 +105,9 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 	$(".custom-file-input").on("change", function() {
 		var fileName = $(this).val().split("\\").pop();
 		$(this).siblings(".custom-file-label").addClass("selected").html(fileName);

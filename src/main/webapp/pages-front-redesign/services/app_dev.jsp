@@ -684,7 +684,9 @@
 <comp:scrollToTopButton />
 
 <script>
-	AOS.init({
-		once : true
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init({
+			once : true
+		});
 	});
 </script>

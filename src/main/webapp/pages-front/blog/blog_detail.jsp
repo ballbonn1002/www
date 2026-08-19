@@ -432,7 +432,9 @@ hr.detailnew {
 
 <script type="text/javascript">
 
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 
 	function showNav() {
         var x = document.getElementById("navDemo");

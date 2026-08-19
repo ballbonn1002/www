@@ -393,7 +393,9 @@ a {
  --%>
 
 <script>
-	AOS.init();
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 	// When the user scrolls down 20px from the top of the document, show the button
 
 	window.onscroll = function() {
