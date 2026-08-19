@@ -1148,7 +1148,7 @@
 	<section class="home-services">
 		<div class="home-services__sticky" id="homeServicesSticky">
 			<div class="home-services__bg" aria-hidden="true">
-				<img class="home-services__bg-img"
+				<img class="home-services__bg-img" loading="lazy"
 					src="/pages-front/img/redesign/home/service-banner.jpg" alt="">
 				<div class="home-services__bg-overlay"></div>
 			</div>
@@ -1189,7 +1189,7 @@
 					<div class="home-services__card">
 						<span class="home-services__card-step" aria-hidden="true">1/4</span>
 						<div class="home-services__icon-wrap">
-							<img class="home-services__icon"
+							<img class="home-services__icon" loading="lazy"
 								src="/pages-front/img/redesign/home/service-icon-outsourcing.png"
 								alt="">
 						</div>
@@ -1209,7 +1209,7 @@
 					<div class="home-services__card">
 						<span class="home-services__card-step" aria-hidden="true">2/4</span>
 						<div class="home-services__icon-wrap">
-							<img class="home-services__icon"
+							<img class="home-services__icon" loading="lazy"
 								src="/pages-front/img/redesign/home/service-icon-software.png"
 								alt="">
 						</div>
@@ -1227,7 +1227,7 @@
 					<div class="home-services__card">
 						<span class="home-services__card-step" aria-hidden="true">3/4</span>
 						<div class="home-services__icon-wrap">
-							<img class="home-services__icon"
+							<img class="home-services__icon" loading="lazy"
 								src="/pages-front/img/redesign/home/service-icon-specialize.png"
 								alt="">
 						</div>
@@ -1246,7 +1246,7 @@
 					<div class="home-services__card">
 						<span class="home-services__card-step" aria-hidden="true">4/4</span>
 						<div class="home-services__icon-wrap">
-							<img class="home-services__icon"
+							<img class="home-services__icon" loading="lazy"
 								src="/pages-front/img/redesign/home/service-icon-digital.png"
 								alt="">
 						</div>
@@ -1279,7 +1279,7 @@
 
 			<div class="home-techspec__card home-techspec__card--top-left">
 				<div class="home-techspec__icon-wrap">
-					<img class="home-techspec__icon"
+					<img class="home-techspec__icon" loading="lazy"
 						src="/pages-front/img/redesign/home/techspec-icon-website.png"
 						alt="">
 				</div>
@@ -1303,7 +1303,7 @@
 
 			<div class="home-techspec__card home-techspec__card--top-right">
 				<div class="home-techspec__icon-wrap">
-					<img class="home-techspec__icon"
+					<img class="home-techspec__icon" loading="lazy"
 						src="/pages-front/img/redesign/home/techspec-icon-enterprise.png"
 						alt="">
 				</div>
@@ -1322,7 +1322,7 @@
 
 			<div class="home-techspec__card home-techspec__card--bottom-left">
 				<div class="home-techspec__icon-wrap">
-					<img class="home-techspec__icon"
+					<img class="home-techspec__icon" loading="lazy"
 						src="/pages-front/img/redesign/home/techspec-icon-database.png"
 						alt="">
 				</div>
@@ -1341,7 +1341,7 @@
 
 			<div class="home-techspec__card home-techspec__card--bottom-right">
 				<div class="home-techspec__icon-wrap">
-					<img class="home-techspec__icon"
+					<img class="home-techspec__icon" loading="lazy"
 						src="/pages-front/img/redesign/home/techspec-icon-mobile.png"
 						alt="">
 				</div>
@@ -1380,46 +1380,46 @@
 				<div class="home-partners__marquee-row"
 					id="homePartnersMarqueeRow1">
 					<div class="home-partners__logos">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/01.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/03.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/03.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/05.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/07.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/07.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/19.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/10.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/10.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/12.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/14.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/14.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/16.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/08.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/08.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/21.jpg" alt="">
 
 						<%-- duplicated so the auto-scroll loop wraps seamlessly --%>
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/01.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/03.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/05.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/07.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/19.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/10.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/12.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/14.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/16.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/08.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/21.jpg" alt="" aria-hidden="true">
 					</div>
 				</div>
@@ -1427,43 +1427,43 @@
 				<div class="home-partners__marquee-row"
 					id="homePartnersMarqueeRow2">
 					<div class="home-partners__logos">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/02.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/04.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/04.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/06.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/18.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/18.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/09.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/11.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/11.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/13.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/15.jpg"
-							alt=""> <img class="home-partners__logo"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/15.jpg"
+							alt=""> <img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/17.jpg" alt=""> <img
-							class="home-partners__logo" src="/pages-front/img/customer/small/20.jpg"
+							class="home-partners__logo" loading="lazy" src="/pages-front/img/customer/small/20.jpg"
 							alt="">
 
 						<%-- duplicated so the auto-scroll loop wraps seamlessly --%>
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/02.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/04.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/06.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/18.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/09.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/11.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/13.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/15.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/17.jpg" alt="" aria-hidden="true">
-						<img class="home-partners__logo"
+						<img class="home-partners__logo" loading="lazy"
 							src="/pages-front/img/customer/small/20.jpg" alt="" aria-hidden="true">
 					</div>
 				</div>
