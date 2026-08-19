@@ -547,7 +547,13 @@
 
 @media screen and (max-width: 991px) {
 	.rfooter-grid {
-		grid-template-columns: 1fr 1fr;
+		gap: clamp(16px, 3vw, 40px);
+	}
+	.rfooter-section__title {
+		font-size: clamp(12px, 1.6vw, 16px);
+	}
+	.rfooter-link {
+		font-size: clamp(12px, 1.5vw, 14px);
 	}
 }
 
