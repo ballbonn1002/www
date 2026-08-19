@@ -321,12 +321,6 @@
 		grid-template-columns: 1fr;
 		padding: 0 5%;
 	}
-	.appdev-cta {
-		padding: 56px 5%;
-	}
-	.appdev-cta__card {
-		padding: 32px 24px;
-	}
 }
 
 .appdev-cta {
@@ -378,6 +372,15 @@
 	color: var(--brand-red) !important;
 	text-decoration: none;
 	opacity: 0.9;
+}
+
+@media screen and (max-width: 870px) {
+	.appdev-cta {
+		padding: 56px 5%;
+	}
+	.appdev-cta__card {
+		padding: 32px 24px;
+	}
 }
 </style>
 

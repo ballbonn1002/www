@@ -352,12 +352,6 @@
 	.softdev-checklist__items {
 		padding: 0 5%;
 	}
-	.softdev-cta {
-		padding: 56px 5%;
-	}
-	.softdev-cta__card {
-		padding: 32px 24px;
-	}
 }
 
 .softdev-cta {
@@ -409,6 +403,15 @@
 	color: var(--brand-red) !important;
 	text-decoration: none;
 	opacity: 0.9;
+}
+
+@media screen and (max-width: 870px) {
+	.softdev-cta {
+		padding: 56px 5%;
+	}
+	.softdev-cta__card {
+		padding: 32px 24px;
+	}
 }
 </style>
 
