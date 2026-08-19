@@ -400,7 +400,8 @@
 }
 
 .rfooter-link {
-	display: inline;
+	display: inline-flex;
+	align-items: center;
 	line-height: 1.5;
 	font-size: 14px;
 	color: #C4C2BA !important;
@@ -412,12 +413,15 @@
 	text-decoration: none !important;
 }
 
+.rfooter-link__text {
+	min-width: 0;
+}
+
 .rfooter-link__arrow {
-	display: inline-block;
+	flex-shrink: 0;
 	width: 11px;
 	height: 11px;
 	margin-left: 3px;
-	vertical-align: middle;
 	color: currentColor;
 	opacity: 0;
 	transform: translate(-3px, 3px);
