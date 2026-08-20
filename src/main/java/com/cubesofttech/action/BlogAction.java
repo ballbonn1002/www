@@ -95,8 +95,7 @@ public class BlogAction extends ActionSupport {
 	private String fileName;
 	private String fileType;
 	private String srcDelete;
-	// "page" request param, 1-based. Upper-bound clamp happens in
-	// initRedesignPagination() once totalPages is known.
+	// 1-based; upper-bound clamp happens in initRedesignPagination().
 	private int page = 1;
 
 	File articleImageFile;
@@ -363,9 +362,7 @@ public class BlogAction extends ActionSupport {
 		return xMoz != null && xMoz.equalsIgnoreCase("prefetch");
 	}
 
-	// Honest crawlers/link-preview bots self-identify via User-Agent -
-	// this catches those for free. Does nothing against a source that
-	// deliberately fakes a normal browser's User-Agent.
+	// Only catches bots that self-identify via User-Agent, not spoofed ones.
 	private static final String[] KNOWN_BOT_USER_AGENT_MARKERS = { "bot", "spider", "crawl", "slurp",
 			"facebookexternalhit", "whatsapp", "telegrambot", "slackbot", "discordbot", "linkedinbot", "pinterest",
 			"embedly", "outbrain", "vkshare", "w3c_validator" };
@@ -373,9 +370,7 @@ public class BlogAction extends ActionSupport {
 	private boolean isKnownBotUserAgent() {
 		String userAgent = request.getHeader("User-Agent");
 		if (userAgent == null || userAgent.isEmpty()) {
-			// Not auto-flagged: corporate proxies strip this header from
-			// real visitors too, and exceedsIpQuota() below already
-			// backstops any bot that would otherwise slip through here.
+			// Corporate proxies strip this header from real visitors too.
 			return false;
 		}
 		String lower = userAgent.toLowerCase();
@@ -387,9 +382,7 @@ public class BlogAction extends ActionSupport {
 		return false;
 	}
 
-	// Loose per (IP, User-Agent, article) quota - a backstop against one
-	// source hammering the counter, not precise dedup. Deliberately generous
-	// since a shared office/campus IP has many real readers behind it.
+	// Loose per (IP, User-Agent, article) quota, not precise dedup.
 	private static final int VIEW_QUOTA_LIMIT = 30;
 	private static final long VIEW_QUOTA_WINDOW_MS = 60L * 60 * 1000; // 1 hour
 	private static final ConcurrentHashMap<String, ViewQuotaBucket> VIEW_QUOTA_BUCKETS = new ConcurrentHashMap<String, ViewQuotaBucket>();
@@ -400,9 +393,7 @@ public class BlogAction extends ActionSupport {
 	}
 
 	private String clientIp() {
-		// First hop of X-Forwarded-For is the real client when this app
-		// sits behind a reverse proxy/load balancer - falls back to the
-		// direct connection otherwise.
+		// First hop of X-Forwarded-For, for when this sits behind a proxy.
 		String forwarded = request.getHeader("X-Forwarded-For");
 		if (forwarded != null && !forwarded.isEmpty()) {
 			return forwarded.split(",")[0].trim();
@@ -411,8 +402,7 @@ public class BlogAction extends ActionSupport {
 	}
 
 	private boolean exceedsIpQuota(int articleId) {
-		// Occasional sweep so buckets for IPs/articles that go quiet don't
-		// accumulate forever - not exact, just keeps the map bounded.
+		// Occasional sweep keeps the bucket map bounded.
 		if (Math.random() < 0.002) {
 			long cutoff = System.currentTimeMillis() - VIEW_QUOTA_WINDOW_MS;
 			Iterator<Map.Entry<String, ViewQuotaBucket>> it = VIEW_QUOTA_BUCKETS.entrySet().iterator();
@@ -461,13 +451,10 @@ public class BlogAction extends ActionSupport {
 
 			boolean redesign = isRedesignPreviewEnabled();
 
-			// Set attributes for JSP
 			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
 			request.setAttribute("bloguri", requestURI);
 
-			// Runs before the fetch below so a genuine increment shows up in
-			// this same response, instead of only becoming visible on the
-			// visitor's next page load.
+			// Runs before the fetch so the increment shows up in this same response.
 			if (!isSpeculativeRequest() && !isKnownBotUserAgent() && !alreadyViewedThisSession(getArticleId())
 					&& !exceedsIpQuota(getArticleId())) {
 				blogDAO.incrementViewCount(getArticleId());
@@ -482,8 +469,7 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("blog", blog);
 			request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
 			log.debug("blog.detail: " + blog.getDetail());
-			// Only the redesign JSP renders ${cleanDetail} - the legacy JSP renders
-			// ${blog.detail} raw, so sanitizing here for it would be wasted work.
+			// Only the redesign JSP renders ${cleanDetail} - legacy renders ${blog.detail} raw.
 			if (redesign) {
 				String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
 				request.setAttribute("cleanDetail", cleanDetail);
@@ -523,13 +509,12 @@ public class BlogAction extends ActionSupport {
 			DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 			if (blog.getTimePost() == null)
 				return null;
-			ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +08:00
+			ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
 			request.setAttribute("datePublished", zonedDateTime.format(formatter));
 
 			if (blog.getTimeUpdate() == null)
 				return null;
-			ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or
-																												// +08:00
+			ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
 			request.setAttribute("dateModified", zonedDateTime2.format(formatter));
 
 			PageUri pageUri = null;

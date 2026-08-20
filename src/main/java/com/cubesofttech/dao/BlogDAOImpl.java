@@ -140,8 +140,7 @@ public class BlogDAOImpl implements BlogDAO {
 		return count == null ? 0 : count.longValue();
 	}
 
-	// Raw atomic UPDATE, not through the Hibernate entity - avoids
-	// flushing every other field just to bump a counter.
+	// Raw atomic UPDATE, not through the Hibernate entity, to avoid flushing every other field.
 	@Override
 	public void incrementViewCount(int articleId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
