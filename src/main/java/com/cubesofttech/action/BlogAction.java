@@ -51,6 +51,7 @@ public class BlogAction extends ActionSupport {
 	public static final String ARTICLEID = "articleId";
 	public static final Integer MAXLATESTBLOG = 10;
 	public static final String REDESIGN = "redesign";
+	public static final String NOT_FOUND = "notFound";
 	// Divides evenly into the 3-per-row grid (col-lg-4).
 	public static final int PAGE_SIZE = 12;
 	// Featured "latest article" card, fetched separately from the grid.
@@ -473,6 +474,10 @@ public class BlogAction extends ActionSupport {
 			}
 
 			Blog blog = blogDAO.findByArticleId(getArticleId());
+			if (blog == null) {
+				log.error("No article found for articleId=" + getArticleId());
+				return NOT_FOUND;
+			}
 			log.debug(blog.getTimePost());
 			request.setAttribute("blog", blog);
 			request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
