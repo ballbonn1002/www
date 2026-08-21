@@ -491,7 +491,7 @@
 	<iframe
 		src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.858308665869!2d100.52603131477895!3d13.727026990363473!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29f258dd25adf%3A0x7ebb9335dc44b9d2!2sCube%20SoftTech%20Co.%2C%20Ltd.!5e0!3m2!1sth!2sth!4v1567563105166!5m2!1sth!2sth"
 		width="100%" height="450" frameborder="0" style="border: 0;"
-		allowfullscreen=""></iframe>
+		loading="lazy" allowfullscreen=""></iframe>
 </div>
 
 <script data-cfasync="false"
