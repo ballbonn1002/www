@@ -298,6 +298,15 @@ html, body {
 	}
 }
 
+/* Featured article sits above the fold, so AOS's default 100px fade-up travel is too big a jump on arrival - shorten it here. */
+.article-preview [data-aos="fade-up"] {
+	transform: translate3d(0, 20px, 0);
+}
+
+.article-preview [data-aos="fade-up"].aos-animate {
+	transform: translate3d(0, 0, 0);
+}
+
 /* ==========================================================================
    Image loading skeleton (featured article image only)
    ========================================================================== */
