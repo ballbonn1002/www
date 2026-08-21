@@ -31,6 +31,12 @@ html{background-color:#F5F5F5;}
 	opacity: 1;
 	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s ease-out;
 }
+/* Used on bfcache restore - snaps to 100% then fades, reading as "done" instead of aborted mid-fill. */
+#page-loading-bar.is-done {
+	width: 100%;
+	opacity: 1;
+	transition: width 0.2s ease-out, opacity 0.4s ease-out 0.15s;
+}
 
 /* Cross-document @view-transition was tried here but caused stacked scrollbars during the transition - removed. */
 </style>
@@ -163,11 +169,7 @@ body, html {
 		sans-serif !important;
 	font-size: 16px;
 	scroll-behavior: smooth;
-	/* Full-bleed elements (width:100vw centered via left:50%+transform)
-	   overshoot the real viewport by the scrollbar's width, which
-	   otherwise adds a few px of page-wide horizontal scroll - see
-	   home-services__bg-band. Clipping that sliver here is imperceptible
-	   and standard for this pattern. */
+	/* Clips the horizontal scroll sliver from full-bleed elements overshooting the scrollbar's width. */
 	overflow-x: hidden;
 }
 
@@ -176,22 +178,14 @@ h1, h2, h3, h4, h5, h6 {
 		sans-serif !important;
 }
 
-/* word-break:keep-all used to be set here to stop narrow headings from wrapping
-   mid-word, but on Safari it also blocks overflow-wrap's emergency break for a
-   fully unspaced Thai run - the line just overflows the viewport instead of
-   wrapping at all. overflow-wrap:anywhere is the more reliable fallback across
-   engines. text-wrap:pretty additionally avoids orphan last-line words where
-   supported (Chromium only so far) - harmless no-op elsewhere, not a
-   replacement for the .no-orphan hint below. */
+/* keep-all broke Safari's overflow-wrap for unspaced Thai text; overflow-wrap:anywhere is the safer fallback. */
 h1, h2, h3, p {
 	word-break: normal;
 	overflow-wrap: anywhere;
 	text-wrap: pretty;
 }
 
-/* Bootstrap defaults these to a blue box-shadow (and explicitly disables
-   the outline it would otherwise replace); brand buttons without a .btn-*
-   color variant fall back to the browser's native blue outline instead. */
+/* Overrides Bootstrap's default blue focus box-shadow with the brand color. */
 .form-control:focus,
 .page-link:focus,
 .btn:focus, .btn.focus {
@@ -516,17 +510,7 @@ a {
 	background-color: transparent !important;
 }
 
-/* footer.jsp's Bootstrap 5.3.0 CSS (needed there for its own data-bs-*
-   collapse widgets) defines its own bare ".breadcrumb" too, using
-   var(--bs-breadcrumb-padding-x/y) - same specificity as Bootstrap
-   4.3.1's own ".breadcrumb" (already loaded above), and footer's is
-   always the last one parsed, so its padding was winning on every page
-   that uses .breadcrumb site-wide (blog/news, careers, services,
-   contacts - both old and new). "html .breadcrumb" (element + class)
-   beats a bare ".breadcrumb" from either version on specificity alone.
-   Value below is Bootstrap 4's own default - this doesn't change how
-   the site already looked, it just stops it flickering to Bootstrap
-   5's slightly different one partway through a page load. */
+/* Beats footer.jsp's Bootstrap 5 ".breadcrumb" on specificity so its padding doesn't flicker in after Bootstrap 4's. */
 html .breadcrumb {
 	padding: 0.75rem 1rem;
 }
@@ -748,6 +732,16 @@ a {
 	<div id="page-loading-bar" aria-hidden="true"></div>
 	<%-- Only fires for real same-origin navigations - skips anchors, new tabs, downloads, and other origins. --%>
 	<script>
+		<%-- bfcache restores the page (and its stuck is-loading class) without reloading it. --%>
+		window.addEventListener('pageshow', function(e) {
+			if (e.persisted) {
+				var bar = document.getElementById('page-loading-bar');
+				bar.className = 'is-done';
+				setTimeout(function() {
+					bar.className = '';
+				}, 600);
+			}
+		});
 		document.addEventListener('click', function(e) {
 			var link = e.target.closest('a[href]');
 			if (!link) {
@@ -792,11 +786,7 @@ a {
 	<tiles:insertAttribute name="footer" ignore="true" />
 
 	<script>
-		// Glues the last space in .no-orphan elements with &nbsp; so a short
-		// trailing token (e.g. "10 ปี") can't wrap onto its own line by itself.
-		// Only works where a real space character exists in the text - Thai's
-		// dictionary-based word breaks (no literal space) aren't touched by
-		// this at all; those still need a manual nowrap span at that spot.
+		// Glues the last space with &nbsp; so a short trailing token doesn't wrap onto its own line.
 		document.querySelectorAll('.no-orphan').forEach(function(el) {
 			el.innerHTML = el.innerHTML.replace(/\s+(\S+)\s*$/, '&nbsp;$1');
 		});
