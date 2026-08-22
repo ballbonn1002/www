@@ -147,21 +147,46 @@
 					<b> <font color="#BD2125" size="4px">Contact Us</font><br>
 						<br>
 					</b>
-					<div class="form-group">
-						<input type="name" class="form-control" placeholder="Name"
-							name="contactName">
+					<%--
+						Split from a single "Name" field into firstName/lastName -
+						ContactsAction (shared with the redesign page) no longer has
+						a contactName property, so this has to stay in sync with
+						that rename or submissions from this page would silently
+						send a blank name.
+					--%>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<input type="text"
+								class="form-control ${not empty firstNameError ? 'is-invalid' : ''}"
+								placeholder="First name" name="firstName" id="firstName"
+								value="${firstName}">
+							<div class="invalid-feedback">${firstNameError}</div>
+						</div>
+						<div class="form-group col-md-6">
+							<input type="text"
+								class="form-control ${not empty lastNameError ? 'is-invalid' : ''}"
+								placeholder="Last name" name="lastName" id="lastName"
+								value="${lastName}">
+							<div class="invalid-feedback">${lastNameError}</div>
+						</div>
 					</div>
 					<div class="form-group">
-						<input type="email" class="form-control" placeholder="E-Mail"
-							name="contactEmail">
+						<input type="email"
+							class="form-control ${not empty emailError ? 'is-invalid' : ''}"
+							placeholder="E-Mail" name="contactEmail" id="contactEmail"
+							value="${contactEmail}">
+						<div class="invalid-feedback">${emailError}</div>
 					</div>
 					<div class="form-group">
-						<input type="phone" class="form-control" placeholder="Telephone"
-							name="contactTel">
+						<input type="tel"
+							class="form-control ${not empty phoneError ? 'is-invalid' : ''}"
+							placeholder="Telephone" name="contactTel" id="contactTel"
+							value="${contactTel}">
+						<div class="invalid-feedback">${phoneError}</div>
 					</div>
 					<div class="form-group">
-						<textarea type="comment" class="form-control" rows="3"
-							placeholder="Message" name="contactMessage"></textarea>
+						<textarea class="form-control" rows="3" placeholder="Message"
+							name="contactMessage" id="contactMessage">${contactMessage}</textarea>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
@@ -190,24 +215,127 @@
 		allowfullscreen=""></iframe>
 </div>
 
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js"
-	type="text/javascript"></script>
+<%--
+	aos.css/aos.js and jQuery both already load once in baseLayout.jsp's
+	<head> (every page shares it) - this page had its own second copy of
+	both. Safe to drop here specifically (checked first): the CAPTCHA
+	logic below only uses basic jQuery (click/text/val/css/on), no
+	$.ajax/.load/effects methods.
+--%>
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script data-cfasync="false"
 	src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 <script type="text/javascript">
-	AOS.init();
+	// Mirrors com.cubesofttech.validation.ContactFormValidator - there's no
+	// shared code path between Java and this vanilla JS, so this is a
+	// manually-kept-in-sync copy of the same rules. Server-side (see
+	// ContactsAction) is the authoritative check; this is real-time (blur)
+	// feedback only and can't be relied on alone.
+	var NAME_PATTERN = /^[ก-๏a-zA-Z\s-]+$/;
+	var NAME_MAX_LENGTH = 50;
+	var EMAIL_PATTERN = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+	var EMAIL_MAX_LENGTH = 254;
+	var PHONE_ALLOWED_CHARS = /^\+?[0-9\s-]+$/;
+	var PHONE_LOCAL = /^0[0-9]{8,9}$/;
+	var PHONE_INTL = /^\+66[0-9]{8,9}$/;
+
+	function validateNameValue(value, requiredMessage) {
+		var trimmed = (value || '').trim();
+		if (!trimmed) {
+			return requiredMessage;
+		}
+		if (trimmed.length > NAME_MAX_LENGTH || !NAME_PATTERN.test(trimmed)) {
+			return 'กรุณากรอกเฉพาะตัวอักษร ไม่ใช่ตัวเลขหรือสัญลักษณ์';
+		}
+		return null;
+	}
+
+	function validateEmailValue(value) {
+		var trimmed = (value || '').trim();
+		if (!trimmed) {
+			return 'กรุณากรอกอีเมล';
+		}
+		if (trimmed.length > EMAIL_MAX_LENGTH || !EMAIL_PATTERN.test(trimmed)) {
+			return 'อีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง (เช่น name@example.com)';
+		}
+		return null;
+	}
+
+	function validatePhoneValue(value) {
+		var trimmed = (value || '').trim();
+		if (!trimmed) {
+			return 'กรุณากรอกเบอร์โทรศัพท์';
+		}
+		if (!PHONE_ALLOWED_CHARS.test(trimmed)) {
+			return 'เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก';
+		}
+		var stripped = trimmed.replace(/[\s-]/g, '');
+		if (!PHONE_LOCAL.test(stripped) && !PHONE_INTL.test(stripped)) {
+			return 'เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9-10 หลัก';
+		}
+		return null;
+	}
+
+	// Applies one field's result to the DOM (Bootstrap's own
+	// is-invalid/is-valid + the .invalid-feedback sibling it already
+	// renders server-side) - the one place both the blur handlers and the
+	// pre-submit check below touch the DOM, so a field looks identical
+	// regardless of which one caught the problem.
+	function applyFieldValidation($input, errorMessage) {
+		var $feedback = $input.siblings('.invalid-feedback');
+		if (errorMessage) {
+			$input.addClass('is-invalid').removeClass('is-valid');
+			$feedback.text(errorMessage);
+		} else {
+			$input.addClass('is-valid').removeClass('is-invalid');
+			$feedback.text('');
+		}
+		return !errorMessage;
+	}
+
+	function validateField(fieldId) {
+		var $input = $('#' + fieldId);
+		var value = $input.val();
+		var errorMessage;
+		if (fieldId === 'firstName') {
+			errorMessage = validateNameValue(value, 'กรุณากรอกชื่อ');
+		} else if (fieldId === 'lastName') {
+			errorMessage = validateNameValue(value, 'กรุณากรอกนามสกุล');
+		} else if (fieldId === 'contactEmail') {
+			errorMessage = validateEmailValue(value);
+		} else if (fieldId === 'contactTel') {
+			errorMessage = validatePhoneValue(value);
+		}
+		return applyFieldValidation($input, errorMessage);
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
+	});
 	$(document).ready(function() {
-		$('a[href^="/contacts"]').addClass('active');
-		$('#model').removeClass('active');
+
+		// Real-time feedback as each field loses focus, rather than only
+		// finding out everything's wrong at once on submit.
+		$('#firstName, #lastName, #contactEmail, #contactTel').on('blur', function() {
+			validateField(this.id);
+		});
 
 		// เมื่อกดปุ่ม "Send"
 	    $('#sendEmail').click(function (e) {
 	    	e.preventDefault(); // ป้องกันการส่งฟอร์มทันที
+
+	    	// ตรวจก่อน CAPTCHA - เรียก validator เดียวกับที่ blur ใช้
+	    	// ให้แน่ใจว่าทุกช่องผ่านครบก่อนไปเช็ค CAPTCHA
+	    	var firstNameValid = validateField('firstName');
+	    	var lastNameValid = validateField('lastName');
+	    	var emailValid = validateField('contactEmail');
+	    	var phoneValid = validateField('contactTel');
+	    	if (!firstNameValid || !lastNameValid || !emailValid || !phoneValid) {
+	    		return;
+	    	}
+
 	    	const captcha = $('#captcha').text(); // ดึงค่า CAPTCHA
 	        const userInput = $('#captchaInput').val(); // ดึงค่าที่ผู้ใช้กรอก
 	        // ตรวจสอบว่า CAPTCHA ตรงกับค่าที่กรอกหรือไม่

@@ -114,7 +114,10 @@ public class Blog implements Serializable {
 	
 	@Column(name = "time_update")
 	private java.sql.Timestamp timeUpdate;
-	
+
+	@Column(name = "view_count")
+	private Integer viewCount;
+
 	public Integer getArticleId() {
 		return articleId;
 	}
@@ -256,6 +259,14 @@ public class Blog implements Serializable {
 
 	public void setTimeUpdate(java.sql.Timestamp timeUpdate) {
 		this.timeUpdate = timeUpdate;
+	}
+
+	public Integer getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(Integer viewCount) {
+		this.viewCount = viewCount;
 	}
 
 }

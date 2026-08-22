@@ -8,76 +8,98 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
         </result-types>
-        
+
+        <interceptors>
+            <interceptor name="botProtection" class="com.cubesofttech.interceptor.BotProtectionInterceptor" />
+        </interceptors>
+
         <!-- Actions -->
-        <action name="home" class="com.cubesofttech.action.HomeAction" method="init">
+<action name="home" class="com.cubesofttech.action.HomeAction" method="init">
             <result name="success" type="tiles">home</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">home.redesign</result>
         </action>
         
         <action name="footer" class="com.cubesofttech.action.FooterAction" method="list">
             <result name="success" type="tiles">footer</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="services" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">services</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">services.redesign</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="software-development" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">software_dev</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">software_dev.redesign</result>
+            <result name="error" type="redirect">/services</result>
         </action>
-        
+
         <action name="it-outsource" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">it_outsource</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">it_outsource.redesign</result>
+            <result name="error" type="redirect">/services</result>
         </action>
-        
+
         <action name="mobile-app-development" class="com.cubesofttech.action.ServicesAction" method="init">
             <result name="success" type="tiles">app_dev</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">app_dev.redesign</result>
+            <result name="error" type="redirect">/services</result>
         </action>
 
         <action name="careers" class="com.cubesofttech.action.CareersAction" method="init">
             <result name="success" type="tiles">careers</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">careers.redesign</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="jobDetail" class="com.cubesofttech.action.CareersAction" method="jobDetail">
             <result name="success" type="tiles">jobDetail</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">jobDetail.redesign</result>
+            <result name="error" type="redirect">/careers</result>
         </action>
 
         <action name="sendEmailJob" class="com.cubesofttech.action.CareersAction" method="sendEmailJob">
+            <interceptor-ref name="botProtection" />
+            <interceptor-ref name="defaultStack" />
             <result name="success" type="tiles">jobDetail</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">jobDetail.redesign</result>
+            <result name="invalidJob" type="redirect">/careers</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="blog" class="com.cubesofttech.action.BlogAction" method="init">
             <result name="success" type="tiles">blog</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">blog.redesign</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="blog_detail" class="com.cubesofttech.action.BlogAction" method="blogDetail">
             <result name="success" type="tiles">blog.detail</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">blog.detail.redesign</result>
+            <result name="notFound" type="redirect">/blog</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="news" class="com.cubesofttech.action.BlogAction" method="init">
             <result name="success" type="tiles">news</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">news.redesign</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="contacts" class="com.cubesofttech.action.ContactsAction" method="init">
             <result name="success" type="tiles">contacts</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">contacts.redesign</result>
+            <result name="error" type="redirect">/</result>
         </action>
 
         <action name="sendEmailContact" class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
+            <interceptor-ref name="botProtection" />
+            <interceptor-ref name="defaultStack" />
             <result name="success" type="tiles">contacts</result>
-            <result name="error">/pages-front/index.jsp</result>
+            <result name="redesign" type="tiles">contacts.redesign</result>
+            <result name="error" type="redirect">/</result>
         </action>
     </package>
 </struts>

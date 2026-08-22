@@ -51,7 +51,7 @@ public class Job implements Serializable{
 	
 	@Column(name = "description")
 	private String description;
-	
+
 	@Column(name = "position")
 	private String position;
 

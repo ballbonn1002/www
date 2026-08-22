@@ -14,13 +14,14 @@ public class FileUtil {
 		FileInputStream inps = null;
 		FileOutputStream outs = null;
 		try {
-			File path = new File(filePath);
-			if (!path.exists()) {
-				path.mkdirs();
+			File destination = new File(filePath + fileName);
+			File parentDir = destination.getParentFile();
+			if (parentDir != null && !parentDir.exists()) {
+				parentDir.mkdirs();
 			}
 
 			inps = new FileInputStream(file);
-			outs = new FileOutputStream(filePath + fileName);
+			outs = new FileOutputStream(destination);
 
 			int read = 0;
 			byte[] bytes = new byte[1024];

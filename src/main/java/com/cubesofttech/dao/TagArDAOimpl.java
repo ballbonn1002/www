@@ -2,12 +2,9 @@ package com.cubesofttech.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,71 +18,20 @@ public class TagArDAOimpl implements TagArDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public List<TagAr> findAll() throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		List<TagAr> tagArList = null;
-		try {
-			String sql = " SELECT * FROM tag ORDER BY tag_id ASC ";
-			SQLQuery query = session.createSQLQuery(sql);
-			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-			tagArList = query.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return tagArList;
-	}
-
-	@Override
-	public List<TagAr> findArticleInTag() throws Exception {
+	public List<TagAr> findArticleInTag(int articleId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<TagAr> tagAr = null;
 		try {
-			String sql = " SELECT tag.name,article.article_id FROM tag LEFT JOIN article_tag ON article_tag.tag_id = tag.tag_id LEFT JOIN article ON article.article_id = article_tag.article_id ";
+			String sql = " SELECT tag.name,article.article_id FROM tag LEFT JOIN article_tag ON article_tag.tag_id = tag.tag_id LEFT JOIN article ON article.article_id = article_tag.article_id "
+					+ " WHERE article.article_id = :articleId ";
 			SQLQuery query = session.createSQLQuery(sql);
+			query.setInteger("articleId", articleId);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			tagAr = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return tagAr;
-	}
-
-	@Override
-	public TagAr findBytagId(int tagArId) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		TagAr tagAr = null;
-		try {
-			tagAr = (TagAr) session.get(TagAr.class, tagArId);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// session.close();
-		}
-		return tagAr;
-	}
-
-
-
-	@Override
-	public /* String */List<Integer> findByTagArId(String tagArName) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		List<Integer> list = null;
-		// String list;
-		try {
-
-			Criteria cr = session.createCriteria(TagAr.class);
-			cr.add(Restrictions.eq("tagArName", tagArName))
-					.setProjection(Projections.property("tagArId"));/* It will return only tag_id */
-			list = cr.list();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-
-		} finally {
-
-		}
-		return list;
 	}
 
 }

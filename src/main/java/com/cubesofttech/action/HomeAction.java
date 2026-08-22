@@ -3,7 +3,6 @@ package com.cubesofttech.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -14,13 +13,15 @@ import com.cubesofttech.dao.JobDAO;
 import com.cubesofttech.model.Blog;
 import com.cubesofttech.model.Job;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.RewriteFilter;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HomeAction extends ActionSupport {
+	public static final String REDESIGN = "redesign";
+
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
-	
+
 	@Autowired
 	private Constant constant;
 	@Autowired
@@ -30,7 +31,11 @@ public class HomeAction extends ActionSupport {
 	
 	public String init() {
 		List<Blog> blogList = null;
-		try {			
+		try {
+			// header.jsp's navbar needs this to render "Home" active - every
+			// other action already sets it, this one just never did.
+			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
+
 			blogList = blogDAO.findAllWithPageUri();
 			request.setAttribute("blogList", blogList);
 			if(blogList != null && !blogList.isEmpty()) {
@@ -38,14 +43,17 @@ public class HomeAction extends ActionSupport {
 			}
 			
 			List<Job> jobList = jobDAO.findAllWithPageUri();
-			//log.debug(jobList);
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("constant", constant);
-			
-			return SUCCESS;
+
+			return isRedesignPreviewEnabled() ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
 			return ERROR;
 		}
+	}
+
+	private boolean isRedesignPreviewEnabled() {
+		return constant.isRedesignEnabled();
 	}
 }

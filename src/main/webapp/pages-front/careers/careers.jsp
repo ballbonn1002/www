@@ -562,13 +562,10 @@ a {
 	</div>
 </div>
 <script>
-	AOS.init();
-	
-	$(document).ready(function() {
-		$('a[href="/careers"]').addClass('active');
-		$('#model').removeClass('active');
+	document.addEventListener('DOMContentLoaded', function() {
+		AOS.init();
 	});
-	
+
 	window.onscroll = function () { scrollFunction() };
 	function scrollFunction() {
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -589,9 +586,6 @@ a {
             x.className = x.className.replace(" w3-show", "");
         }
     }
-	$(document).ready(function () {
-        $('a[href^="careers"]').addClass('active');
-    });
 	$(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

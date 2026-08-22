@@ -8,20 +8,70 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="utf-8">
+<%-- Critical inline CSS so first paint matches the site background before per-page styles load. --%>
+<style>
+html{background-color:#F5F5F5;}
+/* Toggled via .is-loading by the click listener further down - gives instant feedback on internal link clicks. */
+#page-loading-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 3px;
+	width: 0;
+	background-color: #BD2125;
+	z-index: 99999;
+	opacity: 0;
+	transition: width 0.4s ease-out, opacity 0.2s ease-out;
+}
+#page-loading-bar.is-loading {
+	width: 90%;
+	opacity: 1;
+	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s ease-out;
+}
+/* Used on bfcache restore - snaps to 100% then fades, reading as "done" instead of aborted mid-fill. */
+#page-loading-bar.is-done {
+	width: 100%;
+	opacity: 1;
+	transition: width 0.2s ease-out, opacity 0.4s ease-out 0.15s;
+}
+
+/* Cross-document @view-transition was tried here but caused stacked scrollbars during the transition - removed. */
+</style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
-<link rel="icon" type="image/x-icon" href="/pages-front/img/logo/favicon.png">
+<link rel="icon" type="image/x-icon"
+	href="/pages-front/img/logo/favicon.png">
 <link rel="canonical" href="https://www.cubesofttech.com${requestURI}">
-<meta name="description"
-	content="${meta}">
-<meta name="keywords"
-	content="">
-	
+<%-- pageBaseUri/currentPage/totalPages are only set by BlogAction.init()
+	 (blog/news listing pages) - every other page just skips this block. --%>
+<c:if test="${not empty pageBaseUri}">
+	<c:if test="${currentPage > 1}">
+		<link rel="prev"
+			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage - 1}">
+	</c:if>
+	<c:if test="${currentPage < totalPages}">
+		<link rel="next"
+			href="https://www.cubesofttech.com${pageBaseUri}?page=${currentPage + 1}">
+	</c:if>
+	<%-- blog.css is actually <link>'d from inside blog.jsp's body - preloading here starts the fetch earlier. --%>
+	<link rel="preload" as="style"
+		href="/pages-front-redesign/assets/css/blog.css">
+</c:if>
+<%-- Hero image preload for the blog "แนะนำล่าสุด" section; newBlog is only set on the blog/news listing pages. --%>
+<c:if test="${not empty newBlog}">
+	<link rel="preload" as="image"
+		href="${constant.imgContext}/${newBlog.path}" fetchpriority="high">
+</c:if>
+<meta name="description" content="${meta}">
+<meta name="keywords" content="">
+
 <meta name="classification" content="Computers and Internet">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="robots"
+	content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot"
+	content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="distribution" content="Global">
 <meta name="language" content="en-th">
 <meta name="rating" content="General">
@@ -65,18 +115,31 @@
 </script>
 <!-- END Global site tag (gtag.js) - Google Analytics -->
 
+<%-- preconnect for every external origin this head loads a stylesheet/script from, so DNS+TLS happens early instead of staggered. --%>
+<link rel="preconnect" href="https://stackpath.bootstrapcdn.com"
+	crossorigin>
+<link rel="preconnect" href="https://code.jquery.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+<link rel="preconnect" href="https://www.w3schools.com">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+<%-- defer so these don't block reaching each page's own AOS.init() call further down. --%>
+<script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 	crossorigin="anonymous"></script>
-<script
+<script defer
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
 	crossorigin="anonymous"></script>
-<script
+<script defer
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
@@ -90,23 +153,52 @@
 	href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+	rel="stylesheet">
 
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <style>
 body, html {
-	font-family: 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif;
-	font-size: 15px;
+	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai',
+		sans-serif !important;
+	font-size: 16px;
 	scroll-behavior: smooth;
+	/* Clips the horizontal scroll sliver from full-bleed elements overshooting the scrollbar's width. */
+	overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Open Sans', 'Sarabun', 'Noto Sans Thai', sans-serif;
+	font-family: 'Google Sans', 'Open Sans', 'Sarabun', 'Noto Sans Thai',
+		sans-serif !important;
 }
 
-p	{
-	color:black;
+/* keep-all broke Safari's overflow-wrap for unspaced Thai text; overflow-wrap:anywhere is the safer fallback. */
+h1, h2, h3, p {
+	word-break: normal;
+	overflow-wrap: anywhere;
+	text-wrap: pretty;
+}
+
+/* Overrides Bootstrap's default blue focus box-shadow with the brand color. */
+.form-control:focus,
+.page-link:focus,
+.btn:focus, .btn.focus {
+	border-color: #BD2125;
+	box-shadow: 0 0 0 0.2rem rgba(189, 33, 37, 0.25);
+}
+
+a:focus, button:focus, input:focus, textarea:focus, select:focus {
+	outline-color: #BD2125;
+}
+
+p {
+	color: black;
 }
 
 #navbar-hover:hover {
@@ -115,8 +207,6 @@ p	{
 	border-color: white white #BD2125 !important;
 	border-bottom: 4px solid;
 }
-
-
 
 .parallax {
 	/* Set a specific height */
@@ -141,7 +231,7 @@ p	{
 
 .active {
 	border-color: white white #BD2125 !important;
-	border-bottom: 4px solid!important;
+	border-bottom: 4px solid !important;
 	color: #BD2125 !important;
 }
 
@@ -162,7 +252,7 @@ p	{
 .header {
 	position: fixed;
 	top: 0;
-	z-index: 1;
+	z-index: 1030;
 	width: 100%;
 	background-color: #f1f1f1;
 }
@@ -195,33 +285,32 @@ p	{
 	padding-bottom: 15px;
 }
 
-.detail {
-	background-color: white;
-	box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
-	margin-left: 10%;
-	margin-right: 10%;
-	margin-top: 10%;
-	margin-bottom: 5%;
-	padding-left: 5%;
-	padding-right: 5%;
-	padding-top: 5%;
-}
-
+/* .detail { */
+/* 	background-color: white; */
+/* 	box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75); */
+/* 	margin-left: 10%; */
+/* 	margin-right: 10%; */
+/* 	margin-top: 10%; */
+/* 	margin-bottom: 5%; */
+/* 	padding-left: 5%; */
+/* 	padding-right: 5%; */
+/* 	padding-top: 5%; */
+/* } */
 @media screen and (max-width: 870px) {
 	.vl {
 		display: none;
 	}
-	.detail {
-		background-color: white;
-		box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
-		margin-left: 2%;
-		margin-right: 2%;
-		margin-top: 15%;
-		margin-bottom: 1%;
-		padding-left: 5%;
-		padding-right: 5%;
-		padding-top: 5%;
-	}
+	/* 	.detail { */
+	/* 		background-color: white; */
+	/* 		box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75); */
+	/* 		margin-left: 2%; */
+	/* 		margin-right: 2%; */
+	/* 		margin-top: 15%; */
+	/* 		margin-bottom: 1%; */
+	/* 		padding-left: 5%; */
+	/* 		padding-right: 5%; */
+	/* 		padding-top: 5%; */
+	/* 	} */
 }
 
 .servicecon {
@@ -303,9 +392,9 @@ p {
 	text-align: center;
 	padding-left: 10%;
 	padding-right: 10%;
-	width:100%;
-	height:504px;
-	padding:50px 216px 50px 216px;
+	width: 100%;
+	height: 504px;
+	padding: 50px 216px 50px 216px;
 }
 
 .vl {
@@ -326,50 +415,44 @@ p {
 		padding-top: 5%;
 		padding-bottom: 15px;
 	}
-
 }
-
 
 /* Ensure the dropdown menu doesn't disappear when hovering over it */
 .nav-item .dropdown-menu {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%; /* Position below the button */
-    min-width: 160px; /* Adjust width as needed */
-    z-index: 1000; /* Ensure it appears above other content */
+	display: none; /* Hidden by default */
+	position: absolute;
+	top: 100%; /* Position below the button */
+	min-width: 160px; /* Adjust width as needed */
+	z-index: 1000; /* Ensure it appears above other content */
 }
 
 /* Add a smooth transition for better UX */
 .nav-item.dropdown .dropdown-menu {
-    transition: all 0.3s ease;
+	transition: all 0.3s ease;
 }
 
 .dropdown-item {
-    background-color: transparent!important; /* Removes the default background */
-    color: black!important; /* Sets the text color to black or any other color you prefer */
-    
+	background-color: transparent !important;
+	/* Removes the default background */
+	color: black !important;
+	/* Sets the text color to black or any other color you prefer */
 }
 
 .dropdown-item:hover {
-    background-color: inherit!important;
-    color: #BD2125!important;
-    border-color: white white #BD2125 !important;
-	border-bottom: 4px solid!important;
-    
+	background-color: inherit !important;
+	color: #BD2125 !important;
+	border-color: white white #BD2125 !important;
+	border-bottom: 4px solid !important;
 }
 
 .dropdown-item.active {
-    border: none!important;
+	border: none !important;
 }
-
-
-
 
 @media screen and (min-width: 870px) {
 	.imgservices2 {
 		
 	}
-
 }
 
 .hl {
@@ -424,7 +507,12 @@ a {
 }
 
 .breadcrumb {
-    background-color: transparent !important;
+	background-color: transparent !important;
+}
+
+/* Beats footer.jsp's Bootstrap 5 ".breadcrumb" on specificity so its padding doesn't flicker in after Bootstrap 4's. */
+html .breadcrumb {
+	padding: 0.75rem 1rem;
 }
 
 .videocon {
@@ -622,19 +710,69 @@ a {
 }
 
 a {
-  color: inherit !important; /* ใช้สีเดียวกับพ่อแม่ขององค์ประกอบ */
-  text-decoration: none; /* ถ้าต้องการลบเส้นใต้ด้วย */
+	color: inherit !important; /* ใช้สีเดียวกับพ่อแม่ขององค์ประกอบ */
+	text-decoration: none; /* ถ้าต้องการลบเส้นใต้ด้วย */
 }
-
-
 </style>
 
- <script>
-   if(location.search) location.replace(location.href.replace(/\?.+/, ""));
- </script>
+<script>
+	// Strips tracking/junk query params (fbclid, utm_*, etc.) but keeps "page" for blog.jsp's pagination.
+	if (location.search) {
+		var pageMatch = /(?:^|[?&])page=([^&]*)/.exec(location.search);
+		var cleanUrl = location.pathname
+				+ (pageMatch ? "?page=" + pageMatch[1] : "");
+		if (cleanUrl !== location.pathname + location.search) {
+			location.replace(cleanUrl);
+		}
+	}
+</script>
 
 </head>
 <body>
+	<div id="page-loading-bar" aria-hidden="true"></div>
+	<%-- Only fires for real same-origin navigations - skips anchors, new tabs, downloads, and other origins. --%>
+	<script>
+		<%-- bfcache restores the page (and its stuck is-loading class) without reloading it. --%>
+		window.addEventListener('pageshow', function(e) {
+			if (e.persisted) {
+				var bar = document.getElementById('page-loading-bar');
+				bar.className = 'is-done';
+				setTimeout(function() {
+					bar.className = '';
+				}, 600);
+			}
+		});
+		document.addEventListener('click', function(e) {
+			var link = e.target.closest('a[href]');
+			if (!link) {
+				return;
+			}
+			var href = link.getAttribute('href');
+			if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0
+					|| href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) {
+				return;
+			}
+			if (link.target && link.target !== '_self') {
+				return;
+			}
+			if (link.hasAttribute('download')) {
+				return;
+			}
+			var url;
+			try {
+				url = new URL(href, window.location.href);
+			} catch (err) {
+				return;
+			}
+			if (url.origin !== window.location.origin) {
+				return;
+			}
+			var bar = document.getElementById('page-loading-bar');
+			bar.className = 'is-loading';
+			// Forces the browser to paint the bar before navigation tears this page down.
+			void bar.offsetWidth;
+		});
+	</script>
 	<!-- Google Tag Manager (noscript) -->
 	<noscript>
 		<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF235VW"
@@ -646,5 +784,12 @@ a {
 	<tiles:insertAttribute name="body" ignore="true" />
 	<tiles:insertAttribute name="partner" ignore="true" />
 	<tiles:insertAttribute name="footer" ignore="true" />
+
+	<script>
+		// Glues the last space with &nbsp; so a short trailing token doesn't wrap onto its own line.
+		document.querySelectorAll('.no-orphan').forEach(function(el) {
+			el.innerHTML = el.innerHTML.replace(/\s+(\S+)\s*$/, '&nbsp;$1');
+		});
+	</script>
 </body>
 </html>

@@ -20,6 +20,17 @@ public class Constant {
     private String webPath;
     private static String webContext;
     private String imgContext;
+    private String recaptchaSiteKey;
+    private String recaptchaSecretKey;
+    private boolean redesignEnabled;
+
+	public boolean isRedesignEnabled() {
+		return redesignEnabled;
+	}
+
+	public void setRedesignEnabled(boolean redesignEnabled) {
+		this.redesignEnabled = redesignEnabled;
+	}
 
 	public String getGoogleApiKey() {
 		return googleApiKey;
@@ -27,6 +38,22 @@ public class Constant {
 
 	public void setGoogleApiKey(String googleApiKey) {
 		this.googleApiKey = googleApiKey;
+	}
+
+	public String getRecaptchaSiteKey() {
+		return recaptchaSiteKey;
+	}
+
+	public void setRecaptchaSiteKey(String recaptchaSiteKey) {
+		this.recaptchaSiteKey = recaptchaSiteKey;
+	}
+
+	public String getRecaptchaSecretKey() {
+		return recaptchaSecretKey;
+	}
+
+	public void setRecaptchaSecretKey(String recaptchaSecretKey) {
+		this.recaptchaSecretKey = recaptchaSecretKey;
 	}
 
 	public String getTest() {

@@ -6,13 +6,18 @@
 	<div id="footer" style="display: none;">
     	<s:action name="footer" />
 	</div>
+<c:choose>
+	<c:when test="${constant.redesignEnabled}">
+		<jsp:include page="/pages-front-redesign/_layout/footer.jsp" />
+	</c:when>
+	<c:otherwise>
 <footer>
     <div class="footerbg">
         <div class="container" style="padding-top:20px;">
         <div class="dropdown1">
             <div class="row">
                 <div class="col-md col-sm col-xs " align="left">
-                	<img src="/pages-front/img/logo/logo2-w.png" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
+                	<img src="/pages-front/img/logo/logo2-w.png" width="200" height="74" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; object-fit: contain;">
                     <div class="footer-section">
                         <p class="footer-heading">Cube SoftTech Co., Ltd.</p><br>
                         <a href="https://maps.app.goo.gl/a1N8Xi2qvhbVKFsW8" class="footer-link" target="_blank">
@@ -133,7 +138,7 @@
         <div class="dropdown2">
         
         	<div align="center">
-        		<img src="/pages-front/img/logo/logo2-w.png" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; ">
+        		<img src="/pages-front/img/logo/logo2-w.png" width="200" height="74" alt="Cube SoftTech Co., Ltd." style="width:200px; padding-bottom:16px; object-fit: contain;">
                 <div class="footer-section">
                 	<p class="footer-heading">Cube SoftTech Co., Ltd.</p><br>
                     <a href="https://maps.app.goo.gl/a1N8Xi2qvhbVKFsW8" class="footer-link" target="_blank">
@@ -257,15 +262,33 @@
 <!-- Footer -->
 
 <script>
+// DOMContentLoaded, not $(document).ready() directly - jQuery only loads
+// once now, deferred, from baseLayout.jsp (a duplicate synchronous copy
+// that used to load earlier in pages-front-redesign/_layout/header.jsp was removed -
+// this script was unknowingly depending on that copy's timing, not
+// baseLayout's deferred one, which hadn't necessarily run yet at this
+// point in parsing). Deferred scripts always finish before
+// DOMContentLoaded fires, so $ is guaranteed ready inside this callback.
+document.addEventListener('DOMContentLoaded', function() {
 $(document).ready(function () {
 
-    // Event delegation for collapsible buttons
+    // Event delegation for collapsible buttons. Used to rely on
+    // Bootstrap 5's own JS to open/close the clicked section (this
+    // handler only closed the *other* ones + rotated the icon) - now
+    // does the open/close itself too (the .classList.toggle('show') /
+    // aria-expanded lines below), since Bootstrap 5 was removed
+    // entirely (see the CSS/JS <link>/<script> comment further down -
+    // its reboot was overriding Bootstrap 4 styling on every page
+    // site-wide, not just here).
     document.querySelector('.dropdown2').addEventListener('click', function(event) {
         const target = event.target.closest('.btn-link');
 
         if (target) {
             const toggleIcon = target.querySelector('.bi'); // Select the icon directly
-            
+            const targetSelector = target.getAttribute('data-bs-target');
+            const targetCollapse = targetSelector ? document.querySelector(targetSelector) : null;
+            const wasOpen = targetCollapse ? targetCollapse.classList.contains('show') : false;
+
             // Close other dropdowns and reset their icons
             const allButtons = document.querySelectorAll('.btn-link');
             allButtons.forEach(button => {
@@ -281,30 +304,42 @@ $(document).ready(function () {
                             collapseElement.classList.remove('show'); // Close other dropdowns
                         }
                     }
+                    button.setAttribute('aria-expanded', 'false');
                 }
             });
+
+            // Toggle the clicked section itself
+            if (targetCollapse) {
+                targetCollapse.classList.toggle('show', !wasOpen);
+            }
+            target.setAttribute('aria-expanded', String(!wasOpen));
 
             // Toggle current dropdown icon
             toggleIcon.classList.toggle('rotate-90');
         }
     });
 });
+});
 
-(function() {
-
-    if (window.localStorage) {
-        if (!localStorage.getItem('reload')) {
-            localStorage.setItem('reload', 'true');
-            window.location.reload();
-        } else {
-            localStorage.removeItem('reload');
-        }
-    }
-})();
+// Forced every page to silently reload itself once per session (added
+// 2024-10-11, "Fix loading bug" - likely band-aiding the Bootstrap 4/5
+// conflict removed since). Nothing else reads/writes the 'reload' key.
+// That forced double-load is what caused a real page navigation to
+// happen twice in a row on every visit - the scrollbar flash this was
+// chased for is exactly what a second, near-instant reload looks like.
 </script>
 
 
 <style>
+/* Bootstrap 5's own .collapse/.collapse.show, copied here now that
+   Bootstrap 5 itself has been removed (see the click handler above and
+   the CSS/JS <link>/<script> comment further down for why). Instant
+   show/hide, not Bootstrap 5's animated height transition - simpler,
+   and nothing here was relying on the animation specifically. */
+.collapse:not(.show) {
+    display: none;
+}
+
 .bi {
     transition: transform 0.3s ease; /* Smooth transition for rotation */
 }
@@ -475,8 +510,32 @@ footer .active {
 
 </style>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<%--
+	Bootstrap 4.3.1 CSS/JS and an older Bootstrap Icons removed from here
+	earlier - both were exact/near-duplicates of what baseLayout.jsp's
+	<head> already provides (same 4.3.1 CDN URL + integrity hash; Icons
+	1.10.5 vs the 1.11.3 already loaded).
+
+	Bootstrap 5.3.0 (CSS + JS bundle) removed too, for a bigger reason:
+	its own reboot layer restyles bare HTML elements/Bootstrap utility
+	classes (figure, .navbar, .dropdown-menu, .breadcrumb, .gap-*, .vr,
+	and however many more weren't found yet) on every page site-wide,
+	not just here in footer - a <link rel="stylesheet"> applies to the
+	whole document no matter where its own tag sits in the HTML. Since
+	footer is always the last tile rendered, its Bootstrap 5 rules were
+	winning the cascade tie against Bootstrap 4's matching ones (same
+	specificity, later wins) the moment this file's CSS finished
+	loading, several hundred ms into every page load.
+
+	.dropdown2's 5 collapsible sections were the only real dependency on
+	Bootstrap 5 in this whole file (data-bs-toggle="collapse") - every
+	other Bootstrap-looking class here (.container/.row/.col-*/.btn/
+	.d-flex/etc.) is also defined by Bootstrap 4.3.1 above, so those
+	fall back to that instead, no separate fix needed for them. The
+	collapse open/close itself is now handled by the click handler
+	above instead (plain classList.toggle('show') + aria-expanded), and
+	.collapse's display:none/block CSS is copied into this file's own
+	<style> block above - see the comment there.
+--%>
+	</c:otherwise>
+</c:choose>

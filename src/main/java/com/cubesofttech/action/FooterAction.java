@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -25,14 +24,8 @@ public class FooterAction extends ActionSupport {
     @Autowired
 	private ArticleDAO articleDAO;
 
-    private List<Footer> footerList;
-    private Footer footer;
-    private String userCreate;
-    private String subFooterList;
-
     private HttpServletRequest request = ServletActionContext.getRequest();
-    private HttpServletResponse response = ServletActionContext.getResponse();
-    
+
     public String list() {
         
         try {
@@ -51,65 +44,7 @@ public class FooterAction extends ActionSupport {
             return SUCCESS;
         } catch (Exception e) {
             log.error("Error occurred while fetching footer data", e);
-            e.printStackTrace();
             return ERROR;
         }
-    }
-
-    // Getters and setters
-    public FooterDAO getFooterDAO() {
-        return footerDAO;
-    }
-
-    public void setFooterDAO(FooterDAO footerDAO) {
-        this.footerDAO = footerDAO;
-    }
-
-    public List<Footer> getFooterList() {
-        return footerList;
-    }
-
-    public void setFooterList(List<Footer> footerList) {
-        this.footerList = footerList;
-    }
-
-    public Footer getFooter() {
-        return footer;
-    }
-
-    public void setFooter(Footer footer) {
-        this.footer = footer;
-    }
-
-    public String getUserCreate() {
-        return userCreate;
-    }
-
-    public void setUserCreate(String userCreate) {
-        this.userCreate = userCreate;
-    }
-
-    public String getSubFooterList() {
-        return subFooterList;
-    }
-
-    public void setSubFooterList(String subFooterList) {
-        this.subFooterList = subFooterList;
-    }
-
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    public HttpServletResponse getResponse() {
-        return response;
-    }
-
-    public void setResponse(HttpServletResponse response) {
-        this.response = response;
     }
 }

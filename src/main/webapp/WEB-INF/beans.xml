@@ -26,7 +26,10 @@
         <property name="googleApiKey" value="${google.api.key}" />
         <property name="webPath" value="${web.path}" />
         <property name="webContext" value="${web.context}" />
-        <property name="imgContext" value="${web.img.context}" />        
+        <property name="imgContext" value="${web.img.context}" />
+        <property name="recaptchaSiteKey" value="${recaptcha.site.key}" />
+        <property name="recaptchaSecretKey" value="${recaptcha.secret.key}" />
+        <property name="redesignEnabled" value="${redesign.enabled}" />
     </bean>
     
     <!-- DEV-FSC : ROOT DATA SOURCE [BEGIN]-->
@@ -66,15 +69,15 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
 	    <property name="host" value="mail.cubesofttech.com"/>
 	    <property name="port" value="587"/>
-	    <property name="username" value="chatchai.k@cubesofttech.com"/>
+	    <property name="username" value="chatchai.k@cubesofttech.com"/> <!-- auth fails - password is dead -->
 	    <property name="password" value="Cubeteam2022#"/>
 	    <property name="javaMailProperties">
 	        <props>
 	            <!-- Use SMTP-AUTH to authenticate to SMTP server -->
 	            <prop key="mail.smtp.auth">true</prop>
 	            <!-- Use TLS to encrypt communication with SMTP server -->
-	            <prop key="mail.smtp.starttls.enable">false</prop>
-	             
+	            <prop key="mail.smtp.starttls.enable">true</prop>
+	            <prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
 	        </props>
 	    </property>
 	</bean>

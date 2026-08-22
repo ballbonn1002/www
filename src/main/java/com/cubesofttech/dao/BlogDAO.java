@@ -10,7 +10,15 @@ public interface BlogDAO {
 	
 	public List<Blog> findAllWithPageUri() throws Exception;
 	
-	public List<Blog> findAllBlogsWithPageUri() throws Exception;
-	
-	public List<Blog> findAllNewsWithPageUri() throws Exception;
+	public List<Blog> findAllBlogsWithPageUri(int limit, int offset) throws Exception;
+
+	public List<Blog> findAllNewsWithPageUri(int limit, int offset) throws Exception;
+
+	public long countAllBlogs() throws Exception;
+
+	public long countAllNews() throws Exception;
+
+	public void incrementViewCount(int articleId) throws Exception;
+
+	public String findAuthorNameByUserId(String userId) throws Exception;
 }
