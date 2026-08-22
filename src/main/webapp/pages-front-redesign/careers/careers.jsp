@@ -560,12 +560,6 @@
 		if (!link || !target) {
 			return;
 		}
-		var prefersReducedMotion = window.matchMedia
-				&& window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-		function easeInOutCubic(t) {
-			return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-		}
 
 		function targetScrollY() {
 			var navbarOffset = parseFloat(getComputedStyle(document.documentElement)
@@ -575,47 +569,11 @@
 
 		link.addEventListener('click', function(e) {
 			e.preventDefault();
-
-			if (prefersReducedMotion) {
-				window.scrollTo({ top : targetScrollY(), left : 0, behavior : 'auto' });
-				return;
-			}
-
-			var startY = window.scrollY;
-			var targetY = targetScrollY();
-			var distance = targetY - startY;
-			var duration = Math.min(2500, Math.max(1200, Math.abs(distance) * 0.5));
-			var startTime = null;
-			var cancelled = false;
-
-			function cancel() {
-				cancelled = true;
-				window.removeEventListener('wheel', cancel);
-				window.removeEventListener('touchstart', cancel);
-			}
-			window.addEventListener('wheel', cancel, { passive : true });
-			window.addEventListener('touchstart', cancel, { passive : true });
-
-			function step(timestamp) {
-				if (cancelled) {
-					return;
-				}
-				if (startTime === null) {
-					startTime = timestamp;
-				}
-				var progress = Math.min((timestamp - startTime) / duration, 1);
-				window.scrollTo({
-					top : startY + distance * easeInOutCubic(progress),
-					left : 0,
-					behavior : 'auto'
-				});
-				if (progress < 1) {
-					requestAnimationFrame(step);
-				} else {
-					cancel();
-				}
-			}
-			requestAnimationFrame(step);
+			var htmlEl = document.documentElement;
+			var prevScrollBehavior = htmlEl.style.scrollBehavior;
+			htmlEl.style.scrollBehavior = 'auto';
+			window.scrollTo({ top : targetScrollY(), left : 0, behavior : 'auto' });
+			htmlEl.style.scrollBehavior = prevScrollBehavior;
 		});
 	})();
 
