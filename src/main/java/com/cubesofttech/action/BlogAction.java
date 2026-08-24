@@ -1,11 +1,6 @@
 package com.cubesofttech.action;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -484,11 +478,8 @@ public class BlogAction extends ActionSupport {
 				request.setAttribute("path", file.getPath());
 				request.setAttribute("alt_name", file.getAltName());
 
-				int[] dimensions = resolveImageDimensions(constant.getImgContext() + file.getPath());
-				if (dimensions != null) {
-					request.setAttribute("ogImageWidth", dimensions[0]);
-					request.setAttribute("ogImageHeight", dimensions[1]);
-				}
+				request.setAttribute("ogImageWidth", OG_IMAGE_WIDTH);
+				request.setAttribute("ogImageHeight", OG_IMAGE_HEIGHT);
 			}
 
 			if (blog.getArticleTypeId().equals(1)) {
@@ -536,37 +527,7 @@ public class BlogAction extends ActionSupport {
 		}
 	}
 
-	private static final Map<String, int[]> IMAGE_DIMENSION_CACHE = new ConcurrentHashMap<String, int[]>();
-	private static final String IMAGE_FETCH_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-			+ "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-
-	private int[] resolveImageDimensions(String imageUrl) {
-		int[] cached = IMAGE_DIMENSION_CACHE.get(imageUrl);
-		if (cached != null) {
-			return cached;
-		}
-		HttpURLConnection connection = null;
-		try {
-			connection = (HttpURLConnection) new URL(imageUrl).openConnection();
-			connection.setRequestProperty("User-Agent", IMAGE_FETCH_USER_AGENT);
-			BufferedImage image;
-			try (InputStream in = connection.getInputStream()) {
-				image = ImageIO.read(in);
-			}
-			if (image == null) {
-				return null;
-			}
-			int[] dimensions = { image.getWidth(), image.getHeight() };
-			IMAGE_DIMENSION_CACHE.put(imageUrl, dimensions);
-			return dimensions;
-		} catch (IOException e) {
-			log.error("Could not read image dimensions from " + imageUrl, e);
-			return null;
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-	}
+	private static final int OG_IMAGE_WIDTH = 1200;
+	private static final int OG_IMAGE_HEIGHT = 630;
 
 }
