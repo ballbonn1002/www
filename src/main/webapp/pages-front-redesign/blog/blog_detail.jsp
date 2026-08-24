@@ -815,6 +815,7 @@ p {
 			cursor: pointer;
 			outline: none;
 			box-shadow: none;
+			color: #212529;
 		}
 
 		.copy-link-tooltip {
