@@ -129,7 +129,7 @@ public class CareersAction extends ActionSupport {
 
 	public String init() {
 		try {
-			List<Job> jobList = jobDAO.findAllWithPageUri();
+			List<Job> jobList = jobDAO.findAllJobsWithPageUri();
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("testimonials", buildMockTestimonials());
 			request.setAttribute("constant", constant);

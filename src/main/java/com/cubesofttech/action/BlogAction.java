@@ -363,7 +363,7 @@ public class BlogAction extends ActionSupport {
 			List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
 			request.setAttribute("relatedBlogs", relatedBlogs);
 
-			List<Blog> blogList = blogDAO.findAllWithPageUri();
+			List<Blog> blogList = blogDAO.findLatestArticlesWithPageUri();
 			request.setAttribute("latestBlogs", blogList);
 			log.debug(constant);
 			request.setAttribute("constant", constant);

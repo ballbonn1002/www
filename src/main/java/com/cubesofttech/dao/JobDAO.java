@@ -7,6 +7,6 @@ import com.cubesofttech.model.Job;
 public interface JobDAO {
 	public Job findById(int jobId) throws Exception;
 
-	public List<Job> findAllWithPageUri() throws Exception;
+	public List<Job> findAllJobsWithPageUri() throws Exception;
 
 }

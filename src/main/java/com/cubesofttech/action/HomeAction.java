@@ -36,13 +36,13 @@ public class HomeAction extends ActionSupport {
 			// other action already sets it, this one just never did.
 			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
 
-			blogList = blogDAO.findAllWithPageUri();
+			blogList = blogDAO.findLatestArticlesWithPageUri();
 			request.setAttribute("blogList", blogList);
 			if(blogList != null && !blogList.isEmpty()) {
 				request.setAttribute("newBlog", blogList.get(0));
 			}
 			
-			List<Job> jobList = jobDAO.findAllWithPageUri();
+			List<Job> jobList = jobDAO.findAllJobsWithPageUri();
 			request.setAttribute("jobList", jobList);
 			request.setAttribute("constant", constant);
 

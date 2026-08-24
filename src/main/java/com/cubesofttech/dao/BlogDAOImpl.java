@@ -38,7 +38,7 @@ public class BlogDAOImpl implements BlogDAO {
 	private static final int FIND_ALL_WITH_PAGE_URI_LIMIT = 10;
 
 	@Override
-	public List<Blog> findAllWithPageUri() throws Exception {
+	public List<Blog> findLatestArticlesWithPageUri() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
 		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
@@ -63,32 +63,15 @@ public class BlogDAOImpl implements BlogDAO {
 
 	@Override
 	public List<Blog> findAllBlogsWithPageUri(int limit, int offset) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();
-		List<Blog> articleList = null;
-		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
-		try {
-			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, LEFT(a.detail, :detailLength) AS detail, a.file_id, a.time_post, a.user_create, a.user_update, "
-				+ "a.time_create, a.time_update, a.view_count, u.name, f.path, p.page_uri_id, a.status "
-				+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
-				+ "LEFT JOIN file f ON a.file_id = f.file_id "
-				+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-				+ "WHERE p.page_uri_id LIKE '%blog%' AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
-			SQLQuery query = session.createSQLQuery(sql);
-			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-			query.setTimestamp("nowParam", nowTs);
-			query.setInteger("detailLength", DETAIL_PREVIEW_RAW_LENGTH);
-			query.setFirstResult(offset);
-			query.setMaxResults(limit);
-			articleList = query.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return articleList;
+		return findAllWithPageUriLike("%blog%", limit, offset);
 	}
 
 	@Override
 	public List<Blog> findAllNewsWithPageUri(int limit, int offset) throws Exception {
+		return findAllWithPageUriLike("%news%", limit, offset);
+	}
+
+	private List<Blog> findAllWithPageUriLike(String pageUriPattern, int limit, int offset) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
 		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
@@ -98,9 +81,10 @@ public class BlogDAOImpl implements BlogDAO {
 				+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 				+ "LEFT JOIN file f ON a.file_id = f.file_id "
 				+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-				+ "WHERE p.page_uri_id LIKE '%news%' AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
+				+ "WHERE p.page_uri_id LIKE :pageUriPattern AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			query.setString("pageUriPattern", pageUriPattern);
 			query.setTimestamp("nowParam", nowTs);
 			query.setInteger("detailLength", DETAIL_PREVIEW_RAW_LENGTH);
 			query.setFirstResult(offset);
@@ -109,6 +93,7 @@ public class BlogDAOImpl implements BlogDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return articleList;
 	}
 

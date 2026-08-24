@@ -30,7 +30,7 @@ public class JobDAOImpl implements JobDAO{
 	}
 
 	@Override
-	public List<Job> findAllWithPageUri() throws Exception {
+	public List<Job> findAllJobsWithPageUri() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Job> jobList = null;
 		try {

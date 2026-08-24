@@ -30,7 +30,7 @@ public class FooterAction extends ActionSupport {
         
         try {
         	HttpSession session = request.getSession();
-            List<Map<String, Object>> articleList = articleDAO.findAllPageUriArticle();
+            List<Map<String, Object>> articleList = articleDAO.findLatestArticlesByTypeWithPageUri();
         	List<Footer> footerList = footerDAO.findParent();
         	List<Map<String, Object>> footerChild = footerDAO.findAllChildFooter();
         	

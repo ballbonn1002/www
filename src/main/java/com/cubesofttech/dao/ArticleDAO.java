@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface ArticleDAO {
 
-	public List<Map<String, Object>> findAllPageUriArticle() throws Exception;
+	public List<Map<String, Object>> findLatestArticlesByTypeWithPageUri() throws Exception;
 
 }

@@ -8,7 +8,7 @@ public interface BlogDAO {
 	
 	public Blog findByArticleId(Integer articleId) throws Exception;
 	
-	public List<Blog> findAllWithPageUri() throws Exception;
+	public List<Blog> findLatestArticlesWithPageUri() throws Exception;
 	
 	public List<Blog> findAllBlogsWithPageUri(int limit, int offset) throws Exception;
 
