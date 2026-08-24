@@ -715,7 +715,7 @@
 			<h2 class="softdev-cta__title">Ready to Start Your Software Project?</h2>
 			<p class="softdev-cta__body">From analysis to deployment, our team is
 				ready to help bring your idea to life.</p>
-			<a class="softdev-cta__button" href="/contacts">Contact Us</a>
+			<a class="softdev-cta__button" href="/contacts">Contact us</a>
 		</div>
 	</div>
 </section>

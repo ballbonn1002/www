@@ -611,7 +611,7 @@
 			<h2 class="itout-cta__title">Need Reliable IT Staff?</h2>
 			<p class="itout-cta__body">Let us help you find the right talent to
 				strengthen your team.</p>
-			<a class="itout-cta__button" href="/contacts">Contact Us</a>
+			<a class="itout-cta__button" href="/contacts">Contact us</a>
 		</div>
 	</div>
 </section>

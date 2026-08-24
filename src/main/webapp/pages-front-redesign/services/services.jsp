@@ -406,7 +406,7 @@
 			<h2 class="services-cta__title">Let's Build Something Great Together</h2>
 			<p class="services-cta__body">Tell us about your project and we'll help you
 				find the right service for your business.</p>
-			<a class="services-cta__button" href="/contacts">Contact Us</a>
+			<a class="services-cta__button" href="/contacts">Contact us</a>
 		</div>
 	</div>
 </section>

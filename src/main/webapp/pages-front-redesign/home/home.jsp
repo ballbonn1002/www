@@ -1497,7 +1497,7 @@
 				<p class="home-faq__body">Our team is ready to advise on the
 					right IT staffing or software solution for your business.</p>
 			</div>
-			<a class="home-faq__cta" href="/contacts">Contact Us <span
+			<a class="home-faq__cta" href="/contacts">Contact us <span
 				aria-hidden="true">&rarr;</span></a>
 		</div>
 	</section>

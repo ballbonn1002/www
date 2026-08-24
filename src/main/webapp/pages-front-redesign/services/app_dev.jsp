@@ -679,7 +679,7 @@
 			<h2 class="appdev-cta__title">Have a Mobile App Idea?</h2>
 			<p class="appdev-cta__body">Let's talk about how we can turn it into a
 				working product.</p>
-			<a class="appdev-cta__button" href="/contacts">Contact Us</a>
+			<a class="appdev-cta__button" href="/contacts">Contact us</a>
 		</div>
 	</div>
 </section>
