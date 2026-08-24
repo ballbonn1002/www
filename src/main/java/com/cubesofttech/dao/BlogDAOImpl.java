@@ -35,13 +35,15 @@ public class BlogDAOImpl implements BlogDAO {
 		return article;
 	}
 
+	private static final int FIND_ALL_WITH_PAGE_URI_LIMIT = 10;
+
 	@Override
 	public List<Blog> findAllWithPageUri() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Blog> articleList = null;
 		Timestamp nowTs = new Timestamp(System.currentTimeMillis());
 		try {
-			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, a.detail, a.file_id, a.status, a.user_create, a.user_update, "
+			String sql = "SELECT a.article_id, a.article_type_id, a.topic, a.user_id, a.file_id, a.status, a.user_create, a.user_update, "
 					+ "a.time_create, a.time_update, a.view_count, u.name, f.path, p.page_uri_id "
 					+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 					+ "LEFT JOIN file f ON a.file_id = f.file_id "
@@ -51,6 +53,7 @@ public class BlogDAOImpl implements BlogDAO {
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			query.setTimestamp("nowParam", nowTs);
+			query.setMaxResults(FIND_ALL_WITH_PAGE_URI_LIMIT);
 			articleList = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
