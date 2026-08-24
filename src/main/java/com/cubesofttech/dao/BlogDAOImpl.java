@@ -48,7 +48,7 @@ public class BlogDAOImpl implements BlogDAO {
 					+ "FROM article a LEFT JOIN user u ON a.user_id = u.id "
 					+ "LEFT JOIN file f ON a.file_id = f.file_id "
 					+ "LEFT JOIN page_uri p ON a.article_id = p.model_id "
-					+ "WHERE (p.page_uri_id LIKE '%blog%' OR p.page_uri_id LIKE '%news%') "
+					+ "WHERE p.model = 'article' "
 					+ "AND a.status = 1 AND a.time_post <= :nowParam ORDER BY a.time_post DESC ";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);

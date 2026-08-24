@@ -28,9 +28,8 @@ public class ArticleRelatedDAOImpl implements ArticleRelatedDAO {
 					+ "LEFT JOIN user u ON a.user_id = u.id "
 					+ "LEFT JOIN file f ON f.file_id = a.file_id "
 					+ "LEFT JOIN page_uri p ON p.model_id = ar.related_article_id "
-					// Guards against the page_uri model_id collision - see BlogDAOImpl.findAllWithPageUri().
 					+ "WHERE ar.article_id = :articleId "
-					+ "AND (p.page_uri_id LIKE '%blog%' OR p.page_uri_id LIKE '%news%') "
+					+ "AND p.model = 'article' "
 					+ "ORDER BY ar.related_article_id DESC";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter("articleId", articleId);
