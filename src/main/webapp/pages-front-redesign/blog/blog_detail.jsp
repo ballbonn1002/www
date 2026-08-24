@@ -1030,8 +1030,10 @@ p {
 				updateNavState();
 			});
 
-	$('#heroImageModal').on('hidden.bs.modal', function() {
-		$('body').css('padding-right', '');
-		$('.modal-backdrop').remove();
+	document.addEventListener('DOMContentLoaded', function() {
+		$('#heroImageModal').on('hidden.bs.modal', function() {
+			$('body').css('padding-right', '');
+			$('.modal-backdrop').remove();
+		});
 	});
 </script>
