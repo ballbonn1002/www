@@ -1,6 +1,5 @@
 package com.cubesofttech.action;
 
-import java.io.File;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,7 +53,6 @@ public class BlogAction extends ActionSupport {
 	private static final int LEGACY_UNPAGINATED_LIMIT = 10000;
 	// Sentinel for "..." in the pagination component's page-number list.
 	public static final int PAGE_ELLIPSIS = -1;
-	private String metaDescription = "Cube SoftTech is an innovative, high-quality software development company. We are a professional company, focused on IT consulting, web application development &amp; integration. Our services cover every aspect of web / mobile development, from start to finish. From one off projects to a fully outsourced development team., Java Outsourcing, IT Staff Outsourcing, IT Outsource, Staff Outsourcing, IT Staffing solutions, Outsource IT Staff, เอ้าซอร์สซิ่ง, ไอที เอ้าซอร์สซิ่ง";
 
 	@Autowired
 	private Constant constant;
@@ -74,25 +72,9 @@ public class BlogAction extends ActionSupport {
 	@Autowired
 	private PageUriDAO pageUriDAO;
 
-	private Blog blog;
 	private int articleId;
-	private File fileUpload;
-	private String fileUploadSize;
-	private String fileUploadFileName;
-	private String detail;
-	private String topic;
-	private String type;
-	private String tags;
-	private String path;
-	private int fileId;
-	private String author;
-	private String fileName;
-	private String fileType;
-	private String srcDelete;
 	// 1-based; upper-bound clamp happens in initRedesignPagination().
 	private int page = 1;
-
-	File articleImageFile;
 
 	public int getPage() {
 		return page;
@@ -102,124 +84,12 @@ public class BlogAction extends ActionSupport {
 		this.page = page < 1 ? 1 : page;
 	}
 
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public String getTags() {
-		return tags;
-	}
-
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getTopic() {
-		return topic;
-	}
-
-	public void setTopic(String topic) {
-		this.topic = topic;
-	}
-
-	public int getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(int fileId) {
-		this.fileId = fileId;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
 	public int getArticleId() {
 		return articleId;
 	}
 
 	public void setArticleId(int articleId) {
 		this.articleId = articleId;
-	}
-
-	public File getFileUpload() {
-		return fileUpload;
-	}
-
-	public void setFileUpload(File fileUpload) {
-		this.fileUpload = fileUpload;
-	}
-
-	public String getFileUploadSize() {
-		return fileUploadSize;
-	}
-
-	public void setFileUploadSize(String fileUploadSize) {
-		this.fileUploadSize = fileUploadSize;
-	}
-
-	public String getFileUploadFileName() {
-		return fileUploadFileName;
-	}
-
-	public void setFileUploadFileName(String fileUploadFileName) {
-		this.fileUploadFileName = fileUploadFileName;
-	}
-
-	public File getArticleImageFile() {
-		return articleImageFile;
-	}
-
-	public void setArticleImageFile(File articleImageFile) {
-		this.articleImageFile = articleImageFile;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileType() {
-		return fileType;
-	}
-
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
-	}
-
-	public String getSrcDelete() {
-		return srcDelete;
-	}
-
-	public void setSrcDelete(String srcDelete) {
-		this.srcDelete = srcDelete;
 	}
 
 	public String init() {
