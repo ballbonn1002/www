@@ -53,6 +53,8 @@ public class BlogAction extends ActionSupport {
 	private static final int LEGACY_UNPAGINATED_LIMIT = 10000;
 	// Sentinel for "..." in the pagination component's page-number list.
 	public static final int PAGE_ELLIPSIS = -1;
+	private static final Integer ARTICLE_TYPE_NEWS = 1;
+	private static final Integer ARTICLE_TYPE_BLOG = 2;
 
 	@Autowired
 	private Constant constant;
@@ -341,7 +343,7 @@ public class BlogAction extends ActionSupport {
 			}
 			log.debug(blog);
 			request.setAttribute("tags", tagArDAO.findArticleInTag(getArticleId()));
-			if (blog != null && (!"".equals(blog.getFileId()) && blog.getFileId() != null)) {
+			if (!"".equals(blog.getFileId()) && blog.getFileId() != null) {
 				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
 				log.debug(blog.getFileId());
 				request.setAttribute("name", file.getName());
@@ -352,9 +354,9 @@ public class BlogAction extends ActionSupport {
 				request.setAttribute("ogImageHeight", OG_IMAGE_HEIGHT);
 			}
 
-			if (blog.getArticleTypeId().equals(1)) {
+			if (blog.getArticleTypeId().equals(ARTICLE_TYPE_NEWS)) {
 				request.setAttribute("pageURI", "/news");
-			} else if (blog.getArticleTypeId().equals(2)) {
+			} else if (blog.getArticleTypeId().equals(ARTICLE_TYPE_BLOG)) {
 				request.setAttribute("pageURI", "/blog");
 			}
 
@@ -368,15 +370,15 @@ public class BlogAction extends ActionSupport {
 			request.setAttribute("requestURI", requestURI);
 
 			DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-			if (blog.getTimePost() == null)
-				return null;
-			ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
-			request.setAttribute("datePublished", zonedDateTime.format(formatter));
+			if (blog.getTimePost() != null) {
+				ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
+				request.setAttribute("datePublished", zonedDateTime.format(formatter));
+			}
 
-			if (blog.getTimeUpdate() == null)
-				return null;
-			ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
-			request.setAttribute("dateModified", zonedDateTime2.format(formatter));
+			if (blog.getTimeUpdate() != null) {
+				ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
+				request.setAttribute("dateModified", zonedDateTime2.format(formatter));
+			}
 
 			PageUri pageUri = null;
 			try {
