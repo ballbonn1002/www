@@ -31,11 +31,7 @@
 	text-align: center;
 	overflow: hidden;
 	padding: 80px 5% 60px;
-	background: radial-gradient(circle at 50% 50%, rgba(255, 74, 77, 0.2) 0%,
-		rgba(123, 143, 221, 0) 60%) center/cover no-repeat,
-		radial-gradient(circle at 50% 50%, rgba(255, 32, 36, 0.12) 0%,
-		rgba(221, 123, 125, 0) 60%) center/cover no-repeat,
-		radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1.6px) 0
+	background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1.6px) 0
 		0/24px 24px repeat, #F7F7F7;
 }
 
