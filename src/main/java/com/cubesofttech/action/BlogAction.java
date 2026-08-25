@@ -309,93 +309,123 @@ public class BlogAction extends ActionSupport {
 		try {
 			log.debug(getArticleId());
 
-			String requestURI = (String) request.getAttribute("rewrittenRequestURI");
-			if (requestURI == null) {
-				requestURI = request.getRequestURI(); // Fallback if not set
-			}
-			log.debug("Request URI: " + requestURI);
-
+			String requestURI = resolveRequestURI();
 			boolean redesign = isRedesignPreviewEnabled();
 
 			request.setAttribute("maxLatestBlog", MAXLATESTBLOG);
 			request.setAttribute("bloguri", requestURI);
 
-			// Runs before the fetch so the increment shows up in this same response.
-			if (!isSpeculativeRequest() && !isKnownBotUserAgent() && !alreadyViewedThisSession(getArticleId())
-					&& !exceedsIpQuota(getArticleId())) {
-				blogDAO.incrementViewCount(getArticleId());
-			}
+			trackViewCount(getArticleId());
 
 			Blog blog = blogDAO.findByArticleId(getArticleId());
 			if (blog == null) {
 				log.error("No article found for articleId=" + getArticleId());
 				return NOT_FOUND;
 			}
-			log.debug(blog.getTimePost());
-			request.setAttribute("blog", blog);
-			request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
-			log.debug("blog.detail: " + blog.getDetail());
-			// Only the redesign JSP renders ${cleanDetail} - legacy renders ${blog.detail} raw.
-			if (redesign) {
-				String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
-				request.setAttribute("cleanDetail", cleanDetail);
-				log.debug("cleanDetail: " + cleanDetail);
-			}
-			log.debug(blog);
-			request.setAttribute("tags", tagArDAO.findArticleInTag(getArticleId()));
-			if (!"".equals(blog.getFileId()) && blog.getFileId() != null) {
-				FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
-				log.debug(blog.getFileId());
-				request.setAttribute("name", file.getName());
-				request.setAttribute("path", file.getPath());
-				request.setAttribute("alt_name", file.getAltName());
 
-				request.setAttribute("ogImageWidth", OG_IMAGE_WIDTH);
-				request.setAttribute("ogImageHeight", OG_IMAGE_HEIGHT);
-			}
+			setBlogContentAttributes(blog, redesign);
+			setImageAttributes(blog);
+			setPageUriTypeAttribute(blog);
+			setRelatedAndLatestAttributes();
+			setDateAttributes(blog);
+			setPageMetaAttributes(requestURI);
 
-			if (blog.getArticleTypeId().equals(ARTICLE_TYPE_NEWS)) {
-				request.setAttribute("pageURI", "/news");
-			} else if (blog.getArticleTypeId().equals(ARTICLE_TYPE_BLOG)) {
-				request.setAttribute("pageURI", "/blog");
-			}
-
-			List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
-			request.setAttribute("relatedBlogs", relatedBlogs);
-
-			List<Blog> blogList = blogDAO.findLatestArticlesWithPageUri();
-			request.setAttribute("latestBlogs", blogList);
 			log.debug(constant);
 			request.setAttribute("constant", constant);
 			request.setAttribute("requestURI", requestURI);
-
-			DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-			if (blog.getTimePost() != null) {
-				ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
-				request.setAttribute("datePublished", zonedDateTime.format(formatter));
-			}
-
-			if (blog.getTimeUpdate() != null) {
-				ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
-				request.setAttribute("dateModified", zonedDateTime2.format(formatter));
-			}
-
-			PageUri pageUri = null;
-			try {
-				pageUri = pageUriDAO.findById(requestURI);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if (pageUri != null) {
-				log.debug("Page URI found");
-				request.setAttribute("title", pageUri.getTitle());
-				request.setAttribute("metaDescription", pageUri.getMeta());
-			}
 
 			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;
+		}
+	}
+
+	private String resolveRequestURI() {
+		String requestURI = (String) request.getAttribute("rewrittenRequestURI");
+		if (requestURI == null) {
+			requestURI = request.getRequestURI(); // Fallback if not set
+		}
+		log.debug("Request URI: " + requestURI);
+		return requestURI;
+	}
+
+	// Runs before the fetch so the increment shows up in this same response.
+	private void trackViewCount(int articleId) throws Exception {
+		if (!isSpeculativeRequest() && !isKnownBotUserAgent() && !alreadyViewedThisSession(articleId)
+				&& !exceedsIpQuota(articleId)) {
+			blogDAO.incrementViewCount(articleId);
+		}
+	}
+
+	private void setBlogContentAttributes(Blog blog, boolean redesign) throws Exception {
+		log.debug(blog.getTimePost());
+		request.setAttribute("blog", blog);
+		request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
+		log.debug("blog.detail: " + blog.getDetail());
+		// Only the redesign JSP renders ${cleanDetail} - legacy renders ${blog.detail} raw.
+		if (redesign) {
+			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
+			request.setAttribute("cleanDetail", cleanDetail);
+			log.debug("cleanDetail: " + cleanDetail);
+		}
+		log.debug(blog);
+		request.setAttribute("tags", tagArDAO.findArticleInTag(getArticleId()));
+	}
+
+	private void setImageAttributes(Blog blog) throws Exception {
+		if (!"".equals(blog.getFileId()) && blog.getFileId() != null) {
+			FileUpload file = fileUploadDAO.findById(Integer.parseInt(blog.getFileId()));
+			log.debug(blog.getFileId());
+			request.setAttribute("name", file.getName());
+			request.setAttribute("path", file.getPath());
+			request.setAttribute("alt_name", file.getAltName());
+
+			request.setAttribute("ogImageWidth", OG_IMAGE_WIDTH);
+			request.setAttribute("ogImageHeight", OG_IMAGE_HEIGHT);
+		}
+	}
+
+	private void setPageUriTypeAttribute(Blog blog) {
+		if (blog.getArticleTypeId().equals(ARTICLE_TYPE_NEWS)) {
+			request.setAttribute("pageURI", "/news");
+		} else if (blog.getArticleTypeId().equals(ARTICLE_TYPE_BLOG)) {
+			request.setAttribute("pageURI", "/blog");
+		}
+	}
+
+	private void setRelatedAndLatestAttributes() throws Exception {
+		List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
+		request.setAttribute("relatedBlogs", relatedBlogs);
+
+		List<Blog> blogList = blogDAO.findLatestArticlesWithPageUri();
+		request.setAttribute("latestBlogs", blogList);
+	}
+
+	private void setDateAttributes(Blog blog) {
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+		if (blog.getTimePost() != null) {
+			ZonedDateTime zonedDateTime = blog.getTimePost().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
+			request.setAttribute("datePublished", zonedDateTime.format(formatter));
+		}
+
+		if (blog.getTimeUpdate() != null) {
+			ZonedDateTime zonedDateTime2 = blog.getTimeUpdate().toInstant().atZone(ZoneId.of("Asia/Bangkok")); // Or +07:00
+			request.setAttribute("dateModified", zonedDateTime2.format(formatter));
+		}
+	}
+
+	private void setPageMetaAttributes(String requestURI) {
+		PageUri pageUri = null;
+		try {
+			pageUri = pageUriDAO.findById(requestURI);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (pageUri != null) {
+			log.debug("Page URI found");
+			request.setAttribute("title", pageUri.getTitle());
+			request.setAttribute("metaDescription", pageUri.getMeta());
 		}
 	}
 
