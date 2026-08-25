@@ -1,10 +1,12 @@
 <%@ tag pageEncoding="UTF-8" body-content="scriptless"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%@ attribute name="quote" required="true" type="java.lang.String"%>
 <%@ attribute name="name" required="true" type="java.lang.String"%>
 <%@ attribute name="position" required="true" type="java.lang.String"%>
-<%@ attribute name="avatarSrc" required="true" type="java.lang.String"%>
-<%@ attribute name="avatarAlt" required="true" type="java.lang.String"%>
+<%@ attribute name="avatarSrc" required="false" type="java.lang.String"%>
+<%@ attribute name="avatarAlt" required="false" type="java.lang.String"%>
 <%@ attribute name="delay" required="false" type="java.lang.String"%>
 
 <style>
@@ -72,6 +74,16 @@
 	object-fit: cover;
 }
 
+.testimonial-card__avatar--initial {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #C41216;
+	color: #FFFFFF;
+	font-size: 20px;
+	font-weight: 700;
+}
+
 .testimonial-card__meta {
 	display: flex;
 	flex-direction: column;
@@ -114,7 +126,14 @@
 	<div class="testimonial-card__divider"></div>
 	<div class="testimonial-card__person">
 		<div class="testimonial-card__avatar-ring">
-			<img class="testimonial-card__avatar" src="${avatarSrc}" alt="${avatarAlt}">
+			<c:choose>
+				<c:when test="${not empty avatarSrc}">
+					<img class="testimonial-card__avatar" src="${avatarSrc}" alt="${avatarAlt}">
+				</c:when>
+				<c:otherwise>
+					<div class="testimonial-card__avatar testimonial-card__avatar--initial" aria-hidden="true">${fn:toUpperCase(fn:substring(name, 0, 1))}</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div class="testimonial-card__meta">
 			<span class="testimonial-card__name">${name}</span>
