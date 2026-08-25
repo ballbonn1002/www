@@ -577,27 +577,6 @@
 		});
 	})();
 
-	// Same manual prev/next scroll pattern as blog_detail.jsp's card-carousel.
-	function animateScrollLeft(el, toLeft, duration) {
-		var fromLeft = el.scrollLeft;
-		var distance = toLeft - fromLeft;
-		var startTime = null;
-		function easeOutCubic(t) {
-			return 1 - Math.pow(1 - t, 3);
-		}
-		function step(timestamp) {
-			if (startTime === null) {
-				startTime = timestamp;
-			}
-			var progress = Math.min((timestamp - startTime) / duration, 1);
-			el.scrollLeft = fromLeft + distance * easeOutCubic(progress);
-			if (progress < 1) {
-				requestAnimationFrame(step);
-			}
-		}
-		requestAnimationFrame(step);
-	}
-
 	document.querySelectorAll('.card-carousel').forEach(
 			function(carousel) {
 				var track = carousel.querySelector('.card-carousel__track');
@@ -620,7 +599,10 @@
 					var target = track.scrollLeft + (cardWidth + gap)
 							* direction;
 					target = Math.max(0, Math.min(target, maxScrollLeft));
-					animateScrollLeft(track, target, 420);
+					track.scrollTo({
+						left : target,
+						behavior : 'smooth'
+					});
 				}
 
 				function updateNavState() {
@@ -650,7 +632,7 @@
 				window.addEventListener('resize', updateNavState);
 				updateNavState();
 
-				// Auto-advance one card every 5s, looping back to the first card at
+				// Auto-advance one card every 3s, looping back to the first card at
 				// the end. Paused on hover/focus so it doesn't scroll away while
 				// someone's reading. Deliberately ignores prefers-reduced-motion
 				// (per explicit request) - manual prev/next still always works.
@@ -662,7 +644,10 @@
 						return;
 					}
 					if (track.scrollLeft >= maxScrollLeft - 1) {
-						animateScrollLeft(track, 0, 420);
+						track.scrollTo({
+							left : 0,
+							behavior : 'smooth'
+						});
 					} else {
 						scrollByOneCard(1);
 					}
@@ -672,7 +657,7 @@
 					if (autoAdvanceId) {
 						return;
 					}
-					autoAdvanceId = setInterval(autoAdvance, 5000);
+					autoAdvanceId = setInterval(autoAdvance, 3000);
 				}
 
 				function stopAutoAdvance() {

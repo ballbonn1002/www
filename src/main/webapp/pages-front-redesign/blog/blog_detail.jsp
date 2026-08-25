@@ -961,26 +961,6 @@ p {
 		AOS.init();
 	});
 
-	function animateScrollLeft(el, toLeft, duration) {
-		var fromLeft = el.scrollLeft;
-		var distance = toLeft - fromLeft;
-		var startTime = null;
-		function easeOutCubic(t) {
-			return 1 - Math.pow(1 - t, 3);
-		}
-		function step(timestamp) {
-			if (startTime === null) {
-				startTime = timestamp;
-			}
-			var progress = Math.min((timestamp - startTime) / duration, 1);
-			el.scrollLeft = fromLeft + distance * easeOutCubic(progress);
-			if (progress < 1) {
-				requestAnimationFrame(step);
-			}
-		}
-		requestAnimationFrame(step);
-	}
-
 	document.querySelectorAll('.card-carousel').forEach(
 			function(carousel) {
 				var track = carousel.querySelector('.card-carousel__track');
@@ -1000,7 +980,10 @@ p {
 					var target = track.scrollLeft + (cardWidth + gap)
 							* direction;
 					target = Math.max(0, Math.min(target, maxScrollLeft));
-					animateScrollLeft(track, target, 420);
+					track.scrollTo({
+						left : target,
+						behavior : 'smooth'
+					});
 				}
 
 				function updateNavState() {
