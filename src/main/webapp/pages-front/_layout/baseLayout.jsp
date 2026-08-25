@@ -201,6 +201,10 @@ p {
 	color: black;
 }
 
+#navbar-hover {
+	border-bottom: 4px solid transparent;
+}
+
 #navbar-hover:hover {
 	color: #BD2125 !important;
 	text-decoration: none;
