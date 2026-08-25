@@ -24,9 +24,8 @@ public class EmailService {
     public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) throws Exception {
     	MimeMessage message = mailSender.createMimeMessage();
     	MimeMessageHelper helper = new MimeMessageHelper(message, true);
-    	// chatchai.k's login (beans.xml) fails auth - password is dead.
-    	helper.setFrom("contact@cubesofttech.com");
-    	helper.setTo("contact@cubesofttech.com");
+    	helper.setFrom("chatchai.k@cubesofttech.com");
+    	helper.setTo("recruit@cubesofttech.com");
     	helper.setSubject("Apply : " + position);
     	helper.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel
 						+"\n Position : "+position+"\n Message : \n"+msg);
@@ -44,8 +43,7 @@ public class EmailService {
     public void sendEmailContact(String firstName, String lastName, String email, String tel, String msg) throws Exception {
     	String name = firstName + " " + lastName;
     	SimpleMailMessage message = new SimpleMailMessage();
-    	// See sendEmailJob().
-    	message.setFrom("contact@cubesofttech.com");
+    	message.setFrom("chatchai.k@cubesofttech.com");
     	message.setTo("contact@cubesofttech.com");
     	message.setSubject("Contact message from Website.");
     	message.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel+"\n Message : \n"+msg);
