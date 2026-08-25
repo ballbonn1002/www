@@ -105,10 +105,6 @@
 		</nav>
 
 </div>
-<button class="btn btn-sm" onclick="topFunction()" id="myBtn"
-	title="Go to top">
-	<i class="fas fa-arrow-up" style="font-size: 26px; text-align: center;"></i>
-</button>
 
 <style>
 /* Total fixed-navbar height - other pages clear it via var(--navbar-offset). */
@@ -246,15 +242,7 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	}
 }
 
-#myBtn {
-	padding: 10px;
-}
-
 @media ( max-width : 767px) {
-	#myBtn {
-		padding: 5px;
-		font-size: 12px;
-	}
 	#myIcon {
 		font-size: 18px;
 	}
