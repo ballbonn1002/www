@@ -234,13 +234,12 @@ p {
    5. Related articles section
    ========================================================================== */
 .related-articles-section {
-	margin-top: 4rem;
-	padding-top: 2rem;
+	margin-top: 2rem;
+	padding-top: 1.5rem;
 	border-top: 1px solid var(--article-border, #E7DEDE);
 }
 
 .related-articles-section__heading {
-	margin-bottom: 1.5rem;
 	color: var(--article-ink-muted);
 }
 
