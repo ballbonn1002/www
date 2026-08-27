@@ -39,14 +39,14 @@
 	margin: 0;
 }
 
-.articleblockbg .gap-2 {
+.articleblockbg .article-preview__meta .gap-2 {
 	gap: 0.5rem !important;
 }
-.articleblockbg .gap-4 {
+.articleblockbg .article-preview__meta.gap-4 {
 	gap: 1.5rem !important;
 }
 
-.articleblockbg .vr {
+.articleblockbg .article-preview__meta .vr {
 	display: inline-block !important;
 	align-self: stretch !important;
 	width: 1px !important;
