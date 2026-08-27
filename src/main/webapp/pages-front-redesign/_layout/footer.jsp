@@ -506,6 +506,7 @@
 @media screen and (max-width: 767px) {
 	.rfooter-top {
 		padding: 32px 5% 0;
+		border-bottom: none;
 		flex-direction: column;
 		text-align: center;
 	}
