@@ -203,16 +203,14 @@ nav.navbar.fixed-top.is-scrolled {
 	padding: 6px 20px;
 	margin: 8px auto;
 	background-color: rgba(255, 255, 255, 0.35);
-	border: 1px solid rgba(255, 255, 255, 0.5);
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 	backdrop-filter: blur(14px);
 	-webkit-backdrop-filter: blur(14px);
-	transition: background-color 0.3s ease, border-color 0.3s ease;
+	transition: background-color 0.3s ease;
 }
 
 nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	background-color: #FFFFFF;
-	border-color: rgba(0, 0, 0, 0.06);
 	backdrop-filter: none;
 	-webkit-backdrop-filter: none;
 }
