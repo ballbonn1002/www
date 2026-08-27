@@ -677,7 +677,21 @@
 																	return;
 																}
 
-																$('#contactForm').submit();
+																// A fast local response can beat the browser's paint of the button change.
+																$('#sendEmail')
+																		.prop(
+																				'disabled',
+																				true)
+																		.html(
+																				'<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...');
+																requestAnimationFrame(
+																		function() {
+																			requestAnimationFrame(
+																					function() {
+																						$('#contactForm')
+																								.submit();
+																					});
+																		});
 															});
 										});
 					});

@@ -3,6 +3,7 @@ package com.cubesofttech.action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +20,7 @@ import com.cubesofttech.model.PageUri;
 import com.cubesofttech.model.Testimonial;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.ArticleHtmlSanitizer;
+import com.cubesofttech.util.FlashScope;
 import com.cubesofttech.util.JobDescriptionSectionRebuilder;
 import com.cubesofttech.util.RewriteFilter;
 import com.cubesofttech.mail.EmailService;
@@ -61,6 +63,8 @@ public class CareersAction extends ActionSupport {
 	private File contactFile;
 	private String contactFileName;
 	private String jobId;
+	// Job detail page's own URL, so sendEmailJob() can redirect back to it.
+	private String jobUrl;
 
 	public String getJobId() {
 		return jobId;
@@ -70,6 +74,13 @@ public class CareersAction extends ActionSupport {
 		this.jobId = jobId;
 	}
 
+	public String getJobUrl() {
+		return jobUrl;
+	}
+
+	public void setJobUrl(String jobUrl) {
+		this.jobUrl = jobUrl;
+	}
 
 	public String getContactName() {
 		return contactName;
@@ -214,6 +225,7 @@ public class CareersAction extends ActionSupport {
 
 	public String jobDetail() {
 		try {
+			FlashScope.applyToRequest(request);
 			String job_id = request.getParameter("id");
 			loadJobContext(job_id);
 			request.setAttribute("constant", constant);
@@ -286,6 +298,10 @@ public class CareersAction extends ActionSupport {
 
 	public String sendEmailJob() {
 		boolean redesign = isRedesignPreviewEnabled();
+		// Legacy detail.jsp has no jobUrl hidden field - fall back to the list page.
+		if (jobUrl == null || jobUrl.trim().isEmpty()) {
+			jobUrl = "/careers";
+		}
 		try {
 			loadJobContext(jobId);
 		} catch (Exception e) {
@@ -298,8 +314,6 @@ public class CareersAction extends ActionSupport {
 		}
 
 		try {
-			request.setAttribute("constant", constant);
-
 			ValidationResult nameResult = ContactFormValidator.validateName(contactName);
 			ValidationResult emailResult = ContactFormValidator.validateEmail(contactEmail);
 			// Telephone is the one optional field - only format-checked if filled in.
@@ -313,20 +327,22 @@ public class CareersAction extends ActionSupport {
 			boolean allValid = nameResult.isValid() && emailResult.isValid() && telResult.isValid()
 					&& fileError == null && captchaValid;
 
+			Map<String, Object> flash = FlashScope.newMap();
 			// Repopulate what was typed so a validation failure doesn't clear the form.
-			request.setAttribute("contactName", contactName);
-			request.setAttribute("contactEmail", contactEmail);
-			request.setAttribute("contactTel", contactTel);
-			request.setAttribute("contactMessage", contactMessage);
+			flash.put("contactName", contactName);
+			flash.put("contactEmail", contactEmail);
+			flash.put("contactTel", contactTel);
+			flash.put("contactMessage", contactMessage);
 
 			if (!allValid) {
-				request.setAttribute("nameError", nameResult.getErrorMessage());
-				request.setAttribute("emailError", emailResult.getErrorMessage());
-				request.setAttribute("telError", telResult.getErrorMessage());
-				request.setAttribute("fileError", fileError);
+				flash.put("nameError", nameResult.getErrorMessage());
+				flash.put("emailError", emailResult.getErrorMessage());
+				flash.put("telError", telResult.getErrorMessage());
+				flash.put("fileError", fileError);
 				if (!captchaValid) {
-					request.setAttribute("captchaError", "Please complete the verification above and try again.");
+					flash.put("captchaError", "Please complete the verification above and try again.");
 				}
+				FlashScope.put(request, flash);
 				return redesign ? REDESIGN : SUCCESS;
 			}
 
@@ -335,19 +351,23 @@ public class CareersAction extends ActionSupport {
 
 			emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
 					contactPosition, contactMessage, contactFile, contactFileName);
-			request.setAttribute("response", "1");
+			flash.put("response", "1");
+			FlashScope.put(request, flash);
 			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
-			request.setAttribute("response", "0");
 			if (redesign) {
-				request.setAttribute("contactName", contactName);
-				request.setAttribute("contactEmail", contactEmail);
-				request.setAttribute("contactTel", contactTel);
-				request.setAttribute("contactMessage", contactMessage);
-				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+				Map<String, Object> flash = FlashScope.newMap();
+				flash.put("response", "0");
+				flash.put("contactName", contactName);
+				flash.put("contactEmail", contactEmail);
+				flash.put("contactTel", contactTel);
+				flash.put("contactMessage", contactMessage);
+				flash.put("formError", "Something went wrong - please try again in a moment.");
+				FlashScope.put(request, flash);
 				return REDESIGN;
 			}
+			request.setAttribute("response", "0");
 			return ERROR;
 		}
 	}

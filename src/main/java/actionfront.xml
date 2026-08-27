@@ -63,8 +63,8 @@
         <action name="sendEmailJob" class="com.cubesofttech.action.CareersAction" method="sendEmailJob">
             <interceptor-ref name="botProtection" />
             <interceptor-ref name="defaultStack" />
-            <result name="success" type="tiles">jobDetail</result>
-            <result name="redesign" type="tiles">jobDetail.redesign</result>
+            <result name="success" type="redirect">${jobUrl}</result>
+            <result name="redesign" type="redirect">${jobUrl}</result>
             <result name="invalidJob" type="redirect">/careers</result>
             <result name="error" type="redirect">/</result>
         </action>
@@ -97,8 +97,8 @@
         <action name="sendEmailContact" class="com.cubesofttech.action.ContactsAction" method="sendEmailContact">
             <interceptor-ref name="botProtection" />
             <interceptor-ref name="defaultStack" />
-            <result name="success" type="tiles">contacts</result>
-            <result name="redesign" type="tiles">contacts.redesign</result>
+            <result name="success" type="redirect">/contacts</result>
+            <result name="redesign" type="redirect">/contacts</result>
             <result name="error" type="redirect">/</result>
         </action>
     </package>

@@ -1,5 +1,7 @@
 package com.cubesofttech.action;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.system.Constant;
+import com.cubesofttech.util.FlashScope;
 import com.cubesofttech.util.RewriteFilter;
 import com.cubesofttech.validation.ContactFormValidator;
 import com.cubesofttech.validation.ValidationResult;
@@ -72,6 +75,7 @@ public class ContactsAction extends ActionSupport {
 
 	public String init() {
 		try {
+			FlashScope.applyToRequest(request);
 			request.setAttribute("constant", constant);
 			String requestURI = RewriteFilter.getRequestURI(request);
 			log.debug(requestURI);
@@ -85,38 +89,35 @@ public class ContactsAction extends ActionSupport {
 	}
 
 	public String sendEmailContact() {
+		boolean redesign = isRedesignPreviewEnabled();
 		try {
 			ValidationResult firstNameResult = ContactFormValidator.validateFirstName(firstName);
 			ValidationResult lastNameResult = ContactFormValidator.validateLastName(lastName);
 			ValidationResult emailResult = ContactFormValidator.validateEmail(contactEmail);
 			ValidationResult phoneResult = ContactFormValidator.validatePhone(contactTel);
 			// Legacy contacts.jsp has no reCAPTCHA widget, so never enforce it there.
-			boolean redesign = isRedesignPreviewEnabled();
 			boolean captchaValid = !redesign || Boolean.TRUE.equals(request.getAttribute("botCheckPassed"));
 			boolean allValid = firstNameResult.isValid() && lastNameResult.isValid() && emailResult.isValid()
 					&& phoneResult.isValid() && captchaValid;
 
-			// Re-renders the same JSP (no separate "thank you" view), so it
-			// still needs the attributes init() would normally set.
-			request.setAttribute("constant", constant);
-			request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
-
+			Map<String, Object> flash = FlashScope.newMap();
 			// Repopulate what was typed so a failed validation doesn't wipe the form.
-			request.setAttribute("firstName", firstName);
-			request.setAttribute("lastName", lastName);
-			request.setAttribute("contactEmail", contactEmail);
-			request.setAttribute("contactTel", contactTel);
-			request.setAttribute("contactMessage", contactMessage);
+			flash.put("firstName", firstName);
+			flash.put("lastName", lastName);
+			flash.put("contactEmail", contactEmail);
+			flash.put("contactTel", contactTel);
+			flash.put("contactMessage", contactMessage);
 
 			if (!allValid) {
 				// null just reads as "no error" to the JSTL ${not empty} checks below.
-				request.setAttribute("firstNameError", firstNameResult.getErrorMessage());
-				request.setAttribute("lastNameError", lastNameResult.getErrorMessage());
-				request.setAttribute("emailError", emailResult.getErrorMessage());
-				request.setAttribute("phoneError", phoneResult.getErrorMessage());
+				flash.put("firstNameError", firstNameResult.getErrorMessage());
+				flash.put("lastNameError", lastNameResult.getErrorMessage());
+				flash.put("emailError", emailResult.getErrorMessage());
+				flash.put("phoneError", phoneResult.getErrorMessage());
 				if (!captchaValid) {
-					request.setAttribute("captchaError", "Please complete the verification above and try again.");
+					flash.put("captchaError", "Please complete the verification above and try again.");
 				}
+				FlashScope.put(request, flash);
 				return redesign ? REDESIGN : SUCCESS;
 			}
 
@@ -125,22 +126,20 @@ public class ContactsAction extends ActionSupport {
 			emailService.sendEmailContact(firstNameResult.getValue(), lastNameResult.getValue(),
 					emailResult.getValue(), phoneResult.getValue(), contactMessage);
 
-			request.setAttribute("contactSuccess", "1");
+			flash.put("contactSuccess", "1");
+			FlashScope.put(request, flash);
 			return redesign ? REDESIGN : SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
-			if (isRedesignPreviewEnabled()) {
-				request.setAttribute("constant", constant);
-				request.setAttribute("requestURI", RewriteFilter.getRequestURI(request));
-				request.setAttribute("firstName", firstName);
-				request.setAttribute("lastName", lastName);
-				request.setAttribute("contactEmail", contactEmail);
-				request.setAttribute("contactTel", contactTel);
-				request.setAttribute("contactMessage", contactMessage);
-				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
-				return REDESIGN;
-			}
-			return ERROR;
+			Map<String, Object> flash = FlashScope.newMap();
+			flash.put("firstName", firstName);
+			flash.put("lastName", lastName);
+			flash.put("contactEmail", contactEmail);
+			flash.put("contactTel", contactTel);
+			flash.put("contactMessage", contactMessage);
+			flash.put("formError", "Something went wrong - please try again in a moment.");
+			FlashScope.put(request, flash);
+			return redesign ? REDESIGN : SUCCESS;
 		}
 	}
 

@@ -777,6 +777,7 @@
 				enctype="multipart/form-data" name="frmJobApply" autocomplete="off"
 				method="POST">
 				<input type="hidden" name="jobId" value="${jobId}"> <input
+					type="hidden" name="jobUrl" value="${requestURI}"> <input
 					type="hidden" name="contactPosition" value="${job.position}">
 				<div class="jobapply-hp" aria-hidden="true">
 					<label for="jobApplyHp">Leave this field empty</label>
@@ -894,7 +895,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-danger">
+					<button type="submit" class="btn btn-danger" id="jobApplySubmitBtn">
 						Send <span aria-hidden="true">&rarr;</span>
 					</button>
 				</div>
@@ -1130,6 +1131,24 @@
 								e.preventDefault();
 							}
 						});
+
+		// Runs after the validation listeners - skip if either already cancelled the submit.
+		document.getElementById('frmJobApply').addEventListener('submit', function(e) {
+			if (e.defaultPrevented) {
+				return;
+			}
+			// A fast local response can beat the browser's paint of the button change.
+			e.preventDefault();
+			var form = e.target;
+			var submitBtn = document.getElementById('jobApplySubmitBtn');
+			submitBtn.disabled = true;
+			submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+			requestAnimationFrame(function() {
+				requestAnimationFrame(function() {
+					form.submit();
+				});
+			});
+		});
 
 		<c:if
 			test="${not empty nameError or not empty emailError or not empty telError or not empty fileError or not empty captchaError or not empty formError}">
