@@ -39,6 +39,37 @@ html{background-color:#F5F5F5;}
 }
 
 /* Cross-document @view-transition was tried here but caused stacked scrollbars during the transition - removed. */
+
+body {
+	transition: transform 0.25s ease;
+}
+#ptr-indicator {
+	position: absolute;
+	top: -60px;
+	left: 50%;
+	width: 36px;
+	height: 36px;
+	margin-left: -18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+}
+#ptr-indicator__spinner {
+	width: 26px;
+	height: 26px;
+	border: 3px solid rgba(189, 33, 37, 0.2);
+	border-top-color: #BD2125;
+	border-radius: 50%;
+}
+#ptr-indicator.is-refreshing #ptr-indicator__spinner {
+	animation: ptr-spin 0.6s linear infinite;
+}
+@keyframes ptr-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
 </style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
 <link rel="icon" type="image/x-icon"
@@ -188,6 +219,14 @@ h1, h2, h3, p {
 
 a:focus, button:focus, input:focus, textarea:focus, select:focus {
 	outline-color: #BD2125;
+}
+
+a:focus:not(:focus-visible), button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+a, button {
+	-webkit-tap-highlight-color: transparent;
 }
 
 p {
@@ -727,6 +766,108 @@ a {
 </head>
 <body>
 	<div id="page-loading-bar" aria-hidden="true"></div>
+	<div id="ptr-indicator" aria-hidden="true">
+		<div id="ptr-indicator__spinner"></div>
+	</div>
+	<script>
+		(function() {
+			var PULL_THRESHOLD = 70;
+			var MAX_PULL = 100;
+			var PULL_DEAD_ZONE = 10;
+			var indicator = document.getElementById('ptr-indicator');
+			var startY = null;
+			var pull = 0;
+			var dragging = false;
+			var refreshing = false;
+			var restoreOverflowTimer = null;
+
+			function setPull(px) {
+				pull = px;
+				// translateY(0px) is still a non-none transform, which makes body a
+				// containing block for every position:fixed element on the page -
+				// clear the property instead of "resetting" to a zero transform.
+				document.body.style.transform = px === 0 ? '' : 'translateY(' + px + 'px)';
+			}
+
+			function restoreOverflow() {
+				if (restoreOverflowTimer) {
+					clearTimeout(restoreOverflowTimer);
+				}
+				restoreOverflowTimer = setTimeout(function() {
+					document.body.style.overflow = '';
+					restoreOverflowTimer = null;
+				}, 250);
+			}
+
+			function cancelDrag() {
+				dragging = false;
+				document.body.style.transitionDuration = '';
+				setPull(0);
+				restoreOverflow();
+			}
+
+			document.addEventListener('touchstart', function(e) {
+				if (refreshing || window.scrollY > 0) {
+					dragging = false;
+					return;
+				}
+				if (restoreOverflowTimer) {
+					clearTimeout(restoreOverflowTimer);
+					restoreOverflowTimer = null;
+				}
+				startY = e.touches[0].clientY;
+				dragging = true;
+				// body's overflow:hidden clips the indicator's negative top offset
+				// once body becomes its containing block via transform.
+				document.body.style.overflow = 'visible';
+			}, { passive: true });
+
+			document.addEventListener('touchcancel', function() {
+				if (dragging && !refreshing) {
+					cancelDrag();
+				}
+			});
+
+			document.addEventListener('touchmove', function(e) {
+				if (!dragging || refreshing) {
+					return;
+				}
+				var delta = e.touches[0].clientY - startY;
+				if (window.scrollY > 0) {
+					cancelDrag();
+					return;
+				}
+				if (delta < PULL_DEAD_ZONE) {
+					// Filters out the downward jitter a real upward scroll swipe
+					// often starts with, so it doesn't get hijacked into a pull.
+					return;
+				}
+				e.preventDefault();
+				document.body.style.transitionDuration = '0s';
+				setPull(Math.min((delta - PULL_DEAD_ZONE) * 0.5, MAX_PULL));
+			}, { passive: false });
+
+			document.addEventListener('touchend', function() {
+				if (!dragging || refreshing) {
+					dragging = false;
+					return;
+				}
+				if (pull < PULL_THRESHOLD) {
+					cancelDrag();
+					return;
+				}
+				dragging = false;
+				document.body.style.transitionDuration = '';
+				refreshing = true;
+				indicator.classList.add('is-refreshing');
+				document.body.style.transform = 'translateY(80px)';
+				// Brief hold so the spin is actually visible before reload tears the page down.
+				setTimeout(function() {
+					window.location.reload();
+				}, 400);
+			});
+		})();
+	</script>
 	<%-- Only fires for real same-origin navigations - skips anchors, new tabs, downloads, and other origins. --%>
 	<script>
 		<%-- bfcache restores the page (and its stuck is-loading class) without reloading it. --%>
