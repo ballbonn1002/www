@@ -127,11 +127,6 @@ body, html {
 	color: #fff;
 }
 
-.article-hero__expand-btn:focus:not(:focus-visible),
-.article-hero-modal__close:focus:not(:focus-visible) {
-	outline: none;
-}
-
 .article-hero-modal__content {
 	background: transparent;
 	border: none;
@@ -145,6 +140,8 @@ body, html {
 	object-fit: contain;
 	border-radius: 10px;
 	align-self: center;
+	/* Suppresses iOS Safari's long-press "Save Image" callout menu on this preview image. */
+	-webkit-touch-callout: none;
 }
 
 .article-hero-modal__close {
@@ -162,6 +159,9 @@ body, html {
 	.article-hero {
 		height: 280px;
 	}
+	.article-hero__image {
+		object-fit: cover;
+	}
 }
 
 .article-hero-card {
@@ -177,6 +177,7 @@ body, html {
 .article-title {
 	color: var(--article-accent);
 	font-weight: 700;
+	font-size: clamp(1.75rem, 1.4rem + 1.45vw, 2.5rem);
 }
 
 /* Undoes blog.css's .ardetail__meta column stacking, leaked in from the carousel. */
@@ -234,7 +235,6 @@ p {
    5. Related articles section
    ========================================================================== */
 .related-articles-section {
-	margin-top: 2rem;
 	padding-top: 1.5rem;
 	border-top: 1px solid var(--article-border, #E7DEDE);
 }
@@ -440,14 +440,14 @@ p {
 	margin: 0.75rem 0;
 }
 
-.articleblockbg2 {
+.card-carousel__item .articleblockbg2 {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	padding-bottom: 0;
 }
 
-.articleblockbg2__link, .articleblockbg2__link:hover {
+.card-carousel__item .articleblockbg2__link,
+.card-carousel__item .articleblockbg2__link:hover {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -461,40 +461,10 @@ p {
 	overflow: hidden;
 }
 
-.article-card__views-badge {
-	font-size: 15px;
-}
-
 .ardetail {
 	flex: 1;
 }
 
-@container (max-width: 360px) {
-	.ardetail__meta {
-		flex-direction: column;
-		align-items: flex-start !important;
-	}
-	/* Compound selector needed to beat section 10's equal-specificity polyfill. */
-	.ardetail__meta.gap-4 {
-		gap: 4px !important;
-	}
-
-	.ardetail__meta .vr {
-		display: none !important;
-	}
-}
-@media ( max-width : 991px) {
-	.ardetail__meta {
-		flex-direction: column;
-		align-items: flex-start !important;
-	}
-	.ardetail__meta.gap-4 {
-		gap: 4px !important;
-	}
-	.ardetail__meta .vr {
-		display: none !important;
-	}
-}
 
 /* ==========================================================================
    8. Article theme tokens
@@ -681,9 +651,8 @@ p {
 }
 
 /* ==========================================================================
-   10. Bootstrap 5 utility polyfills (gap, vr) - blog.css has its own copy
-   scoped to .articleblockbg/.articleblockbg2, these are unscoped for the
-   other components on this page (article-meta-bar, article-shares, ardetail__meta)
+   10. Bootstrap 5 gap polyfill for article-meta-bar/article-shares - the
+   grid/carousel card's gap-4 and vr are covered by blog.css instead.
    ========================================================================== */
 .gap-2 {
 	gap: 0.5rem !important;
@@ -691,19 +660,6 @@ p {
 
 .gap-3 {
 	gap: 1rem !important;
-}
-
-.gap-4 {
-	gap: 1.5rem !important;
-}
-
-.vr {
-	display: inline-block !important;
-	align-self: stretch !important;
-	width: 1px !important;
-	min-height: 1em !important;
-	background-color: currentcolor !important;
-	opacity: .25 !important;
 }
 </style>
 
@@ -1017,6 +973,11 @@ p {
 		$('#heroImageModal').on('hidden.bs.modal', function() {
 			$('body').css('padding-right', '');
 			$('.modal-backdrop').remove();
+			// iOS ignores the outline/:focus-visible CSS on the returned focus - drop it entirely.
+			var expandBtn = document.querySelector('.article-hero__expand-btn');
+			if (expandBtn) {
+				expandBtn.blur();
+			}
 		});
 	});
 </script>
