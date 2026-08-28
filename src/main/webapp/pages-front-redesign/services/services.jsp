@@ -306,7 +306,7 @@
 <section class="services-grid">
 	<div class="services-card" data-aos="fade-up">
 		<img class="services-card__image"
-			src="/pages-front/img/redesign/services/service-card-software-dev.png"
+			src="/pages-front/img/redesign/services/service-card-software-dev.jpg"
 			alt="Software Development">
 		<div class="services-card__body">
 			<h3 class="services-card__title">Software Development</h3>
@@ -327,7 +327,7 @@
 
 	<div class="services-card" data-aos="fade-up" data-aos-delay="100">
 		<img class="services-card__image"
-			src="/pages-front/img/redesign/services/service-card-it-outsource.png"
+			src="/pages-front/img/redesign/services/service-card-it-outsource.jpg"
 			alt="Outsource IT Staff Service">
 		<div class="services-card__body">
 			<h3 class="services-card__title">Outsource IT Staff Service</h3>
@@ -348,7 +348,7 @@
 
 	<div class="services-card" data-aos="fade-up" data-aos-delay="200">
 		<img class="services-card__image"
-			src="/pages-front/img/redesign/services/service-card-mobile-app.png"
+			src="/pages-front/img/redesign/services/service-card-mobile-app.jpg"
 			alt="Mobile App Development">
 		<div class="services-card__body">
 			<h3 class="services-card__title">Mobile App Development</h3>

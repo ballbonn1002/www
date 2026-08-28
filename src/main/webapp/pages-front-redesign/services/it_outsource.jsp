@@ -43,7 +43,7 @@
 	min-height: 420px;
 	display: flex;
 	align-items: center;
-	background-image: url("/pages-front/img/redesign/services/it-outsource-intro.png");
+	background-image: url("/pages-front/img/redesign/services/it-outsource-intro.jpg");
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;

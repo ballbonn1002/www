@@ -388,7 +388,7 @@
 
 <section class="careers-culture">
 	<img class="careers-culture__image" data-aos="fade-up"
-		src="/pages-front/img/redesign/careers/careers-why-work-with-us.png"
+		src="/pages-front/img/redesign/careers/careers-why-work-with-us.jpg"
 		alt="Life at Cube SoftTech">
 	<p class="careers-culture__body" data-aos="fade-up"
 		data-aos-delay="150">Once you are a part of Cube SoftTech, you
