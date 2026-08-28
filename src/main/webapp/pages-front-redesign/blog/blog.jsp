@@ -22,8 +22,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Cube SoftTech Blog",
-      "item": "${constant.webPath}/blog"
+      "name": "${fn:contains(requestURI, 'news') ? 'Cube SoftTech News' : 'Cube SoftTech Blog'}",
+      "item": "${constant.webPath}${fn:contains(requestURI, 'news') ? '/news' : '/blog'}"
     }
   ]
 }
