@@ -174,18 +174,38 @@ body {
 	crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
+<%-- media="print" defers these past first render; onload swaps them in once loaded. --%>
 <link
 	href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
-	rel="stylesheet">
+	rel="stylesheet" media="print" onload="this.media='all'">
+<noscript>
+	<link
+		href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+		rel="stylesheet">
+</noscript>
 <link
 	href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
-	rel="stylesheet">
+	rel="stylesheet" media="print" onload="this.media='all'">
+<noscript>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+		rel="stylesheet">
+</noscript>
 
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"
+	media="print" onload="this.media='all'">
+<noscript>
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</noscript>
 <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+	media="print" onload="this.media='all'">
+<noscript>
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</noscript>
 
 <style>
 body, html {
