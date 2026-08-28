@@ -14,9 +14,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.JobDAO;
-import com.cubesofttech.dao.PageUriDAO;
 import com.cubesofttech.model.Job;
-import com.cubesofttech.model.PageUri;
 import com.cubesofttech.model.Testimonial;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.ArticleHtmlSanitizer;
@@ -51,10 +49,7 @@ public class CareersAction extends ActionSupport {
 	
 	@Autowired
 	private Constant constant;
-	
-	@Autowired
-	private PageUriDAO pageUriDAO;
-	
+
 	private String contactName;
 	private String contactEmail;
 	private String contactTel;
