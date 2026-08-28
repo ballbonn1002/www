@@ -8,6 +8,9 @@
 <%@ page import="com.cubesofttech.util.ArticleHtmlSanitizer"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<c:if test="${!empty path}">
+<link rel="preload" as="image" href="${constant.imgContext}${path}">
+</c:if>
 <meta property="og:title" content="${blog.topic}">
 <meta property="og:description" content="${metaDescription}">
 <meta property="og:image" content="${constant.imgContext}${path}">
@@ -101,6 +104,24 @@ body, html {
 	height: 100%;
 	object-fit: contain;
 	object-position: center;
+}
+
+.article-hero__image,
+.latest-card__image {
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+
+.article-hero__image.is-loaded,
+.latest-card__image.is-loaded {
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.article-hero__image,
+	.latest-card__image {
+		transition: none;
+	}
 }
 
 .article-hero__expand-btn {
@@ -915,6 +936,20 @@ p {
 	document.addEventListener('DOMContentLoaded', function() {
 		AOS.init();
 	});
+
+	document.querySelectorAll(
+			'.article-hero__image, .latest-card__image')
+			.forEach(function(img) {
+				function reveal() {
+					img.classList.add('is-loaded');
+				}
+				if (img.complete) {
+					reveal();
+				} else {
+					img.addEventListener('load', reveal);
+					img.addEventListener('error', reveal);
+				}
+			});
 
 	document.querySelectorAll('.card-carousel').forEach(
 			function(carousel) {
