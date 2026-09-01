@@ -256,7 +256,7 @@ public class CareersAction extends ActionSupport {
 		}
 		Document doc = Jsoup.parseBodyFragment(rawHtml);
 		JobDescriptionSectionRebuilder.rebuild(doc);
-		return ArticleHtmlSanitizer.clean(doc.body().html());
+		return ArticleHtmlSanitizer.clean(doc.body().html(), constant.getImgContext());
 	}
 
 	// strict is only true on the redesign path - legacy never required a resume

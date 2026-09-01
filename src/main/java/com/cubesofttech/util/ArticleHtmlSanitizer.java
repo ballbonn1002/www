@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,16 +18,19 @@ public final class ArticleHtmlSanitizer {
 	private static final Set<String> ALLOWED_IFRAME_HOSTS = Collections.unmodifiableSet(new HashSet<String>(
 			Arrays.asList("youtube.com", "www.youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com")));
 
-	private static final Safelist ARTICLE_BODY_SAFELIST = Safelist.relaxed()
-			.addAttributes("div", "class")
-			.addTags("iframe")
-			.addAttributes("iframe", "src", "width", "height", "frameborder", "allow", "allowfullscreen", "title")
-			.addProtocols("iframe", "src", "https");
+	private static final String[] TEXT_ALIGN_TAGS = { "p", "div", "h1", "h2", "h3", "h4", "h5", "h6" };
+
+	private static final Pattern WIDTH_STYLE_PATTERN = Pattern.compile("width\\s*:\\s*([\\d.]+)(px|%)?");
+
+	private static final Pattern TEXT_ALIGN_STYLE_PATTERN = Pattern
+			.compile("text-align\\s*:\\s*(left|right|center|justify)", Pattern.CASE_INSENSITIVE);
+
+	private static final Safelist ARTICLE_BODY_SAFELIST = buildSafelist();
 
 	private ArticleHtmlSanitizer() {
 	}
 
-	public static String clean(String rawHtml) {
+	public static String clean(String rawHtml, String baseUri) {
 		if (rawHtml == null || rawHtml.isEmpty()) {
 			return "";
 		}
@@ -34,9 +39,8 @@ public final class ArticleHtmlSanitizer {
 		stripClassAndStyleAttributes(doc);
 		removeEmptySpacerElements(doc);
 		removeDisallowedIframes(doc);
-		// ส่วนตีความ/ประกอบ FAQ ใหม่แยกไปอยู่คลาส FaqSectionRebuilder แล้ว (คนละหน้าที่กับ sanitize)
 		FaqSectionRebuilder.rebuildFaqSections(doc);
-		return Jsoup.clean(doc.body().html(), ARTICLE_BODY_SAFELIST);
+		return Jsoup.clean(doc.body().html(), baseUri, ARTICLE_BODY_SAFELIST);
 	}
 
 	public static String toPreviewText(String rawHtml, int maxLength) {
@@ -57,22 +61,57 @@ public final class ArticleHtmlSanitizer {
 		return truncated + "...";
 	}
 
+	private static Safelist buildSafelist() {
+		Safelist safelist = Safelist.relaxed()
+				.addAttributes("div", "class")
+				.addTags("iframe", "hr")
+				.addAttributes("iframe", "src", "width", "height", "frameborder", "allow", "allowfullscreen", "title")
+				.addProtocols("iframe", "src", "https");
+		for (String tag : TEXT_ALIGN_TAGS) {
+			safelist.addAttributes(tag, "align");
+		}
+		return safelist;
+	}
+
 	private static void removeDisallowedDocumentTags(Document doc) {
 		doc.select("style, script, meta, title, link, head").remove();
 	}
 
 	private static void stripClassAndStyleAttributes(Document doc) {
 		for (Element el : doc.body().getAllElements()) {
-			// Legacy editor content marks emphasis with inline style="font-weight:
-			// bold" on a <span>/<font> instead of a real <strong> tag - converting
-			// before the style attribute is stripped below is the only way that
-			// emphasis survives at all (there's nothing left afterward to hook a
-			// CSS rule onto).
 			if (("span".equals(el.tagName()) || "font".equals(el.tagName())) && isBoldStyle(el.attr("style"))) {
 				el.tagName("strong");
 			}
+			if ("img".equals(el.tagName())) {
+				preserveWidthAttribute(el);
+			}
+			if (Arrays.asList(TEXT_ALIGN_TAGS).contains(el.tagName())) {
+				preserveTextAlignAttribute(el);
+			}
 			el.removeAttr("class");
 			el.removeAttr("style");
+		}
+	}
+
+	private static void preserveWidthAttribute(Element img) {
+		if (img.hasAttr("width")) {
+			return;
+		}
+		Matcher matcher = WIDTH_STYLE_PATTERN.matcher(img.attr("style"));
+		if (matcher.find()) {
+			String value = matcher.group(1);
+			String unit = matcher.group(2);
+			img.attr("width", "%".equals(unit) ? value + "%" : value);
+		}
+	}
+
+	private static void preserveTextAlignAttribute(Element el) {
+		if (el.hasAttr("align")) {
+			return;
+		}
+		Matcher matcher = TEXT_ALIGN_STYLE_PATTERN.matcher(el.attr("style"));
+		if (matcher.find()) {
+			el.attr("align", matcher.group(1).toLowerCase());
 		}
 	}
 

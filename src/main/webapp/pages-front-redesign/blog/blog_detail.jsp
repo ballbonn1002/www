@@ -529,6 +529,12 @@ p {
 	margin-top: 0;
 }
 
+.article-body hr {
+	border: none;
+	border-top: 1px solid var(--article-border);
+	margin: 40px 0;
+}
+
 .article-body h3 {
 	font-size: 20px;
 	margin: 34px 0 14px;
