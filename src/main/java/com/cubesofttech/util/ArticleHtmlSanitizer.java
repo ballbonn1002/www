@@ -20,10 +20,16 @@ public final class ArticleHtmlSanitizer {
 
 	private static final String[] TEXT_ALIGN_TAGS = { "p", "div", "h1", "h2", "h3", "h4", "h5", "h6" };
 
+	private static final String[] FONT_SIZE_TAGS = { "p", "div", "span", "strong", "em", "i", "b", "li", "h1", "h2",
+			"h3", "h4", "h5", "h6", "blockquote", "td", "th" };
+
 	private static final Pattern WIDTH_STYLE_PATTERN = Pattern.compile("width\\s*:\\s*([\\d.]+)(px|%)?");
 
 	private static final Pattern TEXT_ALIGN_STYLE_PATTERN = Pattern
 			.compile("text-align\\s*:\\s*(left|right|center|justify)", Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern FONT_SIZE_STYLE_PATTERN = Pattern
+			.compile("font-size\\s*:\\s*([\\d.]+(?:px|em|rem|%|pt))", Pattern.CASE_INSENSITIVE);
 
 	private static final Safelist ARTICLE_BODY_SAFELIST = buildSafelist();
 
@@ -70,6 +76,11 @@ public final class ArticleHtmlSanitizer {
 		for (String tag : TEXT_ALIGN_TAGS) {
 			safelist.addAttributes(tag, "align");
 		}
+		for (String tag : FONT_SIZE_TAGS) {
+			// Only ever holds a single validated "font-size: <num><unit>" declaration
+			// rebuilt by preserveFontSizeAttribute() - never the editor's raw style.
+			safelist.addAttributes(tag, "style");
+		}
 		return safelist;
 	}
 
@@ -88,9 +99,19 @@ public final class ArticleHtmlSanitizer {
 			if (Arrays.asList(TEXT_ALIGN_TAGS).contains(el.tagName())) {
 				preserveTextAlignAttribute(el);
 			}
+			String fontSize = Arrays.asList(FONT_SIZE_TAGS).contains(el.tagName()) ? extractFontSize(el.attr("style"))
+					: null;
 			el.removeAttr("class");
 			el.removeAttr("style");
+			if (fontSize != null) {
+				el.attr("style", "font-size:" + fontSize + ";");
+			}
 		}
+	}
+
+	private static String extractFontSize(String style) {
+		Matcher matcher = FONT_SIZE_STYLE_PATTERN.matcher(style);
+		return matcher.find() ? matcher.group(1) : null;
 	}
 
 	private static void preserveWidthAttribute(Element img) {
