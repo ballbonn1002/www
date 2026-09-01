@@ -3,6 +3,7 @@ package com.cubesofttech.action;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -18,9 +19,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class ContactsAction extends ActionSupport {
 	public static final String REDESIGN = "redesign";
+	public static final String SEND_FAILED = "sendFailed";
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
+	HttpServletResponse response = ServletActionContext.getResponse();
 
 	@Autowired
 	private EmailService emailService;
@@ -118,7 +121,7 @@ public class ContactsAction extends ActionSupport {
 					flash.put("captchaError", "Please complete the verification above and try again.");
 				}
 				FlashScope.put(request, flash);
-				return redesign ? REDESIGN : SUCCESS;
+				return SUCCESS;
 			}
 
 			log.debug("Sending contact message: name=" + firstNameResult.getValue() + " " + lastNameResult.getValue()
@@ -128,9 +131,23 @@ public class ContactsAction extends ActionSupport {
 
 			flash.put("contactSuccess", "1");
 			FlashScope.put(request, flash);
-			return redesign ? REDESIGN : SUCCESS;
+			response.setHeader("X-Send-Result", "success");
+			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
+			if (redesign) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setHeader("X-Error-Reason", "smtp-send-failed");
+				request.setAttribute("constant", constant);
+				request.setAttribute("requestURI", "/contacts");
+				request.setAttribute("firstName", firstName);
+				request.setAttribute("lastName", lastName);
+				request.setAttribute("contactEmail", contactEmail);
+				request.setAttribute("contactTel", contactTel);
+				request.setAttribute("contactMessage", contactMessage);
+				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+				return SEND_FAILED;
+			}
 			Map<String, Object> flash = FlashScope.newMap();
 			flash.put("firstName", firstName);
 			flash.put("lastName", lastName);
@@ -139,7 +156,7 @@ public class ContactsAction extends ActionSupport {
 			flash.put("contactMessage", contactMessage);
 			flash.put("formError", "Something went wrong - please try again in a moment.");
 			FlashScope.put(request, flash);
-			return redesign ? REDESIGN : SUCCESS;
+			return SUCCESS;
 		}
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -29,6 +30,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class CareersAction extends ActionSupport {
 	public static final String REDESIGN = "redesign";
 	public static final String INVALID_JOB = "invalidJob";
+	public static final String SEND_JOB_FAILED = "sendJobFailed";
 
 	// Matches struts.multipart.maxSize in actionfront.xml.
 	private static final long MAX_RESUME_FILE_SIZE = 30_000_000L;
@@ -40,6 +42,7 @@ public class CareersAction extends ActionSupport {
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
+	HttpServletResponse response = ServletActionContext.getResponse();
 
 	@Autowired
 	private JobDAO jobDAO;
@@ -338,7 +341,7 @@ public class CareersAction extends ActionSupport {
 					flash.put("captchaError", "Please complete the verification above and try again.");
 				}
 				FlashScope.put(request, flash);
-				return redesign ? REDESIGN : SUCCESS;
+				return SUCCESS;
 			}
 
 			log.debug("Sending job application: name=" + contactName + " email=" + contactEmail + " tel=" + contactTel
@@ -348,21 +351,23 @@ public class CareersAction extends ActionSupport {
 					contactPosition, contactMessage, contactFile, contactFileName);
 			flash.put("response", "1");
 			FlashScope.put(request, flash);
-			return redesign ? REDESIGN : SUCCESS;
+			response.setHeader("X-Send-Result", "success");
+			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
-			if (redesign) {
-				Map<String, Object> flash = FlashScope.newMap();
-				flash.put("response", "0");
-				flash.put("contactName", contactName);
-				flash.put("contactEmail", contactEmail);
-				flash.put("contactTel", contactTel);
-				flash.put("contactMessage", contactMessage);
-				flash.put("formError", "Something went wrong - please try again in a moment.");
-				FlashScope.put(request, flash);
-				return REDESIGN;
-			}
 			request.setAttribute("response", "0");
+			if (redesign) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setHeader("X-Error-Reason", "smtp-send-failed");
+				request.setAttribute("constant", constant);
+				request.setAttribute("requestURI", jobUrl);
+				request.setAttribute("contactName", contactName);
+				request.setAttribute("contactEmail", contactEmail);
+				request.setAttribute("contactTel", contactTel);
+				request.setAttribute("contactMessage", contactMessage);
+				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+				return SEND_JOB_FAILED;
+			}
 			return ERROR;
 		}
 	}
