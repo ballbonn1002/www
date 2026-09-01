@@ -23,6 +23,10 @@ public class Constant {
     private String recaptchaSiteKey;
     private String recaptchaSecretKey;
     private boolean redesignEnabled;
+    private String emailContactFrom;
+    private String emailContactTo;
+    private String emailJobFrom;
+    private String emailJobTo;
 
 	public boolean isRedesignEnabled() {
 		return redesignEnabled;
@@ -86,6 +90,38 @@ public class Constant {
 
 	public void setImgContext(String imgContext) {
 		this.imgContext = imgContext;
+	}
+
+	public String getEmailContactFrom() {
+		return emailContactFrom;
+	}
+
+	public void setEmailContactFrom(String emailContactFrom) {
+		this.emailContactFrom = emailContactFrom;
+	}
+
+	public String getEmailContactTo() {
+		return emailContactTo;
+	}
+
+	public void setEmailContactTo(String emailContactTo) {
+		this.emailContactTo = emailContactTo;
+	}
+
+	public String getEmailJobFrom() {
+		return emailJobFrom;
+	}
+
+	public void setEmailJobFrom(String emailJobFrom) {
+		this.emailJobFrom = emailJobFrom;
+	}
+
+	public String getEmailJobTo() {
+		return emailJobTo;
+	}
+
+	public void setEmailJobTo(String emailJobTo) {
+		this.emailJobTo = emailJobTo;
 	}
 
 }

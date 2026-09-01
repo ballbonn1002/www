@@ -13,19 +13,24 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+import com.cubesofttech.system.Constant;
+
 @Service("emailService")
 public class EmailService {
 
 	@Autowired
     private JavaMailSender mailSender;
 
+	@Autowired
+	private Constant constant;
+
 	Logger log = Logger.getLogger(getClass());
 
     public void sendEmailJob(String name, String email, String tel, String position, String msg, File file, String fileName) throws Exception {
     	MimeMessage message = mailSender.createMimeMessage();
     	MimeMessageHelper helper = new MimeMessageHelper(message, true);
-    	helper.setFrom("chatchai.k@cubesofttech.com");
-    	helper.setTo("recruit@cubesofttech.com");
+    	helper.setFrom(constant.getEmailJobFrom());
+    	helper.setTo(constant.getEmailJobTo());
     	helper.setSubject("Apply : " + position);
     	helper.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel
 						+"\n Position : "+position+"\n Message : \n"+msg);
@@ -43,8 +48,8 @@ public class EmailService {
     public void sendEmailContact(String firstName, String lastName, String email, String tel, String msg) throws Exception {
     	String name = firstName + " " + lastName;
     	SimpleMailMessage message = new SimpleMailMessage();
-    	message.setFrom("chatchai.k@cubesofttech.com");
-    	message.setTo("contact@cubesofttech.com");
+    	message.setFrom(constant.getEmailContactFrom());
+    	message.setTo(constant.getEmailContactTo());
     	message.setSubject("Contact message from Website.");
     	message.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel+"\n Message : \n"+msg);
     	log.debug(message);

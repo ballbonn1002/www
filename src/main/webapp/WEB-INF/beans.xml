@@ -30,6 +30,10 @@
         <property name="recaptchaSiteKey" value="${recaptcha.site.key}" />
         <property name="recaptchaSecretKey" value="${recaptcha.secret.key}" />
         <property name="redesignEnabled" value="${redesign.enabled}" />
+        <property name="emailContactFrom" value="${email.contact.from}" />
+        <property name="emailContactTo" value="${email.contact.to}" />
+        <property name="emailJobFrom" value="${email.job.from}" />
+        <property name="emailJobTo" value="${email.job.to}" />
     </bean>
     
     <!-- DEV-FSC : ROOT DATA SOURCE [BEGIN]-->
