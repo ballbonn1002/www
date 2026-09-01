@@ -77,8 +77,6 @@ public final class ArticleHtmlSanitizer {
 			safelist.addAttributes(tag, "align");
 		}
 		for (String tag : FONT_SIZE_TAGS) {
-			// Only ever holds a single validated "font-size: <num><unit>" declaration
-			// rebuilt by preserveFontSizeAttribute() - never the editor's raw style.
 			safelist.addAttributes(tag, "style");
 		}
 		return safelist;
