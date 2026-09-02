@@ -48,7 +48,7 @@
 /* ==========================================================================
    1. Page chrome - resets body's scrollbar-compensation padding after the
    hero image modal closes (baseLayout.jsp already covers scroll-behavior
-   and #navbar-hover:hover sitewide)
+   and .navbar-hover:hover sitewide)
    ========================================================================== */
 body, html {
 	padding-right: 0 !important;

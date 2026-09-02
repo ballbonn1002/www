@@ -311,11 +311,11 @@ p {
 	color: black;
 }
 
-#navbar-hover {
+.navbar-hover {
 	border-bottom: 4px solid transparent;
 }
 
-#navbar-hover:hover {
+.navbar-hover:hover {
 	color: #BD2125 !important;
 	text-decoration: none;
 	border-color: white white #BD2125 !important;

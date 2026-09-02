@@ -87,18 +87,18 @@
 
 						<ul class="navbar-nav mr-auto ">
 							<li class=""><b><a
-									class="nav-link ${isHomeActive ? 'active' : ''}"
-									id="navbar-hover" href="/"
+									class="nav-link navbar-hover ${isHomeActive ? 'active' : ''}"
+									href="/"
 									style="padding-left: 30px; padding-right: 30px; color: black">Home</a></b>
 							</li>
 							<li class="nav-item dropdown"><a
-								class="nav-link dropdown-toggle ${isServicesActive ? 'active' : ''}"
-								href="/services" id="navbar-hover" role="button"
+								class="nav-link dropdown-toggle navbar-hover ${isServicesActive ? 'active' : ''}"
+								href="/services" id="servicesDropdownToggle" role="button"
 								data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false"
 								style="padding-left: 30px; padding-right: 30px; color: black; font-weight: bold;">
 									Services </a>
-								<div class="dropdown-menu" aria-labelledby="navbar-hover">
+								<div class="dropdown-menu" aria-labelledby="servicesDropdownToggle">
 									<a class="dropdown-item " href="/services">Services</a> <a
 										class="dropdown-item" href="/software-development">Software
 										Development</a> <a class="dropdown-item" href="/it-outsource">IT
@@ -106,25 +106,25 @@
 										href="/mobile-app-development">Mobile App Development</a>
 								</div></li>
 							<li class=""><b> <a
-									class="nav-link ${isCareersActive ? 'active' : ''}"
-									id="navbar-hover" href="/careers"
+									class="nav-link navbar-hover ${isCareersActive ? 'active' : ''}"
+									href="/careers"
 									style="padding-left: 30px; padding-right: 30px; color: black">Careers</a></b>
 							</li>
 
 							<!---เมนู article   -->
 							<li class=""><b> <a
-									class="nav-link ${isBlogActive ? 'active' : ''}"
-									id="navbar-hover" href="/blog"
+									class="nav-link navbar-hover ${isBlogActive ? 'active' : ''}"
+									href="/blog"
 									style="padding-left: 30px; padding-right: 30px; color: black">Blog</a></b>
 							</li>
 							<li class=""><b> <a
-									class="nav-link ${isNewsActive ? 'active' : ''}"
-									id="navbar-hover" href="/news"
+									class="nav-link navbar-hover ${isNewsActive ? 'active' : ''}"
+									href="/news"
 									style="padding-left: 30px; padding-right: 30px; color: black">News</a></b>
 							</li>
 							<li class=""><b> <a
-									class="nav-link ${isContactsActive ? 'active' : ''}"
-									id="navbar-hover" href="/contacts"
+									class="nav-link navbar-hover ${isContactsActive ? 'active' : ''}"
+									href="/contacts"
 									style="padding-left: 30px; padding-right: 30px; color: black">Contacts</a></b>
 							</li>
 
@@ -192,28 +192,10 @@
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-				// Handle dropdown toggle on click
-				$('.dropdown-toggle').on('click', function(event) {
-					event.preventDefault();
-					$(this).next('.dropdown-menu').toggle();
-				});
-
-				// Handle navbar toggling on small screens
-				$('.navbar-toggler').on('click', function() {
-					var target = $(this).data('target');
-					$(target).collapse('toggle');
-				});
-
-				// Prevent closing when clicking inside the navbar
-				$('.navbar').on('click', function(event) {
-					event.stopPropagation();
-				});
-
-				// Close dropdowns and navbar when clicking outside
+				// Dropdowns close themselves via Bootstrap; only the mobile menu needs this.
 				$(document).on('click', function(event) {
 					if (!$(event.target).closest('.navbar').length) {
-						$('.dropdown-menu').hide();
-						$('.navbar-collapse').collapse('hide'); // Hide the navbar when clicking outside
+						$('.navbar-collapse').collapse('hide');
 					}
 				});
 			});
