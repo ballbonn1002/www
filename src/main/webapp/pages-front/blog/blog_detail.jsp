@@ -340,20 +340,20 @@ hr.detailnew {
 					</header>
 						<p>
 							<b>SHARES</b>&nbsp;&nbsp;&nbsp; <a
-								href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
+								href="https://www.facebook.com/sharer/sharer.php?u=https://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/svg/facebook_square.svg" width="25px"
 								height="25px">
 								</a>&nbsp;&nbsp;&nbsp; <a
-								href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
+								href="https://twitter.com/share?url=https://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/svg/twitter_x.svg" width="25px"
 								height="25px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com${bloguri}"
+								href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=https://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/svg/gmail.svg" width="28px"
 								height="28px"></a>&nbsp;&nbsp;&nbsp; <a
-								href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com${bloguri}"
+								href="https://linkedin.com/shareArticle?url=https://www.cubesofttech.com${bloguri}"
 								target="_blank"><img
 								src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 								height="25px"></a>
