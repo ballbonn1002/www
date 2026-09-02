@@ -34,10 +34,8 @@ public class JobDAOImpl implements JobDAO{
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Job> jobList = null;
 		try {
-			// This join can match a colliding article/blog row that happens to
-			// share this job's model_id. Filtering to '%career%' (or NULL, for
-			// jobs that don't have a URL slug yet) keeps jobs without a
-			// page_uri still showing up, same as before this fix.
+			// Filters out colliding article/blog rows sharing this job's model_id;
+			// NULL/'%career%' still includes jobs with no URL slug yet.
 			String sql = "SELECT job.position, page_uri.page_uri_id FROM job LEFT JOIN page_uri ON job.job_id = page_uri.model_id "
 					+ "WHERE page_uri.page_uri_id IS NULL OR page_uri.page_uri_id LIKE '%career%' ORDER BY job.name ASC ";
 			SQLQuery query = session.createSQLQuery(sql);
