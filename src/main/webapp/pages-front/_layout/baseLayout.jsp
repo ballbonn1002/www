@@ -100,7 +100,7 @@ keyframes ptr-spin {to { transform:rotate(360deg);
 <%-- Hero image preload for the blog "แนะนำล่าสุด" section; newBlog is only set on the blog/news listing pages. --%>
 <c:if test="${not empty newBlog}">
 	<link rel="preload" as="image"
-		href="${constant.imgContext}/${newBlog.path}" fetchpriority="high">
+		href="${constant.imgContext}${newBlog.path}" fetchpriority="high">
 </c:if>
 <c:if test="${not empty blog}">
 	<meta property="og:title" content="${fn:escapeXml(blog.topic)}">

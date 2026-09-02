@@ -293,7 +293,7 @@ a {
 				<div class="col-lg-6">
 					<div class="articleblockbg3">
 						<a class="" href="${newBlog.page_uri_id}"
-							role="button"> <img src="${constant.imgContext}/${newBlog.path}" width="100%"
+							role="button"> <img src="${constant.imgContext}${newBlog.path}" width="100%"
 							height="500px"
 							style="object-fit: cover; border-radius: 20px 20px 20px 20px">
 						</a>
