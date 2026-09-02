@@ -33,6 +33,9 @@ public final class ArticleHtmlSanitizer {
 
 	private static final Safelist ARTICLE_BODY_SAFELIST = buildSafelist();
 
+	// Shields #anchor hrefs from Jsoup.clean()'s baseUri resolution; stripped back out after.
+	private static final String FRAGMENT_LINK_PLACEHOLDER = "https://__fragment-link-placeholder__/";
+
 	private ArticleHtmlSanitizer() {
 	}
 
@@ -45,8 +48,16 @@ public final class ArticleHtmlSanitizer {
 		stripClassAndStyleAttributes(doc);
 		removeEmptySpacerElements(doc);
 		removeDisallowedIframes(doc);
+		protectFragmentLinks(doc);
 		FaqSectionRebuilder.rebuildFaqSections(doc);
-		return Jsoup.clean(doc.body().html(), baseUri, ARTICLE_BODY_SAFELIST);
+		String cleaned = Jsoup.clean(doc.body().html(), baseUri, ARTICLE_BODY_SAFELIST);
+		return cleaned.replace(FRAGMENT_LINK_PLACEHOLDER, "");
+	}
+
+	private static void protectFragmentLinks(Document doc) {
+		for (Element link : doc.body().select("a[href^=#]")) {
+			link.attr("href", FRAGMENT_LINK_PLACEHOLDER + link.attr("href"));
+		}
 	}
 
 	public static String toPreviewText(String rawHtml, int maxLength) {
@@ -74,7 +85,7 @@ public final class ArticleHtmlSanitizer {
 				.addAttributes("iframe", "src", "width", "height", "frameborder", "allow", "allowfullscreen", "title")
 				.addProtocols("iframe", "src", "https");
 		for (String tag : TEXT_ALIGN_TAGS) {
-			safelist.addAttributes(tag, "align");
+			safelist.addAttributes(tag, "align", "id");
 		}
 		for (String tag : FONT_SIZE_TAGS) {
 			safelist.addAttributes(tag, "style");
