@@ -67,6 +67,8 @@
             <result name="sendJobFailed" type="tiles">jobDetail.redesign</result>
             <result name="invalidJob" type="redirect">/careers</result>
             <result name="error" type="redirect">/</result>
+            <!-- Struts' own fileUpload interceptor forwards here on an oversized file, before job/constant are ever set. -->
+            <result name="input" type="redirect">/careers</result>
         </action>
 
         <action name="blog" class="com.cubesofttech.action.BlogAction" method="init">
