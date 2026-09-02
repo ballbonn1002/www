@@ -16,7 +16,7 @@ public final class ContactFormValidator {
 
 	// Digits, spaces/hyphens as separators, optional leading "+".
 	private static final Pattern PHONE_ALLOWED_CHARS = Pattern.compile("^\\+?[0-9\\s-]+$");
-	// International shape (not Thai-only) per CEO request for overseas contacts; 7-15 digits covers E.164.
+	// International shape (not Thai-only) for overseas contacts; 7-15 digits covers E.164.
 	private static final Pattern PHONE_NUMBER = Pattern.compile("^\\+?[0-9]{7,15}$");
 
 	private ContactFormValidator() {
