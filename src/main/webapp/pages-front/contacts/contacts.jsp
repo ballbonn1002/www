@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
@@ -159,14 +160,14 @@
 							<input type="text"
 								class="form-control ${not empty firstNameError ? 'is-invalid' : ''}"
 								placeholder="First name" name="firstName" id="firstName"
-								value="${firstName}">
+								value="${fn:escapeXml(firstName)}">
 							<div class="invalid-feedback">${firstNameError}</div>
 						</div>
 						<div class="form-group col-md-6">
 							<input type="text"
 								class="form-control ${not empty lastNameError ? 'is-invalid' : ''}"
 								placeholder="Last name" name="lastName" id="lastName"
-								value="${lastName}">
+								value="${fn:escapeXml(lastName)}">
 							<div class="invalid-feedback">${lastNameError}</div>
 						</div>
 					</div>
@@ -174,19 +175,19 @@
 						<input type="email"
 							class="form-control ${not empty emailError ? 'is-invalid' : ''}"
 							placeholder="E-Mail" name="contactEmail" id="contactEmail"
-							value="${contactEmail}">
+							value="${fn:escapeXml(contactEmail)}">
 						<div class="invalid-feedback">${emailError}</div>
 					</div>
 					<div class="form-group">
 						<input type="tel"
 							class="form-control ${not empty phoneError ? 'is-invalid' : ''}"
 							placeholder="Telephone" name="contactTel" id="contactTel"
-							value="${contactTel}">
+							value="${fn:escapeXml(contactTel)}">
 						<div class="invalid-feedback">${phoneError}</div>
 					</div>
 					<div class="form-group">
 						<textarea class="form-control" rows="3" placeholder="Message"
-							name="contactMessage" id="contactMessage">${contactMessage}</textarea>
+							name="contactMessage" id="contactMessage">${fn:escapeXml(contactMessage)}</textarea>
 					</div>
 					<div class="form-group">
 						<div class="input-group">

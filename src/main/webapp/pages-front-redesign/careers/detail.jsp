@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="comp"%>
 
 <script type="application/ld+json">
@@ -794,7 +795,7 @@
 								<input type="text"
 									class="form-control ${not empty nameError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactName" id="jobApplyName"
-									value="${contactName}"> <label for="jobApplyName">Full
+									value="${fn:escapeXml(contactName)}"> <label for="jobApplyName">Full
 									Name <span class="required-mark">*</span>
 								</label>
 							</div>
@@ -812,7 +813,7 @@
 								<input type="email"
 									class="form-control ${not empty emailError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactEmail" id="jobApplyEmail"
-									value="${contactEmail}"> <label for="jobApplyEmail">E-mail
+									value="${fn:escapeXml(contactEmail)}"> <label for="jobApplyEmail">E-mail
 									<span class="required-mark">*</span>
 								</label>
 							</div>
@@ -830,7 +831,7 @@
 								<input type="text"
 									class="form-control ${not empty telError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactTel" id="jobApplyTel"
-									value="${contactTel}"> <label for="jobApplyTel">Telephone
+									value="${fn:escapeXml(contactTel)}"> <label for="jobApplyTel">Telephone
 									<span class="optional-mark">(optional)</span>
 								</label>
 							</div>
@@ -883,7 +884,7 @@
 					</div>
 					<div class="form-group field-floating">
 						<textarea class="form-control" rows="3" placeholder=" "
-							name="contactMessage" id="jobApplyMessage">${contactMessage}</textarea>
+							name="contactMessage" id="jobApplyMessage">${fn:escapeXml(contactMessage)}</textarea>
 						<label for="jobApplyMessage">Message <span
 							class="optional-mark">(optional)</span></label>
 					</div>
