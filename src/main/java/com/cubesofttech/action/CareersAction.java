@@ -1,6 +1,8 @@
 package com.cubesofttech.action;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -307,9 +309,9 @@ public class CareersAction extends ActionSupport {
 	private boolean hasMatchingFileSignature(File file, String extension) {
 		byte[] header = new byte[8];
 		int bytesRead;
-		try (java.io.FileInputStream in = new java.io.FileInputStream(file)) {
+		try (FileInputStream in = new FileInputStream(file)) {
 			bytesRead = in.read(header);
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return false;
 		}
 		if (bytesRead < 4) {
