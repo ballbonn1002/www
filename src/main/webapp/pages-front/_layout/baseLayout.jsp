@@ -126,6 +126,14 @@ keyframes ptr-spin {to { transform:rotate(360deg);
 		<c:set var="ogTitle" value="${title}" />
 		<c:set var="ogImage" value="https://www.cubesofttech.com/pages-front/img/logo/cubesofttech.png" />
 	</c:when>
+	<c:when test="${requestURI == '/blog'}">
+		<c:set var="ogTitle" value="Cube SoftTech Blog" />
+		<c:set var="ogImage" value="${constant.imgContext}${newBlog.path}" />
+	</c:when>
+	<c:when test="${requestURI == '/news'}">
+		<c:set var="ogTitle" value="Cube SoftTech News" />
+		<c:set var="ogImage" value="${constant.imgContext}${newBlog.path}" />
+	</c:when>
 	<c:when test="${requestURI == '/services'}">
 		<c:set var="ogTitle" value="Our Services" />
 		<c:set var="ogImage" value="https://www.cubesofttech.com/pages-front/img/logo/cubesofttech.png" />
