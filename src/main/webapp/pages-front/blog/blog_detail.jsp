@@ -4,14 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:title" content="${blog.topic}">
-<meta property="og:description" content="${metaDescription}">
-<meta property="og:image" content="${constant.imgContext}${path}">
-<meta property="og:url" content="https://www.cubesofttech.com${bloguri}">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Cube SoftTech">
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

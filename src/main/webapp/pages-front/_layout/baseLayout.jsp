@@ -13,7 +13,9 @@
 <meta charset="utf-8">
 <%-- Critical inline CSS so first paint matches the site background before per-page styles load. --%>
 <style>
-html{background-color:#F5F5F5;}
+html {
+	background-color: #F5F5F5;
+}
 /* Toggled via .is-loading by the click listener further down - gives instant feedback on internal link clicks. */
 #page-loading-bar {
 	position: fixed;
@@ -26,10 +28,12 @@ html{background-color:#F5F5F5;}
 	opacity: 0;
 	transition: width 0.4s ease-out, opacity 0.2s ease-out;
 }
+
 #page-loading-bar.is-loading {
 	width: 90%;
 	opacity: 1;
-	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s ease-out;
+	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s
+		ease-out;
 }
 /* Used on bfcache restore - snaps to 100% then fades, reading as "done" instead of aborted mid-fill. */
 #page-loading-bar.is-done {
@@ -39,10 +43,10 @@ html{background-color:#F5F5F5;}
 }
 
 /* Cross-document @view-transition was tried here but caused stacked scrollbars during the transition - removed. */
-
 body {
 	transition: transform 0.25s ease;
 }
+
 #ptr-indicator {
 	position: absolute;
 	top: -60px;
@@ -55,6 +59,7 @@ body {
 	justify-content: center;
 	pointer-events: none;
 }
+
 #ptr-indicator__spinner {
 	width: 26px;
 	height: 26px;
@@ -62,13 +67,15 @@ body {
 	border-top-color: #BD2125;
 	border-radius: 50%;
 }
+
 #ptr-indicator.is-refreshing #ptr-indicator__spinner {
 	animation: ptr-spin 0.6s linear infinite;
 }
-@keyframes ptr-spin {
-	to {
-		transform: rotate(360deg);
-	}
+
+@
+keyframes ptr-spin {to { transform:rotate(360deg);
+	
+}
 }
 </style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
@@ -94,6 +101,51 @@ body {
 <c:if test="${not empty newBlog}">
 	<link rel="preload" as="image"
 		href="${constant.imgContext}/${newBlog.path}" fetchpriority="high">
+</c:if>
+<c:if test="${not empty blog}">
+	<meta property="og:title" content="${fn:escapeXml(blog.topic)}">
+	<meta property="og:description"
+		content="${fn:escapeXml(metaDescription)}">
+	<meta property="og:image" content="${constant.imgContext}${path}">
+	<c:if test="${not empty ogImageWidth and not empty ogImageHeight}">
+		<meta property="og:image:width" content="${ogImageWidth}">
+		<meta property="og:image:height" content="${ogImageHeight}">
+	</c:if>
+	<meta property="og:url"
+		content="https://www.cubesofttech.com${bloguri}">
+	<meta property="og:type" content="article">
+	<meta property="og:site_name" content="Cube SoftTech">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="${fn:escapeXml(blog.topic)}">
+	<meta name="twitter:description"
+		content="${fn:escapeXml(metaDescription)}">
+	<meta name="twitter:image" content="${constant.imgContext}${path}">
+</c:if>
+<c:choose>
+	<c:when test="${requestURI == '/'}">
+		<c:set var="ogTitle" value="${title}" />
+		<c:set var="ogImage" value="https://www.cubesofttech.com/pages-front/img/logo/cubesofttech.png" />
+	</c:when>
+	<c:when test="${requestURI == '/services'}">
+		<c:set var="ogTitle" value="Our Services" />
+		<c:set var="ogImage" value="https://www.cubesofttech.com/pages-front/img/logo/cubesofttech.png" />
+	</c:when>
+	<c:when test="${requestURI == '/careers'}">
+		<c:set var="ogTitle" value="Careers at CubeSoftTech" />
+		<c:set var="ogImage" value="https://www.cubesofttech.com/pages-front/img/redesign/careers/careers-why-work-with-us.jpg" />
+	</c:when>
+	<c:when test="${requestURI == '/contacts'}">
+		<c:set var="ogTitle" value="Contact Us" />
+		<c:set var="ogImage" value="https://www.cubesofttech.com/pages-front/img/logo/cubesofttech.png" />
+	</c:when>
+</c:choose>
+<c:if test="${not empty ogTitle}">
+<meta property="og:title" content="${fn:escapeXml(ogTitle)}">
+<meta property="og:description" content="${fn:escapeXml(meta)}">
+<meta property="og:image" content="${ogImage}">
+<meta property="og:url" content="https://www.cubesofttech.com${requestURI}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cube SoftTech">
 </c:if>
 <meta name="description" content="${meta}">
 <meta name="keywords" content="">
@@ -230,9 +282,7 @@ h1, h2, h3, p {
 }
 
 /* Overrides Bootstrap's default blue focus box-shadow with the brand color. */
-.form-control:focus,
-.page-link:focus,
-.btn:focus, .btn.focus {
+.form-control:focus, .page-link:focus, .btn:focus, .btn.focus {
 	border-color: #BD2125;
 	box-shadow: 0 0 0 0.2rem rgba(189, 33, 37, 0.25);
 }
@@ -806,7 +856,8 @@ a {
 				// translateY(0px) is still a non-none transform, which makes body a
 				// containing block for every position:fixed element on the page -
 				// clear the property instead of "resetting" to a zero transform.
-				document.body.style.transform = px === 0 ? '' : 'translateY(' + px + 'px)';
+				document.body.style.transform = px === 0 ? '' : 'translateY('
+						+ px + 'px)';
 			}
 
 			function restoreOverflow() {
@@ -840,7 +891,9 @@ a {
 				// body's overflow:hidden clips the indicator's negative top offset
 				// once body becomes its containing block via transform.
 				document.body.style.overflow = 'visible';
-			}, { passive: true });
+			}, {
+				passive : true
+			});
 
 			document.addEventListener('touchcancel', function() {
 				if (dragging && !refreshing) {
@@ -865,7 +918,9 @@ a {
 				e.preventDefault();
 				document.body.style.transitionDuration = '0s';
 				setPull(Math.min((delta - PULL_DEAD_ZONE) * 0.5, MAX_PULL));
-			}, { passive: false });
+			}, {
+				passive : false
+			});
 
 			document.addEventListener('touchend', function() {
 				if (!dragging || refreshing) {
@@ -890,7 +945,8 @@ a {
 	</script>
 	<%-- Only fires for real same-origin navigations - skips anchors, new tabs, downloads, and other origins. --%>
 	<script>
-		<%-- bfcache restores the page (and its stuck is-loading class) without reloading it. --%>
+		
+	<%-- bfcache restores the page (and its stuck is-loading class) without reloading it. --%>
 		window.addEventListener('pageshow', function(e) {
 			if (e.persisted) {
 				var bar = document.getElementById('page-loading-bar');
@@ -906,8 +962,10 @@ a {
 				return;
 			}
 			var href = link.getAttribute('href');
-			if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0
-					|| href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) {
+			if (!href || href.charAt(0) === '#'
+					|| href.indexOf('javascript:') === 0
+					|| href.indexOf('mailto:') === 0
+					|| href.indexOf('tel:') === 0) {
 				return;
 			}
 			if (link.target && link.target !== '_self') {
