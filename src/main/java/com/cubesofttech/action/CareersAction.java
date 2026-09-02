@@ -271,25 +271,61 @@ public class CareersAction extends ActionSupport {
 		if (file.length() > MAX_RESUME_FILE_SIZE) {
 			return "File is too large - please upload a file under 30MB";
 		}
-		if (strict && !hasAllowedExtension(fileName)) {
-			return "Please upload a PDF, DOC, or DOCX file";
+		if (strict) {
+			String extension = extractExtension(fileName);
+			if (!hasAllowedExtension(extension) || !hasMatchingFileSignature(file, extension)) {
+				return "Please upload a PDF, DOC, or DOCX file";
+			}
 		}
 		return null;
 	}
 
-	private boolean hasAllowedExtension(String fileName) {
+	private String extractExtension(String fileName) {
 		if (fileName == null) {
-			return false;
+			return null;
 		}
 		int dotIndex = fileName.lastIndexOf('.');
 		if (dotIndex < 0) {
+			return null;
+		}
+		return fileName.substring(dotIndex + 1).toLowerCase();
+	}
+
+	private boolean hasAllowedExtension(String extension) {
+		if (extension == null) {
 			return false;
 		}
-		String extension = fileName.substring(dotIndex + 1).toLowerCase();
 		for (String allowed : ALLOWED_RESUME_EXTENSIONS) {
 			if (allowed.equals(extension)) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	// Extension alone is trivially spoofed - check the real file header too.
+	private boolean hasMatchingFileSignature(File file, String extension) {
+		byte[] header = new byte[8];
+		int bytesRead;
+		try (java.io.FileInputStream in = new java.io.FileInputStream(file)) {
+			bytesRead = in.read(header);
+		} catch (java.io.IOException e) {
+			return false;
+		}
+		if (bytesRead < 4) {
+			return false;
+		}
+		if ("pdf".equals(extension)) {
+			return header[0] == '%' && header[1] == 'P' && header[2] == 'D' && header[3] == 'F';
+		}
+		if ("doc".equals(extension)) {
+			// Real .doc files always start with these exact 4 bytes.
+			return (header[0] & 0xFF) == 0xD0 && (header[1] & 0xFF) == 0xCF && (header[2] & 0xFF) == 0x11
+					&& (header[3] & 0xFF) == 0xE0;
+		}
+		if ("docx".equals(extension)) {
+			// Real .docx files always start with these 2 bytes (it's a zip file).
+			return header[0] == 'P' && header[1] == 'K';
 		}
 		return false;
 	}
