@@ -153,9 +153,6 @@
 		padding: 5px;
 		font-size: 12px;
 	}
-	#myIcon {
-		font-size: 18px;
-	}
 }
 
 /* Dropdown Menu */
