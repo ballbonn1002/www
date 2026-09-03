@@ -394,7 +394,7 @@ public class CareersAction extends ActionSupport {
 			request.setAttribute("response", "0");
 			if (redesign) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setHeader("X-Error-Reason", "smtp-send-failed");
+				response.setHeader("X-Error-Reason", "send-failed");
 				request.setAttribute("constant", constant);
 				request.setAttribute("requestURI", jobUrl);
 				request.setAttribute("contactName", contactName);

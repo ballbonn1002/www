@@ -139,7 +139,7 @@ public class ContactsAction extends ActionSupport {
 			log.error(e);
 			if (redesign) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setHeader("X-Error-Reason", "smtp-send-failed");
+				response.setHeader("X-Error-Reason", "send-failed");
 				request.setAttribute("constant", constant);
 				request.setAttribute("requestURI", "/contacts");
 				request.setAttribute("firstName", firstName);
