@@ -38,8 +38,7 @@ public class CareersAction extends ActionSupport {
 	private static final long MAX_RESUME_FILE_SIZE = 30_000_000L;
 	private static final String[] ALLOWED_RESUME_EXTENSIONS = { "pdf", "doc", "docx" };
 
-	// Caps how many intern testimonial cards the careers page shows - keep this
-	// when buildMockTestimonials() is replaced by a real DAO query (e.g. LIMIT 6).
+	// Also the LIMIT to use once buildMockTestimonials() is a real DAO query.
 	private static final int MAX_TESTIMONIALS = 6;
 
 	Logger log = Logger.getLogger(getClass());
@@ -253,8 +252,7 @@ public class CareersAction extends ActionSupport {
 		request.setAttribute("jobDescriptionHtml", buildJobDescriptionHtml(job.getDescription()));
 	}
 
-	// Normalizes postings pasted as flat <div>/<p> runs into real <ul>/<li>
-	// sections before sanitizing, so .jobdetail-card's CSS always sees real tags.
+	// Rebuilds flat <div>/<p> postings into real <ul>/<li> so .jobdetail-card's CSS applies.
 	private String buildJobDescriptionHtml(String rawHtml) {
 		if (rawHtml == null || rawHtml.trim().isEmpty()) {
 			return "";
@@ -264,8 +262,7 @@ public class CareersAction extends ActionSupport {
 		return ArticleHtmlSanitizer.clean(doc.body().html(), constant.getImgContext());
 	}
 
-	// strict is only true on the redesign path - legacy never required a resume
-	// or restricted its type (size is still checked either way).
+	// strict is only true on the redesign path - legacy never required a resume.
 	private String validateResumeFile(File file, String fileName, boolean strict) {
 		if (file == null) {
 			return strict ? "Please attach your resume" : null;
