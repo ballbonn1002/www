@@ -883,10 +883,13 @@
 							hidden>
 					</div>
 					<div class="form-group field-floating">
-						<textarea class="form-control" rows="3" placeholder=" "
+						<textarea class="form-control ${not empty messageError ? 'is-invalid' : ''}" rows="3" placeholder=" "
 							name="contactMessage" id="jobApplyMessage">${fn:escapeXml(contactMessage)}</textarea>
 						<label for="jobApplyMessage">Message <span
 							class="optional-mark">(optional)</span></label>
+						<div
+							class="invalid-feedback jobapply-feedback ${not empty messageError ? 'is-shown' : ''}"
+							id="jobApplyMessageFeedback">${messageError}</div>
 					</div>
 					<div class="form-group">
 						<div id="jobApplyRecaptcha" class="g-recaptcha"></div>

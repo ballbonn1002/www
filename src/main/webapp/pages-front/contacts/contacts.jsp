@@ -186,8 +186,9 @@
 						<div class="invalid-feedback">${phoneError}</div>
 					</div>
 					<div class="form-group">
-						<textarea class="form-control" rows="3" placeholder="Message"
+						<textarea class="form-control ${not empty messageError ? 'is-invalid' : ''}" rows="3" placeholder="Message"
 							name="contactMessage" id="contactMessage">${fn:escapeXml(contactMessage)}</textarea>
+						<div class="invalid-feedback">${messageError}</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">

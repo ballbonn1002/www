@@ -353,12 +353,12 @@ public class CareersAction extends ActionSupport {
 			boolean telProvided = contactTel != null && !contactTel.trim().isEmpty();
 			ValidationResult telResult = telProvided ? ContactFormValidator.validatePhone(contactTel)
 					: ValidationResult.valid(contactTel);
+			ValidationResult messageResult = ContactFormValidator.validateMessage(contactMessage);
 			String fileError = validateResumeFile(contactFile, contactFileName, redesign);
-			// Set by BotProtectionInterceptor (actionfront.xml), which also covers
-			// the honeypot field and per-IP rate limit alongside the captcha check.
+			// Set by BotProtectionInterceptor (actionfront.xml).
 			boolean captchaValid = !redesign || Boolean.TRUE.equals(request.getAttribute("botCheckPassed"));
 			boolean allValid = nameResult.isValid() && emailResult.isValid() && telResult.isValid()
-					&& fileError == null && captchaValid;
+					&& messageResult.isValid() && fileError == null && captchaValid;
 
 			Map<String, Object> flash = FlashScope.newMap();
 			// Repopulate what was typed so a validation failure doesn't clear the form.
@@ -371,6 +371,7 @@ public class CareersAction extends ActionSupport {
 				flash.put("nameError", nameResult.getErrorMessage());
 				flash.put("emailError", emailResult.getErrorMessage());
 				flash.put("telError", telResult.getErrorMessage());
+				flash.put("messageError", messageResult.getErrorMessage());
 				flash.put("fileError", fileError);
 				if (!captchaValid) {
 					flash.put("captchaError", "Please complete the verification above and try again.");
@@ -383,7 +384,7 @@ public class CareersAction extends ActionSupport {
 					+ " position=" + contactPosition + " resume=" + contactFileName);
 
 			emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
-					contactPosition, contactMessage, contactFile, contactFileName);
+					contactPosition, messageResult.getValue(), contactFile, contactFileName);
 			flash.put("response", "1");
 			FlashScope.put(request, flash);
 			response.setHeader("X-Send-Result", "success");

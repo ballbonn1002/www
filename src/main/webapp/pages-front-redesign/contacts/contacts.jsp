@@ -469,9 +469,10 @@
 					</div>
 
 					<div class="form-group field-floating">
-						<textarea class="form-control" rows="3" placeholder=" "
+						<textarea class="form-control ${not empty messageError ? 'is-invalid' : ''}" rows="3" placeholder=" "
 							name="contactMessage" id="contactMessage">${fn:escapeXml(contactMessage)}</textarea>
 						<label for="contactMessage">Message <span class="optional-mark">(optional)</span></label>
+						<div class="invalid-feedback">${messageError}</div>
 					</div>
 
 					<div class="form-group">
