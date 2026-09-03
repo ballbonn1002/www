@@ -240,12 +240,6 @@ nav.navbar.fixed-top.is-scrolled .navbar-menu-frame {
 	}
 }
 
-@media ( max-width : 767px) {
-	#myIcon {
-		font-size: 18px;
-	}
-}
-
 /* .navbar prefix needed - same footer.jsp Bootstrap 5 override reason as above. */
 .navbar .dropdown-menu {
 	display: none;
