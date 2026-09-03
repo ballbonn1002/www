@@ -28,6 +28,10 @@ public final class ContactFormValidator {
 	private ContactFormValidator() {
 	}
 
+	private static String normalize(String value) {
+		return value == null ? "" : value.trim();
+	}
+
 	public static ValidationResult validateFirstName(String value) {
 		return validateName(value, "Please enter your first name");
 	}
@@ -42,7 +46,7 @@ public final class ContactFormValidator {
 	}
 
 	private static ValidationResult validateName(String value, String requiredMessage) {
-		String trimmed = value == null ? "" : value.trim();
+		String trimmed = normalize(value);
 		if (trimmed.isEmpty()) {
 			return ValidationResult.invalid(requiredMessage);
 		}
@@ -54,7 +58,7 @@ public final class ContactFormValidator {
 	}
 
 	public static ValidationResult validateEmail(String value) {
-		String trimmed = value == null ? "" : value.trim();
+		String trimmed = normalize(value);
 		if (trimmed.isEmpty()) {
 			return ValidationResult.invalid("Please enter your email");
 		}
@@ -65,7 +69,7 @@ public final class ContactFormValidator {
 	}
 
 	public static ValidationResult validatePhone(String value) {
-		String trimmed = value == null ? "" : value.trim();
+		String trimmed = normalize(value);
 		if (trimmed.isEmpty()) {
 			return ValidationResult.invalid("Please enter your phone number");
 		}
@@ -82,7 +86,7 @@ public final class ContactFormValidator {
 
 	// Message is optional, so an empty value is valid - unlike the required fields above.
 	public static ValidationResult validateMessage(String value) {
-		String trimmed = value == null ? "" : value.trim();
+		String trimmed = normalize(value);
 		if (trimmed.isEmpty()) {
 			return ValidationResult.valid(trimmed);
 		}
