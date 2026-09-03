@@ -7,24 +7,9 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="com.cubesofttech.util.ArticleHtmlSanitizer"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <c:if test="${!empty path}">
 <link rel="preload" as="image" href="${constant.imgContext}${path}">
 </c:if>
-<meta property="og:title" content="${blog.topic}">
-<meta property="og:description" content="${metaDescription}">
-<meta property="og:image" content="${constant.imgContext}${path}">
-<c:if test="${not empty ogImageWidth and not empty ogImageHeight}">
-<meta property="og:image:width" content="${ogImageWidth}">
-<meta property="og:image:height" content="${ogImageHeight}">
-</c:if>
-<meta property="og:url" content="https://www.cubesofttech.com${bloguri}">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Cube SoftTech">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${blog.topic}">
-<meta name="twitter:description" content="${metaDescription}">
-<meta name="twitter:image" content="${constant.imgContext}${path}">
 
 <script type="application/ld+json">
 {
@@ -63,7 +48,7 @@
 /* ==========================================================================
    1. Page chrome - resets body's scrollbar-compensation padding after the
    hero image modal closes (baseLayout.jsp already covers scroll-behavior
-   and #navbar-hover:hover sitewide)
+   and .navbar-hover:hover sitewide)
    ========================================================================== */
 body, html {
 	padding-right: 0 !important;
@@ -529,6 +514,12 @@ p {
 	margin-top: 0;
 }
 
+.article-body hr {
+	border: none;
+	border-top: 1px solid var(--article-border);
+	margin: 40px 0;
+}
+
 .article-body h3 {
 	font-size: 20px;
 	margin: 34px 0 14px;
@@ -753,19 +744,19 @@ p {
 
 				<div class="article-shares d-flex align-items-center gap-3">
 					<b>SHARES</b> <a
-						href="https://www.facebook.com/sharer/sharer.php?u=http://www.cubesofttech.com${bloguri}"
+						href="https://www.facebook.com/sharer/sharer.php?u=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/facebook_square.svg"
 						width="25px" height="25px"></a> <a
-						href="https://twitter.com/share?url=http://www.cubesofttech.com${bloguri}"
+						href="https://twitter.com/share?url=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/twitter_x.svg"
 						width="25px" height="25px"></a> <a
-						href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=http://www.cubesofttech.com${bloguri}"
+						href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/gmail.svg" width="28px"
 						height="28px"></a> <a
-						href="https://linkedin.com/shareArticle?url=http://www.cubesofttech.com${bloguri}"
+						href="https://linkedin.com/shareArticle?url=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 						height="25px"></a>

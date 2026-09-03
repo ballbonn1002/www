@@ -365,7 +365,7 @@ public class BlogAction extends ActionSupport {
 		log.debug("blog.detail: " + blog.getDetail());
 		// Only the redesign JSP renders ${cleanDetail} - legacy renders ${blog.detail} raw.
 		if (redesign) {
-			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail());
+			String cleanDetail = ArticleHtmlSanitizer.clean(blog.getDetail(), constant.getImgContext());
 			request.setAttribute("cleanDetail", cleanDetail);
 			log.debug("cleanDetail: " + cleanDetail);
 		}

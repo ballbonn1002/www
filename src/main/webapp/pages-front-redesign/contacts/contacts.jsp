@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="comp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en-th">
@@ -419,7 +420,7 @@
 							<input type="text"
 								class="form-control ${not empty firstNameError ? 'is-invalid' : ''}"
 								placeholder=" " name="firstName" id="firstName"
-								value="${firstName}">
+								value="${fn:escapeXml(firstName)}">
 							<label for="firstName">First name <span
 								class="required-mark">*</span></label>
 							<div class="invalid-feedback">${firstNameError}</div>
@@ -428,7 +429,7 @@
 							<input type="text"
 								class="form-control ${not empty lastNameError ? 'is-invalid' : ''}"
 								placeholder=" " name="lastName" id="lastName"
-								value="${lastName}">
+								value="${fn:escapeXml(lastName)}">
 							<label for="lastName">Last name <span
 								class="required-mark">*</span></label>
 							<div class="invalid-feedback">${lastNameError}</div>
@@ -443,7 +444,7 @@
 								<input type="email"
 									class="form-control is-required ${not empty emailError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactEmail" id="contactEmail"
-									value="${contactEmail}">
+									value="${fn:escapeXml(contactEmail)}">
 								<label for="contactEmail">E-Mail <span
 									class="required-mark">*</span></label>
 								<div class="invalid-feedback">${emailError}</div>
@@ -459,7 +460,7 @@
 								<input type="tel"
 									class="form-control ${not empty phoneError ? 'is-invalid' : ''}"
 									placeholder=" " name="contactTel" id="contactTel"
-									value="${contactTel}">
+									value="${fn:escapeXml(contactTel)}">
 								<label for="contactTel">Telephone <span
 									class="required-mark">*</span></label>
 								<div class="invalid-feedback">${phoneError}</div>
@@ -468,9 +469,10 @@
 					</div>
 
 					<div class="form-group field-floating">
-						<textarea class="form-control" rows="3" placeholder=" "
-							name="contactMessage" id="contactMessage">${contactMessage}</textarea>
+						<textarea class="form-control ${not empty messageError ? 'is-invalid' : ''}" rows="3" placeholder=" "
+							name="contactMessage" id="contactMessage">${fn:escapeXml(contactMessage)}</textarea>
 						<label for="contactMessage">Message <span class="optional-mark">(optional)</span></label>
+						<div class="invalid-feedback">${messageError}</div>
 					</div>
 
 					<div class="form-group">

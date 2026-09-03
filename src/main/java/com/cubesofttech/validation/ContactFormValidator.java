@@ -16,8 +16,14 @@ public final class ContactFormValidator {
 
 	// Digits, spaces/hyphens as separators, optional leading "+".
 	private static final Pattern PHONE_ALLOWED_CHARS = Pattern.compile("^\\+?[0-9\\s-]+$");
-	// International shape (not Thai-only) per CEO request for overseas contacts; 7-15 digits covers E.164.
+	// International shape (not Thai-only) for overseas contacts; 7-15 digits covers E.164.
 	private static final Pattern PHONE_NUMBER = Pattern.compile("^\\+?[0-9]{7,15}$");
+
+	private static final int MESSAGE_MAX_LENGTH = 2000;
+	// Defense in depth on top of output-side escaping - rejects, doesn't strip.
+	private static final Pattern MESSAGE_XSS_PATTERN = Pattern.compile(
+			"<\\s*(script|iframe|object|embed)\\b|javascript\\s*:|\\bon\\w+\\s*=",
+			Pattern.CASE_INSENSITIVE);
 
 	private ContactFormValidator() {
 	}
@@ -72,5 +78,21 @@ public final class ContactFormValidator {
 			return ValidationResult.valid(stripped);
 		}
 		return ValidationResult.invalid("Invalid phone number - please enter digits only");
+	}
+
+	// Message is optional, so an empty value is valid - unlike the required fields above.
+	public static ValidationResult validateMessage(String value) {
+		String trimmed = value == null ? "" : value.trim();
+		if (trimmed.isEmpty()) {
+			return ValidationResult.valid(trimmed);
+		}
+		if (trimmed.length() > MESSAGE_MAX_LENGTH) {
+			return ValidationResult.invalid("Message is too long - please keep it under " + MESSAGE_MAX_LENGTH
+					+ " characters");
+		}
+		if (MESSAGE_XSS_PATTERN.matcher(trimmed).find()) {
+			return ValidationResult.invalid("Message contains characters that aren't allowed - please remove any code or links");
+		}
+		return ValidationResult.valid(trimmed);
 	}
 }

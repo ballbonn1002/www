@@ -64,9 +64,11 @@
             <interceptor-ref name="botProtection" />
             <interceptor-ref name="defaultStack" />
             <result name="success" type="redirect">${jobUrl}</result>
-            <result name="redesign" type="redirect">${jobUrl}</result>
+            <result name="sendJobFailed" type="tiles">jobDetail.redesign</result>
             <result name="invalidJob" type="redirect">/careers</result>
             <result name="error" type="redirect">/</result>
+            <!-- Struts' own fileUpload interceptor forwards here on an oversized file, before job/constant are ever set. -->
+            <result name="input" type="redirect">/careers</result>
         </action>
 
         <action name="blog" class="com.cubesofttech.action.BlogAction" method="init">
@@ -98,7 +100,7 @@
             <interceptor-ref name="botProtection" />
             <interceptor-ref name="defaultStack" />
             <result name="success" type="redirect">/contacts</result>
-            <result name="redesign" type="redirect">/contacts</result>
+            <result name="sendFailed" type="tiles">contacts.redesign</result>
             <result name="error" type="redirect">/</result>
         </action>
     </package>

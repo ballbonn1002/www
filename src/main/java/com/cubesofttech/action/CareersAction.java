@@ -1,11 +1,14 @@
 package com.cubesofttech.action;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -29,17 +32,18 @@ import com.opensymphony.xwork2.ActionSupport;
 public class CareersAction extends ActionSupport {
 	public static final String REDESIGN = "redesign";
 	public static final String INVALID_JOB = "invalidJob";
+	public static final String SEND_JOB_FAILED = "sendJobFailed";
 
 	// Matches struts.multipart.maxSize in actionfront.xml.
 	private static final long MAX_RESUME_FILE_SIZE = 30_000_000L;
 	private static final String[] ALLOWED_RESUME_EXTENSIONS = { "pdf", "doc", "docx" };
 
-	// Caps how many intern testimonial cards the careers page shows - keep this
-	// when buildMockTestimonials() is replaced by a real DAO query (e.g. LIMIT 6).
+	// Also the LIMIT to use once buildMockTestimonials() is a real DAO query.
 	private static final int MAX_TESTIMONIALS = 6;
 
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
+	HttpServletResponse response = ServletActionContext.getResponse();
 
 	@Autowired
 	private JobDAO jobDAO;
@@ -248,19 +252,17 @@ public class CareersAction extends ActionSupport {
 		request.setAttribute("jobDescriptionHtml", buildJobDescriptionHtml(job.getDescription()));
 	}
 
-	// Normalizes postings pasted as flat <div>/<p> runs into real <ul>/<li>
-	// sections before sanitizing, so .jobdetail-card's CSS always sees real tags.
+	// Rebuilds flat <div>/<p> postings into real <ul>/<li> so .jobdetail-card's CSS applies.
 	private String buildJobDescriptionHtml(String rawHtml) {
 		if (rawHtml == null || rawHtml.trim().isEmpty()) {
 			return "";
 		}
 		Document doc = Jsoup.parseBodyFragment(rawHtml);
 		JobDescriptionSectionRebuilder.rebuild(doc);
-		return ArticleHtmlSanitizer.clean(doc.body().html());
+		return ArticleHtmlSanitizer.clean(doc.body().html(), constant.getImgContext());
 	}
 
-	// strict is only true on the redesign path - legacy never required a resume
-	// or restricted its type (size is still checked either way).
+	// strict is only true on the redesign path - legacy never required a resume.
 	private String validateResumeFile(File file, String fileName, boolean strict) {
 		if (file == null) {
 			return strict ? "Please attach your resume" : null;
@@ -268,25 +270,61 @@ public class CareersAction extends ActionSupport {
 		if (file.length() > MAX_RESUME_FILE_SIZE) {
 			return "File is too large - please upload a file under 30MB";
 		}
-		if (strict && !hasAllowedExtension(fileName)) {
-			return "Please upload a PDF, DOC, or DOCX file";
+		if (strict) {
+			String extension = extractExtension(fileName);
+			if (!hasAllowedExtension(extension) || !hasMatchingFileSignature(file, extension)) {
+				return "Please upload a PDF, DOC, or DOCX file";
+			}
 		}
 		return null;
 	}
 
-	private boolean hasAllowedExtension(String fileName) {
+	private String extractExtension(String fileName) {
 		if (fileName == null) {
-			return false;
+			return null;
 		}
 		int dotIndex = fileName.lastIndexOf('.');
 		if (dotIndex < 0) {
+			return null;
+		}
+		return fileName.substring(dotIndex + 1).toLowerCase();
+	}
+
+	private boolean hasAllowedExtension(String extension) {
+		if (extension == null) {
 			return false;
 		}
-		String extension = fileName.substring(dotIndex + 1).toLowerCase();
 		for (String allowed : ALLOWED_RESUME_EXTENSIONS) {
 			if (allowed.equals(extension)) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	// Extension alone is trivially spoofed - check the real file header too.
+	private boolean hasMatchingFileSignature(File file, String extension) {
+		byte[] header = new byte[8];
+		int bytesRead;
+		try (FileInputStream in = new FileInputStream(file)) {
+			bytesRead = in.read(header);
+		} catch (IOException e) {
+			return false;
+		}
+		if (bytesRead < 4) {
+			return false;
+		}
+		if ("pdf".equals(extension)) {
+			return header[0] == '%' && header[1] == 'P' && header[2] == 'D' && header[3] == 'F';
+		}
+		if ("doc".equals(extension)) {
+			// Real .doc files always start with these exact 4 bytes.
+			return (header[0] & 0xFF) == 0xD0 && (header[1] & 0xFF) == 0xCF && (header[2] & 0xFF) == 0x11
+					&& (header[3] & 0xFF) == 0xE0;
+		}
+		if ("docx".equals(extension)) {
+			// Real .docx files always start with these 2 bytes (it's a zip file).
+			return header[0] == 'P' && header[1] == 'K';
 		}
 		return false;
 	}
@@ -315,12 +353,12 @@ public class CareersAction extends ActionSupport {
 			boolean telProvided = contactTel != null && !contactTel.trim().isEmpty();
 			ValidationResult telResult = telProvided ? ContactFormValidator.validatePhone(contactTel)
 					: ValidationResult.valid(contactTel);
+			ValidationResult messageResult = ContactFormValidator.validateMessage(contactMessage);
 			String fileError = validateResumeFile(contactFile, contactFileName, redesign);
-			// Set by BotProtectionInterceptor (actionfront.xml), which also covers
-			// the honeypot field and per-IP rate limit alongside the captcha check.
+			// Set by BotProtectionInterceptor (actionfront.xml).
 			boolean captchaValid = !redesign || Boolean.TRUE.equals(request.getAttribute("botCheckPassed"));
 			boolean allValid = nameResult.isValid() && emailResult.isValid() && telResult.isValid()
-					&& fileError == null && captchaValid;
+					&& messageResult.isValid() && fileError == null && captchaValid;
 
 			Map<String, Object> flash = FlashScope.newMap();
 			// Repopulate what was typed so a validation failure doesn't clear the form.
@@ -333,36 +371,39 @@ public class CareersAction extends ActionSupport {
 				flash.put("nameError", nameResult.getErrorMessage());
 				flash.put("emailError", emailResult.getErrorMessage());
 				flash.put("telError", telResult.getErrorMessage());
+				flash.put("messageError", messageResult.getErrorMessage());
 				flash.put("fileError", fileError);
 				if (!captchaValid) {
 					flash.put("captchaError", "Please complete the verification above and try again.");
 				}
 				FlashScope.put(request, flash);
-				return redesign ? REDESIGN : SUCCESS;
+				return SUCCESS;
 			}
 
 			log.debug("Sending job application: name=" + contactName + " email=" + contactEmail + " tel=" + contactTel
 					+ " position=" + contactPosition + " resume=" + contactFileName);
 
 			emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
-					contactPosition, contactMessage, contactFile, contactFileName);
+					contactPosition, messageResult.getValue(), contactFile, contactFileName);
 			flash.put("response", "1");
 			FlashScope.put(request, flash);
-			return redesign ? REDESIGN : SUCCESS;
+			response.setHeader("X-Send-Result", "success");
+			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
-			if (redesign) {
-				Map<String, Object> flash = FlashScope.newMap();
-				flash.put("response", "0");
-				flash.put("contactName", contactName);
-				flash.put("contactEmail", contactEmail);
-				flash.put("contactTel", contactTel);
-				flash.put("contactMessage", contactMessage);
-				flash.put("formError", "Something went wrong - please try again in a moment.");
-				FlashScope.put(request, flash);
-				return REDESIGN;
-			}
 			request.setAttribute("response", "0");
+			if (redesign) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setHeader("X-Error-Reason", "send-failed");
+				request.setAttribute("constant", constant);
+				request.setAttribute("requestURI", jobUrl);
+				request.setAttribute("contactName", contactName);
+				request.setAttribute("contactEmail", contactEmail);
+				request.setAttribute("contactTel", contactTel);
+				request.setAttribute("contactMessage", contactMessage);
+				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+				return SEND_JOB_FAILED;
+			}
 			return ERROR;
 		}
 	}

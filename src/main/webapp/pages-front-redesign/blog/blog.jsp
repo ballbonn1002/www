@@ -384,7 +384,7 @@ html, body {
 						aria-label="อ่านบทความ: ${newBlog.topic}"> <span
 						class="img-skeleton" aria-hidden="true"></span> <img
 						class="article-preview__image"
-						src="${constant.imgContext}/${newBlog.path}"
+						src="${constant.imgContext}${newBlog.path}"
 						alt="${newBlog.topic}" width="805" height="475"
 						fetchpriority="high">
 					</a>
