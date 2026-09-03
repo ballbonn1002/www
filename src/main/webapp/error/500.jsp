@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="false" %><!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="false" %><%-- Static on purpose (no taglibs/EL/scriptlets); isErrorPage="false" so the exception is never shown. --%><!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
