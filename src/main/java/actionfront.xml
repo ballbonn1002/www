@@ -75,6 +75,8 @@
             <result name="success" type="tiles">blog</result>
             <result name="redesign" type="tiles">blog.redesign</result>
             <result name="error" type="redirect">/</result>
+            <!-- non-numeric ?page= fails int conversion before init() runs -->
+            <result name="input" type="redirect">/blog</result>
         </action>
 
         <action name="blog_detail" class="com.cubesofttech.action.BlogAction" method="blogDetail">
@@ -82,12 +84,15 @@
             <result name="redesign" type="tiles">blog.detail.redesign</result>
             <result name="notFound" type="redirect">/blog</result>
             <result name="error" type="redirect">/</result>
+            <!-- non-numeric ?articleId= fails int conversion before blogDetail() runs -->
+            <result name="input" type="redirect">/blog</result>
         </action>
 
         <action name="news" class="com.cubesofttech.action.BlogAction" method="init">
             <result name="success" type="tiles">news</result>
             <result name="redesign" type="tiles">news.redesign</result>
             <result name="error" type="redirect">/</result>
+            <result name="input" type="redirect">/news</result>
         </action>
 
         <action name="contacts" class="com.cubesofttech.action.ContactsAction" method="init">
