@@ -150,9 +150,7 @@
 		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<!-- Static, self-contained error pages so a bad URL or an uncaught error
-	     never exposes Tomcat's default page (server version + stack trace).
-	     Dispatched as type ERROR, which none of the filters above map to. -->
+	<!-- Keep Tomcat's default error page (server version + stack trace) out of responses. -->
 	<error-page>
 		<error-code>404</error-code>
 		<location>/error/404.jsp</location>

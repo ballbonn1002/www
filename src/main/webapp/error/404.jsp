@@ -1,8 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="false" %><%--
-  Static container error page for 404/403 (mapped in web.xml). No taglibs,
-  no EL, no scriptlets on purpose - this must render even when the app,
-  the DB, or the CDN is down, and must never leak a stack trace.
---%><!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="false" %><!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
