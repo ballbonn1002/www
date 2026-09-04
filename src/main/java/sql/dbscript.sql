@@ -12,5 +12,5 @@ UPDATE `footer` SET `footer_url` = 'https://www.cubesofttech.com/software-develo
 WHERE `footer_id` = 28 AND `footer_name` = 'Software Development';
 
 
--- PROD 31 AUG 2026
+-- PROD 4 SEP 2026
 
