@@ -38,8 +38,8 @@ public class FooterAction extends ActionSupport {
             session.setAttribute("ChildFooter", footerChild);
             session.setAttribute("Article", articleList);
             
-            log.debug(footerList);
-            log.debug(footerChild);
+            //log.debug(footerList);
+            //log.debug(footerChild);
             
             return SUCCESS;
         } catch (Exception e) {
