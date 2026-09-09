@@ -83,10 +83,10 @@ body, html {
 
 .article-hero__image {
 	position: absolute;
-	top: 0;
+	top: calc(var(--navbar-offset, 65px) + 20px);
 	left: 0;
 	width: 100%;
-	height: 100%;
+	height: calc(100% - var(--navbar-offset, 65px) - 50px);
 	object-fit: contain;
 	object-position: center;
 }
@@ -443,7 +443,29 @@ p {
    7. Article-card component tuning (extends shared blog.css card for this page)
    ========================================================================== */
 .article-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
 	margin: 0.75rem 0;
+	font-size: 14px;
+	color: var(--article-ink-muted);
+}
+
+.article-tags__label {
+	font-weight: 600;
+}
+
+.tag-badge {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: var(--article-accent-soft);
+	color: var(--article-accent-strong);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.5;
+	white-space: nowrap;
 }
 
 .card-carousel__item .articleblockbg2 {
@@ -712,10 +734,11 @@ p {
 		<div class="article-hero-card">
 			<h1 itemprop="headline" class="article-title">${blog.topic}</h1>
 
-			<div class="article-tags">
-				Tags : <span id="articletag" style="color: var(--article-accent);"> <c:forEach
-							var="tag" items="${tags}" varStatus="Count">${tag.name} </c:forEach>
-				</span>
+			<div class="article-tags" id="articletag">
+				<span class="article-tags__label">Tags</span>
+				<c:forEach var="tag" items="${tags}">
+					<span class="tag-badge">${fn:escapeXml(tag.name)}</span>
+				</c:forEach>
 			</div>
 
 			<div

@@ -141,35 +141,49 @@ html, body {
 }
 
 .article-preview__row {
-	padding-top: 0%;
-	padding-bottom: 0%;
-	padding-left: 0%;
-	padding-right: 0%;
-}
-
-/* Side by side from tablet up - was lg-only, stacking when there was room. */
-@media ( min-width : 768px) {
-	.article-preview__row .col-md-6 {
-		-ms-flex: 0 0 50%;
-		flex: 0 0 50%;
-		max-width: 50%;
-		height: 500px;
-	}
-
+	padding: 0;
 }
 
 .article-preview__media {
 	position: sticky;
 	top: 20px;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	border-radius: 10px;
+	background-color: #1A1A1A;
+}
+
+.article-preview__media::before,
+.article-preview__image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
 	height: 100%;
 }
 
+.article-preview__media::before {
+	content: "";
+	background: var(--preview-image, none) center / cover no-repeat;
+	filter: blur(20px) brightness(0.55);
+	transform: scale(1.15);
+}
+
 .article-preview__image {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	border-radius: 10px;
+	object-fit: contain;
 	display: block;
+}
+
+@media ( min-width : 768px) {
+	.article-preview__row .col-md-6 {
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.article-preview__media {
+		aspect-ratio: auto;
+		height: 100%;
+	}
 }
 
 .article-preview__content {
@@ -379,7 +393,8 @@ html, body {
 
 			<div class="col-12 col-md-6 order-md-2">
 				
-				<figure class="article-preview__media" data-aos="fade-up">
+				<figure class="article-preview__media" data-aos="fade-up"
+					<c:if test="${!empty newBlog.path}">style="--preview-image: url('${constant.imgContext}${newBlog.path}');"</c:if>>
 					<a href="${newBlog.page_uri_id}" class="article-preview__link"
 						aria-label="อ่านบทความ: ${newBlog.topic}"> <span
 						class="img-skeleton" aria-hidden="true"></span> <img
