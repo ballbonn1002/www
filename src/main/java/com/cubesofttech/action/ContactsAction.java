@@ -177,6 +177,12 @@ public class ContactsAction extends ActionSupport {
 	}
 
 	private String sendFailedResult(boolean redesign) {
+		// forwarded result - null the fields or the JSP re-reads them off the value stack
+		firstName = null;
+		lastName = null;
+		contactEmail = null;
+		contactTel = null;
+		contactMessage = null;
 		if (redesign) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.setHeader("X-Error-Reason", "send-failed");

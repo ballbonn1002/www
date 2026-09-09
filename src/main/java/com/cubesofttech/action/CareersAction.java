@@ -464,6 +464,11 @@ public class CareersAction extends ActionSupport {
 
 	private String sendJobFailedResult(boolean redesign) {
 		request.setAttribute("response", "0");
+		// forwarded result - null the fields or the JSP re-reads them off the value stack
+		contactName = null;
+		contactEmail = null;
+		contactTel = null;
+		contactMessage = null;
 		if (redesign) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.setHeader("X-Error-Reason", "send-failed");
