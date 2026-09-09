@@ -30,7 +30,7 @@ public class EmailService {
     	MimeMessage message = mailSender.createMimeMessage();
     	MimeMessageHelper helper = new MimeMessageHelper(message, true);
     	helper.setFrom(constant.getEmailJobFrom());
-    	helper.setTo(constant.getEmailJobTo());
+    	helper.setTo(constant.getEmailJobTo().split("\\s*,\\s*"));
     	helper.setSubject("Apply : " + position);
     	helper.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel
 						+"\n Position : "+position+"\n Message : \n"+msg);
@@ -49,7 +49,7 @@ public class EmailService {
     	String name = firstName + " " + lastName;
     	SimpleMailMessage message = new SimpleMailMessage();
     	message.setFrom(constant.getEmailContactFrom());
-    	message.setTo(constant.getEmailContactTo());
+    	message.setTo(constant.getEmailContactTo().split("\\s*,\\s*"));
     	message.setSubject("Contact message from Website.");
     	message.setText("Cube SoftTech \n Name : "+name+"\n E-mail : "+email+"\n Telephone : "+tel+"\n Message : \n"+msg);
     	log.debug(message);
