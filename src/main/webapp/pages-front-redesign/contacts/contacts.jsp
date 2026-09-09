@@ -363,7 +363,7 @@
 
 		<div class="contact-toast contact-toast--error" id="contactErrorToast" role="alert" aria-live="assertive">
 			<i class="bi bi-exclamation-circle-fill"></i>
-			<span>${not empty captchaError ? captchaError : formError}</span>
+			<span>${formError}</span>
 		</div>
 
 		<form id="contactForm" action="sendEmailContact" method="post">
@@ -618,7 +618,7 @@
 							}, 5000);
 						}
 
-						if (${not empty captchaError or not empty formError}) {
+						if (${not empty formError}) {
 							var errorToast = document.getElementById('contactErrorToast');
 							errorToast.classList.add('is-visible');
 							setTimeout(function() {

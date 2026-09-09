@@ -369,13 +369,13 @@ public class CareersAction extends ActionSupport {
 					&& messageResult.isValid() && fileError == null && captchaValid;
 
 			Map<String, Object> flash = FlashScope.newMap();
-			// Repopulate what was typed so a validation failure doesn't clear the form.
-			flash.put("contactName", contactName);
-			flash.put("contactEmail", contactEmail);
-			flash.put("contactTel", contactTel);
-			flash.put("contactMessage", contactMessage);
 
 			if (!allValid) {
+				// keep what was typed so a validation error doesn't wipe the form
+				flash.put("contactName", contactName);
+				flash.put("contactEmail", contactEmail);
+				flash.put("contactTel", contactTel);
+				flash.put("contactMessage", contactMessage);
 				flash.put("nameError", nameResult.getErrorMessage());
 				flash.put("emailError", emailResult.getErrorMessage());
 				flash.put("telError", telResult.getErrorMessage());
@@ -469,10 +469,6 @@ public class CareersAction extends ActionSupport {
 			response.setHeader("X-Error-Reason", "send-failed");
 			request.setAttribute("constant", constant);
 			request.setAttribute("requestURI", jobUrl);
-			request.setAttribute("contactName", contactName);
-			request.setAttribute("contactEmail", contactEmail);
-			request.setAttribute("contactTel", contactTel);
-			request.setAttribute("contactMessage", contactMessage);
 			request.setAttribute("formError", "Something went wrong - please try again in a moment.");
 			return SEND_JOB_FAILED;
 		}

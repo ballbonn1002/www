@@ -723,7 +723,7 @@
 
 <div class="jobdetail-toast jobdetail-toast--error" id="jobdetailErrorToast" role="alert" aria-live="assertive">
 	<i class="bi bi-exclamation-circle-fill"></i>
-	<span>${not empty captchaError ? captchaError : formError}</span>
+	<span>${formError}</span>
 </div>
 
 <div class="jobdetail-main" id="jobDetailContent">
@@ -916,6 +916,8 @@
 		// Matches struts.multipart.maxSize in actionfront.xml.
 		var MAX_FILE_SIZE = 30000000;
 		var ALLOWED_EXTENSIONS = [ 'pdf', 'doc', 'docx' ];
+		// locks the modal while the form is in flight
+		var submitting = false;
 
 		var dropzone = document.getElementById('jobApplyDropzone');
 		var fileInput = document.getElementById('jobApplyFile');
@@ -969,14 +971,38 @@
 			setFileError(null);
 		}
 
+		// magic-byte check at select time (not just on submit)
+		function checkSignature(file, cb) {
+			var reader = new FileReader();
+			reader.onload = function() {
+				var b = new Uint8Array(reader.result);
+				var ext = getExtension(file.name);
+				cb((ext === 'pdf' && b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46)
+						|| (ext === 'docx' && b[0] === 0x50 && b[1] === 0x4B)
+						|| (ext === 'doc' && b[0] === 0xD0 && b[1] === 0xCF && b[2] === 0x11 && b[3] === 0xE0));
+			};
+			reader.onerror = function() {
+				cb(true); // unreadable - server checks
+			};
+			reader.readAsArrayBuffer(file.slice(0, 8));
+		}
+
 		function handleSelectedFile(file) {
 			var error = validateFile(file);
-			setFileError(error);
 			if (error) {
+				setFileError(error);
 				fileInput.value = '';
 				return;
 			}
-			showFile(file.name);
+			checkSignature(file, function(ok) {
+				if (!ok) {
+					setFileError('That file isn’t a valid PDF, DOC, or DOCX');
+					fileInput.value = '';
+					return;
+				}
+				setFileError(null);
+				showFile(file.name);
+			});
 		}
 
 		dropzone.addEventListener('click', function(e) {
@@ -1144,6 +1170,7 @@
 			// A fast local response can beat the browser's paint of the button change.
 			e.preventDefault();
 			var form = e.target;
+			submitting = true;
 			var submitBtn = document.getElementById('jobApplySubmitBtn');
 			submitBtn.disabled = true;
 			submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
@@ -1155,12 +1182,21 @@
 		});
 
 		<c:if
-			test="${not empty nameError or not empty emailError or not empty telError or not empty fileError or not empty captchaError or not empty formError}">
+			test="${not empty nameError or not empty emailError or not empty telError or not empty messageError or not empty fileError or not empty captchaError}">
 		// $ isn't defined yet here - jQuery's "defer" load runs after this.
 		document.addEventListener('DOMContentLoaded', function() {
 			$('#jobApplyModal').modal('show');
 		});
 		</c:if>
+
+		// Block X / ESC / Close while the form is in flight (backdrop is already static).
+		document.addEventListener('DOMContentLoaded', function() {
+			$('#jobApplyModal').on('hide.bs.modal', function(e) {
+				if (submitting) {
+					e.preventDefault();
+				}
+			});
+		});
 	})();
 
 	// Renders explicitly once shown - auto-render at load would size to 0 (modal is display:none).
@@ -1211,7 +1247,7 @@
 	});
 	</c:if>
 
-	<c:if test="${not empty captchaError or not empty formError}">
+	<c:if test="${not empty formError}">
 	document.addEventListener('DOMContentLoaded', function() {
 		var errorToast = document.getElementById('jobdetailErrorToast');
 		errorToast.classList.add('is-visible');

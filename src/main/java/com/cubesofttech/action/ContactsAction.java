@@ -110,14 +110,14 @@ public class ContactsAction extends ActionSupport {
 					&& phoneResult.isValid() && messageResult.isValid() && captchaValid;
 
 			Map<String, Object> flash = FlashScope.newMap();
-			// Repopulate what was typed so a failed validation doesn't wipe the form.
-			flash.put("firstName", firstName);
-			flash.put("lastName", lastName);
-			flash.put("contactEmail", contactEmail);
-			flash.put("contactTel", contactTel);
-			flash.put("contactMessage", contactMessage);
 
 			if (!allValid) {
+				// keep what was typed so a validation error doesn't wipe the form
+				flash.put("firstName", firstName);
+				flash.put("lastName", lastName);
+				flash.put("contactEmail", contactEmail);
+				flash.put("contactTel", contactTel);
+				flash.put("contactMessage", contactMessage);
 				// null just reads as "no error" to the JSTL ${not empty} checks below.
 				flash.put("firstNameError", firstNameResult.getErrorMessage());
 				flash.put("lastNameError", lastNameResult.getErrorMessage());
@@ -182,20 +182,10 @@ public class ContactsAction extends ActionSupport {
 			response.setHeader("X-Error-Reason", "send-failed");
 			request.setAttribute("constant", constant);
 			request.setAttribute("requestURI", "/contacts");
-			request.setAttribute("firstName", firstName);
-			request.setAttribute("lastName", lastName);
-			request.setAttribute("contactEmail", contactEmail);
-			request.setAttribute("contactTel", contactTel);
-			request.setAttribute("contactMessage", contactMessage);
 			request.setAttribute("formError", "Something went wrong - please try again in a moment.");
 			return SEND_FAILED;
 		}
 		Map<String, Object> flash = FlashScope.newMap();
-		flash.put("firstName", firstName);
-		flash.put("lastName", lastName);
-		flash.put("contactEmail", contactEmail);
-		flash.put("contactTel", contactTel);
-		flash.put("contactMessage", contactMessage);
 		flash.put("formError", "Something went wrong - please try again in a moment.");
 		FlashScope.put(request, flash);
 		return SUCCESS;
