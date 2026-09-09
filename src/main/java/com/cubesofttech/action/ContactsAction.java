@@ -1,5 +1,6 @@
 package com.cubesofttech.action;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +10,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cubesofttech.dao.ContactMessageDAO;
 import com.cubesofttech.mail.EmailService;
+import com.cubesofttech.model.ContactMessage;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.FlashScope;
 import com.cubesofttech.util.RewriteFilter;
@@ -29,6 +32,8 @@ public class ContactsAction extends ActionSupport {
 	private EmailService emailService;
 	@Autowired
 	private Constant constant;
+	@Autowired
+	private ContactMessageDAO contactMessageDAO;
 
 	private String firstName;
 	private String lastName;
@@ -128,8 +133,38 @@ public class ContactsAction extends ActionSupport {
 
 			log.debug("Sending contact message: name=" + firstNameResult.getValue() + " " + lastNameResult.getValue()
 					+ " email=" + emailResult.getValue() + " tel=" + phoneResult.getValue());
-			emailService.sendEmailContact(firstNameResult.getValue(), lastNameResult.getValue(),
-					emailResult.getValue(), phoneResult.getValue(), messageResult.getValue());
+
+			ContactMessage entry = new ContactMessage();
+			entry.setFirstName(firstNameResult.getValue());
+			entry.setLastName(lastNameResult.getValue());
+			entry.setEmail(emailResult.getValue());
+			entry.setTel(phoneResult.getValue());
+			entry.setMessage(messageResult.getValue());
+			entry.setEmailFrom(constant.getEmailContactFrom());
+			entry.setEmailTo(constant.getEmailContactTo());
+			entry.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+
+			boolean sent = false;
+			try {
+				emailService.sendEmailContact(firstNameResult.getValue(), lastNameResult.getValue(),
+						emailResult.getValue(), phoneResult.getValue(), messageResult.getValue());
+				entry.setEmailStatus("SENT");
+				sent = true;
+			} catch (Exception sendEx) {
+				log.error("Contact mail send failed", sendEx);
+				entry.setEmailStatus("FAILED");
+				entry.setEmailError(truncate(sendEx.getMessage(), 512));
+			}
+
+			try {
+				contactMessageDAO.save(entry);
+			} catch (Exception dbEx) {
+				log.error("contact_message save failed", dbEx);
+			}
+
+			if (!sent) {
+				return sendFailedResult(redesign);
+			}
 
 			flash.put("contactSuccess", "1");
 			FlashScope.put(request, flash);
@@ -137,29 +172,40 @@ public class ContactsAction extends ActionSupport {
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
-			if (redesign) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setHeader("X-Error-Reason", "send-failed");
-				request.setAttribute("constant", constant);
-				request.setAttribute("requestURI", "/contacts");
-				request.setAttribute("firstName", firstName);
-				request.setAttribute("lastName", lastName);
-				request.setAttribute("contactEmail", contactEmail);
-				request.setAttribute("contactTel", contactTel);
-				request.setAttribute("contactMessage", contactMessage);
-				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
-				return SEND_FAILED;
-			}
-			Map<String, Object> flash = FlashScope.newMap();
-			flash.put("firstName", firstName);
-			flash.put("lastName", lastName);
-			flash.put("contactEmail", contactEmail);
-			flash.put("contactTel", contactTel);
-			flash.put("contactMessage", contactMessage);
-			flash.put("formError", "Something went wrong - please try again in a moment.");
-			FlashScope.put(request, flash);
-			return SUCCESS;
+			return sendFailedResult(redesign);
 		}
+	}
+
+	private String sendFailedResult(boolean redesign) {
+		if (redesign) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setHeader("X-Error-Reason", "send-failed");
+			request.setAttribute("constant", constant);
+			request.setAttribute("requestURI", "/contacts");
+			request.setAttribute("firstName", firstName);
+			request.setAttribute("lastName", lastName);
+			request.setAttribute("contactEmail", contactEmail);
+			request.setAttribute("contactTel", contactTel);
+			request.setAttribute("contactMessage", contactMessage);
+			request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+			return SEND_FAILED;
+		}
+		Map<String, Object> flash = FlashScope.newMap();
+		flash.put("firstName", firstName);
+		flash.put("lastName", lastName);
+		flash.put("contactEmail", contactEmail);
+		flash.put("contactTel", contactTel);
+		flash.put("contactMessage", contactMessage);
+		flash.put("formError", "Something went wrong - please try again in a moment.");
+		FlashScope.put(request, flash);
+		return SUCCESS;
+	}
+
+	private static String truncate(String text, int max) {
+		if (text == null || text.length() <= max) {
+			return text;
+		}
+		return text.substring(0, max);
 	}
 
 	private boolean isRedesignPreviewEnabled() {
