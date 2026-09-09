@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -411,7 +412,9 @@ public class CareersAction extends ActionSupport {
 
 			if (contactFile != null && rowSaved) {
 				try {
-					String stored = app.getJobApplicationId() + "_" + safeResumeName(contactFileName);
+					// Random name so the URL can't be guessed by walking ids;
+					// the real filename is kept in resume_filename on the row.
+					String stored = UUID.randomUUID().toString() + resumeExtension(contactFileName);
 					String realBase = ServletActionContext.getServletContext().getRealPath("/");
 					if (realBase != null) {
 						FileUtil.upload(contactFile, realBase, "upload/email/" + stored);
@@ -484,10 +487,17 @@ public class CareersAction extends ActionSupport {
 		return text.substring(0, max);
 	}
 
-	private static String safeResumeName(String name) {
-		String n = (name == null) ? "" : name;
-		int cut = Math.max(n.lastIndexOf('/'), n.lastIndexOf('\\'));
-		n = n.substring(cut + 1).replaceAll("[\\x00-\\x1f]", "").replace("..", "").trim();
-		return n.isEmpty() ? "resume" : n;
+	// Extension only (already limited to pdf/doc/docx by validateResumeFile) - the
+	// stored file is named by a UUID, so this just keeps the type on disk.
+	private static String resumeExtension(String name) {
+		if (name == null) {
+			return "";
+		}
+		int dot = name.lastIndexOf('.');
+		if (dot < 0) {
+			return "";
+		}
+		String ext = name.substring(dot + 1).toLowerCase();
+		return ext.matches("[a-z0-9]{1,8}") ? "." + ext : "";
 	}
 }
