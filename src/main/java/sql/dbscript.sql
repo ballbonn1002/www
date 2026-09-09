@@ -34,9 +34,7 @@ CREATE TABLE `contact_message` (
 
 
 -- Tharita, 9 Sep 2026
--- Log every careers-form submission (SUCCESS or FAILED). The resume file itself
--- goes to <webappRoot>/upload/email/ ; this table keeps its name, path and
--- size. Applied on dev - run against UAT/prod.
+-- Careers-form submission log. Resume file -> <webappRoot>/upload/email/, name/path/size kept here. Applied on dev - run against UAT/prod.
 CREATE TABLE `job_application` (
     `job_application_id` BIGINT       NOT NULL AUTO_INCREMENT,
     `position`           VARCHAR(255) NOT NULL,

@@ -412,8 +412,7 @@ public class CareersAction extends ActionSupport {
 
 			if (contactFile != null && rowSaved) {
 				try {
-					// Random name so the URL can't be guessed by walking ids;
-					// the real filename is kept in resume_filename on the row.
+					// unguessable name; real name stays in resume_filename
 					String stored = UUID.randomUUID().toString() + resumeExtension(contactFileName);
 					String realBase = ServletActionContext.getServletContext().getRealPath("/");
 					if (realBase != null) {
@@ -487,8 +486,7 @@ public class CareersAction extends ActionSupport {
 		return text.substring(0, max);
 	}
 
-	// Extension only (already limited to pdf/doc/docx by validateResumeFile) - the
-	// stored file is named by a UUID, so this just keeps the type on disk.
+	// extension only - the on-disk name is a UUID
 	private static String resumeExtension(String name) {
 		if (name == null) {
 			return "";
