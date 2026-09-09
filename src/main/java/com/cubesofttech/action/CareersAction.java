@@ -3,6 +3,7 @@ package com.cubesofttech.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cubesofttech.dao.JobApplicationDAO;
 import com.cubesofttech.dao.JobDAO;
 import com.cubesofttech.model.Job;
+import com.cubesofttech.model.JobApplication;
 import com.cubesofttech.model.Testimonial;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.ArticleHtmlSanitizer;
+import com.cubesofttech.util.FileUtil;
 import com.cubesofttech.util.FlashScope;
 import com.cubesofttech.util.JobDescriptionSectionRebuilder;
 import com.cubesofttech.util.RewriteFilter;
@@ -47,10 +51,13 @@ public class CareersAction extends ActionSupport {
 
 	@Autowired
 	private JobDAO jobDAO;
-	
+
+	@Autowired
+	private JobApplicationDAO jobApplicationDAO;
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	@Autowired
 	private Constant constant;
 
@@ -383,28 +390,104 @@ public class CareersAction extends ActionSupport {
 			log.debug("Sending job application: name=" + contactName + " email=" + contactEmail + " tel=" + contactTel
 					+ " position=" + contactPosition + " resume=" + contactFileName);
 
-			emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
-					contactPosition, messageResult.getValue(), contactFile, contactFileName);
+			JobApplication app = new JobApplication();
+			app.setPosition(contactPosition);
+			app.setName(nameResult.getValue());
+			app.setEmail(emailResult.getValue());
+			app.setTel(telResult.getValue());
+			app.setMessage(messageResult.getValue());
+			app.setEmailFrom(constant.getEmailJobFrom());
+			app.setEmailTo(constant.getEmailJobTo());
+			app.setEmailStatus("PENDING");
+			app.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+
+			boolean rowSaved = false;
+			try {
+				jobApplicationDAO.save(app);
+				rowSaved = true;
+			} catch (Exception dbEx) {
+				log.error("job_application insert failed", dbEx);
+			}
+
+			if (contactFile != null && rowSaved) {
+				try {
+					String stored = app.getJobApplicationId() + "_" + safeResumeName(contactFileName);
+					String realBase = ServletActionContext.getServletContext().getRealPath("/");
+					if (realBase != null) {
+						FileUtil.upload(contactFile, realBase, "upload/email/" + stored);
+						app.setResumeFilename(contactFileName);
+						app.setResumePath("upload/email/" + stored);
+						app.setResumeSizeBytes(contactFile.length());
+					} else {
+						log.error("getRealPath('/') is null - resume not stored to disk");
+					}
+				} catch (Exception fileEx) {
+					log.error("resume upload failed", fileEx);
+				}
+			}
+
+			boolean sent = false;
+			try {
+				emailService.sendEmailJob(nameResult.getValue(), emailResult.getValue(), telResult.getValue(),
+						contactPosition, messageResult.getValue(), contactFile, contactFileName);
+				app.setEmailStatus("SUCCESS");
+				sent = true;
+			} catch (Exception sendEx) {
+				log.error("Job mail send failed", sendEx);
+				app.setEmailStatus("FAILED");
+				app.setEmailError(truncate(sendEx.getMessage(), 512));
+			}
+
+			if (rowSaved) {
+				try {
+					jobApplicationDAO.update(app);
+				} catch (Exception dbEx) {
+					log.error("job_application update failed", dbEx);
+				}
+			}
+
+			if (!sent) {
+				return sendJobFailedResult(redesign);
+			}
+
 			flash.put("response", "1");
 			FlashScope.put(request, flash);
 			response.setHeader("X-Send-Result", "success");
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
-			request.setAttribute("response", "0");
-			if (redesign) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setHeader("X-Error-Reason", "send-failed");
-				request.setAttribute("constant", constant);
-				request.setAttribute("requestURI", jobUrl);
-				request.setAttribute("contactName", contactName);
-				request.setAttribute("contactEmail", contactEmail);
-				request.setAttribute("contactTel", contactTel);
-				request.setAttribute("contactMessage", contactMessage);
-				request.setAttribute("formError", "Something went wrong - please try again in a moment.");
-				return SEND_JOB_FAILED;
-			}
-			return ERROR;
+			return sendJobFailedResult(redesign);
 		}
+	}
+
+	private String sendJobFailedResult(boolean redesign) {
+		request.setAttribute("response", "0");
+		if (redesign) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setHeader("X-Error-Reason", "send-failed");
+			request.setAttribute("constant", constant);
+			request.setAttribute("requestURI", jobUrl);
+			request.setAttribute("contactName", contactName);
+			request.setAttribute("contactEmail", contactEmail);
+			request.setAttribute("contactTel", contactTel);
+			request.setAttribute("contactMessage", contactMessage);
+			request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+			return SEND_JOB_FAILED;
+		}
+		return ERROR;
+	}
+
+	private static String truncate(String text, int max) {
+		if (text == null || text.length() <= max) {
+			return text;
+		}
+		return text.substring(0, max);
+	}
+
+	private static String safeResumeName(String name) {
+		String n = (name == null) ? "" : name;
+		int cut = Math.max(n.lastIndexOf('/'), n.lastIndexOf('\\'));
+		n = n.substring(cut + 1).replaceAll("[\\x00-\\x1f]", "").replace("..", "").trim();
+		return n.isEmpty() ? "resume" : n;
 	}
 }

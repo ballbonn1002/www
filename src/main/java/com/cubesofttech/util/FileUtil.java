@@ -31,8 +31,10 @@ public class FileUtil {
 		} catch (IOException e) {
 			throw e;
 		} finally {
-			if (inps != null && outs != null) {
+			if (inps != null) {
 				inps.close();
+			}
+			if (outs != null) {
 				outs.close();
 			}
 		}

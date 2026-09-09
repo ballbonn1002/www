@@ -148,7 +148,7 @@ public class ContactsAction extends ActionSupport {
 			try {
 				emailService.sendEmailContact(firstNameResult.getValue(), lastNameResult.getValue(),
 						emailResult.getValue(), phoneResult.getValue(), messageResult.getValue());
-				entry.setEmailStatus("SENT");
+				entry.setEmailStatus("SUCCESS");
 				sent = true;
 			} catch (Exception sendEx) {
 				log.error("Contact mail send failed", sendEx);

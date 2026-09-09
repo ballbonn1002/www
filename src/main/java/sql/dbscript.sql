@@ -16,7 +16,7 @@ WHERE `footer_id` = 28 AND `footer_name` = 'Software Development';
 
 
 -- Tharita, 9 Sep 2026
--- Log every contact-form submission (SENT or FAILED). Applied on dev - run against UAT/prod.
+-- Log every contact-form submission (SUCCESS or FAILED). Applied on dev - run against UAT/prod.
 CREATE TABLE `contact_message` (
     `contact_message_id` BIGINT       NOT NULL AUTO_INCREMENT,
     `first_name`         VARCHAR(128) NOT NULL,
@@ -30,4 +30,27 @@ CREATE TABLE `contact_message` (
     `email_error`        VARCHAR(512),
     `time_create`        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`contact_message_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+
+-- Tharita, 9 Sep 2026
+-- Log every careers-form submission (SUCCESS or FAILED). The resume file itself
+-- goes to <webappRoot>/upload/email/ ; this table keeps its name, path and
+-- size. Applied on dev - run against UAT/prod.
+CREATE TABLE `job_application` (
+    `job_application_id` BIGINT       NOT NULL AUTO_INCREMENT,
+    `position`           VARCHAR(255) NOT NULL,
+    `name`               VARCHAR(256) NOT NULL,
+    `email`              VARCHAR(256) NOT NULL,
+    `tel`                VARCHAR(64),
+    `message`            TEXT         NOT NULL,
+    `resume_filename`    VARCHAR(255),
+    `resume_path`        VARCHAR(1024),
+    `resume_size_bytes`  BIGINT,
+    `email_from`         VARCHAR(256),
+    `email_to`           VARCHAR(512),
+    `email_status`       VARCHAR(16)  NOT NULL,
+    `email_error`        VARCHAR(512),
+    `time_create`        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`job_application_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
