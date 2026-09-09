@@ -16,7 +16,7 @@
 html {
 	background-color: #F5F5F5;
 }
-/* Toggled via .is-loading by the click listener further down - gives instant feedback on internal link clicks. */
+/* Driven by the navigation script near the end of <body>. */
 #page-loading-bar {
 	position: fixed;
 	top: 0;
@@ -35,7 +35,7 @@ html {
 	transition: width 4s cubic-bezier(0.1, 0.5, 0.1, 1), opacity 0.2s
 		ease-out;
 }
-/* Used on bfcache restore - snaps to 100% then fades, reading as "done" instead of aborted mid-fill. */
+/* Snap to 100% then fade - reads as "finished" instead of "aborted". */
 #page-loading-bar.is-done {
 	width: 100%;
 	opacity: 1;
@@ -844,6 +844,28 @@ a {
 </head>
 <body>
 	<div id="page-loading-bar" aria-hidden="true"></div>
+	<%-- Finish the loading bar the previous page started before it navigated here. --%>
+	<script>
+		(function() {
+			var startedAt;
+			try {
+				startedAt = parseInt(sessionStorage.getItem('navStartedAt'), 10);
+				sessionStorage.removeItem('navStartedAt');
+			} catch (e) {
+				return;
+			}
+			// < 250ms: the previous page never showed the bar. > 30s: stale flag.
+			var elapsed = Date.now() - startedAt;
+			if (!startedAt || elapsed < 250 || elapsed > 30000) {
+				return;
+			}
+			var bar = document.getElementById('page-loading-bar');
+			bar.className = 'is-done';
+			setTimeout(function() {
+				bar.className = '';
+			}, 600);
+		})();
+	</script>
 	<div id="ptr-indicator" aria-hidden="true">
 		<div id="ptr-indicator__spinner"></div>
 	</div>
@@ -951,10 +973,9 @@ a {
 			});
 		})();
 	</script>
-	<%-- Only fires for real same-origin navigations - skips anchors, new tabs, downloads, and other origins. --%>
+	<%-- Start the loading bar on real internal navigations only. --%>
 	<script>
-		
-	<%-- bfcache restores the page (and its stuck is-loading class) without reloading it. --%>
+		// bfcache restore can bring the page back with a stuck is-loading class.
 		window.addEventListener('pageshow', function(e) {
 			if (e.persisted) {
 				var bar = document.getElementById('page-loading-bar');
@@ -964,9 +985,14 @@ a {
 				}, 600);
 			}
 		});
+		var loadingBarStart, loadingBarReset;
 		document.addEventListener('click', function(e) {
 			var link = e.target.closest('a[href]');
 			if (!link) {
+				return;
+			}
+			// dropdown/modal/collapse/tab toggles act on the page, they don't navigate.
+			if (link.hasAttribute('data-toggle') || link.hasAttribute('data-bs-toggle')) {
 				return;
 			}
 			var href = link.getAttribute('href');
@@ -988,13 +1014,27 @@ a {
 			} catch (err) {
 				return;
 			}
-			if (url.origin !== window.location.origin) {
+			if (url.origin !== window.location.origin || url.href === window.location.href) {
 				return;
 			}
 			var bar = document.getElementById('page-loading-bar');
-			bar.className = 'is-loading';
-			// Forces the browser to paint the bar before navigation tears this page down.
-			void bar.offsetWidth;
+			try {
+				sessionStorage.setItem('navStartedAt', Date.now());
+			} catch (err) {}
+			clearTimeout(loadingBarStart);
+			clearTimeout(loadingBarReset);
+			// Don't flash a bar for navigations that resolve in under 250ms.
+			loadingBarStart = setTimeout(function() {
+				bar.className = 'is-loading';
+				void bar.offsetWidth;
+			}, 250);
+			// Nav was cancelled or blocked - clean up.
+			loadingBarReset = setTimeout(function() {
+				bar.className = '';
+				try {
+					sessionStorage.removeItem('navStartedAt');
+				} catch (err) {}
+			}, 8000);
 		});
 	</script>
 	<!-- Google Tag Manager (noscript) -->
