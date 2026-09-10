@@ -4,8 +4,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html lang="th">
@@ -846,6 +844,12 @@ a {
 	<div id="page-loading-bar" aria-hidden="true"></div>
 	<%-- Finish the loading bar the previous page started before it navigated here. --%>
 	<script>
+		function finishLoadingBar(bar) {
+			bar.className = 'is-done';
+			setTimeout(function() {
+				bar.className = '';
+			}, 600);
+		}
 		(function() {
 			var startedAt;
 			try {
@@ -859,11 +863,7 @@ a {
 			if (!startedAt || elapsed < 250 || elapsed > 30000) {
 				return;
 			}
-			var bar = document.getElementById('page-loading-bar');
-			bar.className = 'is-done';
-			setTimeout(function() {
-				bar.className = '';
-			}, 600);
+			finishLoadingBar(document.getElementById('page-loading-bar'));
 		})();
 	</script>
 	<div id="ptr-indicator" aria-hidden="true">
@@ -978,11 +978,7 @@ a {
 		// bfcache restore can bring the page back with a stuck is-loading class.
 		window.addEventListener('pageshow', function(e) {
 			if (e.persisted) {
-				var bar = document.getElementById('page-loading-bar');
-				bar.className = 'is-done';
-				setTimeout(function() {
-					bar.className = '';
-				}, 600);
+				finishLoadingBar(document.getElementById('page-loading-bar'));
 			}
 		});
 		var loadingBarStart, loadingBarReset;

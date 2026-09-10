@@ -39,18 +39,4 @@ public class FileUtil {
 			}
 		}
 	}
-	
-	public static String getFileSize(double size) {
-		String result = null;
-		String[] ending = {"B","KB","MB","GB"};
-		int i = 0;
-		
-		for(i=0;size>1024;i++) {
-			size=size/1024;
-		}
-		
-		result = String.format("%.2f ", size) + ending[i];
-		
-		return result;
-	}
 }
