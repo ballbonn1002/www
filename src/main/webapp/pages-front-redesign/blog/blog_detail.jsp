@@ -163,10 +163,17 @@ body, html {
 
 @media ( max-width : 767px) {
 	.article-hero {
-		height: 280px;
+		height: clamp(320px, 40.8vw + 167px, 480px);
 	}
 	.article-hero__image {
 		object-fit: cover;
+	}
+}
+
+/* Bigger than S/M/L phones - tighter image height. */
+@media ( min-width : 481px) and ( max-width : 767px) {
+	.article-hero__image {
+		height: calc(100% - var(--navbar-offset, 65px));
 	}
 }
 
