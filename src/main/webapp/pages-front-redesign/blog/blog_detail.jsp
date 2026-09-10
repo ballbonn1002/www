@@ -743,9 +743,16 @@ p {
 
 			<div class="article-tags" id="articletag">
 				<span class="article-tags__label">Tags</span>
-				<c:forEach var="tag" items="${tags}">
-					<span class="tag-badge">${fn:escapeXml(tag.name)}</span>
-				</c:forEach>
+				<c:choose>
+					<c:when test="${empty tags}">
+						-
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="tag" items="${tags}">
+							<span class="tag-badge">${fn:escapeXml(tag.name)}</span>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
 			</div>
 
 			<div
