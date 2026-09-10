@@ -916,8 +916,6 @@
 		// Matches struts.multipart.maxSize in actionfront.xml.
 		var MAX_FILE_SIZE = 30000000;
 		var ALLOWED_EXTENSIONS = [ 'pdf', 'doc', 'docx' ];
-		// locks the modal while the form is in flight
-		var submitting = false;
 
 		var dropzone = document.getElementById('jobApplyDropzone');
 		var fileInput = document.getElementById('jobApplyFile');
@@ -1056,6 +1054,8 @@
 	})();
 
 	(function() {
+		// locks the modal while the form is in flight
+		var submitting = false;
 		var NAME_PATTERN = /^[ก-๏a-zA-Z\s-]+$/;
 		var NAME_MAX_LENGTH = 50;
 		var EMAIL_PATTERN = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
