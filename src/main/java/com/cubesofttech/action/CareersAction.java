@@ -27,8 +27,10 @@ import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.ArticleHtmlSanitizer;
 import com.cubesofttech.util.FileUtil;
 import com.cubesofttech.util.FlashScope;
+import com.cubesofttech.util.FormSubmitFailure;
 import com.cubesofttech.util.JobDescriptionSectionRebuilder;
 import com.cubesofttech.util.RewriteFilter;
+import com.cubesofttech.util.StringUtil;
 import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.validation.ContactFormValidator;
 import com.cubesofttech.validation.ValidationResult;
@@ -371,7 +373,6 @@ public class CareersAction extends ActionSupport {
 			Map<String, Object> flash = FlashScope.newMap();
 
 			if (!allValid) {
-				// keep what was typed so a validation error doesn't wipe the form
 				flash.put("contactName", contactName);
 				flash.put("contactEmail", contactEmail);
 				flash.put("contactTel", contactTel);
@@ -391,16 +392,7 @@ public class CareersAction extends ActionSupport {
 			log.debug("Sending job application: name=" + contactName + " email=" + contactEmail + " tel=" + contactTel
 					+ " position=" + contactPosition + " resume=" + contactFileName);
 
-			JobApplication app = new JobApplication();
-			app.setPosition(contactPosition);
-			app.setName(nameResult.getValue());
-			app.setEmail(emailResult.getValue());
-			app.setTel(telResult.getValue());
-			app.setMessage(messageResult.getValue());
-			app.setEmailFrom(constant.getEmailJobFrom());
-			app.setEmailTo(constant.getEmailJobTo());
-			app.setEmailStatus("PENDING");
-			app.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+			JobApplication app = buildJobApplicationEntry(nameResult, emailResult, telResult, messageResult);
 
 			boolean rowSaved = false;
 			try {
@@ -411,21 +403,7 @@ public class CareersAction extends ActionSupport {
 			}
 
 			if (contactFile != null && rowSaved) {
-				try {
-					// unguessable name; real name stays in resume_filename
-					String stored = UUID.randomUUID().toString() + resumeExtension(contactFileName);
-					String realBase = ServletActionContext.getServletContext().getRealPath("/");
-					if (realBase != null) {
-						FileUtil.upload(contactFile, realBase, "upload/email/" + stored);
-						app.setResumeFilename(contactFileName);
-						app.setResumePath("upload/email/" + stored);
-						app.setResumeSizeBytes(contactFile.length());
-					} else {
-						log.error("getRealPath('/') is null - resume not stored to disk");
-					}
-				} catch (Exception fileEx) {
-					log.error("resume upload failed", fileEx);
-				}
+				attachResumeFile(app, contactFile, contactFileName);
 			}
 
 			boolean sent = false;
@@ -437,7 +415,7 @@ public class CareersAction extends ActionSupport {
 			} catch (Exception sendEx) {
 				log.error("Job mail send failed", sendEx);
 				app.setEmailStatus("FAILED");
-				app.setEmailError(truncate(sendEx.getMessage(), 512));
+				app.setEmailError(StringUtil.truncate(sendEx.getMessage(), 512));
 			}
 
 			if (rowSaved) {
@@ -462,6 +440,39 @@ public class CareersAction extends ActionSupport {
 		}
 	}
 
+	private JobApplication buildJobApplicationEntry(ValidationResult nameResult, ValidationResult emailResult,
+			ValidationResult telResult, ValidationResult messageResult) {
+		JobApplication app = new JobApplication();
+		app.setPosition(contactPosition);
+		app.setName(nameResult.getValue());
+		app.setEmail(emailResult.getValue());
+		app.setTel(telResult.getValue());
+		app.setMessage(messageResult.getValue());
+		app.setEmailFrom(constant.getEmailJobFrom());
+		app.setEmailTo(constant.getEmailJobTo());
+		app.setEmailStatus("PENDING");
+		app.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+		return app;
+	}
+
+	private void attachResumeFile(JobApplication app, File contactFile, String contactFileName) {
+		try {
+			// unguessable name; real name stays in resume_filename
+			String stored = UUID.randomUUID().toString() + resumeExtension(contactFileName);
+			String realBase = ServletActionContext.getServletContext().getRealPath("/");
+			if (realBase != null) {
+				FileUtil.upload(contactFile, realBase, "upload/email/" + stored);
+				app.setResumeFilename(contactFileName);
+				app.setResumePath("upload/email/" + stored);
+				app.setResumeSizeBytes(contactFile.length());
+			} else {
+				log.error("getRealPath('/') is null - resume not stored to disk");
+			}
+		} catch (Exception fileEx) {
+			log.error("resume upload failed", fileEx);
+		}
+	}
+
 	private String sendJobFailedResult(boolean redesign) {
 		request.setAttribute("response", "0");
 		// forwarded result - null the fields or the JSP re-reads them off the value stack
@@ -470,21 +481,10 @@ public class CareersAction extends ActionSupport {
 		contactTel = null;
 		contactMessage = null;
 		if (redesign) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setHeader("X-Error-Reason", "send-failed");
-			request.setAttribute("constant", constant);
-			request.setAttribute("requestURI", jobUrl);
-			request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+			FormSubmitFailure.markRedesignFailure(request, response, constant, jobUrl);
 			return SEND_JOB_FAILED;
 		}
 		return ERROR;
-	}
-
-	private static String truncate(String text, int max) {
-		if (text == null || text.length() <= max) {
-			return text;
-		}
-		return text.substring(0, max);
 	}
 
 	// extension only - the on-disk name is a UUID

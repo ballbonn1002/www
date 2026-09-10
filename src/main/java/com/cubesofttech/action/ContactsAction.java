@@ -15,7 +15,9 @@ import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.model.ContactMessage;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.FlashScope;
+import com.cubesofttech.util.FormSubmitFailure;
 import com.cubesofttech.util.RewriteFilter;
+import com.cubesofttech.util.StringUtil;
 import com.cubesofttech.validation.ContactFormValidator;
 import com.cubesofttech.validation.ValidationResult;
 import com.opensymphony.xwork2.ActionSupport;
@@ -112,7 +114,6 @@ public class ContactsAction extends ActionSupport {
 			Map<String, Object> flash = FlashScope.newMap();
 
 			if (!allValid) {
-				// keep what was typed so a validation error doesn't wipe the form
 				flash.put("firstName", firstName);
 				flash.put("lastName", lastName);
 				flash.put("contactEmail", contactEmail);
@@ -134,15 +135,8 @@ public class ContactsAction extends ActionSupport {
 			log.debug("Sending contact message: name=" + firstNameResult.getValue() + " " + lastNameResult.getValue()
 					+ " email=" + emailResult.getValue() + " tel=" + phoneResult.getValue());
 
-			ContactMessage entry = new ContactMessage();
-			entry.setFirstName(firstNameResult.getValue());
-			entry.setLastName(lastNameResult.getValue());
-			entry.setEmail(emailResult.getValue());
-			entry.setTel(phoneResult.getValue());
-			entry.setMessage(messageResult.getValue());
-			entry.setEmailFrom(constant.getEmailContactFrom());
-			entry.setEmailTo(constant.getEmailContactTo());
-			entry.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+			ContactMessage entry = buildContactMessageEntry(firstNameResult, lastNameResult, emailResult,
+					phoneResult, messageResult);
 
 			boolean sent = false;
 			try {
@@ -153,7 +147,7 @@ public class ContactsAction extends ActionSupport {
 			} catch (Exception sendEx) {
 				log.error("Contact mail send failed", sendEx);
 				entry.setEmailStatus("FAILED");
-				entry.setEmailError(truncate(sendEx.getMessage(), 512));
+				entry.setEmailError(StringUtil.truncate(sendEx.getMessage(), 512));
 			}
 
 			try {
@@ -176,6 +170,20 @@ public class ContactsAction extends ActionSupport {
 		}
 	}
 
+	private ContactMessage buildContactMessageEntry(ValidationResult firstNameResult, ValidationResult lastNameResult,
+			ValidationResult emailResult, ValidationResult phoneResult, ValidationResult messageResult) {
+		ContactMessage entry = new ContactMessage();
+		entry.setFirstName(firstNameResult.getValue());
+		entry.setLastName(lastNameResult.getValue());
+		entry.setEmail(emailResult.getValue());
+		entry.setTel(phoneResult.getValue());
+		entry.setMessage(messageResult.getValue());
+		entry.setEmailFrom(constant.getEmailContactFrom());
+		entry.setEmailTo(constant.getEmailContactTo());
+		entry.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+		return entry;
+	}
+
 	private String sendFailedResult(boolean redesign) {
 		// forwarded result - null the fields or the JSP re-reads them off the value stack
 		firstName = null;
@@ -184,24 +192,13 @@ public class ContactsAction extends ActionSupport {
 		contactTel = null;
 		contactMessage = null;
 		if (redesign) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setHeader("X-Error-Reason", "send-failed");
-			request.setAttribute("constant", constant);
-			request.setAttribute("requestURI", "/contacts");
-			request.setAttribute("formError", "Something went wrong - please try again in a moment.");
+			FormSubmitFailure.markRedesignFailure(request, response, constant, "/contacts");
 			return SEND_FAILED;
 		}
 		Map<String, Object> flash = FlashScope.newMap();
 		flash.put("formError", "Something went wrong - please try again in a moment.");
 		FlashScope.put(request, flash);
 		return SUCCESS;
-	}
-
-	private static String truncate(String text, int max) {
-		if (text == null || text.length() <= max) {
-			return text;
-		}
-		return text.substring(0, max);
 	}
 
 	private boolean isRedesignPreviewEnabled() {

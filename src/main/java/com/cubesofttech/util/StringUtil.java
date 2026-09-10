@@ -126,12 +126,19 @@ public class StringUtil {
     }
 	
    public static String paddingLeft(int count, char c, String stringJdescId) {
-		
+
 		String sf = stringJdescId;
 		while (sf.length() < count) {
 			sf = c + sf;
 		}
 		return sf;
 	}
-	
+
+	public static String truncate(String text, int max) {
+		if (text == null || text.length() <= max) {
+			return text;
+		}
+		return text.substring(0, max);
+	}
+
 }
