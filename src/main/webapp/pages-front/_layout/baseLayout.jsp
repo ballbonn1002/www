@@ -70,10 +70,10 @@ body {
 	animation: ptr-spin 0.6s linear infinite;
 }
 
-@
-keyframes ptr-spin {to { transform:rotate(360deg);
-	
-}
+@keyframes ptr-spin {
+	to {
+		transform: rotate(360deg);
+	}
 }
 </style>
 <title><tiles:insertAttribute name="title" ignore="true" />${title}</title>
