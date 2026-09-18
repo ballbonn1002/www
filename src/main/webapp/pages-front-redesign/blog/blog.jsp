@@ -239,6 +239,12 @@ html, body {
 	color: #fff;
 	background-color: var(--brand-red);
 	border-color: #dc3545;
+	transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.article-preview__cta.btn-danger:hover {
+	background-color: var(--brand-red-dark);
+	border-color: var(--brand-red-dark);
 }
 
 .article-preview__cta.btn-lg {
