@@ -147,37 +147,30 @@ html, body {
 .article-preview__media {
 	position: sticky;
 	top: 20px;
-	aspect-ratio: 4 / 3;
+	aspect-ratio: 1200 / 620;
 	overflow: hidden;
 	border-radius: 10px;
-	background-color: #1A1A1A;
+	background-color: #ffffff;
 }
 
-.article-preview__media::before,
 .article-preview__image {
 	position: absolute;
 	inset: 0;
 	width: 100%;
 	height: 100%;
-}
-
-.article-preview__media::before {
-	content: "";
-	background: var(--preview-image, none) center / cover no-repeat;
-	filter: blur(20px) brightness(0.55);
-	transform: scale(1.15);
-}
-
-.article-preview__image {
-	object-fit: contain;
+	object-fit: cover;
 	display: block;
 }
 
 @media ( min-width : 768px) {
-	.article-preview__row .col-md-6 {
-		-ms-flex: 0 0 50%;
-		flex: 0 0 50%;
-		max-width: 50%;
+	.article-preview__col-media {
+		flex: 0 0 58%;
+		max-width: 58%;
+	}
+
+	.article-preview__col-content {
+		flex: 0 0 42%;
+		max-width: 42%;
 	}
 
 	.article-preview__media {
@@ -187,7 +180,7 @@ html, body {
 }
 
 .article-preview__content {
-	min-height: 400px;
+	min-height: 340px;
 	display: flex;
 	flex-direction: column;
 	text-align: left;
@@ -222,9 +215,9 @@ html, body {
 .article-preview__excerpt {
 	margin: 0 0 1rem 0;
 	line-height: 1.6;
-	height: 9.6em;
+	height: 6.4em;
 	display: -webkit-box;
-	-webkit-line-clamp: 6;
+	-webkit-line-clamp: 4;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	position: relative;
@@ -236,7 +229,7 @@ html, body {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 3em;
+	height: 2em;
 	background: linear-gradient(to bottom, rgba(245, 245, 245, 0),
 		rgba(245, 245, 245, 1));
 	pointer-events: none;
@@ -267,6 +260,7 @@ html, body {
 .article-preview__divider {
 	border-top: 1px solid #B2B2B2;
 	opacity: 1;
+	margin: 0.75rem 0;
 }
 
 .article-preview__meta {
@@ -305,7 +299,6 @@ html, body {
 	}
 }
 
-/* 768-1200px squeeze (col-md-6 50% split) needs a smaller clamp than the base one above */
 @media (min-width: 768px) and (max-width: 1200px) {
 	.article-preview__meta {
 		font-size: clamp(11.5px, 8.8px + 0.35vw, 13px);
@@ -391,22 +384,21 @@ html, body {
 	<article class="article-preview" id="articledetail1">
 		<div class="row article-preview__row">
 
-			<div class="col-12 col-md-6 order-md-2">
-				
-				<figure class="article-preview__media" data-aos="fade-up"
-					<c:if test="${!empty newBlog.path}">style="--preview-image: url('${constant.imgContext}${newBlog.path}');"</c:if>>
+			<div class="col-12 article-preview__col-media order-md-2">
+
+				<figure class="article-preview__media" data-aos="fade-up">
 					<a href="${newBlog.page_uri_id}" class="article-preview__link"
 						aria-label="อ่านบทความ: ${newBlog.topic}"> <span
 						class="img-skeleton" aria-hidden="true"></span> <img
 						class="article-preview__image"
 						src="${constant.imgContext}${newBlog.path}"
-						alt="${newBlog.topic}" width="805" height="475"
+						alt="${newBlog.topic}" width="1200" height="620"
 						fetchpriority="high">
 					</a>
 				</figure>
 			</div>
 
-			<div class="col-12 col-md-6 order-md-1">
+			<div class="col-12 article-preview__col-content order-md-1">
 				<div class="article-preview__content">
 					<h2 class="article-preview__title" data-aos="fade-up"
 						data-aos-delay="100">${newBlog.topic}</h2>
@@ -414,7 +406,7 @@ html, body {
 					<div class="article-preview__excerpt" data-aos="fade-up"
 						data-aos-delay="200">${cleanDetail}</div>
 
-					<hr class="my-4 article-preview__divider" data-aos="fade-up"
+					<hr class="article-preview__divider" data-aos="fade-up"
 						data-aos-delay="250">
 
 					<div
