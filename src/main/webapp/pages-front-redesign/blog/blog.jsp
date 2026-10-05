@@ -32,6 +32,9 @@
 <link rel="stylesheet" href="/pages-front-redesign/assets/css/blog.css">
 
 <style type="text/css">
+/* ==========================================================================
+   Blog list page (page-specific - not shared with blog_detail.jsp)
+   ========================================================================== */
 .articleblockbg figure {
 	margin: 0;
 }
@@ -50,6 +53,9 @@ html, body {
 	padding-right: 10%;
 }
 
+/* ==========================================================================
+   Article list + pagination (rendered via blog_list.jsp include)
+   ========================================================================== */
 .article-list-heading {
 
 	margin: clamp(56px, 24px + 4vw, 96px) 0 24px;
@@ -114,6 +120,9 @@ html, body {
 	}
 }
 
+/* ==========================================================================
+   Featured article (hero card)
+   ========================================================================== */
 .article-preview {
 	max-width: 100%;
 	container-type: inline-size;
@@ -411,6 +420,9 @@ html, body {
 	transform: translate3d(0, 0, 0);
 }
 
+/* ==========================================================================
+   Image loading skeleton (featured article image only)
+   ========================================================================== */
 .articleblockbg .img-skeleton {
 	position: absolute;
 	inset: 0;
