@@ -5,7 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="comp"%>
 
-<div class="row article-list-row" id="articledetail">
+<h2 class="article-list-heading" id="articledetail">All ${pageLabel == 'News' ? 'News' : 'Articles'}</h2>
+
+<div class="row article-list-row">
 	<c:forEach var="blog" items="${blogList}" varStatus="Count">
 		<%
 		Object blogRaw = pageContext.getAttribute("blog");
