@@ -163,17 +163,23 @@ body, html {
 
 @media ( max-width : 767px) {
 	.article-hero {
-		height: clamp(320px, 40.8vw + 167px, 480px);
+		height: auto;
+		padding: calc(var(--navbar-offset, 65px) + 20px) 16px 96px;
 	}
 	.article-hero__image {
-		object-fit: cover;
+		position: relative;
+		top: auto;
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1200 / 630;
+		object-fit: contain;
+		border-radius: 10px;
 	}
-}
-
-/* Bigger than S/M/L phones - tighter image height. */
-@media ( min-width : 481px) and ( max-width : 767px) {
-	.article-hero__image {
-		height: calc(100% - var(--navbar-offset, 65px));
+	.article-hero__expand-btn {
+		top: auto;
+		bottom: 104px;
+		right: 24px;
 	}
 }
 
@@ -701,6 +707,19 @@ p {
 
 .gap-3 {
 	gap: 1rem !important;
+}
+
+.article-shares {
+	flex-wrap: wrap;
+}
+
+@media ( max-width : 400px) {
+	.article-shares.gap-3 {
+		gap: 0.5rem 0.875rem !important;
+	}
+	.article-shares > b {
+		flex-basis: 100%;
+	}
 }
 </style>
 
