@@ -288,7 +288,7 @@ html, body {
 	align-items: center;
 	gap: 6px;
 	white-space: nowrap;
-	color: var(--brand-red);
+	color: var(--ink) !important;
 	font-weight: 600;
 	transition: color 0.2s ease;
 }
@@ -322,7 +322,7 @@ html, body {
 
 .article-preview__more:hover,
 .article-preview__more:focus-visible {
-	color: var(--ink);
+	color: var(--brand-red) !important;
 	text-decoration: none;
 }
 
@@ -344,7 +344,7 @@ html, body {
 }
 
 .article-preview__row:has(.article-preview__link:hover, .article-preview__title-link:hover) .article-preview__more {
-	color: var(--ink);
+	color: var(--brand-red) !important;
 }
 
 .article-preview__row:has(.article-preview__link:hover, .article-preview__title-link:hover) .article-preview__more .bi {
