@@ -712,6 +712,11 @@ p {
 	color: #212529;
 }
 
+.copy-link-btn:focus-visible {
+	outline: 2px solid var(--brand-red);
+	outline-offset: 2px;
+}
+
 .copy-link-btn .bi {
 	font-size: 28px;
 }
@@ -969,7 +974,9 @@ p {
 			$('.modal-backdrop').remove();
 			var expandBtn = document.querySelector('.article-hero__expand-btn');
 			if (expandBtn) {
-				expandBtn.blur();
+				setTimeout(function() {
+					expandBtn.blur();
+				});
 			}
 		});
 	});
