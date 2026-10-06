@@ -290,7 +290,6 @@ html, body {
 	white-space: nowrap;
 	color: var(--ink) !important;
 	font-weight: 600;
-	transition: color 0.2s ease;
 }
 
 .article-preview__more .bi {
@@ -322,7 +321,6 @@ html, body {
 
 .article-preview__more:hover,
 .article-preview__more:focus-visible {
-	color: var(--brand-red) !important;
 	text-decoration: none;
 }
 
@@ -341,10 +339,6 @@ html, body {
 
 .article-preview__row:has(.article-preview__link:hover, .article-preview__more:hover) .article-preview__title-link {
 	background-size: 100% 2px;
-}
-
-.article-preview__row:has(.article-preview__link:hover, .article-preview__title-link:hover) .article-preview__more {
-	color: var(--brand-red) !important;
 }
 
 .article-preview__row:has(.article-preview__link:hover, .article-preview__title-link:hover) .article-preview__more .bi {
@@ -451,7 +445,6 @@ html, body {
 	.articleblockbg .article-preview__image,
 	.articleblockbg .article-card__image,
 	.article-preview__title-link,
-	.article-preview__more,
 	.article-preview__more .bi {
 		transition: none;
 	}
