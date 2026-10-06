@@ -35,10 +35,6 @@
 /* ==========================================================================
    Blog list page (page-specific - not shared with blog_detail.jsp)
    ========================================================================== */
-.articleblockbg figure {
-	margin: 0;
-}
-
 html, body {
 	margin: 0;
 	padding: 0;
@@ -46,18 +42,24 @@ html, body {
 }
 
 .articleblockbg {
+	--ink: #212529;
+	--muted: #6c757d;
+	--ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--lift-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.45);
+	--excerpt-line: 1.6em;
+
 	background-color: #F5F5F5;
-	padding-top: calc(3% + var(--navbar-offset, 80px));
-	padding-bottom: 5%;
-	padding-left: 10%;
-	padding-right: 10%;
+	padding: calc(3% + var(--navbar-offset, 80px)) 10% 5%;
+}
+
+.articleblockbg figure {
+	margin: 0;
 }
 
 /* ==========================================================================
    Article list + pagination (rendered via blog_list.jsp include)
    ========================================================================== */
 .article-list-heading {
-
 	margin: clamp(56px, 24px + 4vw, 96px) 0 24px;
 	font-size: clamp(22px, 1rem + 1vw, 28px);
 	font-weight: bold;
@@ -111,7 +113,6 @@ html, body {
 	.page-link__icon {
 		display: inline;
 	}
-
 	.blog-pagination .page-item {
 		margin: 0 2px;
 	}
@@ -144,21 +145,17 @@ html, body {
 	min-width: 0;
 }
 
-@container (min-width: 900px) {
-	.article-preview__row {
-		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-		grid-template-areas: "content media";
-		column-gap: clamp(24px, 3cqi, 48px);
-		align-items: center;
-	}
-}
-
 .article-preview__media {
 	position: relative;
 	aspect-ratio: 1200 / 630;
 	overflow: hidden;
 	border-radius: 10px;
 	background-color: #ffffff;
+	transition: box-shadow 0.4s ease;
+}
+
+.article-preview .article-preview__media[data-aos] {
+	transition-property: opacity, transform, box-shadow;
 }
 
 .article-preview__image {
@@ -168,6 +165,11 @@ html, body {
 	height: 100%;
 	object-fit: cover;
 	display: block;
+}
+
+.article-preview__link:focus-visible {
+	outline: 3px solid var(--brand-red);
+	outline-offset: -3px;
 }
 
 .article-preview__content {
@@ -193,17 +195,34 @@ html, body {
 .article-preview__author    { grid-area: author; }
 .article-preview__more      { grid-area: more; justify-self: end; }
 
+.article-preview__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 10px;
+	margin-bottom: 0.5rem;
+	color: var(--muted);
+	font-size: 14px;
+}
+
+.article-preview__meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+
 .article-preview__title {
 	width: 100%;
-	font-weight: bold;
+	margin: 0 0 1rem;
 	font-size: clamp(22px, 12px + 1.6cqi, 36px);
+	font-weight: bold;
 	line-height: 1.35;
-	margin: 0 0 1rem 0;
+	color: var(--brand-red);
 	background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
-	color: var(--brand-red);
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
@@ -217,20 +236,51 @@ html, body {
 }
 
 .article-preview__title-link {
-	background-image: linear-gradient(90deg, var(--brand-red), var(--brand-red-dark));
-	background-repeat: no-repeat;
-	background-position: 0 100%;
-	background-size: 0% 2px;
-	transition: background-size 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+	background: linear-gradient(90deg, var(--brand-red), var(--brand-red-dark)) no-repeat 0 100% / 0% 2px;
+	transition: background-size 0.6s var(--ease-out);
 }
 
 .article-preview__excerpt {
-	margin: 0 0 1rem 0;
+	margin: 0 0 1rem;
 	line-height: 1.6;
-	max-height: calc(1.6em * 4);
+	max-height: calc(var(--excerpt-line) * 4);
 	overflow: hidden;
-	-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3.2em), transparent);
-	mask-image: linear-gradient(to bottom, #000 calc(100% - 3.2em), transparent);
+	-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2 * var(--excerpt-line)), transparent);
+	mask-image: linear-gradient(to bottom, #000 calc(100% - 2 * var(--excerpt-line)), transparent);
+}
+
+.article-preview__divider {
+	width: 100%;
+	margin: 0.75rem 0;
+	border-top: 1px solid #B2B2B2;
+	opacity: 1;
+}
+
+.article-preview__avatar {
+	width: 36px;
+	height: 36px;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	background-color: #ffffff;
+	box-shadow: 0 0 0 2px #F3D4D5;
+}
+
+.article-preview__avatar-logo {
+	display: block;
+	width: 19px;
+	height: 22px;
+	background: url("/pages-front/img/logo/cubesofttech.png") no-repeat left center / auto 100%;
+}
+
+.article-preview__author {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--ink);
+	font-size: 15px;
+	font-weight: 600;
 }
 
 .article-preview__more {
@@ -240,35 +290,24 @@ html, body {
 	white-space: nowrap;
 	color: var(--brand-red);
 	font-weight: 600;
-
 	transition: color 0.2s ease;
-}
-
-.article-preview__more:hover {
-	color: #212529;
-	text-decoration: none;
 }
 
 .article-preview__more .bi {
 	transition: transform 0.25s ease;
 }
 
-.article-preview__media {
-	transition: box-shadow 0.4s ease;
+.article-preview [data-aos="fade-up"] {
+	transform: translate3d(0, 20px, 0);
 }
 
-.article-preview .article-preview__media[data-aos] {
-	transition-property: opacity, transform, box-shadow;
-}
-
-.article-preview__link:focus-visible {
-	outline: 3px solid var(--brand-red);
-	outline-offset: -3px;
+.article-preview [data-aos="fade-up"].aos-animate {
+	transform: translate3d(0, 0, 0);
 }
 
 .article-preview__media:hover,
 .article-preview__media:focus-within {
-	box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.45);
+	box-shadow: var(--lift-shadow);
 }
 
 .article-preview__media:hover .article-preview__image,
@@ -281,8 +320,10 @@ html, body {
 	background-size: 100% 2px;
 }
 
+.article-preview__more:hover,
 .article-preview__more:focus-visible {
-	color: #212529;
+	color: var(--ink);
+	text-decoration: none;
 }
 
 .article-preview__more:hover .bi,
@@ -291,7 +332,7 @@ html, body {
 }
 
 .article-preview__row:has(.article-preview__title-link:hover, .article-preview__more:hover) .article-preview__media {
-	box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.45);
+	box-shadow: var(--lift-shadow);
 }
 
 .article-preview__row:has(.article-preview__title-link:hover, .article-preview__more:hover) .article-preview__image {
@@ -303,67 +344,18 @@ html, body {
 }
 
 .article-preview__row:has(.article-preview__link:hover, .article-preview__title-link:hover) .article-preview__more {
-	color: #212529;
+	color: var(--ink);
 }
 
 .article-preview__row:has(.article-preview__link:hover, .article-preview__title-link:hover) .article-preview__more .bi {
 	transform: translateX(4px);
 }
 
-.article-preview__divider {
-	width: 100%;
-	border-top: 1px solid #B2B2B2;
-	opacity: 1;
-	margin: 0.75rem 0;
-}
-
-.article-preview__meta {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 4px 10px;
-	margin-bottom: 0.5rem;
-	color: #6c757d;
-	font-size: 14px;
-}
-
-.article-preview__meta-item {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	white-space: nowrap;
-}
-
-.article-preview__avatar {
-	width: 36px;
-	height: 36px;
-	border-radius: 50%;
-	display: grid;
-	place-items: center;
-	background-color: #ffffff;
-	box-shadow: 0 0 0 2px #F3D4D5;
-}
-
-.article-preview__avatar-logo {
-	display: block;
-	width: 19px;
-	height: 22px;
-	background: url("/pages-front/img/logo/cubesofttech.png") no-repeat left center;
-	background-size: auto 100%;
-}
-
-.article-preview__author {
-	min-width: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	color: #212529;
-	font-size: 15px;
-	font-weight: 600;
-}
-
 @container (min-width: 900px) {
 	.article-preview__row {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		grid-template-areas: "content media";
+		column-gap: clamp(24px, 3cqi, 48px);
 		align-items: stretch;
 	}
 	.article-preview__col-media {
@@ -371,7 +363,7 @@ html, body {
 	}
 	.article-preview__content {
 		height: 100%;
-		grid-template-rows: auto minmax(calc(1.6em * 3 + 1rem), 1fr) auto auto auto;
+		grid-template-rows: auto minmax(calc(var(--excerpt-line) * 3 + 1rem), 1fr) auto auto auto;
 		grid-template-areas:
 			"title   title   title"
 			"excerpt excerpt excerpt"
@@ -379,7 +371,6 @@ html, body {
 			"avatar  author  more"
 			"avatar  meta    more";
 	}
-
 	.article-preview__excerpt {
 		align-self: stretch;
 		max-height: none;
@@ -387,14 +378,12 @@ html, body {
 		-webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
 		mask-image: linear-gradient(to bottom, #000 40%, transparent);
 	}
-
 	.article-preview__meta {
 		align-self: start;
 		margin: 0;
 		font-size: 13px;
 		line-height: 1.35;
 	}
-
 	.article-preview .article-preview__meta[data-aos][data-aos].aos-animate {
 		transition-delay: 0.25s;
 	}
@@ -412,14 +401,6 @@ html, body {
 	}
 }
 
-.article-preview [data-aos="fade-up"] {
-	transform: translate3d(0, 20px, 0);
-}
-
-.article-preview [data-aos="fade-up"].aos-animate {
-	transform: translate3d(0, 0, 0);
-}
-
 /* ==========================================================================
    Image loading skeleton (featured article image only)
    ========================================================================== */
@@ -427,8 +408,7 @@ html, body {
 	position: absolute;
 	inset: 0;
 	border-radius: inherit;
-	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%);
-	background-size: 200% 100%;
+	background: linear-gradient(100deg, #e9e9e9 30%, #f5f5f5 50%, #e9e9e9 70%) 0 0 / 200% 100%;
 	animation: img-skeleton-shimmer 1.4s ease-in-out infinite;
 	transition: opacity 0.25s ease;
 }
@@ -449,13 +429,19 @@ html, body {
 	transition: opacity 0.3s ease;
 }
 
+.articleblockbg .article-preview__image {
+	transition: opacity 0.3s ease, transform 0.6s var(--ease-out);
+}
+
 .articleblockbg .article-preview__image.is-loaded,
 .articleblockbg .article-card__image.is-loaded {
 	opacity: 1;
 }
 
-.articleblockbg .article-preview .article-preview__image {
-	transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+.is-resizing .articleblockbg,
+.is-resizing .articleblockbg * {
+	transition: none !important;
+	animation: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -464,15 +450,13 @@ html, body {
 	}
 	.articleblockbg .article-preview__image,
 	.articleblockbg .article-card__image,
-	.articleblockbg .article-preview .article-preview__image,
 	.article-preview__title-link,
 	.article-preview__more,
 	.article-preview__more .bi {
 		transition: none;
 	}
-
-	.articleblockbg .article-preview .article-preview__image,
-	.articleblockbg .article-preview .article-preview__more .bi {
+	.articleblockbg .article-preview__image,
+	.articleblockbg .article-preview__more .bi {
 		transform: none !important;
 	}
 }
@@ -519,7 +503,7 @@ html, body {
 
 			<div class="article-preview__col-content">
 				<div class="article-preview__content">
-					<div class="article-preview__meta" data-aos="fade-up"
+					<div class="article-preview__meta" data-aos="fade-up" data-aos-anchor="#articledetail1"
 						data-aos-delay="50">
 						<span class="article-preview__meta-item"><i
 							class="bi bi-calendar3" aria-hidden="true"></i><fmt:formatDate
@@ -541,24 +525,24 @@ html, body {
 						</span>
 					</div>
 
-					<h2 class="article-preview__title" data-aos="fade-up"
+					<h2 class="article-preview__title" data-aos="fade-up" data-aos-anchor="#articledetail1"
 						data-aos-delay="100"><a href="${newBlog.page_uri_id}"
 						class="article-preview__title-link">${newBlog.topic}</a></h2>
 
-					<div class="article-preview__excerpt" data-aos="fade-up"
+					<div class="article-preview__excerpt" data-aos="fade-up" data-aos-anchor="#articledetail1"
 						data-aos-delay="200">${cleanDetail}</div>
 
-					<hr class="article-preview__divider" data-aos="fade-up"
+					<hr class="article-preview__divider" data-aos="fade-up" data-aos-anchor="#articledetail1"
 						data-aos-delay="250">
 
 					<div class="article-preview__byline">
 						<span class="article-preview__avatar" aria-hidden="true"
-							data-aos="fade-up" data-aos-delay="250"><span
+							data-aos="fade-up" data-aos-anchor="#articledetail1" data-aos-delay="250"><span
 							class="article-preview__avatar-logo"></span></span>
-						<span class="article-preview__author" data-aos="fade-up"
+						<span class="article-preview__author" data-aos="fade-up" data-aos-anchor="#articledetail1"
 							data-aos-delay="250">${newBlog.name}</span>
 						<a href="${newBlog.page_uri_id}" class="article-preview__more"
-							aria-label="Read more: ${newBlog.topic}" data-aos="fade-up"
+							aria-label="Read more: ${newBlog.topic}" data-aos="fade-up" data-aos-anchor="#articledetail1"
 							data-aos-delay="250">Read more <i class="bi bi-arrow-right"
 							aria-hidden="true"></i></a>
 					</div>
@@ -611,6 +595,22 @@ html, body {
 			once : true
 		});
 	});
+
+	(function() {
+		var lastWidth = window.innerWidth;
+		var timer;
+		window.addEventListener('resize', function() {
+			if (window.innerWidth === lastWidth) {
+				return;
+			}
+			lastWidth = window.innerWidth;
+			document.documentElement.classList.add('is-resizing');
+			clearTimeout(timer);
+			timer = setTimeout(function() {
+				document.documentElement.classList.remove('is-resizing');
+			}, 200);
+		});
+	})();
 </script>
 
 <comp:scrollToTopButton />
