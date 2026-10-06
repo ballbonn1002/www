@@ -409,13 +409,9 @@ p {
 	max-width: 50vw;
 }
 
-.latest-card__link {
-	display: block;
-	color: inherit;
-	text-decoration: none;
-}
-
+.latest-card__link,
 .latest-card__link:hover {
+	display: block;
 	color: inherit;
 	text-decoration: none;
 }
@@ -693,10 +689,6 @@ p {
 	gap: 1rem !important;
 }
 
-.article-shares {
-	flex-wrap: wrap;
-}
-
 @media ( max-width : 400px) {
 	.article-shares.gap-3 {
 		gap: 0.5rem 0.875rem !important;
@@ -709,11 +701,6 @@ p {
 /* ==========================================================================
    11. Copy-link button + "Copied link!" tooltip
    ========================================================================== */
-.copy-link-wrap {
-	position: relative;
-	display: inline-flex;
-}
-
 .copy-link-btn, .copy-link-btn:focus, .copy-link-btn:hover {
 	border: none;
 	background: none;
@@ -827,7 +814,7 @@ p {
 					</div>
 				</div>
 
-				<div class="article-shares d-flex align-items-center gap-3">
+				<div class="article-shares d-flex flex-wrap align-items-center gap-3">
 					<b>SHARES</b> <a
 						href="https://www.facebook.com/sharer/sharer.php?u=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
@@ -845,7 +832,7 @@ p {
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 						height="25px"></a>
-					<span class="copy-link-wrap">
+					<span class="position-relative d-inline-flex">
 						<button type="button" id="copyLinkBtn" class="copy-link-btn"
 							data-share-url="https://www.cubesofttech.com${bloguri}"
 							aria-label="Copy link">
