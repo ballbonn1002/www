@@ -45,6 +45,9 @@
 
 <link rel="stylesheet" href="/pages-front-redesign/assets/css/blog.css">
 <style>
+/* ==========================================================================
+   1. Article theme tokens
+   ========================================================================== */
 :root {
 	--article-ink: #2B2222;
 	--article-ink-muted: #7A6C6C;
@@ -56,10 +59,17 @@
 	--article-code-ink: #8A2A2C;
 }
 
+/* ==========================================================================
+   2. Page chrome - resets body's scrollbar-compensation padding after the
+   hero image modal closes
+   ========================================================================== */
 body, html {
 	padding-right: 0 !important;
 }
 
+/* ==========================================================================
+   3. Article hero (image + expand modal)
+   ========================================================================== */
 .article-hero {
 	position: relative;
 	z-index: 0;
@@ -213,6 +223,9 @@ body, html {
 	}
 }
 
+/* ==========================================================================
+   4. Legacy global resets (unscoped - verify before editing elsewhere)
+   ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 400;
 	margin: 10px 0;
@@ -226,6 +239,9 @@ p {
 	margin: 0;
 }
 
+/* ==========================================================================
+   5. Article content container width
+   ========================================================================== */
 .article-content {
 	margin: 0 auto;
 }
@@ -236,6 +252,9 @@ p {
 	}
 }
 
+/* ==========================================================================
+   6. Related articles section
+   ========================================================================== */
 .related-articles-section {
 	padding-top: 1.5rem;
 	border-top: 1px solid var(--article-border);
@@ -311,6 +330,9 @@ p {
 	margin-right: 4px;
 }
 
+/* ==========================================================================
+   7. Card carousel - shared by "related articles" and "latest articles"
+   ========================================================================== */
 .card-carousel {
 	position: relative;
 	margin: 0 0 1.5rem;
@@ -430,6 +452,9 @@ p {
 	overflow: hidden;
 }
 
+/* ==========================================================================
+   8. Article-card component tuning (extends shared blog.css card for this page)
+   ========================================================================== */
 .article-tags {
 	display: flex;
 	flex-wrap: wrap;
@@ -481,6 +506,10 @@ p {
 	flex: 1;
 }
 
+/* ==========================================================================
+   9. Article body - styles the sanitized CMS content (headings, links,
+   lists, blockquote, code, images, tables, FAQ)
+   ========================================================================== */
 .article-body {
 	font-size: 17px;
 	line-height: 1.85;
@@ -653,6 +682,9 @@ p {
 	color: var(--article-accent);
 }
 
+/* ==========================================================================
+   10. Bootstrap 5 gap polyfill + share row wrapping
+   ========================================================================== */
 .gap-2 {
 	gap: 0.5rem !important;
 }
@@ -674,6 +706,9 @@ p {
 	}
 }
 
+/* ==========================================================================
+   11. Copy-link button + "Copied link!" tooltip
+   ========================================================================== */
 .copy-link-wrap {
 	position: relative;
 	display: inline-flex;
