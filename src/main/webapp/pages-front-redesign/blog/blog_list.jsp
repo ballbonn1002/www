@@ -18,7 +18,7 @@
 		}
 		pageContext.setAttribute("blogPreviewText", ArticleHtmlSanitizer.toPreviewText(blogDetailRaw, 120));
 		%>
-	
+
 		<div class="col-12 col-sm-6 col-lg-4">
 			<comp:blogCard blog="${blog}" constant="${constant}"
 				excerpt="${blogPreviewText}" eager="${Count.count <= 3}" />
@@ -26,11 +26,10 @@
 	</c:forEach>
 </div>
 
-
 <c:if test="${totalPages > 1}">
 	<nav aria-label="Blog pagination">
 		<ul class="pagination blog-pagination justify-content-center">
-			
+
 			<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
 				<a class="page-link" href="?page=${currentPage - 1}#articledetail"
 					aria-label="Previous" tabindex="${currentPage == 1 ? '-1' : '0'}">

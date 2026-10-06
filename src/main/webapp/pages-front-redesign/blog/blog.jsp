@@ -32,9 +32,6 @@
 <link rel="stylesheet" href="/pages-front-redesign/assets/css/blog.css">
 
 <style type="text/css">
-/* ==========================================================================
-   Blog list page (page-specific - not shared with blog_detail.jsp)
-   ========================================================================== */
 html, body {
 	margin: 0;
 	padding: 0;
@@ -56,9 +53,6 @@ html, body {
 	margin: 0;
 }
 
-/* ==========================================================================
-   Article list + pagination (rendered via blog_list.jsp include)
-   ========================================================================== */
 .article-list-heading {
 	margin: clamp(56px, 24px + 4vw, 96px) 0 24px;
 	font-size: clamp(22px, 1rem + 1vw, 28px);
@@ -121,9 +115,6 @@ html, body {
 	}
 }
 
-/* ==========================================================================
-   Featured article (hero card)
-   ========================================================================== */
 .article-preview {
 	max-width: 100%;
 	container-type: inline-size;
@@ -401,9 +392,6 @@ html, body {
 	}
 }
 
-/* ==========================================================================
-   Image loading skeleton (featured article image only)
-   ========================================================================== */
 .articleblockbg .img-skeleton {
 	position: absolute;
 	inset: 0;
@@ -560,29 +548,23 @@ html, body {
 				target.scrollIntoView();
 			}
 		}
-	</script>
 
-	<script>
-		document.querySelectorAll(
-				'.article-preview__image, .article-card__image')
-				.forEach(
-						function(img) {
-							var skeleton = img.previousElementSibling;
-							function reveal() {
-								img.classList.add('is-loaded');
-								if (skeleton
-										&& skeleton.classList
-												.contains('img-skeleton')) {
-									skeleton.classList.add('is-hidden');
-								}
-							}
-							if (img.complete) {
-								reveal();
-							} else {
-								img.addEventListener('load', reveal);
-								img.addEventListener('error', reveal);
-							}
-						});
+		document.querySelectorAll('.article-preview__image, .article-card__image')
+				.forEach(function(img) {
+					var skeleton = img.previousElementSibling;
+					function reveal() {
+						img.classList.add('is-loaded');
+						if (skeleton && skeleton.classList.contains('img-skeleton')) {
+							skeleton.classList.add('is-hidden');
+						}
+					}
+					if (img.complete) {
+						reveal();
+					} else {
+						img.addEventListener('load', reveal);
+						img.addEventListener('error', reveal);
+					}
+				});
 	</script>
 </div>
 

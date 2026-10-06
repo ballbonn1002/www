@@ -45,18 +45,21 @@
 
 <link rel="stylesheet" href="/pages-front-redesign/assets/css/blog.css">
 <style>
-/* ==========================================================================
-   1. Page chrome - resets body's scrollbar-compensation padding after the
-   hero image modal closes (baseLayout.jsp already covers scroll-behavior
-   and .navbar-hover:hover sitewide)
-   ========================================================================== */
+:root {
+	--article-ink: #2B2222;
+	--article-ink-muted: #7A6C6C;
+	--article-accent: var(--brand-red);
+	--article-accent-strong: var(--brand-red-dark);
+	--article-accent-soft: #F7E6E6;
+	--article-border: #E7DEDE;
+	--article-surface-soft: #FAF6F6;
+	--article-code-ink: #8A2A2C;
+}
+
 body, html {
 	padding-right: 0 !important;
 }
 
-/* ==========================================================================
-   2. Article hero (image + expand modal)
-   ========================================================================== */
 .article-hero {
 	position: relative;
 	z-index: 0;
@@ -69,10 +72,7 @@ body, html {
 .article-hero::before {
 	content: "";
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	inset: 0;
 	background-image: var(--hero-image, none);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -146,7 +146,6 @@ body, html {
 	object-fit: contain;
 	border-radius: 10px;
 	align-self: center;
-	/* Suppresses iOS Safari's long-press "Save Image" callout menu on this preview image. */
 	-webkit-touch-callout: none;
 }
 
@@ -159,28 +158,6 @@ body, html {
 	opacity: 1;
 	text-shadow: none;
 	z-index: 1;
-}
-
-@media ( max-width : 767px) {
-	.article-hero {
-		height: auto;
-		padding: calc(var(--navbar-offset, 65px) + 20px) 16px 96px;
-	}
-	.article-hero__image {
-		position: relative;
-		top: auto;
-		display: block;
-		width: 100%;
-		height: auto;
-		aspect-ratio: 1200 / 630;
-		object-fit: contain;
-		border-radius: 10px;
-	}
-	.article-hero__expand-btn {
-		top: auto;
-		bottom: 104px;
-		right: 24px;
-	}
 }
 
 .article-hero-card {
@@ -199,17 +176,33 @@ body, html {
 	font-size: clamp(1.75rem, 1.4rem + 1.45vw, 2.5rem);
 }
 
-/* Undoes blog.css's .ardetail__meta column stacking, leaked in from the carousel. */
 .article-meta-bar__info .ardetail__meta {
 	flex-direction: row !important;
 	align-items: center !important;
 }
 
 @media ( max-width : 767px) {
+	.article-hero {
+		height: auto;
+		padding: calc(var(--navbar-offset, 65px) + 20px) 16px 96px;
+	}
+	.article-hero__image {
+		position: relative;
+		top: auto;
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1200 / 630;
+		border-radius: 10px;
+	}
+	.article-hero__expand-btn {
+		top: auto;
+		bottom: 104px;
+		right: 24px;
+	}
 	.article-hero-card {
 		margin-top: -80px;
 	}
-	/* Overrides Bootstrap's !important .align-items-center utility class. */
 	.article-meta-bar {
 		flex-direction: column;
 		align-items: flex-start !important;
@@ -220,11 +213,7 @@ body, html {
 	}
 }
 
-/* ==========================================================================
-   3. Legacy global resets (unscoped - verify before editing elsewhere)
-   ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
-	/* No font-family - baseLayout.jsp's !important h1-h6 rule always wins. */
 	font-weight: 400;
 	margin: 10px 0;
 }
@@ -234,12 +223,9 @@ h5 {
 }
 
 p {
-	margin: 0 0 0;
+	margin: 0;
 }
 
-/* ==========================================================================
-   4. Article content container width
-   ========================================================================== */
 .article-content {
 	margin: 0 auto;
 }
@@ -250,12 +236,9 @@ p {
 	}
 }
 
-/* ==========================================================================
-   5. Related articles section
-   ========================================================================== */
 .related-articles-section {
 	padding-top: 1.5rem;
-	border-top: 1px solid var(--article-border, #E7DEDE);
+	border-top: 1px solid var(--article-border);
 }
 
 .related-articles-section__heading {
@@ -328,10 +311,6 @@ p {
 	margin-right: 4px;
 }
 
-/* ==========================================================================
-   6. Card carousel - shared by "related articles" and "latest articles"
-   below.
-   ========================================================================== */
 .card-carousel {
 	position: relative;
 	margin: 0 0 1.5rem;
@@ -342,7 +321,6 @@ p {
 	gap: 1.25rem;
 	overflow-x: auto;
 	scroll-behavior: smooth;
-	/* overflow-x:auto forces overflow-y:auto too - clearance for the hover-lift shadow. */
 	padding: 1.25rem 0.25rem 0.75rem;
 	scrollbar-width: none;
 }
@@ -362,7 +340,7 @@ p {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	border: 1px solid var(--article-border, #E7DEDE);
+	border: 1px solid var(--article-border);
 	background-color: #fff;
 	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 	display: flex;
@@ -452,9 +430,6 @@ p {
 	overflow: hidden;
 }
 
-/* ==========================================================================
-   7. Article-card component tuning (extends shared blog.css card for this page)
-   ========================================================================== */
 .article-tags {
 	display: flex;
 	flex-wrap: wrap;
@@ -506,25 +481,6 @@ p {
 	flex: 1;
 }
 
-
-/* ==========================================================================
-   8. Article theme tokens
-   ========================================================================== */
-:root {
-	--article-ink: #2B2222;
-	--article-ink-muted: #7A6C6C;
-	--article-accent: var(--brand-red);
-	--article-accent-strong: var(--brand-red-dark);
-	--article-accent-soft: #F7E6E6;
-	--article-border: #E7DEDE;
-	--article-surface-soft: #FAF6F6;
-	--article-code-ink: #8A2A2C;
-}
-
-/* ==========================================================================
-   9. Article body - styles the sanitized CMS content (headings, links,
-   lists, blockquote, code, images, tables, FAQ)
-   ========================================================================== */
 .article-body {
 	font-size: 17px;
 	line-height: 1.85;
@@ -697,10 +653,6 @@ p {
 	color: var(--article-accent);
 }
 
-/* ==========================================================================
-   10. Bootstrap 5 gap polyfill for article-meta-bar/article-shares - the
-   grid/carousel card's gap-4 and vr are covered by blog.css instead.
-   ========================================================================== */
 .gap-2 {
 	gap: 0.5rem !important;
 }
@@ -720,6 +672,48 @@ p {
 	.article-shares > b {
 		flex-basis: 100%;
 	}
+}
+
+.copy-link-wrap {
+	position: relative;
+	display: inline-flex;
+}
+
+.copy-link-btn, .copy-link-btn:focus, .copy-link-btn:hover {
+	border: none;
+	background: none;
+	padding: 0;
+	line-height: 0;
+	cursor: pointer;
+	outline: none;
+	box-shadow: none;
+	color: #212529;
+}
+
+.copy-link-btn .bi {
+	font-size: 28px;
+}
+
+.copy-link-tooltip {
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-bottom: 8px;
+	background: #212529;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+	padding: 4px 10px;
+	border-radius: 6px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+}
+
+.copy-link-tooltip.is-visible {
+	opacity: 1;
 }
 </style>
 
@@ -816,11 +810,11 @@ p {
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
 						height="25px"></a>
-					<span style="position: relative; display: inline-flex;">
+					<span class="copy-link-wrap">
 						<button type="button" id="copyLinkBtn" class="copy-link-btn"
 							data-share-url="https://www.cubesofttech.com${bloguri}"
 							aria-label="Copy link">
-							<i class="bi bi-link-45deg" style="font-size: 28px;"></i>
+							<i class="bi bi-link-45deg"></i>
 						</button>
 						<span id="copyLinkTooltip" class="copy-link-tooltip">Copied
 							link!</span>
@@ -828,41 +822,6 @@ p {
 				</div>
 			</div>
 		</div>
-
-		<style>
-		.copy-link-btn, .copy-link-btn:focus, .copy-link-btn:hover {
-			border: none;
-			background: none;
-			padding: 0;
-			line-height: 0;
-			cursor: pointer;
-			outline: none;
-			box-shadow: none;
-			color: #212529;
-		}
-
-		.copy-link-tooltip {
-			position: absolute;
-			bottom: 100%;
-			left: 50%;
-			transform: translateX(-50%);
-			margin-bottom: 8px;
-			background: #212529;
-			color: #fff;
-			font-size: 12px;
-			font-weight: 600;
-			white-space: nowrap;
-			padding: 4px 10px;
-			border-radius: 6px;
-			opacity: 0;
-			pointer-events: none;
-			transition: opacity 0.2s ease;
-		}
-
-		.copy-link-tooltip.is-visible {
-			opacity: 1;
-		}
-		</style>
 
 		<script type="text/javascript">
 			(function() {
@@ -982,6 +941,15 @@ p {
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() {
 		AOS.init();
+
+		$('#heroImageModal').on('hidden.bs.modal', function() {
+			$('body').css('padding-right', '');
+			$('.modal-backdrop').remove();
+			var expandBtn = document.querySelector('.article-hero__expand-btn');
+			if (expandBtn) {
+				expandBtn.blur();
+			}
+		});
 	});
 
 	document.querySelectorAll(
@@ -1050,16 +1018,4 @@ p {
 				window.addEventListener('resize', updateNavState);
 				updateNavState();
 			});
-
-	document.addEventListener('DOMContentLoaded', function() {
-		$('#heroImageModal').on('hidden.bs.modal', function() {
-			$('body').css('padding-right', '');
-			$('.modal-backdrop').remove();
-			// iOS ignores the outline/:focus-visible CSS on the returned focus - drop it entirely.
-			var expandBtn = document.querySelector('.article-hero__expand-btn');
-			if (expandBtn) {
-				expandBtn.blur();
-			}
-		});
-	});
 </script>
