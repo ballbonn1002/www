@@ -49,14 +49,24 @@
    1. Article theme tokens
    ========================================================================== */
 :root {
-	--article-ink: #2B2222;
-	--article-ink-muted: #7A6C6C;
-	--article-accent: var(--brand-red);
-	--article-accent-strong: var(--brand-red-dark);
-	--article-accent-soft: #F7E6E6;
-	--article-border: #E7DEDE;
-	--article-surface-soft: #FAF6F6;
-	--article-code-ink: #8A2A2C;
+	--article-fg-default: #2B2222;
+	--article-fg-muted: #7A6C6C;
+	--article-fg-accent: var(--brand-red);
+	--article-fg-accent-emphasis: var(--brand-red-dark);
+	--article-fg-on-emphasis: #FFFFFF;
+	--article-fg-code: #8A2A2C;
+
+	--article-bg-default: #FFFFFF;
+	--article-bg-muted: #FAF6F6;
+	--article-bg-accent-muted: #F7E6E6;
+	--article-bg-accent-emphasis: var(--brand-red);
+	--article-bg-emphasis: #212529;
+
+	--article-border-default: #E7DEDE;
+	--article-border-accent: var(--brand-red);
+
+	--hero-gap: 20px;
+	--hero-card-overlap: 64px;
 }
 
 /* ==========================================================================
@@ -68,37 +78,40 @@ body, html {
 }
 
 /* ==========================================================================
-   3. Article hero (image + expand modal)
+   3. Article hero (blurred band + image, title card, expand modal)
    ========================================================================== */
 .article-hero {
 	position: relative;
 	z-index: 0;
-	height: 480px;
 	overflow: hidden;
-	background-color: #1A1A1A;
-	padding: calc(3% + var(--navbar-offset, 65px));
+	background-color: var(--article-bg-emphasis);
+	padding: calc(var(--navbar-offset, 65px) + var(--hero-gap)) 16px
+		calc(var(--hero-gap) + var(--hero-card-overlap));
 }
 
 .article-hero::before {
 	content: "";
 	position: absolute;
 	inset: 0;
+	z-index: -1;
 	background-image: var(--hero-image, none);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	filter: blur(20px) brightness(0.6);
+	filter: blur(20px) brightness(0.8);
 	transform: scale(1.15);
 }
 
+.article-hero__frame {
+	position: relative;
+}
+
 .article-hero__image {
-	position: absolute;
-	top: calc(var(--navbar-offset, 65px) + 20px);
-	left: 0;
+	display: block;
 	width: 100%;
-	height: calc(100% - var(--navbar-offset, 65px) - 50px);
+	aspect-ratio: auto 1200 / 630;
 	object-fit: contain;
-	object-position: center;
+	border-radius: 12px;
 	opacity: 0;
 	transition: opacity 0.25s ease;
 }
@@ -107,23 +120,17 @@ body, html {
 	opacity: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.article-hero__image {
-		transition: none;
-	}
-}
-
 .article-hero__expand-btn {
 	position: absolute;
-	top: calc(var(--navbar-offset, 80px) + 28px);
-	right: 16px;
+	bottom: 8px;
+	right: 8px;
 	z-index: 3;
 	width: 40px;
 	height: 40px;
 	border: none;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.5);
-	color: #fff;
+	color: var(--article-fg-on-emphasis);
 	font-size: 18px;
 	display: flex;
 	align-items: center;
@@ -134,7 +141,48 @@ body, html {
 
 .article-hero__expand-btn:hover {
 	background-color: rgba(0, 0, 0, 0.75);
-	color: #fff;
+}
+
+.article-hero-card {
+	position: relative;
+	z-index: 1;
+	margin-top: calc(var(--hero-card-overlap) * -1);
+	border-radius: 16px;
+	background-color: var(--article-bg-default);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+	padding: 30px 20px;
+}
+
+.article-title {
+	color: var(--article-fg-accent);
+	font-weight: 700;
+	font-size: clamp(1.75rem, 1.4rem + 1.45vw, 2.5rem);
+}
+
+.article-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 0.75rem 0;
+	font-size: 14px;
+	color: var(--article-fg-muted);
+}
+
+.article-tags__label {
+	font-weight: 600;
+}
+
+.tag-badge {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: var(--article-bg-accent-muted);
+	color: var(--article-fg-accent-emphasis);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.5;
+	white-space: nowrap;
 }
 
 .article-hero-modal__content {
@@ -158,63 +206,10 @@ body, html {
 	position: absolute;
 	top: -40px;
 	right: 0;
-	color: #fff !important;
+	color: var(--article-fg-on-emphasis) !important;
 	opacity: 1;
 	text-shadow: none;
 	z-index: 1;
-}
-
-.article-hero-card {
-	position: relative;
-	z-index: 1;
-	margin-top: -140px;
-	border-radius: 16px;
-	background-color: #fff;
-	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-	padding: 30px 20px;
-}
-
-.article-title {
-	color: var(--article-accent);
-	font-weight: 700;
-	font-size: clamp(1.75rem, 1.4rem + 1.45vw, 2.5rem);
-}
-
-.article-meta-bar__info .ardetail__meta {
-	flex-direction: row !important;
-	align-items: center !important;
-}
-
-@media ( max-width : 767px) {
-	.article-hero {
-		height: auto;
-		padding: calc(var(--navbar-offset, 65px) + 20px) 16px 96px;
-	}
-	.article-hero__image {
-		position: relative;
-		top: auto;
-		display: block;
-		width: 100%;
-		height: auto;
-		aspect-ratio: 1200 / 630;
-		border-radius: 10px;
-	}
-	.article-hero__expand-btn {
-		top: auto;
-		bottom: 104px;
-		right: 24px;
-	}
-	.article-hero-card {
-		margin-top: -80px;
-	}
-	.article-meta-bar {
-		flex-direction: column;
-		align-items: flex-start !important;
-	}
-	.article-meta-bar__info {
-		flex-direction: column;
-		align-items: flex-start !important;
-	}
 }
 
 /* ==========================================================================
@@ -240,22 +235,16 @@ p {
 	margin: 0 auto;
 }
 
-@media ( min-width : 768px) {
-	.article-content {
-		max-width: 720px;
-	}
-}
-
 /* ==========================================================================
    6. Related articles section
    ========================================================================== */
 .related-articles-section {
 	padding-top: 1.5rem;
-	border-top: 1px solid var(--article-border);
+	border-top: 1px solid var(--article-border-default);
 }
 
 .related-articles-section__heading {
-	color: var(--article-ink-muted);
+	color: var(--article-fg-muted);
 }
 
 .related-articles-section__cta {
@@ -273,9 +262,9 @@ p {
 	z-index: 1;
 	padding: 0.6rem 1.75rem;
 	padding-right: max(4px, calc(1.75rem - 8px - 18px));
-	border: 3px solid var(--brand-red);
+	border: 3px solid var(--article-border-accent);
 	border-radius: 10px;
-	color: var(--brand-red) !important;
+	color: var(--article-fg-accent) !important;
 	background-color: transparent;
 	font-weight: 600;
 	text-decoration: none;
@@ -285,7 +274,7 @@ p {
 .related-articles-section__cta-btn::before {
 	content: "";
 	position: absolute;
-	background-color: var(--brand-red);
+	background-color: var(--article-bg-accent-emphasis);
 	transform: scaleX(0);
 	transform-origin: left;
 	z-index: -1;
@@ -300,16 +289,11 @@ p {
 }
 
 .related-articles-section__cta-btn:hover {
-	color: #fff !important;
+	color: var(--article-fg-on-emphasis) !important;
 	text-decoration: none;
 }
 
-.related-articles-section__cta-btn-text {
-	color: inherit;
-}
-
 .related-articles-section__cta-btn-icon {
-	color: currentColor;
 	width: 18px;
 	opacity: 0;
 	transform: translateX(-8px);
@@ -356,13 +340,13 @@ p {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	border: 1px solid var(--article-border);
-	background-color: #fff;
+	border: 1px solid var(--article-border-default);
+	background-color: var(--article-bg-default);
 	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--brand-red);
+	color: var(--article-fg-accent);
 	font-size: 18px;
 	cursor: pointer;
 	z-index: 2;
@@ -370,8 +354,8 @@ p {
 }
 
 .card-carousel__nav:hover {
-	background-color: var(--brand-red);
-	color: #fff;
+	background-color: var(--article-bg-accent-emphasis);
+	color: var(--article-fg-on-emphasis);
 }
 
 .card-carousel__nav[disabled] {
@@ -385,12 +369,6 @@ p {
 
 .card-carousel__nav--next {
 	right: -18px;
-}
-
-@media ( max-width : 767px) {
-	.card-carousel__nav {
-		display: none;
-	}
 }
 
 .card-carousel__item {
@@ -437,54 +415,16 @@ p {
 	transform: scale(1.06);
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.latest-card__image {
-		transition: none;
-	}
-	.latest-card__link:hover .latest-card__image {
-		transform: none;
-	}
-}
-
 .latest-card__title {
 	font-size: 0.9rem;
 	font-weight: 600;
 	line-height: 1.4;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
 }
 
 /* ==========================================================================
-   8. Article-card component tuning (extends shared blog.css card for this page)
+   8. Article-card component tuning - stretches blog.css cards to equal
+   height inside the carousel
    ========================================================================== */
-.article-tags {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 8px;
-	margin: 0.75rem 0;
-	font-size: 14px;
-	color: var(--article-ink-muted);
-}
-
-.article-tags__label {
-	font-weight: 600;
-}
-
-.tag-badge {
-	display: inline-block;
-	padding: 4px 12px;
-	border-radius: 999px;
-	background: var(--article-accent-soft);
-	color: var(--article-accent-strong);
-	font-size: 13px;
-	font-weight: 600;
-	line-height: 1.5;
-	white-space: nowrap;
-}
-
 .card-carousel__item .articleblockbg2 {
 	height: 100%;
 	display: flex;
@@ -498,15 +438,11 @@ p {
 	height: 100%;
 }
 
-.articleblockbg3 {
+.card-carousel__item .articleblockbg3 {
 	flex-shrink: 0;
 }
 
-.article-card__media {
-	overflow: hidden;
-}
-
-.ardetail {
+.card-carousel__item .ardetail {
 	flex: 1;
 }
 
@@ -517,12 +453,12 @@ p {
 .article-body {
 	font-size: 17px;
 	line-height: 1.85;
-	color: var(--article-ink);
+	color: var(--article-fg-default);
 	margin: 40px;
 }
 
 .article-body h2, .article-body h3, .article-body h4 {
-	color: var(--article-ink);
+	color: var(--article-fg-default);
 	font-weight: 700;
 	line-height: 1.4;
 }
@@ -531,7 +467,7 @@ p {
 	font-size: 26px;
 	margin: 52px 0 20px;
 	padding-bottom: 12px;
-	border-bottom: 1px solid var(--article-border);
+	border-bottom: 1px solid var(--article-border-default);
 }
 
 .article-body h2:first-child {
@@ -540,7 +476,7 @@ p {
 
 .article-body hr {
 	border: none;
-	border-top: 1px solid var(--article-border);
+	border-top: 1px solid var(--article-border-default);
 	margin: 40px 0;
 }
 
@@ -560,16 +496,16 @@ p {
 
 .article-body strong {
 	font-weight: 700;
-	color: var(--article-ink);
+	color: var(--article-fg-default);
 }
 
 .article-body a {
-	color: var(--article-accent);
+	color: var(--article-fg-accent);
 	text-decoration: underline;
 }
 
 .article-body a:hover {
-	color: var(--article-accent-strong);
+	color: var(--article-fg-accent-emphasis);
 }
 
 .article-body ul, .article-body ol {
@@ -582,19 +518,19 @@ p {
 }
 
 .article-body li::marker {
-	color: var(--article-accent);
+	color: var(--article-fg-accent);
 	font-weight: 700;
 }
 
 .article-body blockquote {
 	margin: 32px 0;
 	padding: 20px 24px;
-	border-left: 4px solid var(--article-accent);
-	background: var(--article-accent-soft);
+	border-left: 4px solid var(--article-border-accent);
+	background: var(--article-bg-accent-muted);
 	border-radius: 0 10px 10px 0;
 	font-size: 18px;
 	font-weight: 600;
-	color: var(--article-ink);
+	color: var(--article-fg-default);
 }
 
 .article-body blockquote p {
@@ -610,9 +546,9 @@ p {
 	font-size: 0.9em;
 	padding: 2px 7px;
 	border-radius: 5px;
-	background: var(--article-surface-soft);
-	color: var(--article-code-ink);
-	border: 1px solid var(--article-border);
+	background: var(--article-bg-muted);
+	color: var(--article-fg-code);
+	border: 1px solid var(--article-border-default);
 }
 
 .article-body img {
@@ -645,15 +581,15 @@ p {
 
 .article-body th, .article-body td {
 	padding: 12px 16px;
-	border-bottom: 1px solid var(--article-border);
+	border-bottom: 1px solid var(--article-border-default);
 	text-align: left;
 	vertical-align: top;
 	white-space: nowrap;
 }
 
 .article-body th {
-	background: var(--article-accent-soft);
-	color: var(--article-ink);
+	background: var(--article-bg-accent-muted);
+	color: var(--article-fg-default);
 	font-weight: 700;
 }
 
@@ -663,7 +599,7 @@ p {
 
 .article-body .faq-item {
 	padding: 22px 0;
-	border-bottom: 1px solid var(--article-border);
+	border-bottom: 1px solid var(--article-border-default);
 }
 
 .article-body .faq-item:last-child {
@@ -677,17 +613,17 @@ p {
 .article-body .faq-question {
 	font-size: 18px;
 	font-weight: 700;
-	color: var(--article-ink);
+	color: var(--article-fg-default);
 	margin: 0 0 8px;
 }
 
 .article-body .faq-question::before {
 	content: "Q. ";
-	color: var(--article-accent);
+	color: var(--article-fg-accent);
 }
 
 /* ==========================================================================
-   10. Bootstrap 5 gap polyfill + share row wrapping
+   10. Bootstrap 5 gap polyfill
    ========================================================================== */
 .gap-2 {
 	gap: 0.5rem !important;
@@ -695,15 +631,6 @@ p {
 
 .gap-3 {
 	gap: 1rem !important;
-}
-
-@media ( max-width : 400px) {
-	.article-shares.gap-3 {
-		gap: 0.5rem 0.875rem !important;
-	}
-	.article-shares > b {
-		flex-basis: 100%;
-	}
 }
 
 /* ==========================================================================
@@ -717,11 +644,11 @@ p {
 	cursor: pointer;
 	outline: none;
 	box-shadow: none;
-	color: #212529;
+	color: var(--article-fg-default);
 }
 
 .copy-link-btn:focus-visible {
-	outline: 2px solid var(--brand-red);
+	outline: 2px solid var(--article-border-accent);
 	outline-offset: 2px;
 }
 
@@ -735,8 +662,8 @@ p {
 	left: 50%;
 	transform: translateX(-50%);
 	margin-bottom: 8px;
-	background: #212529;
-	color: #fff;
+	background: var(--article-bg-emphasis);
+	color: var(--article-fg-on-emphasis);
 	font-size: 12px;
 	font-weight: 600;
 	white-space: nowrap;
@@ -750,6 +677,66 @@ p {
 .copy-link-tooltip.is-visible {
 	opacity: 1;
 }
+
+/* ==========================================================================
+   12. Responsive + reduced-motion overrides (kept last so they win the cascade)
+   ========================================================================== */
+@media ( min-width : 768px) {
+	.article-hero__frame {
+		width: fit-content;
+		max-width: 100%;
+		margin: 0 auto;
+	}
+	.article-hero__image {
+		width: auto;
+		max-width: 100%;
+		height: 360px;
+		box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+	}
+	.article-hero__expand-btn {
+		top: 8px;
+		bottom: auto;
+	}
+	.article-content {
+		max-width: 720px;
+	}
+}
+
+@media ( max-width : 767px) {
+	:root {
+		--hero-card-overlap: 80px;
+	}
+	.article-meta-bar__info {
+		flex-direction: column;
+		align-items: flex-start !important;
+	}
+	.card-carousel__nav {
+		display: none;
+	}
+}
+
+@media ( max-width : 400px) {
+	.article-shares.gap-3 {
+		gap: 0.5rem 0.875rem !important;
+	}
+	.article-shares > b {
+		flex-basis: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.article-hero__image, .latest-card__image,
+	.related-articles-section__cta-btn::before,
+	.related-articles-section__cta-btn-icon {
+		transition: none;
+	}
+	.latest-card__link:hover .latest-card__image {
+		transform: none;
+	}
+	.card-carousel__track {
+		scroll-behavior: auto;
+	}
+}
 </style>
 
 <comp:scrollToTopButton />
@@ -757,13 +744,15 @@ p {
 <div class="article-hero"
 	<c:if test="${!empty path}">style="--hero-image: url('${constant.imgContext}${path}');"</c:if>>
 	<c:if test="${!empty path}">
-		<img class="article-hero__image" src="${constant.imgContext}${path}"
-			alt="${not empty alt_name ? alt_name : blog.topic}">
-		<button type="button" class="article-hero__expand-btn"
-			data-toggle="modal" data-target="#heroImageModal"
-			aria-label="ดูรูปเต็ม">
-			<i class="bi bi-arrows-fullscreen"></i>
-		</button>
+		<div class="article-hero__frame">
+			<img class="article-hero__image" src="${constant.imgContext}${path}"
+				alt="${not empty alt_name ? alt_name : blog.topic}">
+			<button type="button" class="article-hero__expand-btn"
+				data-toggle="modal" data-target="#heroImageModal"
+				aria-label="ดูรูปเต็ม">
+				<i class="bi bi-arrows-fullscreen"></i>
+			</button>
+		</div>
 	</c:if>
 </div>
 
@@ -777,7 +766,8 @@ p {
 					data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<img src="${constant.imgContext}${path}" alt="${blog.topic}"
+				<img src="${constant.imgContext}${path}"
+					alt="${not empty alt_name ? alt_name : blog.topic}"
 					class="article-hero-modal__image">
 			</div>
 		</div>
@@ -804,24 +794,24 @@ p {
 			</div>
 
 			<div
-				class="article-meta-bar d-flex flex-wrap align-items-center justify-content-between gap-3">
+				class="article-meta-bar d-flex flex-column align-items-start gap-3">
 				<div
 					class="article-meta-bar__info d-flex flex-wrap align-items-center gap-3">
 					<c:if test="${not empty authorName}">
 						<div
-							class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
+							class="d-flex align-items-center gap-2 text-secondary small">
 							<i class="bi bi-pencil-square"></i> <span>By ${authorName}</span>
 						</div>
 					</c:if>
 					<c:if test="${blog.timeUpdate != null}">
 						<div
-							class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
+							class="d-flex align-items-center gap-2 text-secondary small">
 							<i class="bi bi-calendar3"></i> <span>Last Update : <fmt:formatDate
 									pattern="d MMMM yyyy" value="${blog.timeUpdate}" /></span>
 						</div>
 					</c:if>
 					<div
-						class="ardetail__meta d-flex align-items-center gap-2 text-secondary small">
+						class="d-flex align-items-center gap-2 text-secondary small">
 						<i class="bi bi-eye"></i> <span><fmt:formatNumber
 								value="${blog.viewCount}" pattern="#,##0" /> views</span>
 					</div>
@@ -832,19 +822,19 @@ p {
 						href="https://www.facebook.com/sharer/sharer.php?u=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/facebook_square.svg"
-						width="25px" height="25px"></a> <a
+						width="25" height="25" alt="Share on Facebook"></a> <a
 						href="https://twitter.com/share?url=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
 						src="/pages-front/img/articleshares/svg/twitter_x.svg"
-						width="25px" height="25px"></a> <a
+						width="25" height="25" alt="Share on X"></a> <a
 						href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=email@gmail.com&amp;body=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
-						src="/pages-front/img/articleshares/svg/gmail.svg" width="28px"
-						height="28px"></a> <a
+						src="/pages-front/img/articleshares/svg/gmail.svg" width="28"
+						height="28" alt="Share via Gmail"></a> <a
 						href="https://linkedin.com/shareArticle?url=https://www.cubesofttech.com${bloguri}"
 						target="_blank"><img
-						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25px"
-						height="25px"></a>
+						src="/pages-front/img/articleshares/svg/linkedin.svg" width="25"
+						height="25" alt="Share on LinkedIn"></a>
 					<span class="position-relative d-inline-flex">
 						<button type="button" id="copyLinkBtn" class="copy-link-btn"
 							data-share-url="https://www.cubesofttech.com${bloguri}"
@@ -865,18 +855,30 @@ p {
 				if (!btn) {
 					return;
 				}
+				function showTooltip(text) {
+					tooltip.textContent = text;
+					tooltip.classList.add('is-visible');
+					setTimeout(function() {
+						tooltip.classList.remove('is-visible');
+					}, 1500);
+				}
 				btn.addEventListener('click', function() {
 					var url = btn.getAttribute('data-share-url');
+					if (!navigator.clipboard) {
+						showTooltip('Copy failed');
+						return;
+					}
 					navigator.clipboard.writeText(url).then(function() {
 						var icon = btn.querySelector('i');
 						icon.classList.remove('bi-link-45deg');
 						icon.classList.add('bi-check-lg');
-						tooltip.classList.add('is-visible');
+						showTooltip('Copied link!');
 						setTimeout(function() {
 							icon.classList.remove('bi-check-lg');
 							icon.classList.add('bi-link-45deg');
-							tooltip.classList.remove('is-visible');
 						}, 1500);
+					}).catch(function() {
+						showTooltip('Copy failed');
 					});
 				});
 			})();
@@ -948,7 +950,7 @@ p {
 									<img class="latest-card__image"
 										src="${constant.imgContext}${latestBlog.path}"
 										alt="${latestBlog.topic}" loading="lazy">
-								</div> <span class="latest-card__title">${latestBlog.topic}</span>
+								</div> <span class="latest-card__title text-ellipsis-2">${latestBlog.topic}</span>
 							</a>
 						</div>
 					</c:forEach>
@@ -963,8 +965,7 @@ p {
 	</c:if>
 
 	<div class="related-articles-section__cta">
-		<a href="${pageURI}" class="related-articles-section__cta-btn"> <span
-			class="related-articles-section__cta-btn-text">ดูบทความทั้งหมด</span>
+		<a href="${pageURI}" class="related-articles-section__cta-btn"> <span>ดูบทความทั้งหมด</span>
 			<i class="bi bi-arrow-right related-articles-section__cta-btn-icon"></i>
 		</a>
 	</div>
@@ -1023,8 +1024,7 @@ p {
 							* direction;
 					target = Math.max(0, Math.min(target, maxScrollLeft));
 					track.scrollTo({
-						left : target,
-						behavior : 'smooth'
+						left : target
 					});
 				}
 
