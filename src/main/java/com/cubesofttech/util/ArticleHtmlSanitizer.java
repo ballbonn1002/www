@@ -48,10 +48,20 @@ public final class ArticleHtmlSanitizer {
 		stripClassAndStyleAttributes(doc);
 		removeEmptySpacerElements(doc);
 		removeDisallowedIframes(doc);
+		wrapTables(doc);
 		protectFragmentLinks(doc);
 		FaqSectionRebuilder.rebuildFaqSections(doc);
 		String cleaned = Jsoup.clean(doc.body().html(), baseUri, ARTICLE_BODY_SAFELIST);
 		return cleaned.replace(FRAGMENT_LINK_PLACEHOLDER, "");
+	}
+
+	private static void wrapTables(Document doc) {
+		for (Element table : doc.body().select("table")) {
+			if (table.parents().is("table")) {
+				continue;
+			}
+			table.wrap("<div class=\"article-table\"></div>");
+		}
 	}
 
 	private static void protectFragmentLinks(Document doc) {
