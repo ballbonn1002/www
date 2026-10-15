@@ -53,6 +53,5 @@ CREATE TABLE `job_application` (
     PRIMARY KEY (`job_application_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
--- PROD 12 SEP 2026
-
+-- PROD 15 OCT 2026
 
