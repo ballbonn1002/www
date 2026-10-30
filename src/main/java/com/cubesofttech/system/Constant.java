@@ -27,6 +27,8 @@ public class Constant {
     private String emailContactTo;
     private String emailJobFrom;
     private String emailJobTo;
+    // Set to null to show each post's real author.
+    private static final String BLOG_AUTHOR_OVERRIDE = "Cube Creator";
 
 	public boolean isRedesignEnabled() {
 		return redesignEnabled;
@@ -122,6 +124,10 @@ public class Constant {
 
 	public void setEmailJobTo(String emailJobTo) {
 		this.emailJobTo = emailJobTo;
+	}
+
+	public String getBlogAuthorOverride() {
+		return BLOG_AUTHOR_OVERRIDE;
 	}
 
 }

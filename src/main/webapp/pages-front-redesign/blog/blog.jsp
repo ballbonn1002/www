@@ -517,7 +517,7 @@ html, body {
 							data-aos="fade-up" data-aos-anchor="#articledetail1" data-aos-delay="250"><span
 							class="article-preview__avatar-logo"></span></span>
 						<span class="article-preview__author" data-aos="fade-up" data-aos-anchor="#articledetail1"
-							data-aos-delay="250">${newBlog.name}</span>
+							data-aos-delay="250">${not empty constant.blogAuthorOverride ? constant.blogAuthorOverride : newBlog.name}</span>
 						<a href="${newBlog.page_uri_id}" class="article-preview__more"
 							aria-label="Read more: ${newBlog.topic}" data-aos="fade-up" data-aos-anchor="#articledetail1"
 							data-aos-delay="250">Read more <i class="bi bi-arrow-right"
