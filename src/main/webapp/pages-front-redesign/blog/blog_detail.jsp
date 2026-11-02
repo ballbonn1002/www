@@ -846,12 +846,10 @@ p {
 				class="article-meta-bar d-flex flex-column align-items-start gap-3">
 				<div
 					class="article-meta-bar__info d-flex flex-wrap align-items-center gap-3">
-					<c:set var="displayAuthor"
-						value="${not empty constant.blogAuthorOverride ? constant.blogAuthorOverride : authorName}" />
-					<c:if test="${not empty displayAuthor}">
+					<c:if test="${not empty authorName}">
 						<div
 							class="d-flex align-items-center gap-2 text-secondary small">
-							<i class="bi bi-pencil-square"></i> <span>By ${displayAuthor}</span>
+							<i class="bi bi-pencil-square"></i> <span>By ${authorName}</span>
 						</div>
 					</c:if>
 					<c:if test="${blog.timeUpdate != null}">

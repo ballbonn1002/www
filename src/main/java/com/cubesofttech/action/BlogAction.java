@@ -125,6 +125,7 @@ public class BlogAction extends ActionSupport {
 				? blogDAO.findAllNewsWithPageUri(HERO_COUNT, 0)
 				: blogDAO.findAllBlogsWithPageUri(HERO_COUNT, 0);
 		if (heroFetch != null && !heroFetch.isEmpty()) {
+			putAuthorNames(heroFetch);
 			request.setAttribute("newBlog", heroFetch.get(0));
 		}
 
@@ -137,7 +138,9 @@ public class BlogAction extends ActionSupport {
 			page = totalPages;
 		}
 
-		request.setAttribute("blogList", fetchGridPage(isNews, page));
+		List<Blog> gridPage = fetchGridPage(isNews, page);
+		putAuthorNames(gridPage);
+		request.setAttribute("blogList", gridPage);
 		request.setAttribute("currentPage", page);
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("pageNumbers", buildPageNumbers(page, totalPages));
@@ -361,7 +364,9 @@ public class BlogAction extends ActionSupport {
 	private void setBlogContentAttributes(Blog blog, boolean redesign) throws Exception {
 		log.debug(blog.getTimePost());
 		request.setAttribute("blog", blog);
-		request.setAttribute("authorName", blogDAO.findAuthorNameByUserId(blog.getUserId()));
+		String override = authorOverride();
+		request.setAttribute("authorName", override != null ? override
+				: blogDAO.findAuthorNameByUserId(blog.getUserId()));
 		log.debug("blog.detail: " + blog.getDetail());
 		// Only the redesign JSP renders ${cleanDetail} - legacy renders ${blog.detail} raw.
 		if (redesign) {
@@ -394,8 +399,28 @@ public class BlogAction extends ActionSupport {
 		}
 	}
 
+	/** An empty override counts as unset. */
+	private String authorOverride() {
+		String override = constant.getBlogAuthorOverride();
+		return override != null && !override.isEmpty() ? override : null;
+	}
+
+	/** Adds "authorName" to each row; DAO rows are Maps at runtime despite List<Blog>. */
+	@SuppressWarnings("unchecked")
+	private void putAuthorNames(List<?> rows) {
+		if (rows == null) {
+			return;
+		}
+		String override = authorOverride();
+		for (Object row : rows) {
+			Map<String, Object> map = (Map<String, Object>) row;
+			map.put("authorName", override != null ? override : map.get("name"));
+		}
+	}
+
 	private void setRelatedAndLatestAttributes() throws Exception {
 		List<ArticleRelated> relatedBlogs = articleRelatedDAO.findByArticleId(Integer.toString(getArticleId()));
+		putAuthorNames(relatedBlogs);
 		request.setAttribute("relatedBlogs", relatedBlogs);
 
 		List<Blog> blogList = blogDAO.findLatestArticlesWithPageUri();

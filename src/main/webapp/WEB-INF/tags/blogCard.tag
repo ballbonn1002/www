@@ -35,7 +35,7 @@
 				</div>
 				<div class="vr"></div>
 				<div class="d-flex align-items-center gap-2">
-					<i class="bi bi-pencil-square"></i> <span>By ${not empty constant.blogAuthorOverride ? constant.blogAuthorOverride : blog.name}</span>
+					<i class="bi bi-pencil-square"></i> <span>By ${blog.authorName}</span>
 				</div>
 			</div>
 		</div>
